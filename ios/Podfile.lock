@@ -1,0 +1,206 @@
+PODS:
+  - Flutter (1.0.0)
+  - flutter_plugin_android_lifecycle (0.0.1):
+    - Flutter
+  - flutter_qr_bar_scanner (0.0.1):
+    - Flutter
+    - GoogleMobileVision/BarcodeDetector
+  - flutter_webview_plugin (0.0.1):
+    - Flutter
+  - fluttertoast (0.0.2):
+    - Flutter
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
+  - geocoder (0.0.1):
+    - Flutter
+  - google_maps_flutter (0.0.1):
+    - Flutter
+    - GoogleMaps
+  - GoogleMaps (2.7.0):
+    - GoogleMaps/Maps (= 2.7.0)
+  - GoogleMaps/Base (2.7.0)
+  - GoogleMaps/Maps (2.7.0):
+    - GoogleMaps/Base
+  - GoogleMobileVision/BarcodeDetector (1.6.0):
+    - GoogleMobileVision/Detector (~> 1.6)
+  - GoogleMobileVision/Detector (1.6.0):
+    - GoogleToolboxForMac/Logger (~> 2.1)
+    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+    - GTMSessionFetcher/Core (~> 1.1)
+    - Protobuf (~> 3.1)
+  - GoogleToolboxForMac/Defines (2.2.2)
+  - GoogleToolboxForMac/Logger (2.2.2):
+    - GoogleToolboxForMac/Defines (= 2.2.2)
+  - "GoogleToolboxForMac/NSData+zlib (2.2.2)":
+    - GoogleToolboxForMac/Defines (= 2.2.2)
+  - GTMSessionFetcher/Core (1.4.0)
+  - iamport_flutter (0.0.1):
+    - Flutter
+  - image_picker (0.0.1):
+    - Flutter
+  - location (0.0.1):
+    - Flutter
+  - location_web (0.0.1):
+    - Flutter
+  - native_device_orientation (0.0.1):
+    - Flutter
+  - path_provider (0.0.1):
+    - Flutter
+  - path_provider_linux (0.0.1):
+    - Flutter
+  - path_provider_macos (0.0.1):
+    - Flutter
+  - "permission_handler (4.4.0+hotfix.4)":
+    - Flutter
+  - Protobuf (3.12.0)
+  - share (0.0.1):
+    - Flutter
+  - shared_preferences (0.0.1):
+    - Flutter
+  - shared_preferences_macos (0.0.1):
+    - Flutter
+  - shared_preferences_web (0.0.1):
+    - Flutter
+  - sqflite (0.0.1):
+    - Flutter
+    - FMDB (~> 2.7.2)
+  - uni_links (0.0.1):
+    - Flutter
+  - url_launcher (0.0.1):
+    - Flutter
+  - url_launcher_macos (0.0.1):
+    - Flutter
+  - url_launcher_web (0.0.1):
+    - Flutter
+  - webview_flutter (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - flutter_plugin_android_lifecycle (from `.symlinks/plugins/flutter_plugin_android_lifecycle/ios`)
+  - flutter_qr_bar_scanner (from `.symlinks/plugins/flutter_qr_bar_scanner/ios`)
+  - flutter_webview_plugin (from `.symlinks/plugins/flutter_webview_plugin/ios`)
+  - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
+  - geocoder (from `.symlinks/plugins/geocoder/ios`)
+  - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
+  - iamport_flutter (from `.symlinks/plugins/iamport_flutter/ios`)
+  - image_picker (from `.symlinks/plugins/image_picker/ios`)
+  - location (from `.symlinks/plugins/location/ios`)
+  - location_web (from `.symlinks/plugins/location_web/ios`)
+  - native_device_orientation (from `.symlinks/plugins/native_device_orientation/ios`)
+  - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - path_provider_linux (from `.symlinks/plugins/path_provider_linux/ios`)
+  - path_provider_macos (from `.symlinks/plugins/path_provider_macos/ios`)
+  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
+  - share (from `.symlinks/plugins/share/ios`)
+  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - shared_preferences_macos (from `.symlinks/plugins/shared_preferences_macos/ios`)
+  - shared_preferences_web (from `.symlinks/plugins/shared_preferences_web/ios`)
+  - sqflite (from `.symlinks/plugins/sqflite/ios`)
+  - uni_links (from `.symlinks/plugins/uni_links/ios`)
+  - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
+  - url_launcher_macos (from `.symlinks/plugins/url_launcher_macos/ios`)
+  - url_launcher_web (from `.symlinks/plugins/url_launcher_web/ios`)
+  - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
+
+SPEC REPOS:
+  trunk:
+    - FMDB
+    - GoogleMaps
+    - GoogleMobileVision
+    - GoogleToolboxForMac
+    - GTMSessionFetcher
+    - Protobuf
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  flutter_plugin_android_lifecycle:
+    :path: ".symlinks/plugins/flutter_plugin_android_lifecycle/ios"
+  flutter_qr_bar_scanner:
+    :path: ".symlinks/plugins/flutter_qr_bar_scanner/ios"
+  flutter_webview_plugin:
+    :path: ".symlinks/plugins/flutter_webview_plugin/ios"
+  fluttertoast:
+    :path: ".symlinks/plugins/fluttertoast/ios"
+  geocoder:
+    :path: ".symlinks/plugins/geocoder/ios"
+  google_maps_flutter:
+    :path: ".symlinks/plugins/google_maps_flutter/ios"
+  iamport_flutter:
+    :path: ".symlinks/plugins/iamport_flutter/ios"
+  image_picker:
+    :path: ".symlinks/plugins/image_picker/ios"
+  location:
+    :path: ".symlinks/plugins/location/ios"
+  location_web:
+    :path: ".symlinks/plugins/location_web/ios"
+  native_device_orientation:
+    :path: ".symlinks/plugins/native_device_orientation/ios"
+  path_provider:
+    :path: ".symlinks/plugins/path_provider/ios"
+  path_provider_linux:
+    :path: ".symlinks/plugins/path_provider_linux/ios"
+  path_provider_macos:
+    :path: ".symlinks/plugins/path_provider_macos/ios"
+  permission_handler:
+    :path: ".symlinks/plugins/permission_handler/ios"
+  share:
+    :path: ".symlinks/plugins/share/ios"
+  shared_preferences:
+    :path: ".symlinks/plugins/shared_preferences/ios"
+  shared_preferences_macos:
+    :path: ".symlinks/plugins/shared_preferences_macos/ios"
+  shared_preferences_web:
+    :path: ".symlinks/plugins/shared_preferences_web/ios"
+  sqflite:
+    :path: ".symlinks/plugins/sqflite/ios"
+  uni_links:
+    :path: ".symlinks/plugins/uni_links/ios"
+  url_launcher:
+    :path: ".symlinks/plugins/url_launcher/ios"
+  url_launcher_macos:
+    :path: ".symlinks/plugins/url_launcher_macos/ios"
+  url_launcher_web:
+    :path: ".symlinks/plugins/url_launcher_web/ios"
+  webview_flutter:
+    :path: ".symlinks/plugins/webview_flutter/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_plugin_android_lifecycle: dc0b544e129eebb77a6bfb1239d4d1c673a60a35
+  flutter_qr_bar_scanner: 20e2548de9b8612c0e7c823f21979030600088a4
+  flutter_webview_plugin: ed9e8a6a96baf0c867e90e1bce2673913eeac694
+  fluttertoast: b644586ef3b16f67fae9a1f8754cef6b2d6b634b
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  geocoder: 3cfab70531a0b367e917bafe82df4c30f6d4c45a
+  google_maps_flutter: df4e7de95264aa0a2f11aac0fc7e313acb8ffc7e
+  GoogleMaps: f79af95cb24d869457b1f961c93d3ce8b2f3b848
+  GoogleMobileVision: 31cfb4319fd0c03d80105680abd9eae9da5e3b47
+  GoogleToolboxForMac: 800648f8b3127618c1b59c7f97684427630c5ea3
+  GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
+  iamport_flutter: d443d80a5c77d7cb80357657b89965346807c56a
+  image_picker: 66aa71bc96850a90590a35d4c4a2907b0d823109
+  location: 3a2eed4dd2fab25e7b7baf2a9efefe82b512d740
+  location_web: b94e7433cfe28c0f7c8923c2ee482824b32e55a7
+  native_device_orientation: e24d00be281de72996640885d80e706142707660
+  path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  path_provider_linux: 4d630dc393e1f20364f3e3b4a2ff41d9674a84e4
+  path_provider_macos: f760a3c5b04357c380e2fddb6f9db6f3015897e0
+  permission_handler: 8278954f2382902f63f00dd8828769c0bd6d511b
+  Protobuf: 2793fcd0622a00b546c60e7cbbcc493e043e9bb9
+  share: 0b2c3e82132f5888bccca3351c504d0003b3b410
+  shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
+  shared_preferences_macos: f3f29b71ccbb56bf40c9dd6396c9acf15e214087
+  shared_preferences_web: 141cce0c3ed1a1c5bf2a0e44f52d31eeb66e5ea9
+  sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
+  uni_links: d97da20c7701486ba192624d99bffaaffcfc298a
+  url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
+  url_launcher_macos: fd7894421cd39320dce5f292fc99ea9270b2a313
+  url_launcher_web: e5527357f037c87560776e36436bf2b0288b965c
+  webview_flutter: d2b4d6c66968ad042ad94cbb791f5b72b4678a96
+
+PODFILE CHECKSUM: c34e2287a9ccaa606aeceab922830efb9a6ff69a
+
+COCOAPODS: 1.8.4

@@ -1,0 +1,400 @@
+import 'package:cashcook/src/model/account.dart';
+import 'package:cashcook/src/model/usercheck.dart';
+import 'package:cashcook/src/provider/UserProvider.dart';
+import 'package:cashcook/src/screens/referrermanagement/referrermanagement.dart';
+import 'package:cashcook/src/screens/storemanagement/storemanagement.dart';
+import 'package:cashcook/src/utils/colors.dart';
+import 'package:cashcook/src/widgets/numberFormat.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+class MyPage extends StatefulWidget {
+  @override
+  _MyPageState createState() => _MyPageState();
+}
+
+class _MyPageState extends State<MyPage> {
+
+  bool isCheck = false;
+
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<UserProvider>(context, listen: false).fetchMyInfo(context);
+    Provider.of<UserProvider>(context,listen: false).fetchAccounts();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return body();
+  }
+
+  Widget body(){
+    UserProvider userProvider = Provider.of<UserProvider>(context,listen: false);
+    return SingleChildScrollView(
+      child:Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Title(),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 18.0),
+                    child: Text("보유 포인트",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600,color: Color(0xff444444)),),
+                  ),
+                  Consumer<UserProvider>(
+                    builder: (conetxt, user, _) {
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(width: 20,),
+                          R_Point(user.account),
+                          SizedBox(width: 72,),
+                          DL(user.account),
+                          SizedBox(width: 72,),
+                          userProvider.storeModel != null ? ADP(user.account) : SizedBox(),
+                        ],
+                      );
+                    },
+                  ),
+                  SizedBox(height: 24,),
+                  userProvider.storeModel != null ? StoreCard(): SizedBox(),
+                  RecoCard(),
+                  SizedBox(height: 16,),
+                  Tabs(name: "공지사항", routesName: "/notice",),
+//                  Alarm(),
+                  CustomerCenter(),
+                  Tabs(name: "FAQ", routesName: "/faq",),
+                  Tabs(name: "서비스 문의", routesName: "/inquiry",),
+                  Tabs(name: "약관 및 정책", routesName: "",),
+                  SizedBox(height: 40,),
+                ],
+              ),
+            ),
+            userProvider.storeModel == null ? Tabs2(name: "가맹점 등록하기", routesName: "/store/apply1",img: "assets/icon/shop.png",): SizedBox(),
+            SizedBox(height: 12,),
+            Tabs2(name: "캐시링크 가기", routesName: "cashlink",img: "assets/icon/cashlink-icon.png",),
+          ],
+        ),
+    );
+  }
+
+  Widget Title(){
+    UserCheck userCheck = Provider.of<UserProvider>(context,listen: false).loginUser;
+    return InkWell(
+      onTap: (){
+
+      },
+      child: Container(
+        margin: const EdgeInsets.only(top: 16.0, bottom: 24.0),
+        child: Row(
+          children: [
+            RichText(
+              text: TextSpan(
+                style: TextStyle(fontSize:16, fontWeight: FontWeight.w600, color: Colors.black),
+                children: [
+                  TextSpan(text:"${userCheck.name}", style: TextStyle(fontSize: 20, color: Color(0xff444444))),
+                  TextSpan(text:"님\n"),
+                  TextSpan(text:"반갑습니다.")
+                ]
+              ),
+
+            ),
+            Spacer(),
+            Icon(Icons.arrow_forward_ios, size: 24,color: Colors.black,)
+          ],
+        )
+      ),
+    );
+  }
+
+  //보유 R point
+  Widget R_Point(List<AccountModel> list){
+    String quantity = "0";
+    String id = "";
+    AccountModel accountModel;
+    for(AccountModel account in list) {
+      if (account.type == "R_POINT"){
+//        quantity = account.quantity.split(".").first;
+        quantity = account.quantity;
+        id = account.id;
+        accountModel = account;
+        break;
+      }
+    }
+    return InkWell(
+      onTap: (){
+        Map<String, dynamic> args = {
+          'account': accountModel,
+          'id' : id,
+          'point': "RP",
+          "pointImg":"assets/icon/rp-coin.png"
+        };
+        Navigator.of(context).pushNamed("/point/history",arguments: args);
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Image.asset("assets/icon/rp-coin.png",height: 48, fit: BoxFit.contain,),
+          SizedBox(width: 8,height: 8,),
+          Text("${demicalFormat.format(double.parse(quantity))} RP",style: TextStyle(fontSize: 12, color: Color(0xff444444)),)
+        ],
+      ),
+    );
+  }
+
+  //보유 DL
+  Widget DL(List<AccountModel> list){
+    String quantity = "0";
+    String id = "";
+    AccountModel accountModel;
+    for(AccountModel account in list) {
+      if (account.type == "DILLING_POINT"){
+//        quantity = account.quantity.split(".").first;
+        quantity = account.quantity;
+        id = account.id;
+        accountModel = account;
+        break;
+      }
+    }
+    return InkWell(
+      onTap: (){
+        Map<String, dynamic> args = {
+          'account': accountModel,
+          'id': id,
+          'point': "DL",
+          "pointImg":"assets/icon/DL 2.png"
+        };
+        Navigator.of(context).pushNamed("/point/history",arguments: args);
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Image.asset("assets/icon/DL 2.png",height: 48, fit: BoxFit.contain,),
+          SizedBox(width: 8,height: 8,),
+          Text("${demicalFormat.format(double.parse(quantity))} DL",style: TextStyle(fontSize: 12, color: Color(0xff444444)),)
+        ],
+      ),
+    );
+  }
+
+  //보유 ADP
+  Widget ADP(List<AccountModel> list){
+    String quantity = "0";
+    String id = "";
+    AccountModel accountModel;
+    for(AccountModel account in list) {
+      if (account.type == "AD_POINT"){
+//        quantity = account.quantity.split(".").first;
+        quantity = account.quantity;
+        id = account.id;
+        accountModel = account;
+        break;
+      }
+    }
+    return InkWell(
+      onTap: (){
+        Map<String, dynamic> args = {
+          'account': accountModel,
+          'id' : id,
+          'point': "ADP",
+          "pointImg":"assets/icon/adp.png"
+        };
+        Navigator.of(context).pushNamed("/point/history",arguments: args);
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Image.asset("assets/icon/adp.png",height: 48, fit: BoxFit.contain,),
+          SizedBox(width: 8,height: 8,),
+          Text("${demicalFormat.format(double.parse(quantity))} ADP",style: TextStyle(fontSize: 12, color: Color(0xff444444)),)
+        ],
+      ),
+    );
+  }
+
+//매장 관리
+  Widget StoreCard(){
+    return InkWell(
+      onTap: (){
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => StoreManagement()
+        ));
+      },
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Color(0xffffff),
+          border: Border.all(),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset("assets/icon/friends-wt.png", height: 32, fit: BoxFit.contain,),
+              SizedBox(width: 12,),
+              Text("매장 관리",style: TextStyle(fontSize: 16,color: Color(0xff444444))),
+              Spacer(),
+              Icon(Icons.arrow_forward_ios, color: Colors.black, size: 24,),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  //추천인 관리
+  Widget RecoCard(){
+    return InkWell(
+      onTap: (){
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ReferrerManagement()
+        ));
+      },
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Color(0xffffff),
+          border: Border.all(),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset("assets/icon/friends-wt.png", height: 32, fit: BoxFit.contain,),
+              SizedBox(width: 12,),
+              Text("추천인 관리",style: TextStyle(fontSize: 16,color: Color(0xff444444))),
+              Spacer(),
+              Icon(Icons.arrow_forward_ios, color: Colors.black, size: 24,),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  //알림 뷰
+  Widget Alarm(){
+    return InkWell(
+      onTap: (){
+        setState(() {
+          isCheck = !isCheck;
+        });
+      },
+        child: Container(
+          height: 48,
+          child: Row(
+            children: [
+              Text("알림", style: TextStyle(fontSize: 14,color: Colors.black),),
+              Spacer(),
+              Switch(
+                onChanged: (bool value){
+                  setState(() {
+                    isCheck = value;
+                  });
+                },
+                value: isCheck,
+                  activeColor: mainColor,
+              ),
+            ],
+      ),
+        ),
+    );
+  }
+
+  //고객센터
+  Widget CustomerCenter(){
+    return InkWell(
+      onTap: ()async {
+        await launch("tel://15001500");
+      },
+          child: Container(
+            height: 48,
+            child: Row(
+              children: [
+                Text("고객센터",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600, color: Color(0xff444444)),),
+                SizedBox(width: 12,),
+                Text("1500-1500",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600, color: Color(0xff001166)),)
+              ],
+      ),
+          ),
+    );
+  }
+}
+
+class Tabs extends StatelessWidget {
+  final String routesName;
+  final String name;
+
+  Tabs({this.routesName, this.name});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+        onTap: (){
+          Navigator.of(context).pushNamed(routesName);
+        },
+        enableFeedback:false,
+          child: Container(
+            height: 48,
+            child: Row(
+              children: [
+                Text(name,style: TextStyle(fontSize: 14,color: Color(0xff444444)),),
+                Spacer(),
+                Icon(Icons.arrow_forward_ios, size: 24,color: Colors.black,)
+              ],
+        ),
+          ),
+    );
+  }
+}
+
+class Tabs2 extends StatelessWidget {
+  final String routesName;
+  final String name;
+  final String img;
+
+  Tabs2({this.routesName, this.name, this.img});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        color: Color(0xffeeeeee),
+        padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 16),
+        child: InkWell(
+          onTap: () async{
+            if(routesName == "cashlink"){
+              await launch("http://cashlink.kr");
+            }else {
+              Navigator.of(context).pushNamed(routesName);
+            }
+
+          },
+          child: Row(
+            children: [
+              Text(name,style: TextStyle(fontSize: 14,color: Color(0xff444444)),),
+              Spacer(),
+              Image.asset(img,width: 48, fit: BoxFit.contain,),
+            ],
+          ),
+        ),
+    );
+  }
+}
+
+
+
