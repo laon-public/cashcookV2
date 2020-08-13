@@ -11,7 +11,8 @@ class SearchService{
         'https://maps.googleapis.com/maps/api/place/autocomplete/json';
     String type = 'establishment';
     String url =
-        '$baseUrl?input=$query&key=AIzaSyCRO8sSK3KhbmVE7XjcsmQdbQAvDy0Yyjo&type=$type&language=ko&components=country:kr';
+        '$baseUrl?input=$query&key=&type=$type&language=ko&components=country:kr';
+    // 구글 지도 api 키 서버용은 따로 라온에서 발급받아서 key= 값에 넣을것
 
     final http.Response response = await http.get(url);
     final responseData = json.decode(response.body);
