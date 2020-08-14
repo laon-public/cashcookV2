@@ -81,6 +81,7 @@ class _MyPageState extends State<MyPage> {
               ),
             ),
             userProvider.storeModel == null ? Tabs2(name: "가맹점 등록하기", routesName: "/store/apply1",img: "assets/icon/shop.png",): SizedBox(),
+
             SizedBox(height: 12,),
             Tabs2(name: "캐시링크 가기", routesName: "cashlink",img: "assets/icon/cashlink-icon.png",),
           ],
@@ -96,22 +97,28 @@ class _MyPageState extends State<MyPage> {
       },
       child: Container(
         margin: const EdgeInsets.only(top: 16.0, bottom: 24.0),
-        child: Row(
-          children: [
-            RichText(
-              text: TextSpan(
-                style: TextStyle(fontSize:16, fontWeight: FontWeight.w600, color: Colors.black),
-                children: [
-                  TextSpan(text:"${userCheck.name}", style: TextStyle(fontSize: 20, color: Color(0xff444444))),
-                  TextSpan(text:"님\n"),
-                  TextSpan(text:"반갑습니다.")
-                ]
-              ),
+        child: InkWell(
+          onTap: () async{
+            await Navigator.pushNamed(context, "/userState");
+          },
+          child: Row(
+            children: [
+              RichText(
+                text: TextSpan(
+                  style: TextStyle(fontSize:16, fontWeight: FontWeight.w600, color: Colors.black),
+                  children: [
+                    TextSpan(text:"${userCheck.name}", style: TextStyle(fontSize: 20, color: Color(0xff444444))),
+                    TextSpan(text:"님\n"),
+                    TextSpan(text:"반갑습니다.")
+                  ]
+                ),
 
-            ),
-            Spacer(),
-            Icon(Icons.arrow_forward_ios, size: 24,color: Colors.black,)
-          ],
+              ),
+              Spacer(),
+              Icon(Icons.arrow_forward_ios, size: 24,color: Colors.black,),
+
+            ],
+          ),
         )
       ),
     );
@@ -122,8 +129,12 @@ class _MyPageState extends State<MyPage> {
     String quantity = "0";
     String id = "";
     AccountModel accountModel;
+    print("들어옴");
     for(AccountModel account in list) {
+      print("for들어옴");
+      print("account.type : " + account.type);
       if (account.type == "R_POINT"){
+        print("if들어옴");
 //        quantity = account.quantity.split(".").first;
         quantity = account.quantity;
         id = account.id;
@@ -158,8 +169,9 @@ class _MyPageState extends State<MyPage> {
     String quantity = "0";
     String id = "";
     AccountModel accountModel;
+    print("들어옴2");
     for(AccountModel account in list) {
-      if (account.type == "DILLING_POINT"){
+      if (account.type == "DILLING"){
 //        quantity = account.quantity.split(".").first;
         quantity = account.quantity;
         id = account.id;

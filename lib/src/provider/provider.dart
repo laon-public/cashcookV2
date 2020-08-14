@@ -6,9 +6,9 @@ import 'package:http/http.dart';
 class Provider {
   Client client = Client();
 //  final baseUrl = "http://192.168.100.237/auth_api/";
-    final baseUrl = "http://192.168.100.215/auth_api/";
+    final baseUrl = "http://192.168.100.226/auth_api/";
 //  String userCheckUrl = "http://192.168.100.237:8008/cook_api/api/users/me";
-    String userCheckUrl = "http://192.168.100.215:8008/cook_api/api/users/me";
+    String userCheckUrl = "http://192.168.100.226:8008/cook_api/api/users/me";
   final getToken = "oauth/token";
 
   Future<String> authToken() async {

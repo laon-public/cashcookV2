@@ -52,6 +52,7 @@ class UserProvider with ChangeNotifier {
     account.clear();
     final response = await service.getUserAccounts();
     Map<String, dynamic> accountsJson = jsonDecode(response);
+    print("fetchAccounts 들어옴");
     print(accountsJson);
     if(isResponse(accountsJson)){
       for (var accountsList in accountsJson['data']["list"]) {

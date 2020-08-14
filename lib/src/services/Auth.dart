@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 class AuthService{
   http.Client client = http.Client();
-  final baseUrl = "http://192.168.100.215/auth_api/";
+  final baseUrl = "http://192.168.100.226/auth_api/";
   String userCheckUrl = "/users/me";
   final getToken = "oauth/token";
 

@@ -15,6 +15,7 @@ class UserService {
   }
 
   Future<String> getUserAccounts() async {
+    print("APIURL : " + APIURL);
     final response = await client.get(APIURL + "/users/me/accounts",
         headers: {"Authorization": "BEARER ${dataStorage.token}"});
     return utf8.decode(response.bodyBytes);

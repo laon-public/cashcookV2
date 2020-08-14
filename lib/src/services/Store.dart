@@ -74,7 +74,7 @@ class StoreService {
     try {
       Response response = await Dio()
 //          .patch("http://192.168.100.237:8008/cook_api/api/users/me/franchise",
-            .patch("http://192.168.100.215:8008/cook_api/api/users/me/franchise",
+            .patch("http://192.168.100.226:8008/cook_api/api/users/me/franchise",
               data: formData,
               options: Options(
                 headers: {"Authorization": "BEARER ${dataStorage.token}"},
