@@ -45,7 +45,7 @@ class _UserState extends State<UserState> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                 Title(),
-                  Tabs(name: "계정정보 수정", routesName: "",),
+                  Tabs(name: "계정정보 수정", routesName: "/myUpdate",),
                 Padding(
                   padding: const EdgeInsets.only(top: 40.0),
                   child: Text("회원을 탈퇴하시겠습니까? >\n-회원을 탈퇴하시면, 보유하고 계신 포인트가 모두 사라집니다.",style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,color: Color(0xff444444)),),
@@ -79,11 +79,17 @@ class _UserState extends State<UserState> {
                 Spacer(),
                 RaisedButton(
                   child: Text("로그아웃", style: TextStyle(fontSize: 12),),
-                )
+                    onPressed:(){
+                      Navigator.of(context).pushNamed("/logout");
+                    }
+                ),
+//                Tabs(name: "로그아웃", routesName: "/users/logout",),
               ],
             ),
         );
   }
+
+
 
 }
 

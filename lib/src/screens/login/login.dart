@@ -13,6 +13,7 @@ import 'package:cashcook/src/utils/webViewScroll.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/physics.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:provider/provider.dart' as P;
@@ -46,11 +47,13 @@ class _Login extends State<Login> {
 
   @override
   void initState() {
+    print("initState123");
     // TODO: implement initState
     super.initState();
 //    mainMapMove();
   flutterWebviewPlugin.onUrlChanged.listen((String url) async {
     if (url == "http://192.168.100.226/auth_api/") {
+      print("로그인실패123");
                   webViewController.clearCache();
       webViewController.loadUrl(this.url);
       print("test012345");
@@ -60,9 +63,11 @@ class _Login extends State<Login> {
         showToast("로그인에 실패하였습니다.");
       }
     }
+    print("로그인실패x");
     print("url : $url");
     List<String> code = List();
     if (url.contains("code") && !url.contains("oauth")) {
+      print("아래if문");
       setState(() {
         userCheck = true;
       });
@@ -70,12 +75,14 @@ class _Login extends State<Login> {
       dataStorage.oauthCode = code[1];
 
       await provider.authToken().then((value) async {
+        print("authToken123");
         dynamic authToken = json.decode(value);
         print("authToken : ${authToken['access_token']}");
         dataStorage.token = authToken['access_token'];
         // 유저 정보 가져오고 회원정보 있는지 확인 후 홈으로 보낼 지 기본 회원 정보 받는 곳으로 이동할 지 결정
 
         if (authToken['access_token'] != null) {
+          print("access_token123");
           await provider
               .authCheck(authToken['access_token'])
               .then((value) async {
@@ -126,7 +133,7 @@ class _Login extends State<Login> {
               }
 
               P.Provider.of<UserProvider>(context,listen: false).setLoginUser(userCheck);
-              await P.Provider.of<UserProvider>(context, listen: false).userSync();
+//              await P.Provider.of<UserProvider>(context, listen: false).userSync();
 //                            if(userCheck.isFirstLogin) {
 ////                              P.Provider.of<UserProvider>(context,listen: false).postReco();
 //                              Navigator.of(context)
@@ -179,9 +186,11 @@ class _Login extends State<Login> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    print("buildUrl : " + url);
+    print("아래 widget.authCheck");
     return Scaffold(
       backgroundColor: white,
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Container(
           width: MediaQuery.of(context).size.width,

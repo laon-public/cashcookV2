@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 class StoreModel {
   final int id;
   final String company_name;
@@ -36,7 +39,10 @@ class StoreModel {
             tel: json['store']['tel'],
             email: json['store']['email'],
             negotiable_time: json['store']['negotiable_time'],
-            useDL: json['store']['useDL']),
+            useDL: json['store']['useDL'],
+            shop_img1: json['store']['shop_img1'],
+            shop_img2: json['store']['shop_img2'],
+            shop_img3: json['store']['shop_img3'],),
         address = Address(
             address: json['address']['address'],
             detail: json['address']['detail'],
@@ -51,6 +57,9 @@ class Store {
   final String email;
   final String negotiable_time;
   final bool useDL;
+  final String shop_img1;
+  final String shop_img2;
+  final String shop_img3;
 
   Store(
       {this.name,
@@ -58,7 +67,11 @@ class Store {
       this.tel,
       this.email,
       this.negotiable_time,
-      this.useDL});
+      this.useDL,
+      this.shop_img1,
+      this.shop_img2,
+      this.shop_img3
+      });
 }
 
 class Address {

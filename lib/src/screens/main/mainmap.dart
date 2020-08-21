@@ -17,6 +17,7 @@ import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/dialog.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -60,9 +61,7 @@ class _MainMap extends State<MainMap> {
 
   @override
   void initState() {
-    print("실행되는거냐?");
     super.initState();
-    print("이 친구가 첫 빠이고");
     getLocation();
 //    franchiseeData.add(Franchisee(
 //        imageUrl:
@@ -81,25 +80,24 @@ class _MainMap extends State<MainMap> {
 
   moveCamera() async {
     googleMapController.animateCamera(
-        CameraUpdate.newLatLng(
-          LatLng(placeDetail.lat, placeDetail.lng),
-        ),
+      CameraUpdate.newLatLng(
+        LatLng(placeDetail.lat, placeDetail.lng),
+      ),
     );
 
     final icon = await getBitmapDescriptorFromAssetBytes("assets/icon/a.png", 128);
 
     setState(() {
       markers.add(Marker(
-          markerId: MarkerId("marker"),
-          position: LatLng( placeDetail.lat, placeDetail.lng ),
-          icon: icon,
-        ));
+        markerId: MarkerId("marker"),
+        position: LatLng( placeDetail.lat, placeDetail.lng ),
+        icon: icon,
+      ));
     });
 
   }
 
   initSetting() {
-    print("initSetting : 님 뭐하고 있어요? 여기서 franchise API를 호출하면 되는 부분이죠?");
     markerAdds();
   }
 
@@ -116,7 +114,6 @@ class _MainMap extends State<MainMap> {
 
   getLocation() async {
     currentLocation = await location.getLocation();
-    print("이거다");
     print(currentLocation);
     /*
     cameraPosition = CameraPosition(
@@ -132,14 +129,12 @@ class _MainMap extends State<MainMap> {
   }
 
   setMyLocation() async {
-    print("님 뭐하고 있어요?");
     currentLocation = await location.getLocation();
     googleMapController.animateCamera(CameraUpdate.newLatLng(
         LatLng(currentLocation.latitude, currentLocation.longitude)));
   }
 
   markerAdds() {
-    print("왜 여기 아무것도 없죠?");
     markers = {};
     int len = Provider.of<StoreProvider>(context, listen: false).store.length;
     for (int i = 0; i < len; i++) {
@@ -152,7 +147,6 @@ class _MainMap extends State<MainMap> {
   double myLon;
 
   distanceLocation(num) async {
-    print("님 뭐하고 있어요?");
     currentLocation = await location.getLocation();
     myLat = currentLocation.latitude;
     myLon = currentLocation.longitude;
@@ -168,7 +162,6 @@ class _MainMap extends State<MainMap> {
   }
 
   addMarker(num, markerId) async {
-    print("addMarker : 님 뭐하고 있어요?");
     final icon = await getBitmapDescriptorFromAssetBytes(
         "assets/resource/map/marker.png", 128);
     List<StoreModel> stores =
@@ -185,12 +178,11 @@ class _MainMap extends State<MainMap> {
             setState(() {
               print("checkMarker");
               detailView = true;
-              detailImage =
-              "https://s3.ap-northeast-2.amazonaws.com/img.kormedi.com/news/article/__icsFiles/artimage/2016/03/29/c_km601/911811_540.jpg";
-              detailName = stores[num].company_name;
+              detailImage = stores[num].store.shop_img1;
+              detailName = stores[num].store.name;
               detailAddress = stores[num].address.address;
               detailType = "타입";
-              detailPhone = stores[num].tel;
+              detailPhone = stores[num].store.tel;
               distanceLocation(num);
             });
           }));
@@ -234,7 +226,6 @@ class _MainMap extends State<MainMap> {
 
   Widget getChild() {
     if (isCurrentPage == 0) {
-      print("getChild : 당신은 뭐하는가?");
       return Stack(
         children: [
           mapLoad
@@ -249,13 +240,11 @@ class _MainMap extends State<MainMap> {
               rotateGesturesEnabled: false,
               markers: markers,
               onCameraIdle: () {
-                print("여기는 안 오신거죠?");
                 googleMapController
                     .getVisibleRegion()
                     .then((value) async {
 //                        print(value.northeast.toString());
 //                        print(value.southwest.toString());
-                  print(123);
                   String start = value.northeast.latitude.toString() +
                       "," +
                       value.northeast.longitude.toString();
@@ -265,7 +254,6 @@ class _MainMap extends State<MainMap> {
 
                   await Provider.of<StoreProvider>(context, listen: false)
                       .getStore(start, end);
-                  print(123);
                   markerAdds();
                 });
               },
@@ -297,8 +285,8 @@ class _MainMap extends State<MainMap> {
                   ],
                 ),
                 child: SingleChildScrollView(
-                  child: Column (
-                  children: [
+                    child: Column (
+                      children: [
                         TypeAheadField(
                           textFieldConfiguration: TextFieldConfiguration(
                             controller: searchCtrl,
@@ -323,14 +311,14 @@ class _MainMap extends State<MainMap> {
                           },
                           onSuggestionSelected: (suggestion) async{
                             placeDetail = await searchService.getPlaceDetail(
-                              suggestion.placeId
+                                suggestion.placeId
                             );
                             moveCamera();
                           },
                           hideOnEmpty: true,
                         ),
-                  ],
-                  )
+                      ],
+                    )
                 ),
               ),
             ),
@@ -380,7 +368,6 @@ class _MainMap extends State<MainMap> {
 
   @override
   Widget build(BuildContext context) {
-    print("Build : 님 뭐하고 있어요?");
     return Scaffold(
       backgroundColor: white,
       resizeToAvoidBottomInset: true,
@@ -525,6 +512,7 @@ class _MainMap extends State<MainMap> {
                               fit: BoxFit.fill,
                               width: 64,
                               height: 64,
+
                             ),
                             whiteSpaceW(12),
                             Expanded(

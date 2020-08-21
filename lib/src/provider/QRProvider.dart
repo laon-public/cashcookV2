@@ -15,9 +15,12 @@ class QRProvider with ChangeNotifier {
   PaymentModel paymentModel;
 
   Future<String> postCreateQR(int price, int dilling, String payment) async {
+    print("postCreateQR 시작");
     final response = await service.postCreateQR(price, dilling, payment);
+    print("postCreateQR 시작2");
+    print("response : " + response);
     final jsonResponse = json.decode(response);
-    if(isResponse(response)){
+    if(isResponse(jsonResponse)){
       QRModel qr = QRModel.fromJson(jsonResponse['data']);
       return qr.uuid;
     }

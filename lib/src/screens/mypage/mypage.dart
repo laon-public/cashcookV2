@@ -132,7 +132,6 @@ class _MyPageState extends State<MyPage> {
     print("들어옴");
     for(AccountModel account in list) {
       print("for들어옴");
-      print("account.type : " + account.type);
       if (account.type == "R_POINT"){
         print("if들어옴");
 //        quantity = account.quantity.split(".").first;
@@ -171,7 +170,9 @@ class _MyPageState extends State<MyPage> {
     AccountModel accountModel;
     print("들어옴2");
     for(AccountModel account in list) {
+      print(account.type);
       if (account.type == "DILLING"){
+        print("dl표시");
 //        quantity = account.quantity.split(".").first;
         quantity = account.quantity;
         id = account.id;

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cashcook/src/model/account.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 //import 'package:cashcook/src/provider/provider.dart';
@@ -124,10 +125,17 @@ class _StoreManagement extends State<StoreManagement> {
                         child: Container(),
                       ),
                       Container(
-                        width: 64,
-                        height: 64,
-                        color: Color(0xFFDDDDDD),
-                      )
+                        child: Row(
+                          children: [
+                            CachedNetworkImage(
+                              imageUrl: userProvider.storeModel.store.shop_img1,
+                              fit: BoxFit.fill,
+                              width: 64,
+                              height: 64,
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),

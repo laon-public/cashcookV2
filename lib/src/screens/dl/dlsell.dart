@@ -1,9 +1,12 @@
+import 'package:cashcook/src/model/account.dart';
+import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class DlSell extends StatefulWidget {
   @override
@@ -13,6 +16,21 @@ class DlSell extends StatefulWidget {
 class _DlSell extends State<DlSell> {
   AppBar appBar;
   TextEditingController dlController = TextEditingController();
+
+  String quantity = "";
+
+  @override
+  void initState() {
+    super.initState();
+    UserProvider userProvider = Provider.of<UserProvider>(context,listen:false);
+    for(AccountModel account in userProvider.account) {
+      if (account.type == "DILLING"){
+//        quantity = account.quantity.split(".").first;
+        quantity = account.quantity;
+        break;
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +97,7 @@ class _DlSell extends State<DlSell> {
                           ),
                           whiteSpaceW(12),
                           Text(
-                            "${numberFormat.format(1000000)} DL",
+                            "${numberFormat.format(double.parse(quantity))} DL",
                             style: TextStyle(
                                 fontFamily: 'noto', fontSize: 12, color: black),
                           )

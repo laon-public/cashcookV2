@@ -13,6 +13,8 @@ import 'package:cashcook/src/screens/mypage/store/store_2.dart';
 import 'package:cashcook/src/screens/storemanagement/modifyBusiness.dart';
 import 'package:cashcook/src/screens/storemanagement/modifyStore.dart';
 import 'package:cashcook/src/screens/mypage/info/userState.dart';
+import 'package:cashcook/src/screens/mypage/myUpdate.dart';
+import 'package:cashcook/src/screens/mypage/logout.dart';
 final routes = {
   '/Splash': (context) => Splash(),
   "/store/apply1":(context) => StoreApplyFirstStep(),
@@ -29,4 +31,6 @@ final routes = {
   "/store/modify/business":(context) => ModifyBusiness(),
   "/store/modify/store": (context) => ModifyStore(),
   "/userState" : (context) => UserState(),
+  "/myUpdate" : (context) => MyUpdate(),
+  "/logout" : (context) => Logout(),
 };

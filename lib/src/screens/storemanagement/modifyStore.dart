@@ -7,6 +7,7 @@ import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/TextFieldWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -31,13 +32,22 @@ class _ModifyStoreState extends State<ModifyStore> {
 
   TextEditingController detailCtrl = TextEditingController();
 
+  @override
+  void initState() {
+    StoreModel store = Provider.of<UserProvider>(context,listen: false).storeModel;
+    nameCtrl.text = store.store.name;
+    descCtrl.text = store.store.description;
+    telCtrl.text = store.store.tel;
+    negotiableTimeCtrl.text = store.store.negotiable_time;
+    addressCtrl.text = store.address.address;
+    detailCtrl.text = store.address.detail;
+  }
+
   String shop1_uri = "";
 
   String shop2_uri = "";
 
   String shop3_uri = "";
-
-  bool isDl = false;
 
   setShop1Uri(String uri){
     shop1_uri = uri;
@@ -51,25 +61,14 @@ class _ModifyStoreState extends State<ModifyStore> {
     shop3_uri = uri;
   }
 
-  setIsDl(bool dl){
-    isDl = dl;
-  }
-
   double lat;
 
   double lon;
 
   @override
   Widget build(BuildContext context) {
-    StoreModel store = Provider.of<UserProvider>(context,listen: false).storeModel;
-    nameCtrl.text = store.store.name;
-    descCtrl.text = store.store.description;
-    telCtrl.text = store.store.tel;
-    negotiableTimeCtrl.text = store.store.negotiable_time;
-    addressCtrl.text = store.address.address;
-    detailCtrl.text = store.address.detail;
-    isDl = store.store.useDL;
-
+    print(lat);
+    print(lon);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -109,9 +108,6 @@ class _ModifyStoreState extends State<ModifyStore> {
             Pictures(setShop2Uri),
             Pictures(setShop3Uri),
             Padding(
-                padding: const EdgeInsets.symmetric(vertical: 40),
-                child: DillingCheck(setIsDl, isDl)),
-            Padding(
               padding: const EdgeInsets.only(top:40.0),
               child: nextBtn(context),
             )
@@ -141,12 +137,12 @@ class _ModifyStoreState extends State<ModifyStore> {
           }
           if(store.address.detail != detailCtrl.text) data["address_detail"] = detailCtrl.text;
 
-          if(store.store.useDL != isDl) data["useDL"]= isDl.toString();
-
           bool isReturn = await Provider.of<StoreProvider>(context,listen: false).patchStore(data, "", shop1_uri, shop2_uri, shop3_uri);
 
           if(isReturn){
             Fluttertoast.showToast(msg: "가맹점 수정이 성공하였습니다.");
+            DefaultCacheManager cacheManager = new DefaultCacheManager();
+            cacheManager.emptyCache();
           }else {
             Fluttertoast.showToast(msg: "가맹점 수정이 실패하였습니다.");
           }
@@ -166,10 +162,13 @@ class _ModifyStoreState extends State<ModifyStore> {
   }
 
   void getData(address, lat, lon){
+    print("getData");
     this.lat = lat;
     this.lon = lon;
     setState(() {
+      print(address);
       addressCtrl.text = address;
+      print(addressCtrl.text);
     });
   }
 
@@ -259,66 +258,6 @@ class _ModifyStoreState extends State<ModifyStore> {
             ),
           )
         ],
-      ),
-    );
-  }
-}
-
-
-class DillingCheck extends StatefulWidget {
-
-  Function setIsDl;
-  bool isDl;
-
-  DillingCheck(this.setIsDl, this.isDl);
-
-  @override
-  _DillingCheckState createState() => _DillingCheckState();
-}
-
-class _DillingCheckState extends State<DillingCheck> {
-  bool isCheck = false;
-
-
-  @override
-  void initState() {
-    super.initState();
-    isCheck = widget.isDl;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          isCheck = !isCheck;
-          widget.setIsDl(isCheck);
-        });
-      },
-      child: Container(
-        height: 48,
-        child: Row(
-          children: [
-            Text(
-              "딜링 결제 가능 여부",
-              style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600),
-            ),
-            Spacer(),
-            Switch(
-              onChanged: (bool value) {
-                setState(() {
-                  isCheck = value;
-                  widget.setIsDl(isCheck);
-                });
-              },
-              value: isCheck,
-              activeColor: mainColor,
-            ),
-          ],
-        ),
       ),
     );
   }

@@ -60,21 +60,16 @@ class StoreService {
       });
     }
 
-    if (shop1_path != "" && shop2_path != "" && shop3_path != "") {
-      formData.files.addAll([
-        MapEntry("shop_images", MultipartFile.fromFileSync(shop1_path)),
-        MapEntry("shop_images", MultipartFile.fromFileSync(shop2_path)),
-        MapEntry("shop_images", MultipartFile.fromFileSync(shop3_path)),
-      ]);
-    }
+    (shop1_path != "" && shop1_path != null) ? formData.files.add(MapEntry("new_shop_img1", MultipartFile.fromFileSync(shop1_path))) : print("no Shop img1");
+    (shop2_path != "" && shop2_path != null) ? formData.files.add(MapEntry("new_shop_img2", MultipartFile.fromFileSync(shop2_path))) : print("no Shop img2");
+    (shop3_path != "" && shop3_path != null) ? formData.files.add(MapEntry("new_shop_img3", MultipartFile.fromFileSync(shop3_path))) : print("no Shop img3");
 
     formData.fields.addAll(data.entries);
     print(formData.fields);
     print(formData.files);
     try {
       Response response = await Dio()
-//          .patch("http://192.168.100.237:8008/cook_api/api/users/me/franchise",
-            .patch("http://192.168.100.226:8008/cook_api/api/users/me/franchise",
+          .patch("http://192.168.100.226/cook_api/api/users/me/franchise",
               data: formData,
               options: Options(
                 headers: {"Authorization": "BEARER ${dataStorage.token}"},

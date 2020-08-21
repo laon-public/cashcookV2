@@ -155,7 +155,8 @@ class _Qr extends State<Qr> {
           title: "결제안내",
           context: context,
           content: "${qrProvider.store.store.name}에서"
-              "\n결제금액 ${numberFormat.format(qrProvider.paymentModel.price)}원을\n100 DL로 결제합니다.",
+              "\n결제금액 ${numberFormat.format(qrProvider.paymentModel.price)}원을\n"
+              "${numberFormat.format(double.parse(qrProvider.paymentModel.dilling))} DL로 결제합니다.",
           sub: "DL로 결제 하시겠습니까?",
           selectOneText: "취소",
           selectOneVoid: () => dialogPop(),
