@@ -33,10 +33,11 @@ class _MyUpdate extends State<MyUpdate> {
 //  String url =
 //      "http://auth.cashlink.kr/auth_api/oauth/authorize?client_id=cashcook&redirect_uri=https://naver.com&response_type=code";
   String url =
-      "http://192.168.100.226:8080/auth_api/users/modify/modifyInfo?client_id=cashcook";
+//      "http://192.168.100.226:8080/auth_api/users/modify/modifyInfo?client_id=cashcook";
+        "http://auth.cashlink.kr/auth_api/users/modify/modifyInfo?client_id=cashcook";
 
-//  String logoutUrl = "http://auth.cashlink.kr/auth_api/users/logout";
-  String logoutUrl = "http://192.168.100.226:8080/auth_api/users/logout";
+  String logoutUrl = "http://auth.cashlink.kr/auth_api/users/logout";
+  //String logoutUrl = "http://192.168.100.226:8080/auth_api/users/logout";
 
   bool clearCache = false;
 
@@ -64,7 +65,7 @@ class _MyUpdate extends State<MyUpdate> {
     // TODO: implement build
     return Scaffold(
       backgroundColor: white,
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Container(
           width: MediaQuery.of(context).size.width,
@@ -97,7 +98,8 @@ class _MyUpdate extends State<MyUpdate> {
                 onPageStarted: (url) {
 //                  if (url == "http://gateway.cashlink.kr/auth_api/") {
                   print("onPageStarted");
-                  if (url == "http://192.168.100.226:8080/auth_api/") {
+//                  if (url == "http://192.168.100.226:8080/auth_api/") {
+                  if (url == "http://auth.cashlink.kr/auth_api/") {
 //                  webViewController.clearCache();
                     webViewController.loadUrl(this.url);
                     if (widget.authCheck != 1) {
@@ -109,7 +111,8 @@ class _MyUpdate extends State<MyUpdate> {
                   print("onPageFinished");
                   print("url : $url");
                   List<String> code = List();
-                  if (url == "http://192.168.100.226:8080/auth_api/users/modify/success") {
+//                  if (url == "http://192.168.100.226:8080/auth_api/users/modify/success") {
+                  if (url == "http://auth.cashlink.kr/auth_api/users/modify/success") {
                     print(dataStorage.token);
                     Navigator.of(context)
                         .pushReplacement(MaterialPageRoute(builder: (context) => Login()));

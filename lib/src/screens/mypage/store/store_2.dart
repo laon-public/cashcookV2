@@ -47,7 +47,7 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
 
   String shop3_uri;
 
-  bool isDl = false;
+  bool isDl = true;
 
   double lat;
   double lon;
@@ -120,8 +120,8 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
             Pictures(setShop2Uri),
             Pictures(setShop3Uri),
             Padding(
-                padding: const EdgeInsets.symmetric(vertical: 40),
-                child: DillingCheck(setIsDl)),
+                padding: const EdgeInsets.symmetric(vertical: 15),
+            ),
             Padding(
               padding: const EdgeInsets.only(bottom:40),
               child: nextBtn(context),
@@ -274,57 +274,6 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
         child: Text("다음"),
         textColor: Colors.white,
         color: mainColor,
-      ),
-    );
-  }
-}
-
-class DillingCheck extends StatefulWidget {
-
-  Function setIsDl;
-
-  DillingCheck(this.setIsDl);
-
-  @override
-  _DillingCheckState createState() => _DillingCheckState();
-}
-
-class _DillingCheckState extends State<DillingCheck> {
-  bool isCheck = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          isCheck = !isCheck;
-          widget.setIsDl(isCheck);
-        });
-      },
-      child: Container(
-        height: 48,
-        child: Row(
-          children: [
-            Text(
-              "딜링 결제 가능 여부",
-              style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600),
-            ),
-            Spacer(),
-            Switch(
-              onChanged: (bool value) {
-                setState(() {
-                  isCheck = value;
-                  widget.setIsDl(isCheck);
-                });
-              },
-              value: isCheck,
-              activeColor: mainColor,
-            ),
-          ],
-        ),
       ),
     );
   }

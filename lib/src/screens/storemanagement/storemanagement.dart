@@ -114,7 +114,7 @@ class _StoreManagement extends State<StoreManagement> {
                           Text(
                             "${userProvider.storeModel.store.tel}",
                             style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 18,
                                 fontFamily: 'noto',
                                 color: Color(0xFF888888),
                                 fontWeight: FontWeight.w600),

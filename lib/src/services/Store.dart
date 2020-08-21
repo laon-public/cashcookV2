@@ -69,7 +69,8 @@ class StoreService {
     print(formData.files);
     try {
       Response response = await Dio()
-          .patch("http://192.168.100.226/cook_api/api/users/me/franchise",
+//          .patch("http://192.168.100.226/cook_api/api/users/me/franchise",
+          .patch("http://auth.cashlink.kr/cook_api/api/users/me/franchise",
               data: formData,
               options: Options(
                 headers: {"Authorization": "BEARER ${dataStorage.token}"},

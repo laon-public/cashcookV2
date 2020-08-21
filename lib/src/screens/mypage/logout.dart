@@ -19,8 +19,8 @@ class _Logout extends State<Logout>{
   WebViewController webViewController;
   FlutterWebviewPlugin flutterWebviewPlugin = new FlutterWebviewPlugin();
 
-  String logoutUrl = "http://192.168.100.226:8080/auth_api/users/logout";
-
+//  String logoutUrl = "http://192.168.100.226:8080/auth_api/users/logout";
+  String logoutUrl = "http://auth.cashlink.kr/auth_api/users/logout";
   bool clearCache = false;
   bool userCheck = false;
 
@@ -60,7 +60,8 @@ class _Logout extends State<Logout>{
                   onWebViewCreated: (webViewController) {
                     print("onWebViewCreated123");
 //                    webViewController.loadUrl(logoutUrl);
-                    webViewController.loadUrl("http://192.168.100.226:8080/auth_api/users/logout");
+//                    webViewController.loadUrl("http://192.168.100.226:8080/auth_api/users/logout");
+                    webViewController.loadUrl("http://auth.cashlink.kr/auth_api/users/logout");
                   },
 
                   onPageStarted: (url) {

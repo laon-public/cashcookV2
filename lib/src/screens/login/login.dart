@@ -31,15 +31,15 @@ class Login extends StatefulWidget {
 class _Login extends State<Login> {
   WebViewController webViewController;
   FlutterWebviewPlugin flutterWebviewPlugin = new FlutterWebviewPlugin();
-//  String url =
-//      "http://auth.cashlink.kr/auth_api/oauth/authorize?client_id=cashcook&redirect_uri=https://naver.com&response_type=code";
   String url =
+      "http://auth.cashlink.kr/auth_api/oauth/authorize?client_id=cashcook&redirect_uri=https://naver.com/&response_type=code";
+//  String url =
 //      "http://192.168.100.237/auth_api/oauth/authorize?client_id=cashcook&redirect_uri=https://m.naver.com&response_type=code";
-        "http://192.168.100.226/auth_api/oauth/authorize?client_id=cashcook&redirect_uri=https://m.naver.com&response_type=code";
+//        "http://192.168.100.226/auth_api/oauth/authorize?client_id=cashcook&redirect_uri=https://m.naver.com&response_type=code";
 
-//  String logoutUrl = "http://auth.cashlink.kr/auth_api/users/logout";
+  String logoutUrl = "http://auth.cashlink.kr/auth_api/users/logout";
 //  String logoutUrl = "http://192.168.100.237/auth_api/users/logout";
-    String logoutUrl = "http://192.168.100.226/auth_api/users/logout";
+//    String logoutUrl = "http://192.168.100.226/auth_api/users/logout";
 
   bool clearCache = false;
 
@@ -52,7 +52,8 @@ class _Login extends State<Login> {
     super.initState();
 //    mainMapMove();
   flutterWebviewPlugin.onUrlChanged.listen((String url) async {
-    if (url == "http://192.168.100.226/auth_api/") {
+    if (url == "http://auth.cashlink.kr/auth_api/") {
+//    if (url == "http://192.168.100.226/auth_api/") {
       print("로그인실패123");
                   webViewController.clearCache();
       webViewController.loadUrl(this.url);
