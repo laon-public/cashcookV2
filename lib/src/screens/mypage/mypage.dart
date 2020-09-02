@@ -56,11 +56,11 @@ class _MyPageState extends State<MyPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          SizedBox(width: 20,),
+                          SizedBox(width: 18,),
                           R_Point(user.account),
-                          SizedBox(width: 72,),
+                          SizedBox(width: 70,),
                           DL(user.account),
-                          SizedBox(width: 72,),
+                          SizedBox(width: 70,),
                           userProvider.storeModel != null ? ADP(user.account) : SizedBox(),
                         ],
                       );
@@ -207,19 +207,31 @@ class _MyPageState extends State<MyPage> {
     String quantity = "0";
     String id = "";
     AccountModel accountModel;
+    AccountModel dlAccountModel;
     for(AccountModel account in list) {
       if (account.type == "AD_POINT"){
 //        quantity = account.quantity.split(".").first;
         quantity = account.quantity;
         id = account.id;
         accountModel = account;
-        break;
+        print("어디서 에러가 난거징");
+        if(dlAccountModel != null) {
+          break;
+        }
+      }
+      if(account.type == "DILLING") {
+        dlAccountModel = account;
+        print("어디서 에러가 난거징");
+        if(accountModel != null) {
+          break;
+        }
       }
     }
     return InkWell(
       onTap: (){
         Map<String, dynamic> args = {
           'account': accountModel,
+          'dlAccount' : dlAccountModel,
           'id' : id,
           'point': "ADP",
           "pointImg":"assets/icon/adp.png"

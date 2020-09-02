@@ -1,9 +1,11 @@
+import 'package:cashcook/src/model/usercheck.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/bargain/bargain.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/dialog.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
+import 'package:provider/provider.dart' as P;
 import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -30,8 +32,10 @@ class Buy extends StatefulWidget {
 
 class _Buy extends State<Buy> {
   AppBar appBar;
-  String buyerName = "테스트";
-  String buyerTel = "010-1234-5678";
+
+  String buyerName = "";
+  String buyerTel = "";
+  String buyerEmail = "";
   WebViewController webViewController;
 
   bool ispOn = false;
@@ -40,7 +44,11 @@ class _Buy extends State<Buy> {
   void initState() {
     super.initState();
     buyerName = widget.name;
+    UserProvider userProvider = P.Provider.of<UserProvider>(context,listen: false);
+    UserCheck user = userProvider.loginUser;
 
+    buyerName = user.name;
+    buyerTel = user.phone;
   }
 
   dialogPop() {
@@ -86,13 +94,13 @@ class _Buy extends State<Buy> {
               : Container(),
         ),
       ),
-      userCode: "imp95610586",
+      userCode: 'imp05615202',
       data: PaymentData.fromJson({
         'pg': 'inicis',
         'payMethod': 'card',
-        'name': '캐시쿡 결제',
+        'name': 'ADP 카드 충전',
         'merchantUid': 'mid_${DateTime.now().millisecondsSinceEpoch}',
-        'amount': 100,
+        'amount': widget.pay,
         'buyerName': buyerName,
         'buyerTel': buyerTel,
         'buyerEmail': "",

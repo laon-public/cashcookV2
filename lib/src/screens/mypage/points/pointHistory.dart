@@ -11,6 +11,7 @@ class History extends StatelessWidget {
   String pointImg;
   String id;
   AccountModel accountModel;
+  AccountModel dlAccountModel;
   ScrollController _scrollController = ScrollController();
   int currentPage = 0;
 
@@ -37,6 +38,10 @@ class History extends StatelessWidget {
     pointImg = args['pointImg'];
     id = args['id'];
     accountModel = args['account'];
+
+    if(point == "ADP") {
+      dlAccountModel = args['dlAccount'];
+    }
     Provider.of<UserProvider>(context, listen: false).getAccountsHistory(id, 0);
 
     _scrollController.addListener(() {
@@ -115,7 +120,8 @@ class History extends StatelessWidget {
             'point': point,
             "pointImg": pointImg,
             "id": id,
-            "account": accountModel
+            "account": accountModel,
+            "dlAccount": dlAccountModel
           };
           String path = "charge";
           Navigator.of(context).pushNamed("/point/$path", arguments: args);
@@ -130,53 +136,11 @@ class History extends StatelessWidget {
         elevation: 0.0,
       );
     } else if (type == "DL") {
-      return RaisedButton(
-        onPressed: () {
-          Map<String, dynamic> args = {
-            'point': point,
-            "pointImg": pointImg,
-            "id": id,
-            "account": accountModel
-          };
-          String path = "dl";
-
-          Navigator.of(context).pushNamed("/point/$path", arguments: args);
-        },
-        child: Text("전송하기", style: TextStyle(fontSize: 14),),
-        padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-            side: BorderSide(color: Color(0xffdddddd))
-        ),
-        color: Colors.white,
-        elevation: 0.0,
-      );
-    } else {
+      return SizedBox(height: 10, width: 2);
+    } else if (type == "RP") {
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          RaisedButton(
-            onPressed: () {
-              Map<String, dynamic> args = {
-                'point': point,
-                "pointImg": pointImg,
-                "id": id,
-                "account": accountModel
-              };
-              String path = "charge";
-
-              Navigator.of(context).pushNamed("/point/$path", arguments: args);
-            },
-            child: Text("충전하기", style: TextStyle(fontSize: 14),),
-            padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-                side: BorderSide(color: Color(0xffdddddd))
-            ),
-            color: Colors.white,
-            elevation: 0.0,
-          ),
-          whiteSpaceW(12),
           RaisedButton(
             onPressed: () {
               Map<String, dynamic> args = {
@@ -283,7 +247,7 @@ class History extends StatelessWidget {
                             0xff888888)),
                         children: [
                           TextSpan(text: "${e['title']}  ",
-                              style: TextStyle(fontSize: 14,
+                              style: TextStyle(fontSize: 12,
                                   fontWeight: FontWeight.w600,
                                   color: Color(0xff444444))),
                           TextSpan(text: "${e['time']}\n"),
@@ -292,7 +256,7 @@ class History extends StatelessWidget {
                     ),
                   ),
                   Spacer(),
-                  Text("${e['price']} $point", style: TextStyle(fontSize: 20,
+                  Text("${e['price']} $point", style: TextStyle(fontSize: 18,
                       fontWeight: FontWeight.w600,
                       color: e['type'] == "충전" ? mainColor : Color(
                           0xff888888)),),

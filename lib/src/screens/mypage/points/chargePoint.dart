@@ -4,6 +4,7 @@ import 'package:cashcook/src/screens/buy/buy.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
+import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -22,8 +23,12 @@ class _ChargePointState extends State<ChargePoint> {
   String id;
 
   AccountModel accountModel;
+  AccountModel dlAccountModel;
 
-  TextEditingController ctrl = TextEditingController();
+  TextEditingController dlCtrl = new TextEditingController(text: "100ADP 이상 가능합니다.");
+
+  int pay = 0;
+  int quantity = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +38,7 @@ class _ChargePointState extends State<ChargePoint> {
     pointImg = args['pointImg'];
     id = args['id'];
     accountModel = args['account'];
+    dlAccountModel = args['dlAccount'];
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -57,7 +63,7 @@ class _ChargePointState extends State<ChargePoint> {
             chargeCount(),
             whiteSpaceH(49),
             PaymentMethod(
-                id, int.parse(ctrl.text == "" ? "0" : ctrl.text), point),
+                id, pay , quantity, point, dlAccountModel, dlCtrl),
           ],
         ),
       ),
@@ -129,7 +135,6 @@ class _ChargePointState extends State<ChargePoint> {
               ),
               Flexible(
                 child: TextFormField(
-                  controller: ctrl,
                   textDirection: TextDirection.rtl,
                   cursorColor: Color(0xff000000),
                   keyboardType: TextInputType.number,
@@ -146,6 +151,17 @@ class _ChargePointState extends State<ChargePoint> {
                           BorderSide(color: mainColor, width: 2.0),
                     ),
                   ),
+                  onChanged: (value) {
+                      setState(() {
+                        pay = int.parse(value);
+                        quantity = int.parse(value);
+                        if(pay >= 100) {
+                          dlCtrl.text = (pay / 100).toInt().toString();
+                        } else {
+                          dlCtrl.text = "";
+                        }
+                      });
+                  },
                 ),
               ),
             ],
@@ -154,7 +170,7 @@ class _ChargePointState extends State<ChargePoint> {
             padding: const EdgeInsets.only(top: 5.0),
             child: Align(
               child: Text(
-                "= ${ctrl.text} 원",
+                (pay >= 10000) ? "= ${pay} 원": "10000ADP 이상 충전 가능합니다",
                 style: TextStyle(fontSize: 12, color: Color(0xff888888)),
               ),
               alignment: Alignment.centerRight,
@@ -168,18 +184,26 @@ class _ChargePointState extends State<ChargePoint> {
 
 class PaymentMethod extends StatefulWidget {
   final String id;
+  final int pay;
   final int quantity;
   final String type;
+  final AccountModel dlAccountModel;
+  final TextEditingController dlCtrl;
 
-  PaymentMethod(this.id, this.quantity, this.type);
+  PaymentMethod(this.id, this.pay,this.quantity, this.type, this.dlAccountModel, this.dlCtrl);
 
   @override
-  _PaymentMethodState createState() => _PaymentMethodState();
+  _PaymentMethodState createState() => _PaymentMethodState(dlCtrl,dlAccountModel);
 }
 
 class _PaymentMethodState extends State<PaymentMethod> {
+  final TextEditingController dlCtrl;
+  AccountModel dlAccount;
+
   int currentMethod = 0;
   bool isAgreeCheck = false;
+
+  _PaymentMethodState(this.dlCtrl,this.dlAccount);
 
   Map<int, String> paymentType = {
     0: "CREDIT_CARD",
@@ -188,7 +212,8 @@ class _PaymentMethodState extends State<PaymentMethod> {
   };
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext
+  context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -204,7 +229,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
         ),
         payment_method(),
         whiteSpaceH(16),
-        methodView(),
+        methodView(dlCtrl,dlAccount),
         whiteSpaceH(120),
         agreePolicy(),
         whiteSpaceH(24),
@@ -213,12 +238,12 @@ class _PaymentMethodState extends State<PaymentMethod> {
     );
   }
 
-  Widget methodView() {
+  Widget methodView(TextEditingController dlCtrl,AccountModel dlAccount) {
     if (currentMethod == 0)
       return Container();
     else if (currentMethod == 1)
       return noPassBook();
-    else if (currentMethod == 2) return accountDL();
+    else if (currentMethod == 2) return accountDL(dlCtrl,dlAccount);
   }
 
   Widget payment_method() {
@@ -309,7 +334,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
   }
 
   //DL결제
-  Widget accountDL() {
+  Widget accountDL(TextEditingController dlCtrl,AccountModel dlAccount) {
     final textstyle = TextStyle(fontSize: 14, color: Color(0xff444444));
     return Column(
       children: [
@@ -321,7 +346,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
             ),
             whiteSpaceW(49),
             Text(
-              "10,000 DL",
+              "${demicalFormat.format(double.parse(dlAccount.quantity))} DL",
               style: textstyle,
             )
           ],
@@ -335,7 +360,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
             ),
             whiteSpaceW(49),
             Text(
-              "-200 DL",
+              "${(dlCtrl.text != "") ? "-${dlCtrl.text} DL" : "100ADP 이상 가능합니다."}",
               style: textstyle,
             )
           ],
@@ -391,7 +416,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
             String name = Provider.of<UserProvider>(context, listen: false)
                 .loginUser
                 .name;
-            buyMove(name, 5000000, widget.id, widget.quantity,
+            buyMove(name, widget.pay, widget.id, widget.quantity,
                 paymentType[currentMethod]);
           } else {
             print(123);
@@ -415,13 +440,18 @@ class _PaymentMethodState extends State<PaymentMethod> {
 
   buyMove(name, pay, id, q, payType) {
     print("결제");
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => Buy(
-              name: name,
-              pay: pay,
-              id: id,
-              quantity: q,
-              paymentType: payType,
-            )));
+    if(q < 10000){
+      showToast("100000ADP 이상 충전 가능합니다.`");
+    } else {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) =>
+              Buy(
+                name: name,
+                pay: pay,
+                id: id,
+                quantity: q,
+                paymentType: payType,
+              )));
+    }
   }
 }

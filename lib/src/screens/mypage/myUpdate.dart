@@ -31,13 +31,9 @@ class MyUpdate extends StatefulWidget {
 class _MyUpdate extends State<MyUpdate> {
   WebViewController webViewController;
 //  String url =
-//      "http://auth.cashlink.kr/auth_api/oauth/authorize?client_id=cashcook&redirect_uri=https://naver.com&response_type=code";
+//        "http://auth.cashlink.kr/auth_api/users/modify/modifyInfo?client_id=cashcook";
   String url =
-//      "http://192.168.100.226:8080/auth_api/users/modify/modifyInfo?client_id=cashcook";
-        "http://auth.cashlink.kr/auth_api/users/modify/modifyInfo?client_id=cashcook";
-
-  String logoutUrl = "http://auth.cashlink.kr/auth_api/users/logout";
-  //String logoutUrl = "http://192.168.100.226:8080/auth_api/users/logout";
+        "http://192.168.100.219/auth_api/users/modify/modifyInfo?client_id=cashcook";
 
   bool clearCache = false;
 
@@ -81,14 +77,12 @@ class _MyUpdate extends State<MyUpdate> {
 //                ].toSet(),
                 javascriptMode: JavascriptMode.unrestricted,
                 onWebViewCreated: (webViewController) {
-                  print("갑니다!");
                   if (!clearCache) {
                     webViewController.clearCache();
                     clearCache = true;
                   }
                   UserProvider userProvider = P.Provider.of<UserProvider>(context,listen: false);
                   UserCheck userCheck = userProvider.loginUser;
-                  print("요기");
                   print(userCheck.name);
                   webViewController.loadUrl(url + "&username=${userCheck.username}",
                       headers: {"Authorization": "BEARER ${dataStorage.token}"});
@@ -96,10 +90,8 @@ class _MyUpdate extends State<MyUpdate> {
                 },
 
                 onPageStarted: (url) {
-//                  if (url == "http://gateway.cashlink.kr/auth_api/") {
-                  print("onPageStarted");
-//                  if (url == "http://192.168.100.226:8080/auth_api/") {
-                  if (url == "http://auth.cashlink.kr/auth_api/") {
+                if (url == "http://192.168.100.219/auth_api/") {
+//                  if (url == "http://auth.cashlink.kr/auth_api/") {
 //                  webViewController.clearCache();
                     webViewController.loadUrl(this.url);
                     if (widget.authCheck != 1) {
@@ -111,8 +103,8 @@ class _MyUpdate extends State<MyUpdate> {
                   print("onPageFinished");
                   print("url : $url");
                   List<String> code = List();
-//                  if (url == "http://192.168.100.226:8080/auth_api/users/modify/success") {
-                  if (url == "http://auth.cashlink.kr/auth_api/users/modify/success") {
+                  if (url == "http://192.168.100.219/auth_api/users/modify/success") {
+//                  if (url == "http://auth.cashlink.kr/auth_api/users/modify/success") {
                     print(dataStorage.token);
                     Navigator.of(context)
                         .pushReplacement(MaterialPageRoute(builder: (context) => Login()));
