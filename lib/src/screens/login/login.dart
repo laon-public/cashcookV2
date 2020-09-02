@@ -18,6 +18,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:provider/provider.dart' as P;
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:cashcook/src/services/API.dart';
 
 class Login extends StatefulWidget {
   final int authCheck;
@@ -31,14 +32,14 @@ class Login extends StatefulWidget {
 class _Login extends State<Login> {
   WebViewController webViewController;
   FlutterWebviewPlugin flutterWebviewPlugin = new FlutterWebviewPlugin();
-  String url =
-      "http://auth.cashlink.kr/auth_api/oauth/authorize?client_id=cashcook&redirect_uri=https://naver.com/&response_type=code";
 //  String url =
-//      "http://192.168.100.237/auth_api/oauth/authorize?client_id=cashcook&redirect_uri=https://m.naver.com&response_type=code";
+//      "http://auth.cashlink.kr/auth_api/oauth/authorize?client_id=cashcook&redirect_uri=https://naver.com/&response_type=code";
+//  String url =
 //        "http://192.168.100.226/auth_api/oauth/authorize?client_id=cashcook&redirect_uri=https://m.naver.com&response_type=code";
 
-  String logoutUrl = "http://auth.cashlink.kr/auth_api/users/logout";
-//  String logoutUrl = "http://192.168.100.237/auth_api/users/logout";
+  String url = baseUrl + "oauth/authorize?client_id=cashcook&redirect_uri=https://m.naver.com&response_type=code";
+
+//  String logoutUrl = "http://auth.cashlink.kr/auth_api/users/logout";
 //    String logoutUrl = "http://192.168.100.226/auth_api/users/logout";
 
   bool clearCache = false;
@@ -52,13 +53,14 @@ class _Login extends State<Login> {
     super.initState();
 //    mainMapMove();
   flutterWebviewPlugin.onUrlChanged.listen((String url) async {
-    if (url == "http://auth.cashlink.kr/auth_api/") {
+    print("url : " + url);
+//    if (url == "http://auth.cashlink.kr/auth_api/") {
 //    if (url == "http://192.168.100.226/auth_api/") {
+    if (url == baseUrl) {
       print("로그인실패123");
-                  webViewController.clearCache();
-      webViewController.loadUrl(this.url);
+      webViewController.clearCache();
+      webViewController.loadUrl(baseUrl + "oauth/authorize?client_id=cashcook&redirect_uri=https://m.naver.com&response_type=code");
       print("test012345");
-      print(this.url);
       print(widget.authCheck);
       if (widget.authCheck != 1) {
         showToast("로그인에 실패하였습니다.");
@@ -207,7 +209,9 @@ class _Login extends State<Login> {
 //                ].toSet(),
 //                initialUrl: widget.authCheck == 1 ? logoutUrl : url,
 //                javascriptMode: JavascriptMode.unrestricted,
-                url: widget.authCheck == 1 ? logoutUrl : url,
+//                url: widget.authCheck == 1 ? logoutUrl : url,
+//                 url: widget.authCheck == 1 ? logoutUrl : url,
+                url: widget.authCheck == 1 ? baseUrl + "users/logout" : url,
 //                onWebViewCreated: (webViewController) {
 //                  if (!clearCache) {
 //                    webViewController.clearCache();

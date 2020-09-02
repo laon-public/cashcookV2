@@ -9,6 +9,7 @@ import 'package:cashcook/src/screens/RecoSelectFirst.dart';
 import 'package:cashcook/src/screens/login/login.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/screens/mypage/mypage.dart';
+import 'package:cashcook/src/services/API.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/utils/datastorage.dart';
 import 'package:cashcook/src/utils/webViewScroll.dart';
@@ -35,9 +36,6 @@ class _MyUpdate extends State<MyUpdate> {
   String url =
 //      "http://192.168.100.226:8080/auth_api/users/modify/modifyInfo?client_id=cashcook";
         "http://auth.cashlink.kr/auth_api/users/modify/modifyInfo?client_id=cashcook";
-
-  String logoutUrl = "http://auth.cashlink.kr/auth_api/users/logout";
-  //String logoutUrl = "http://192.168.100.226:8080/auth_api/users/logout";
 
   bool clearCache = false;
 
@@ -90,7 +88,8 @@ class _MyUpdate extends State<MyUpdate> {
                   UserCheck userCheck = userProvider.loginUser;
                   print("요기");
                   print(userCheck.name);
-                  webViewController.loadUrl(url + "&username=${userCheck.username}",
+//                  webViewController.loadUrl(url + "&username=${userCheck.username}",
+                  webViewController.loadUrl(baseUrl + "users/modify/modifyInfo?client_id=cashcook" + "&username=${userCheck.username}",
                       headers: {"Authorization": "BEARER ${dataStorage.token}"});
                   this.webViewController = webViewController;
                 },
@@ -98,10 +97,9 @@ class _MyUpdate extends State<MyUpdate> {
                 onPageStarted: (url) {
 //                  if (url == "http://gateway.cashlink.kr/auth_api/") {
                   print("onPageStarted");
-//                  if (url == "http://192.168.100.226:8080/auth_api/") {
-                  if (url == "http://auth.cashlink.kr/auth_api/") {
+                  if (url == baseUrl) {
 //                  webViewController.clearCache();
-                    webViewController.loadUrl(this.url);
+                    webViewController.loadUrl(baseUrl + "users/modify/modifyInfo?client_id=cashcook");
                     if (widget.authCheck != 1) {
                       showToast("회원정보수정에 실패하였습니다.");
                     }
@@ -112,7 +110,8 @@ class _MyUpdate extends State<MyUpdate> {
                   print("url : $url");
                   List<String> code = List();
 //                  if (url == "http://192.168.100.226:8080/auth_api/users/modify/success") {
-                  if (url == "http://auth.cashlink.kr/auth_api/users/modify/success") {
+//                  if (url == "http://auth.cashlink.kr/auth_api/users/modify/success") {
+                    if (url == baseUrl + "users/modify/success") {
                     print(dataStorage.token);
                     Navigator.of(context)
                         .pushReplacement(MaterialPageRoute(builder: (context) => Login()));
