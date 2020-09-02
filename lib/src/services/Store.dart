@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 class StoreService {
   Future<String> getStore(String start, String end) async {
     Response response =
-        await Dio().get(APIURL + "/franchises?start=$start&end=$end");
+        await Dio().get(cookURL + "/franchises?start=$start&end=$end");
 
     return response.toString();
   }
@@ -31,7 +31,7 @@ class StoreService {
     print(formData.fields);
     print(formData.files);
     try {
-      Response response = await Dio().post(APIURL + "/franchises",
+      Response response = await Dio().post(cookURL + "/franchises",
           data: formData,
           options: Options(
             headers: {"Authorization": "BEARER ${dataStorage.token}"},
@@ -69,8 +69,7 @@ class StoreService {
     print(formData.files);
     try {
       Response response = await Dio()
-          .patch("http://192.168.100.219/cook_api/api/users/me/franchise",
-//          .patch("http://auth.cashlink.kr/cook_api/api/users/me/franchise",
+          .patch(cookURL + "/users/me/franchise",
               data: formData,
               options: Options(
                 headers: {"Authorization": "BEARER ${dataStorage.token}"},

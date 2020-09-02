@@ -18,6 +18,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:provider/provider.dart' as P;
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:cashcook/src/services/API.dart';
 
 class Login extends StatefulWidget {
   final int authCheck;
@@ -31,12 +32,8 @@ class Login extends StatefulWidget {
 class _Login extends State<Login> {
   WebViewController webViewController;
   FlutterWebviewPlugin flutterWebviewPlugin = new FlutterWebviewPlugin();
-//  String url =
-//      "http://auth.cashlink.kr/auth_api/oauth/authorize?client_id=cashcook&redirect_uri=https://naver.com/&response_type=code";
-  String url =
-        "http://192.168.100.219/auth_api/oauth/authorize?client_id=cashcook&redirect_uri=http://192.168.100.219/auth_api/users/login/success&response_type=code";
 
-  // String url = baseUrl + "oauth/authorize?client_id=cashcook&redirect_uri=https://m.naver.com&response_type=code";
+  String url = baseUrl + "oauth/authorize?client_id=cashcook&redirect_uri=" + loginSuccessUrl + "&response_type=code";
 
 //  String logoutUrl = "http://auth.cashlink.kr/auth_api/users/logout";
 //    String logoutUrl = "http://192.168.100.226/auth_api/users/logout";
@@ -53,23 +50,18 @@ class _Login extends State<Login> {
 //    mainMapMove();
     flutterWebviewPlugin.onUrlChanged.listen((String url) async {
       print("url : " + url);
-//    if (url == "http://auth.cashlink.kr/auth_api/") {
-    if (url == "http://192.168.100.219/auth_api/") {
-//      if (url == baseUrl) {
+      if (url == baseUrl) {
         print("로그인실패123");
         webViewController.clearCache();
-        webViewController.loadUrl("http://192.168.100.219/auth_api/" + "oauth/authorize?client_id=cashcook&redirect_uri=http://192.168.100.219/auth_api/users/login/success&response_type=code");
-        print("test012345");
+        webViewController.loadUrl(baseUrl + "oauth/authorize?client_id=cashcook&redirect_uri=" + loginSuccessUrl + "&response_type=code");
         print(widget.authCheck);
         if (widget.authCheck != 1) {
           showToast("로그인에 실패하였습니다.");
         }
       }
-      print("로그인실패x");
       print("url : $url");
       List<String> code = List();
       if (url.contains("code") && !url.contains("oauth")) {
-        print("아래if문");
         setState(() {
           userCheck = true;
         });
@@ -77,7 +69,6 @@ class _Login extends State<Login> {
         dataStorage.oauthCode = code[1];
 
         await provider.authToken().then((value) async {
-          print("authToken123");
           dynamic authToken = json.decode(value);
           print("authToken : ${authToken['access_token']}");
           dataStorage.token = authToken['access_token'];
@@ -210,7 +201,7 @@ class _Login extends State<Login> {
 //                javascriptMode: JavascriptMode.unrestricted,
 //                url: widget.authCheck == 1 ? logoutUrl : url,
 //                 url: widget.authCheck == 1 ? logoutUrl : url,
-                url: widget.authCheck == 1 ?  "http://192.168.100.219/auth_api/users/logout" : url,
+                url: widget.authCheck == 1 ? baseUrl + "users/logout" : url,
 //                onWebViewCreated: (webViewController) {
 //                  if (!clearCache) {
 //                    webViewController.clearCache();

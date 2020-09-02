@@ -119,7 +119,6 @@ class _RPExchangeState extends State<RPExchange> {
               ),
               Flexible(
                 child: TextFormField(
-                  controller: ctrl,
                   textDirection: TextDirection.rtl,
                   cursorColor: Color(0xff000000),
                   keyboardType: TextInputType.number,
@@ -135,6 +134,11 @@ class _RPExchangeState extends State<RPExchange> {
                       BorderSide(color: mainColor, width: 2.0),
                     ),
                   ),
+                  onChanged: (value) {
+                    setState(() {
+                      ctrl.text = value;
+                    });
+                  },
                 ),
               ),
             ],
@@ -143,7 +147,7 @@ class _RPExchangeState extends State<RPExchange> {
             padding: const EdgeInsets.only(top: 5.0),
             child: Align(
               child: Text(
-                "= ${ctrl.text} RP",
+                "${ctrl.text.length < 4 ? "1000RP = 1DL" : "= ${(int.parse(ctrl.text) / 1000).toInt()} DL"}",
                 style: TextStyle(fontSize: 12, color: Color(0xff888888)),
               ),
               alignment: Alignment.centerRight,

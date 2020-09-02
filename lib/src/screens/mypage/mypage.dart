@@ -56,11 +56,11 @@ class _MyPageState extends State<MyPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          SizedBox(width: 18,),
+                          SizedBox(width: 15,),
                           R_Point(user.account),
-                          SizedBox(width: 70,),
+                          SizedBox(width: 67,),
                           DL(user.account),
-                          SizedBox(width: 70,),
+                          SizedBox(width: 67,),
                           userProvider.storeModel != null ? ADP(user.account) : SizedBox(),
                         ],
                       );

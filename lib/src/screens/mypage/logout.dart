@@ -5,6 +5,7 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/utils/datastorage.dart';
+import 'package:cashcook/src/services/API.dart';
 
 class Logout extends StatefulWidget {
   final int authCheck;
@@ -19,8 +20,6 @@ class _Logout extends State<Logout>{
   WebViewController webViewController;
   FlutterWebviewPlugin flutterWebviewPlugin = new FlutterWebviewPlugin();
 
-  String logoutUrl = "http://192.168.100.219/auth_api/users/logout";
-//  String logoutUrl = "http://auth.cashlink.kr/auth_api/users/logout";
   bool clearCache = false;
   bool userCheck = false;
 
@@ -29,10 +28,10 @@ class _Logout extends State<Logout>{
     // TODO: implement initState
     super.initState();
     print("initState");
-    flutterWebviewPlugin.onUrlChanged.listen((String logoutUrl) async {
+    flutterWebviewPlugin.onUrlChanged.listen((String s) async {
       print("flutterWebviewPlugin.onUrlChanged");
       webViewController.clearCache();
-      webViewController.loadUrl(this.logoutUrl);
+      webViewController.loadUrl(baseUrl + "users/logout");
 //        await provider.authToken().then((value) async {
 //            dynamic authToken = null;
 //            dataStorage.token = authToken['access_token'];
@@ -58,8 +57,8 @@ class _Logout extends State<Logout>{
             children: [
                 WebView(
                   onWebViewCreated: (webViewController) {
-                    webViewController.loadUrl("http://192.168.100.219/auth_api/users/logout");
-//                    webViewController.loadUrl("http://auth.cashlink.kr/auth_api/users/logout");
+                    print("onWebViewCreated123");
+                    webViewController.loadUrl(baseUrl + "users/logout");
                   },
 
                   onPageStarted: (url) {
