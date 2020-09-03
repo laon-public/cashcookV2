@@ -5,4 +5,4 @@ const baseUrl = "http://192.168.100.219/auth_api/";
 //const baseUrl = "http://auth.cashlink.kr/auth_api/";
 
 const loginSuccessUrl = "http://192.168.100.219/auth_api/users/login/success";
-//const loginSuccessUrl = "http://auth.cashlink.kr/auth_api/";
+//const loginSuccessUrl = "http://auth.cashlink.kr/auth_api/users/login/success";

@@ -17,7 +17,7 @@ class AuthService{
       "grant_type": "authorization_code",
       "code": dataStorage.oauthCode,
       "scope": "read write",
-        "redirect_uri": "https://m.naver.com"
+        "redirect_uri": loginSuccessUrl
     });
 
     print(utf8.decode(response.bodyBytes));

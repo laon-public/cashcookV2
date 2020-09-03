@@ -25,7 +25,7 @@ class _ChargePointState extends State<ChargePoint> {
   AccountModel accountModel;
   AccountModel dlAccountModel;
 
-  TextEditingController dlCtrl = new TextEditingController(text: "100ADP 이상 가능합니다.");
+  TextEditingController dlCtrl = new TextEditingController(text: "");
 
   int pay = 0;
   int quantity = 0;
@@ -155,7 +155,7 @@ class _ChargePointState extends State<ChargePoint> {
                       setState(() {
                         pay = int.parse(value);
                         quantity = int.parse(value);
-                        if(pay >= 100) {
+                        if(pay >= 10000) {
                           dlCtrl.text = (pay / 100).toInt().toString();
                         } else {
                           dlCtrl.text = "";
@@ -360,7 +360,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
             ),
             whiteSpaceW(49),
             Text(
-              "${(dlCtrl.text != "") ? "-${dlCtrl.text} DL" : "100ADP 이상 가능합니다."}",
+              "${(dlCtrl.text != "") ? "-${dlCtrl.text} DL" : "10000ADP 이상 가능합니다."}",
               style: textstyle,
             )
           ],
@@ -412,6 +412,10 @@ class _PaymentMethodState extends State<PaymentMethod> {
         textColor: Colors.white,
         color: mainColor,
         onPressed: () async {
+          if(!isAgreeCheck){
+            showToast("개인정보이용 동의를 해주셔야 합니다.");
+            return;
+          }
           if (paymentType[currentMethod] == "CREDIT_CARD") {
             String name = Provider.of<UserProvider>(context, listen: false)
                 .loginUser
@@ -419,19 +423,22 @@ class _PaymentMethodState extends State<PaymentMethod> {
             buyMove(name, widget.pay, widget.id, widget.quantity,
                 paymentType[currentMethod]);
           } else {
-            print(123);
-            bool response =
-                await Provider.of<UserProvider>(context, listen: false)
-                    .postCharge(
-                        widget.id, widget.quantity, paymentType[currentMethod]);
-            if (!response) {
-              Fluttertoast.showToast(msg: "에러");
+            if (widget.pay < 10000) {
+              showToast("10000ADP 이상 충전 가능합니다.`");
             } else {
-              Fluttertoast.showToast(msg: "충전이 완료되었습니다.");
+              bool response =
+              await Provider.of<UserProvider>(context, listen: false)
+                  .postCharge(
+                  widget.id, widget.quantity, paymentType[currentMethod]);
+              if (!response) {
+                Fluttertoast.showToast(msg: "에러");
+              } else {
+                Fluttertoast.showToast(msg: "충전이 완료되었습니다.");
+              }
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => MainMap()),
+                      (route) => false);
             }
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => MainMap()),
-                (route) => false);
           }
         },
       ),
@@ -441,7 +448,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
   buyMove(name, pay, id, q, payType) {
     print("결제");
     if(q < 10000){
-      showToast("100000ADP 이상 충전 가능합니다.`");
+      showToast("10000ADP 이상 충전 가능합니다.`");
     } else {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) =>
