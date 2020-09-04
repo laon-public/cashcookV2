@@ -20,8 +20,8 @@ class QRService{
     return response.body;
   }
 
-  checkQR(String uuid) async {
-    final response = await client.get(cookURL+"/payment/$uuid", headers: {
+  checkQR(int id,String uuid) async {
+    final response = await client.get(cookURL+"/payment/$id/$uuid", headers: {
       "Authorization": "BEARER ${dataStorage.token}"
     });
     return utf8.decode(response.bodyBytes);

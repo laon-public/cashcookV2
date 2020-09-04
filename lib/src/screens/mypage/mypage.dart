@@ -61,7 +61,7 @@ class _MyPageState extends State<MyPage> {
                           SizedBox(width: 67,),
                           DL(user.account),
                           SizedBox(width: 67,),
-                          userProvider.storeModel != null ? ADP(user.account) : SizedBox(),
+                          hasPoint("AD_POINT", user.account)? ADP(user.account) : SizedBox(),
                         ],
                       );
                     },
@@ -122,6 +122,19 @@ class _MyPageState extends State<MyPage> {
         )
       ),
     );
+  }
+
+  bool hasPoint(String type, List<AccountModel> list){
+    bool rtnBool = false;
+
+    for(AccountModel account in list) {
+      if(account.type == type) {
+        rtnBool = true;
+        break;
+      }
+    }
+
+    return rtnBool;
   }
 
   //보유 R point

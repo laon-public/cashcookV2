@@ -12,10 +12,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class Qr extends StatefulWidget {
+  final int id;
   final String name;
   final int pay;
 
-  Qr({this.name, this.pay});
+  Qr({this.id,this.name, this.pay});
 
   @override
   _Qr createState() => _Qr();
@@ -41,6 +42,7 @@ class _Qr extends State<Qr> {
   dialogPop() {
     Navigator.of(context, rootNavigator: true).pop();
     qrSet = false;
+
   }
 
   bargainMove() {
@@ -50,6 +52,9 @@ class _Qr extends State<Qr> {
 
   @override
   Widget build(BuildContext context) {
+    final int detailId = ModalRoute.of(context).settings.arguments;
+
+    print("번호 떠라 ㅠㅠㅠㅠ ${detailId}");
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -85,7 +90,7 @@ class _Qr extends State<Qr> {
                       print(qrSet);
                       if (!qrSet) {
                         qrSet = true;
-                        CheckQRData(data);
+                        CheckQRData(detailId,data);
                       }
                     },
                   )),
@@ -134,9 +139,9 @@ class _Qr extends State<Qr> {
     );
   }
 
-  CheckQRData(String data) async {
+  CheckQRData(int id,String data) async {
     QRProvider qrProvider = Provider.of<QRProvider>(context, listen: false);
-    String type = await qrProvider.checkQR(data);
+    String type = await qrProvider.checkQR(id,data);
     print("QRCHECKDATA");
     print(type);
     if (type == "NORMAL") {

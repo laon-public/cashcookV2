@@ -28,8 +28,8 @@ class QRProvider with ChangeNotifier {
   }
 
   //결제 qr 확인
-  Future<String> checkQR(String uuid) async {
-    final response = await service.checkQR(uuid);
+  Future<String> checkQR(int id,String uuid) async {
+    final response = await service.checkQR(id,uuid);
     final jsonResponse = json.decode(response);
     print(jsonResponse);
     if(isResponse(jsonResponse)){
