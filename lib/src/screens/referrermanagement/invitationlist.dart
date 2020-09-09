@@ -37,8 +37,8 @@ class _InvitationList extends State {
     Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions([PermissionGroup.contacts]);
     _contact = await ContactsService.getContacts();
     List<Contact> contactList = _contact.toList();
-
-    for(var i = 0; i < contactList.length - 1; i++){
+    print(contactList.length);
+    for(var i = 0; i < contactList.length ; i++){
       if(contactList[i].phones.isEmpty){
         contactList.removeAt(i);
       }
@@ -47,7 +47,7 @@ class _InvitationList extends State {
 
  //   cnt = result.length - 1;
 
-    while(j < contactList.length - 1){
+    while(j < contactList.length){
       checkTmp.add(true);
       j++;
     }
@@ -56,7 +56,7 @@ class _InvitationList extends State {
 
     setState(() {
       result = contactList.toList();
-      cnt = contactList.length - 1;
+      cnt = contactList.length;
       checkBoxValues = checkTmp;
     });
     // result = _contact.toList();
@@ -75,7 +75,7 @@ class _InvitationList extends State {
 
     void checkConut(){
       cnt = 0;
-      for(int i = 0; i < result.length - 1; i++){
+      for(int i = 0; i < result.length; i++){
           if(checkBoxValues[i]){
             cnt++;
           }
@@ -149,11 +149,11 @@ class _InvitationList extends State {
                         onChanged: (value) {
                           setState(() {
                             isChecked = value;
-                            for(int i = 0; i < result.length - 1; i++){
+                            for(int i = 0; i < result.length; i++){
                               medCheckedChanged(isChecked, i);
                             }
                             if(isChecked){
-                              cnt = result.length - 1;
+                              cnt = result.length;
                             } else {
                               cnt = 0;
                             }
@@ -174,7 +174,7 @@ class _InvitationList extends State {
               Expanded(
                   child: Container(
                     child: ListView.builder(
-                      itemCount: result.length - 1,
+                      itemCount: result.length,
                       itemBuilder: (BuildContext context, int index){
                         var i = index + 1;
                         return Container(
