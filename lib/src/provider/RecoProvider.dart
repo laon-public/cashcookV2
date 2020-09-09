@@ -15,6 +15,10 @@ class RecoProvider with ChangeNotifier {
 
 //  List<RecoModel> reco = [];
   List<Referrer> referrer = [];
+  int allCount = 0;
+  int dirAmount = 0;
+  int inDirAmount = 0;
+  String typeTitle = "전체추천회원 ";
 
   Pageing pageing = null;
   bool isLoading = false;
@@ -29,25 +33,28 @@ class RecoProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void fetchReco(page, UserCheck loginUser) async {
+  void fetchReco(page, type, UserCheck loginUser) async {
     if (page == 0) referrer.clear();
-    final response = await service.fetchReco(page);
+    final response = await service.fetchReco(page, type);
     Map<String, dynamic> recoJson = jsonDecode(response);
     if(isResponse(recoJson)){
       pageing = Pageing.fromJson(recoJson['data']['paging']);
+      allCount = recoJson['data']['allCount'];
+      dirAmount = recoJson['data']['dirAmount'];
+      inDirAmount = recoJson['data']['inDirAmount'];
       for (var recoList in recoJson['data']['list']) {
         RecoModel tmp = RecoModel.fromJson(recoList);
-        if (tmp.parent.username == loginUser.username) {
+        if(loginUser.username == tmp.parent.username) {
           referrer.add(Referrer(
               name: tmp.child.name,
               phone: tmp.child.phone,
               type: 0,
-              byName: "",
+              byName: "me",
               date: tmp.created_at.split("T").first));
         } else {
           referrer.add(Referrer(
-              name: tmp.parent.name,
-              phone: tmp.parent.phone,
+              name: tmp.child.name,
+              phone: tmp.child.phone,
               type: 1,
               byName: tmp.parent.name,
               date: tmp.created_at.split("T").first));
@@ -55,6 +62,15 @@ class RecoProvider with ChangeNotifier {
       }
       print(referrer);
     }
+
+    if(type == "all") {
+      typeTitle = "전체추천회원 ";
+    } else if(type == "dir") {
+      typeTitle = "직접추천회원 ";
+    } else if(type == "inDir") {
+      typeTitle = "간접추천회원 ";
+    }
+
     stopLoading();
     notifyListeners();
   }

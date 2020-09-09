@@ -5,6 +5,7 @@ import 'package:cashcook/src/screens/referrermanagement/referrermanagement.dart'
 import 'package:cashcook/src/screens/storemanagement/storemanagement.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -21,6 +22,8 @@ class _MyPageState extends State<MyPage> {
   @override
   void initState() {
     super.initState();
+    print("들어홈");
+
     Provider.of<UserProvider>(context, listen: false).fetchMyInfo(context);
     Provider.of<UserProvider>(context,listen: false).fetchAccounts();
   }
@@ -61,7 +64,7 @@ class _MyPageState extends State<MyPage> {
                           SizedBox(width: 67,),
                           DL(user.account),
                           SizedBox(width: 67,),
-                          userProvider.storeModel != null ? ADP(user.account) : SizedBox(),
+                          hasPoint("AD_POINT", user.account)? ADP(user.account) : SizedBox(),
                         ],
                       );
                     },
@@ -122,6 +125,19 @@ class _MyPageState extends State<MyPage> {
         )
       ),
     );
+  }
+
+  bool hasPoint(String type, List<AccountModel> list){
+    bool rtnBool = false;
+
+    for(AccountModel account in list) {
+      if(account.type == type) {
+        rtnBool = true;
+        break;
+      }
+    }
+
+    return rtnBool;
   }
 
   //보유 R point

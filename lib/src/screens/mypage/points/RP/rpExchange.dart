@@ -3,6 +3,7 @@ import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
+import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -197,6 +198,15 @@ class _RPExchangeState extends State<RPExchange> {
         textColor: Colors.white,
         color: mainColor,
         onPressed: () async {
+          if(!isAgreeCheck) {
+            showToast("개인정보이용 동의를 해주셔야 합니다.");
+            return;
+          }
+
+          if(int.parse(ctrl.text) < 1000){
+            showToast("1000RP 이상 환전 가능합니다.");
+            return;
+          }
           Map<String, String> data = {
             "quantity":ctrl.text.toString()
           };

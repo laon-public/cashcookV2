@@ -1,6 +1,7 @@
 import 'package:cashcook/src/model/account.dart';
 import 'package:cashcook/src/model/page.dart';
 import 'package:cashcook/src/model/reco.dart';
+import 'package:cashcook/src/model/recomemberlist.dart';
 import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/model/usercheck.dart';
 import 'package:cashcook/src/provider/provider.dart';
@@ -24,6 +25,8 @@ class UserProvider with ChangeNotifier {
   List<Map<String, dynamic>> result = [];
   List<Map<int, String>> recoList= [{0: "추천인 없음"}];
 
+  List<String> recomemberList = [];
+
   void startLoading() {
     isLoading = true;
     notifyListeners();
@@ -40,6 +43,10 @@ class UserProvider with ChangeNotifier {
 
   setLoginUser(UserCheck userCheck) {
     this.loginUser = userCheck;
+  }
+
+  void clearStore() {
+    storeModel = null;
   }
 
   Future<void> userSync() async {
@@ -107,6 +114,7 @@ class UserProvider with ChangeNotifier {
     if (userCheck.username != "") {
       dynamic franchise = json.decode(response)['data']['franchise'];
       if (franchise != null) {
+        print("프랜차이즈 넣기");
         await P.Provider.of<UserProvider>(context, listen: false)
             .setStoreModel(StoreModel.fromJson(franchise));
       }
@@ -215,4 +223,60 @@ class UserProvider with ChangeNotifier {
     return;
   }
 
+  Future<String> patchloginReco() async {
+    final response = await service.patchloginReco();
+    Map<String, dynamic> json = jsonDecode(response);
+    if (isResponse(json)) {
+      return "true";
+    }
+    return json['resultMsg'];
+  }
+
+  Future<String> recoemberlist() async {
+    final response = await service.recoemberlist();
+
+    print('----------------------------------');
+    print('리턴 값 확인 하는 곳 : $response');
+    print('----------------------------------');
+
+
+    Map<String, dynamic> json = jsonDecode(response);
+
+    print('----------------------------------');
+    print('리턴 값 확인 하는 곳2 : $json');
+    print('----------------------------------');
+
+    recomemberList.clear();
+
+    recomemberList.add("선택해주세요.");
+    if (json['data']['resultMsg'] == {} || json['data']['resultMsg'] == null ||
+        json['data']['resultMsg'].isEmpty) {
+      print('-------------------');
+      print('값 없음');
+      print('-------------------');
+
+      recomemberList.add("HOJO Group.");
+    } else {
+      recomemberList.add("랜덤선택");
+
+    }
+    for (var reco in json['data']['resultMsg']) {
+      RecoMemberList recoModel = RecoMemberList.fromJson(reco);
+      recomemberList.add("${recoModel.username}");
+      //recomemberList.add("${recoModel.name}/${recoModel.phone}"); 기존
+    }
+
+    print(recomemberList);
+
+    notifyListeners();
+  }
+
+  Future<String> recomemberinsert(String selectedmember) async {
+    final response = await service.recomemberinsert(selectedmember);
+    Map<String, dynamic> json = jsonDecode(response);
+    if (isResponse(json)) {
+      return "true";
+    }
+    return json['resultMsg'];
+  }
 }

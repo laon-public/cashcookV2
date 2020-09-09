@@ -52,6 +52,7 @@ class _MainMap extends State<MainMap> {
   Set<Marker> markers = {};
 
   bool detailView = false;
+  int detailId = 0;
   String detailImage = "";
   String detailName = "";
   String detailAddress = "";
@@ -177,6 +178,8 @@ class _MainMap extends State<MainMap> {
           onTap: () {
             setState(() {
               print("checkMarker");
+              detailId = stores[num].id;
+              print(detailId);
               detailView = true;
               detailImage = stores[num].store.shop_img1;
               detailName = stores[num].store.name;
@@ -390,8 +393,12 @@ class _MainMap extends State<MainMap> {
             padding: EdgeInsets.only(right: 14),
             child: InkWell(
               onTap: () {
+                print("번호 보내기 ${detailId}" );
                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => Qr()));
+                    .push(MaterialPageRoute(builder: (context) => Qr(),
+                        settings: RouteSettings(
+                          arguments: detailId
+                        )));
               },
               child: Image.asset(
                 "assets/resource/map/qr.png",
@@ -564,9 +571,13 @@ class _MainMap extends State<MainMap> {
                             whiteSpaceW(12),
                             InkWell(
                               onTap: () {
+                                print("아 여기인가 + ${detailId}");
                                 Navigator.of(context).push(
                                     MaterialPageRoute(
-                                        builder: (context) => Qr()));
+                                        builder: (context) => Qr(),
+                                    settings: RouteSettings(
+                                      arguments: detailId
+                                    )),);
                               },
                               child: Image.asset(
                                 "assets/resource/map/qr.png",

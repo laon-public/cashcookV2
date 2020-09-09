@@ -141,7 +141,7 @@ class _BargainResult extends State<BargainResult> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text("${demicalFormat.format(qrProvider.paymentModel.price * percentage)} DL", style: TextStyle(
+                              Text("${demicalFormat.format(qrProvider.paymentModel.price * percentage / 100)} DL", style: TextStyle(
                                   color: black, fontFamily: 'noto', fontSize: 24, fontWeight: FontWeight.w600
                               ),),
                               whiteSpaceH(4),

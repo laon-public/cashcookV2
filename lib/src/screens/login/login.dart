@@ -7,6 +7,7 @@ import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/provider/provider.dart';
 import 'package:cashcook/src/screens/RecoSelectFirst.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
+import 'package:cashcook/src/screens/referrermanagement/firstrecommendation.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/utils/datastorage.dart';
 import 'package:cashcook/src/utils/webViewScroll.dart';
@@ -132,9 +133,15 @@ class _Login extends State<Login> {
 //                              Navigator.of(context)
 //                                  .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => RecoFrst()), (route) => false);
 //                            }else {
-                Navigator.of(context)
-                    .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
-//                            }
+                P.Provider.of<UserProvider>(context, listen: false).setStoreModel(null);
+                //최초 로그인 인지 판단하는 곳
+                if (userCheck.isFirstLogin != true) {
+                  Navigator.of(context)
+                      .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
+                } else{
+                  Navigator.of(context)
+                      .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => FirstRecommendation()), (route) => false); //첫 로그인시 추전회원 입력 페이지면
+                }
               }
 
 //                          await provider

@@ -14,6 +14,14 @@ class QRProvider with ChangeNotifier {
   StoreModel store;
   PaymentModel paymentModel;
 
+  bool isStop = false;
+
+  void changeStop(){
+    isStop = !isStop;
+    print("changeStop");
+    notifyListeners();
+  }
+
   Future<String> postCreateQR(int price, int dilling, String payment) async {
     print("postCreateQR 시작");
     final response = await service.postCreateQR(price, dilling, payment);
@@ -28,8 +36,8 @@ class QRProvider with ChangeNotifier {
   }
 
   //결제 qr 확인
-  Future<String> checkQR(String uuid) async {
-    final response = await service.checkQR(uuid);
+  Future<String> checkQR(int id,String uuid) async {
+    final response = await service.checkQR(id,uuid);
     final jsonResponse = json.decode(response);
     print(jsonResponse);
     if(isResponse(jsonResponse)){
@@ -45,6 +53,7 @@ class QRProvider with ChangeNotifier {
 
   //결제 요청
   Future<String> applyPayment(String uuid) async {
+    isStop = false;
     final response = await service.applyPayment(uuid);
     final jsonResponse = json.decode(response);
     if(isResponse(jsonResponse)){
@@ -62,6 +71,7 @@ class QRProvider with ChangeNotifier {
 
   //재흥정시
   Future<String> discountPayment(String uuid) async {
+    isStop = false;
     final response = await service.discountPayment(uuid);
     final jsonResponse = json.decode(response);
     print(jsonResponse);

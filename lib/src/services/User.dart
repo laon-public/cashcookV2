@@ -84,5 +84,43 @@ class UserService {
     print(response.body);
     return utf8.decode(response.bodyBytes);
   }
+// 수정할 값 보내기
+  Future<String> patchloginReco() async {
+
+    final response = await client.patch(cookURL+"/users/me/reco/firstlog",
+      headers: {"Authorization": "BEARER ${dataStorage.token}","Content-Type": "application/json",},);
+
+    print(response.body);
+    return utf8.decode(response.bodyBytes);
+
+  }
+
+  Future<String> recoemberlist() async {
+
+    final response = await client.get(cookURL+"/users/me/reco/memberlist",
+      headers: {"Authorization": "BEARER ${dataStorage.token}","Content-Type": "application/json",},);
+
+    print(response.body);
+    return utf8.decode(response.bodyBytes);
+
+  }
+
+  Future<String> recomemberinsert(String selectedmember) async {
+
+    // List<String> selectmember = selectedmember.split('/') ;
+    // String name = selectmember[0];
+    // String phone = selectmember[1];
+    print('확인 : $selectedmember');
+    // print('확인 : $phone');
+    //실제로 저장 되는 것은 나를 추천한 유저의 아이디 이다.
+
+    // print('확인 : selectedmember');
+    final response = await client.post(cookURL+"/users/me/reco/memberinsert/$selectedmember",
+      headers: {"Authorization": "BEARER ${dataStorage.token}","Content-Type": "application/json",},);
+
+    print(response.body);
+    return utf8.decode(response.bodyBytes);
+
+  }
 
 }

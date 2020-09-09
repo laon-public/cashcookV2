@@ -16,8 +16,8 @@ class RecoService{
     return utf8.decode(response.bodyBytes);
   }
 
-  Future<String> fetchReco(page) async {
-    final response = await client.get(cookURL + "/reco?page=$page", headers: {
+  Future<String> fetchReco(page, type) async {
+    final response = await client.get(cookURL + "/reco?page=$page&type=$type", headers: {
       "Authorization": "BEARER ${dataStorage.token}"
     });
     return utf8.decode(response.bodyBytes);
