@@ -1,3 +1,4 @@
+import 'package:cashcook/src/provider/DiscountProvider.dart';
 import 'package:cashcook/src/provider/QRProvider.dart';
 import 'package:cashcook/src/screens/bargain/bargain.dart';
 import 'package:cashcook/src/screens/buy/buy.dart';

@@ -1,10 +1,13 @@
+import 'package:cashcook/src/provider/DiscountProvider.dart';
 import 'package:cashcook/src/provider/QRProvider.dart';
 import 'package:cashcook/src/screens/bargain/bargainresult.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
+import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:cashcook/src/utils/slot/roll_slot.dart';
 import 'package:cashcook/src/utils/slot/roll_slot_controller.dart';
@@ -16,7 +19,8 @@ class Bargain extends StatefulWidget {
 
 class _Bargain extends State<Bargain> {
   List<int> values = List.generate(10, (index) => index);
-  bool isShow = false;
+  int i=0;
+  bool isShow = true;
   var _rollSlotController100 = RollSlotController();
   var _rollSlotController10 = RollSlotController();
   var _rollSlotController1 = RollSlotController();
@@ -25,10 +29,15 @@ class _Bargain extends State<Bargain> {
   void initState() {
     super.initState();
     _rollSlotController1.addListener(() {
-      if(!isShow){
-        setState(() {
-          isShow = true;
-        });
+      if(isShow) {
+        print(_rollSlotController1.state);
+        if(_rollSlotController1.state == RollSlotControllerState.stopped){
+          if (!Provider
+              .of<QRProvider>(context, listen: false)
+              .isStop) {
+            Provider.of<QRProvider>(context, listen: false).changeStop();
+          }
+        }
       }
     });
   }
@@ -63,33 +72,35 @@ class _Bargain extends State<Bargain> {
         body: SingleChildScrollView(
           child: Consumer<QRProvider>(
             builder: (context, qrProvider, _) {
-              String discount = qrProvider.paymentModel.discount;
-              int count = discount.length;
-              int n_discount = int.parse(discount);
+                String discount = qrProvider.paymentModel.discount;
+                int count = discount.length;
+                int n_discount = int.parse(discount);
 
-              double percentage = n_discount.toDouble() * 0.01;
+                double percentage = n_discount.toDouble() * 0.01;
 
-              String one = count == 1
-                  ? "0"
-                  : count == 2 ? "0" : count == 3 ? discount[0] : "0";
+                String one = count == 1
+                    ? "0"
+                    : count == 2 ? "0" : count == 3 ? discount[0] : "0";
 
-              String two = count == 1
-                  ? "0"
-                  : count == 2 ? discount[0] : count == 3 ? discount[1] : "0";
+                String two = count == 1
+                    ? "0"
+                    : count == 2 ? discount[0] : count == 3 ? discount[1] : "0";
 
-              String three = count == 1
-                  ? discount[0]
-                  : count == 2 ? discount[1] : count == 3 ? discount[2] : "0";
+                String three = count == 1
+                    ? discount[0]
+                    : count == 2 ? discount[1] : count == 3 ? discount[2] : "0";
 
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                _rollSlotController100.idx = int.parse(one);
-                _rollSlotController10.idx = int.parse(two);
-                _rollSlotController1.idx = int.parse(three);
+                if(isShow && !qrProvider.isStop) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    _rollSlotController100.idx = int.parse(one);
+                    _rollSlotController10.idx = int.parse(two);
+                    _rollSlotController1.idx = int.parse(three);
 
-                _rollSlotController100.animateRandomly();
-                _rollSlotController10.animateRandomly();
-                _rollSlotController1.animateRandomly();
-              });
+                    _rollSlotController100.animateRandomly();
+                    _rollSlotController10.animateRandomly();
+                    _rollSlotController1.animateRandomly();
+                  });
+                }
 
               return Container(
                 width: MediaQuery.of(context).size.width,
@@ -208,8 +219,12 @@ class _Bargain extends State<Bargain> {
                       height: 80,
                       child: RaisedButton(
                         onPressed: () async {
-                          await qrProvider
-                              .discountPayment(qrProvider.paymentModel.uuid);
+                          if(qrProvider.isStop) {
+                            await qrProvider
+                                .discountPayment(qrProvider.paymentModel.uuid);
+                          } else {
+                            showToast("게임이 진행 중 입니다.");
+                          }
                         },
                         color: mainColor,
                         elevation: 0.1,
@@ -220,7 +235,7 @@ class _Bargain extends State<Bargain> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              "${demicalFormat.format(qrProvider.paymentModel.price * percentage)} DL 적립",
+                              qrProvider.isStop ? "${demicalFormat.format(qrProvider.paymentModel.price * percentage / 100)} DL 적립" : "게임 진행 중 입니다.",
                               style: TextStyle(
                                   fontSize: 24,
                                   fontFamily: 'noto',
@@ -228,7 +243,7 @@ class _Bargain extends State<Bargain> {
                                   fontWeight: FontWeight.w600),
                             ),
                             Text(
-                              "재도전 하시겠습니까?",
+                              (qrProvider.isStop) ? "재도전 하시겠습니까?" : "여기 문구 뭐 넣을까요?",
                               style: TextStyle(
                                   color: white,
                                   fontFamily: 'noto',
@@ -239,7 +254,7 @@ class _Bargain extends State<Bargain> {
                       ),
                     ),
                     whiteSpaceH(8),
-                    Text("재도전 시 1,000 RP가 차감됩니다."),
+                    (qrProvider.isStop) ? Text("재도전 시 1,000 RP가 차감됩니다.") : Text("여기 문구 뭐 넣을까요?"),
                     whiteSpaceH(84),
                     Container(
                       width: MediaQuery.of(context).size.width,
@@ -270,6 +285,7 @@ class _Bargain extends State<Bargain> {
               );
             },
           ),
+
         ),
       ),
     );

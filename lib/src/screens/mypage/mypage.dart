@@ -5,6 +5,7 @@ import 'package:cashcook/src/screens/referrermanagement/referrermanagement.dart'
 import 'package:cashcook/src/screens/storemanagement/storemanagement.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -21,6 +22,8 @@ class _MyPageState extends State<MyPage> {
   @override
   void initState() {
     super.initState();
+    print("들어홈");
+
     Provider.of<UserProvider>(context, listen: false).fetchMyInfo(context);
     Provider.of<UserProvider>(context,listen: false).fetchAccounts();
   }

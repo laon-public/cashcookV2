@@ -15,53 +15,39 @@ class ReferrerManagement extends StatefulWidget {
 }
 
 class _ReferrerManagement extends State {
-  String selectValue = "최신순";
-
+  String selectValue = "전체";
+  String type = "all";
 //  List<Referrer> referrerList = List();
 
   @override
   void initState() {
     super.initState();
-
-//    referrerList
-//      ..add(Referrer(
-//          name: "CashCook",
-//          phone: "010-1111-1111",
-//          type: 1,
-//          byName: "normal",
-//          date: "2020.06.04"))
-//      ..add(Referrer(
-//          name: "normal",
-//          type: 0,
-//          phone: "010-2222-2222",
-//          byName: "",
-//          date: "2020.06.03"));
-
-//    referrerList.sort((a, b) => b.date
-//        .toString()
-//        .compareTo(a.date.toString()));
   }
 
   ScrollController _scrollController = ScrollController();
   int currentPage = 0;
 
   loadMore(context) async {
-    RecoProvider center = Provider.of<RecoProvider>(context, listen: false);
-    if (!center.isLoading) {
-      currentPage++;
-      if (center.pageing.offset >= center.pageing.count) {
-        return;
+      RecoProvider center = Provider.of<RecoProvider>(context, listen: false);
+      if (!center.isLoading) {
+        currentPage++;
+        if (center.pageing.offset >= center.pageing.count) {
+          return;
+        }
+        center.startLoading();
+        center.fetchReco(currentPage, type,
+            Provider
+                .of<UserProvider>(context, listen: false)
+                .loginUser);
       }
-      center.startLoading();
-      center.fetchReco(currentPage,
-          Provider.of<UserProvider>(context, listen: false).loginUser);
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<RecoProvider>(context, listen: false).fetchReco(currentPage,
-        Provider.of<UserProvider>(context, listen: false).loginUser);
+      Provider.of<RecoProvider>(context, listen: false).fetchReco(currentPage, type,
+          Provider
+              .of<UserProvider>(context, listen: false)
+              .loginUser);
     _scrollController.addListener(() {
       if (_scrollController.offset ==
           _scrollController.position.maxScrollExtent) loadMore(context);
@@ -95,6 +81,7 @@ class _ReferrerManagement extends State {
       body: SingleChildScrollView(
         child: Container(
           width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.all(10),
           child: Column(
             children: [
               whiteSpaceH(4),
@@ -107,7 +94,7 @@ class _ReferrerManagement extends State {
                     Consumer<RecoProvider>(
                       builder: (context, reco, _) {
                         return Text(
-                          reco.referrer.length.toString(),
+                          reco.allCount.toString(),
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontFamily: 'noto',
@@ -127,32 +114,6 @@ class _ReferrerManagement extends State {
                     Expanded(
                       child: Container(),
                     ),
-                    Container(
-                      width: 72,
-                      height: 24,
-                      child: RaisedButton(
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => Recommendation()));
-                        },
-                        elevation: 0.0,
-                        color: white,
-                        padding: EdgeInsets.zero,
-                        shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                              color: Color(0xFFDDDDDD),
-                            ),
-                            borderRadius: BorderRadius.circular(12)),
-                        child: Center(
-                          child: Text(
-                            "추천하기",
-                            style: TextStyle(
-                                color: black, fontFamily: 'noto', fontSize: 14),
-                          ),
-                        ),
-                      ),
-                    ),
-                    whiteSpaceW(4),
                     Container(
                       width: 72,
                       height: 24,
@@ -182,76 +143,160 @@ class _ReferrerManagement extends State {
                 ),
               ),
               whiteSpaceH(16),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 40,
-                padding: EdgeInsets.only(left: 16, right: 16),
-                child: Row(
-                  children: [
-                    Text(
-                      "추천인 적립금",
-                      style: TextStyle(
-                          color: black,
-                          fontSize: 14,
-                          fontFamily: 'noto',
-                          fontWeight: FontWeight.w600),
+              Consumer<RecoProvider>(
+                builder: (context, reco, _) {
+                  return Container(
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width,
+                    height: 40,
+                    padding: EdgeInsets.only(left: 16, right: 16),
+                    child: Row(
+                        children: [
+                          Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                    "직접추천회원 적립",
+                                    style: TextStyle(
+                                      fontFamily: 'noto',
+                                      color: Color(0xFF888888),
+                                      fontSize: 10,
+                                    )
+                                ),
+                                Text(
+                                  "${numberFormat.format(reco.dirAmount)} RP",
+                                  style: TextStyle(
+                                      fontFamily: 'noto',
+                                      color: Colors.orange,
+                                      fontSize: 15
+                                  ),
+                                )
+                              ]
+                          ),
+                          whiteSpaceW(20),
+                          Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                    "간접추천회원 적립",
+                                    style: TextStyle(
+                                      fontFamily: 'noto',
+                                      color: Color(0xFF888888),
+                                      fontSize: 10,
+                                    )
+                                ),
+                                Text(
+                                  "${numberFormat.format(reco.inDirAmount)} RP",
+                                  style: TextStyle(
+                                      fontFamily: 'noto',
+                                      color: Colors.orange,
+                                      fontSize: 15
+                                  ),
+                                )
+                              ]
+                          ),
+                        ]
                     ),
-                    whiteSpaceW(12),
-                    Text(
-                      "${numberFormat.format(1234)} RP",
-                      style: TextStyle(
-                          color: black,
-                          fontSize: 14,
-                          fontFamily: 'noto',
-                          fontWeight: FontWeight.w600),
-                    ),
-                    Expanded(
-                      child: Container(),
-                    ),
-                    Container(
-                      width: 70,
-                      padding: EdgeInsets.zero,
-                      child: Padding(
-                        padding: EdgeInsets.zero,
-                        child: DropdownButton<String>(
-                          underline: Container(),
-                          elevation: 0,
-                          style: TextStyle(
-                              color: black, fontSize: 14, fontFamily: 'noto'),
-                          items: <String>['최신순'].map((value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
+                  );
+                }
+              ),
+              whiteSpaceH(16),
+              Consumer<RecoProvider>(
+                builder: (context, reco, _) {
+                  return Container(
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width,
+                    height: 40,
+                    padding: EdgeInsets.only(left: 16, right: 16),
+                    child: Row(
+                        children: [
+                          Row(
+                              children: [
+                                Text(
+                                    "${reco.typeTitle}",
+                                    style: TextStyle(
+                                      fontFamily: 'noto',
+                                      color: black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                    )
+                                ),
+                                Text(
+                                    reco.referrer.length.toString(),
+                                    style: TextStyle(
+                                      fontFamily: 'noto',
+                                      color: Colors.orange,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                    )
+                                ),
+                                Text(
+                                    "명",
+                                    style: TextStyle(
+                                      fontFamily: 'noto',
+                                      color: black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                    )
+                                ),
+                              ]
+                          ),
+                          whiteSpaceW(120),
+                          Container(
+                            width: 105,
+                            padding: EdgeInsets.zero,
+                            child: Padding(
+                              padding: EdgeInsets.zero,
+                              child: DropdownButton<String>(
+                                underline: Container(),
+                                elevation: 0,
                                 style: TextStyle(
                                     color: black,
                                     fontSize: 14,
                                     fontFamily: 'noto'),
+                                items: <String>['전체', '직접 추천회원', '간접 추천회원']
+                                    .map((value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(
+                                      value,
+                                      style: TextStyle(
+                                          color: black,
+                                          fontSize: 14,
+                                          fontFamily: 'noto'),
+                                    ),
+                                  );
+                                }).toList(),
+                                value: selectValue,
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectValue = value;
+                                    print(value);
+                                    if (value == '직접 추천회원') {
+                                      print("type ===> direct");
+                                      type = "dir";
+                                    } else if (value == '간접 추천회원') {
+                                      print("type ===> indirect");
+                                      type = "inDir";
+                                    } else if (value == '전체') {
+                                      print("type ===> all");
+                                      type = "all";
+                                    }
+                                  });
+                                },
                               ),
-                            );
-                          }).toList(),
-                          value: selectValue,
-                          onChanged: (value) {
-//                            setState(() {
-//                              selectValue = value;
-//                              if (value == "최신순") {
-//                                referrerList.sort((a, b) => b.date
-//                                    .toString()
-//                                    .compareTo(a.date.toString()));
-//                              } else {
-//                                referrerList.sort((a, b) => a.date
-//                                    .toString()
-//                                    .compareTo(b.date.toString()));
-//                              }
-//                            });
-                          },
-                        ),
-                      ),
+                            ),
+                          ),
+                        ]
                     ),
-                  ],
-                ),
+                  );
+                }
               ),
-              whiteSpaceH(16),
+              whiteSpaceH(20),
               Consumer<RecoProvider>(
                 builder: (context, reco, _) {
                   return ListView.builder(
@@ -289,7 +334,7 @@ class _ReferrerManagement extends State {
               ? "assets/resource/public/directly.png"
               : "assets/resource/public/indirect.png",
           width: 32,
-          height: 32,
+          height: 60,
         ),
         whiteSpaceW(12),
         Column(
