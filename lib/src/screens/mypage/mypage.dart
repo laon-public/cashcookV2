@@ -265,7 +265,7 @@ class _MyPageState extends State<MyPage> {
           border: Border.all(),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal:12, vertical: 16),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
