@@ -84,16 +84,6 @@ class UserService {
     print(response.body);
     return utf8.decode(response.bodyBytes);
   }
-// 수정할 값 보내기
-  Future<String> patchloginReco() async {
-
-    final response = await client.patch(cookURL+"/users/me/reco/firstlog",
-      headers: {"Authorization": "BEARER ${dataStorage.token}","Content-Type": "application/json",},);
-
-    print(response.body);
-    return utf8.decode(response.bodyBytes);
-
-  }
 
   Future<String> recoemberlist() async {
 

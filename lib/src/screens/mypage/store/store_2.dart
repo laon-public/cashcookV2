@@ -5,6 +5,8 @@ import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/utils/geocoder.dart';
 import 'package:cashcook/src/widgets/TextFieldWidget.dart';
+import 'package:cashcook/src/widgets/TextFieldssWidget.dart';
+import 'package:cashcook/src/widgets/TextFieldsWidget.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -21,7 +23,11 @@ class StoreApplyLastStep extends StatefulWidget {
 class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
   TextEditingController nameCtrl = TextEditingController();
   TextEditingController descCtrl = TextEditingController();
-  TextEditingController timeCtrl = TextEditingController();
+
+  TextEditingController timeCtrl1 = TextEditingController();
+  TextEditingController timeCtrl2 = TextEditingController();
+  TextEditingController timeCtrl3 = TextEditingController();
+
   TextEditingController negotiableTimeCtrl = TextEditingController();
   TextEditingController addressCtrl = TextEditingController();
   TextEditingController detailCtrl = TextEditingController();
@@ -84,7 +90,7 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("가맹점 등록하기 2/2"),
+        title: Text("제휴매장 등록하기 2/2"),
         centerTitle: true,
         elevation: 0.0,
       ),
@@ -103,7 +109,28 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
           children: [
             textField("매장명", "사업자등록증의 상호명을 입력해주세요.", nameCtrl,TextInputType.text),
             textField("매장설명", "100자 내외로 입력해주세요.", descCtrl,TextInputType.text),
-            textField("매장 연락처", "연락가능한 연락처를 입력하여주세요.", timeCtrl,TextInputType.phone),
+            //textField("매장 연락처", "연락가능한 연락처를 입력하여주세요.", timeCtrl,TextInputType.phone),
+            Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Align(child: Text("매장 연락처",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(width: 90,  child: textFieldss( timeCtrl1,TextInputType.phone)),
+                        Text("-",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
+                        SizedBox(width: 125, child: textFields( timeCtrl2,TextInputType.phone)),
+                        Text("-",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
+                        SizedBox(width: 125, child: textFields( timeCtrl3,TextInputType.phone)),
+                      ]
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top:5.0),
+                    child: Align(child: Text("연락가능한 연락처를 입력하여주세요",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerRight,),
+                  ),
+
+                ]
+            ),
             textField("흥정시간", "실시간 흥정 가능시간.", negotiableTimeCtrl,TextInputType.text),
             addressInfo(context),
             Padding(
@@ -163,6 +190,7 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
             ),
           ),
           TextFormField(
+            enabled: false,
             controller: addressCtrl,
             cursorColor: Color(0xff000000),
             decoration: InputDecoration(
@@ -254,7 +282,7 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
             "account": account,
             "shop_name": nameCtrl.text,
             "shop_description": descCtrl.text,
-            "shop_tel": timeCtrl.text,
+            "shop_tel": timeCtrl1.text+timeCtrl2.text+timeCtrl3.text,
             "negotiable_time": negotiableTimeCtrl.text,
             "address": addressCtrl.text,
             "address_detail": detailCtrl.text,
@@ -262,14 +290,38 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
             "latitude": lat.toString(),
             "longitude": lon.toString(),
           };
+          print("----------------");
+          print("$tel");
+          print("----------------");
+
+          if(nameCtrl.text == '' || nameCtrl.text == null ) {
+            Fluttertoast.showToast(msg: "매장명을 입력해 주세요");
+          }else if(descCtrl.text  == '' || descCtrl.text == null){
+            Fluttertoast.showToast(msg: "매장설명을 입력해 주세요");
+          }else if(timeCtrl1.text == '' || timeCtrl1.text == null &&
+              timeCtrl2.text == '' || timeCtrl2.text == null &&
+              timeCtrl3.text == '' || timeCtrl3.text == null ){
+            Fluttertoast.showToast(msg: "매장 연락처를 입력해 주세요");
+          }else if(negotiableTimeCtrl.text == '' || negotiableTimeCtrl.text == null ){
+            Fluttertoast.showToast(msg: "흥정시간을 입력해 주세요");
+          }else if(addressCtrl.text == '' || addressCtrl.text == null ){
+            Fluttertoast.showToast(msg: "매장 주소를 입력해 주세요");
+          }else if(detailCtrl.text == '' || detailCtrl.text == null ){
+            Fluttertoast.showToast(msg: "매장 상세주소를 입력해 주세요");
+          } else if(shop1_uri == '' || shop1_uri == null &&
+              shop2_uri == '' || shop2_uri == null &&
+              shop3_uri == '' || shop3_uri == null ){
+            Fluttertoast.showToast(msg: "3개의 매장 사진을 첨부해 주세요");
+          } else {
           bool isReturn = await Provider.of<StoreProvider>(context, listen: false).postStore(data, blUri, shop1_uri, shop2_uri, shop3_uri);
-          
+
           if(isReturn){
-            Fluttertoast.showToast(msg: "가맹점 등록이 성공하였습니다.");
+            Fluttertoast.showToast(msg: "제휴매장 등록이 성공하였습니다.");
           }else {
-            Fluttertoast.showToast(msg: "가맹점 등록이 실패하였습니다.");
+            Fluttertoast.showToast(msg: "제휴매장 등록이 실패하였습니다.");
           }
           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
+          }
         },
         child: Text("다음"),
         textColor: Colors.white,

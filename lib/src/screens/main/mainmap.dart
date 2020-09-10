@@ -7,14 +7,10 @@ import 'package:cashcook/src/model/franchisee/franchisee.dart';
 import 'package:cashcook/src/model/place.dart';
 import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
-import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/qr/qr.dart';
-import 'package:cashcook/src/screens/referrermanagement/referrermanagement.dart';
-import 'package:cashcook/src/screens/storemanagement/storemanagement.dart';
 import 'package:cashcook/src/screens/mypage/mypage.dart';
 import 'package:cashcook/src/services/Search.dart';
 import 'package:cashcook/src/utils/colors.dart';
-import 'package:cashcook/src/widgets/dialog.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -23,7 +19,6 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'package:cashcook/src/model/place.dart';
 import 'dart:async';
 
 class MainMap extends StatefulWidget {
@@ -64,17 +59,6 @@ class _MainMap extends State<MainMap> {
   void initState() {
     super.initState();
     getLocation();
-//    franchiseeData.add(Franchisee(
-//        imageUrl:
-//            "https://s3.ap-northeast-2.amazonaws.com/img.kormedi.com/news/article/__icsFiles/artimage/2016/03/29/c_km601/911811_540.jpg",
-//        address: "서울 뭐시구 뭐시로 24, 치킨타운 701호",
-//        name: "라온치킨",
-//        phone: "070-0000-0000",
-//        type: "치킨",
-//        lat: "37.468569",
-//        lon: "126.887354"));
-//
-//    markerAdds();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) => initSetting());
     isCurrentPage = 0;
   }

@@ -1,22 +1,14 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/model/usercheck.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
-import 'package:cashcook/src/provider/provider.dart';
-import 'package:cashcook/src/screens/RecoSelectFirst.dart';
 import 'package:cashcook/src/screens/login/login.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
-import 'package:cashcook/src/screens/mypage/mypage.dart';
 import 'package:cashcook/src/services/API.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/utils/datastorage.dart';
-import 'package:cashcook/src/utils/webViewScroll.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart' as P;
 import 'package:webview_flutter/webview_flutter.dart';
 

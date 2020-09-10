@@ -1,12 +1,7 @@
-import 'dart:math';
-
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:cashcook/src/screens/referrermanagement/invitationlist.dart';
 import 'package:flutter/material.dart';
-import 'package:share/share.dart';
-import 'package:contacts_service/contacts_service.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class Invitation extends StatefulWidget {
   @override
@@ -14,6 +9,7 @@ class Invitation extends StatefulWidget {
 }
 
 class _Invitation extends State {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,9 +69,13 @@ class _Invitation extends State {
                       width: MediaQuery.of(context).size.width,
                       height: 40,
                       child: RaisedButton(
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => InvitationList()));
+                        onPressed: () async {
+                          final bool result = await Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => InvitationList())
+                          );
+                          if(result){
+                            Navigator.of(context).pop();
+                          }
                         },
                         elevation: 0.0,
                         color: mainColor,

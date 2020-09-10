@@ -21,6 +21,7 @@ class UserProvider with ChangeNotifier {
   UserCheck loginUser = null;
   Pageing pageing = null;
   bool isLoading = false;
+  bool isStop = false;
   List<AccountListModel> accountHistory = [];
   List<Map<String, dynamic>> result = [];
   List<Map<int, String>> recoList= [{0: "추천인 없음"}];
@@ -117,11 +118,16 @@ class UserProvider with ChangeNotifier {
         print("프랜차이즈 넣기");
         await P.Provider.of<UserProvider>(context, listen: false)
             .setStoreModel(StoreModel.fromJson(franchise));
+      } else {
+        await P.Provider.of<UserProvider>(context, listen: false)
+            .setStoreModel(null);
       }
 
       await P.Provider.of<UserProvider>(context, listen: false)
           .setLoginUser(userCheck);
     }
+
+    notifyListeners();
     return;
   }
 
@@ -201,6 +207,8 @@ class UserProvider with ChangeNotifier {
       recoList.add({recoModel.id: recoModel.name});
     }
     recoList.add({0: "추천인 없음"});
+
+    isStop = true;
     notifyListeners();
   }
 
@@ -223,51 +231,26 @@ class UserProvider with ChangeNotifier {
     return;
   }
 
-  Future<String> patchloginReco() async {
-    final response = await service.patchloginReco();
-    Map<String, dynamic> json = jsonDecode(response);
-    if (isResponse(json)) {
-      return "true";
-    }
-    return json['resultMsg'];
-  }
-
   Future<String> recoemberlist() async {
     final response = await service.recoemberlist();
-
-    print('----------------------------------');
-    print('리턴 값 확인 하는 곳 : $response');
-    print('----------------------------------');
-
-
     Map<String, dynamic> json = jsonDecode(response);
 
-    print('----------------------------------');
-    print('리턴 값 확인 하는 곳2 : $json');
-    print('----------------------------------');
-
     recomemberList.clear();
-
-    recomemberList.add("선택해주세요.");
     if (json['data']['resultMsg'] == {} || json['data']['resultMsg'] == null ||
         json['data']['resultMsg'].isEmpty) {
-      print('-------------------');
-      print('값 없음');
-      print('-------------------');
 
       recomemberList.add("HOJO Group.");
     } else {
+      recomemberList.add("선택해주세요.");
       recomemberList.add("랜덤선택");
-
     }
     for (var reco in json['data']['resultMsg']) {
       RecoMemberList recoModel = RecoMemberList.fromJson(reco);
       recomemberList.add("${recoModel.username}");
-      //recomemberList.add("${recoModel.name}/${recoModel.phone}"); 기존
     }
 
     print(recomemberList);
-
+    isStop = true;
     notifyListeners();
   }
 

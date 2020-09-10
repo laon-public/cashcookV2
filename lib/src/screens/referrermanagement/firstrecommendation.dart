@@ -24,7 +24,8 @@ class _FirstRecommendation extends State<FirstRecommendation> {
 
 
   String _selectedValue = "선택해주세요.";
-  String memb = '캐시쿡을 추천해준 친구를 선택해주세요.';
+  String _unSelectedValue = "HOJO Group.";
+  String memb = '';
 
   @override
   void initState() {
@@ -93,43 +94,12 @@ class _FirstRecommendation extends State<FirstRecommendation> {
                   style: TextStyle(
                       fontFamily: 'noto', fontSize: 14, color: Colors.red),
                 ),
-
                 whiteSpaceH(4),
-
-
-//                 TextFormField(
-//                   textInputAction: TextInputAction.next,
-//                   keyboardType: TextInputType.text,
-//                   controller: nameController,
-//                   onFieldSubmitted: (value) {
-//                     FocusScope.of(context).requestFocus(contactUsFocus);
-//                   },
-//                   cursorColor: mainColor,
-//                   decoration: InputDecoration(
-//                       counterText: "",
-// //                    hintStyle: TextStyle(
-// //                        fontSize: 16,
-// //                        color: Color.fromARGB(255, 167, 167, 167),
-// //                        fontFamily: 'noto'),
-//                       labelText: "",
-//                       labelStyle: TextStyle(
-//                           fontSize: 16,
-//                           color: Color.fromARGB(255, 167, 167, 167),
-//                           fontFamily: 'noto'),
-// //                    hintText: "이름",
-//                       border: UnderlineInputBorder(
-//                           borderSide: BorderSide(color: Color(0xFFCCCCCC)),
-//                           borderRadius: BorderRadius.circular(0)),
-//                       focusedBorder: UnderlineInputBorder(
-//                           borderSide: BorderSide(color: mainColor),
-//                           borderRadius: BorderRadius.circular(0)),
-//                       contentPadding: EdgeInsets.only(left: 10, right: 10),),
-//                 ),
-
-
                 Consumer<UserProvider>(
                   builder: (context, user, _){
-                    return SizedBox(
+                    memb = (user.recomemberList.length < 2) ? '추천자가 아무도 없습니다.'
+                        : '캐시쿡을 추천해준 친구를 선택해주세요.';
+                    return (user.isStop) ? SizedBox(
                       child: DropdownButton(
                         isExpanded: true,
                         icon: Icon(Icons.arrow_drop_down),
@@ -139,7 +109,7 @@ class _FirstRecommendation extends State<FirstRecommendation> {
                             height: 2,
                             color: Colors.red
                         ),
-                        value: _selectedValue,
+                        value: (user.recomemberList.length < 2) ? _unSelectedValue : _selectedValue ,
                         items: user.recomemberList.map(
                                 (value) {
                               return DropdownMenuItem(
@@ -149,46 +119,26 @@ class _FirstRecommendation extends State<FirstRecommendation> {
                             }
                         ).toList(),
                         onChanged: (value){
+                          (user.recomemberList.length < 2) ?
+                          setState(() {
+                            _unSelectedValue = value;
+                          }) :
                           setState(() {
                             _selectedValue = value;
                           });
                         },
                       ),
+                    ) :
+                    Center(
+                        child: Column(
+                          children: <Widget>[
+                            new Image.asset("assets/resource/public/loading.gif"),
+                          ],
+                        )
                     );
                   },
-                  //    child: SizedBox(
-                  //    // 드롭다운버튼
-                  // child: DropdownButton(
-                  //      isExpanded: true, // 버튼의 사이즈를 화면에 딱 맞춤
-                  //      icon: Icon(Icons.arrow_drop_down),
-                  //      iconSize: 24,
-                  //      elevation: 16,
-                  //      underline: Container(
-                  //        height: 2,
-                  //          color: Colors.red
-                  //      ),
-                  //      value: _selectedValue,
-                  //      items: _valueList.map(
-                  //          (value) {
-                  //            return DropdownMenuItem(
-                  //              value: value,
-                  //              child: Text(value),
-                  //            );
-                  //          }
-                  //      ).toList(),
-                  //      onChanged: (value){
-                  //        setState(() {
-                  //          _selectedValue = value;
-                  //        });
-                  //      },
-                  //    ),
-                  //    ),
                 ),
-
                 whiteSpaceH(8),
-
-
-
                 Container(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -293,19 +243,20 @@ class _FirstRecommendation extends State<FirstRecommendation> {
       selectedmember = _selectedValue;
     }
 
+    if (userProviders.recomemberList.length > 2 && _selectedValue == '선택해주세요.') {
+      Fluttertoast.showToast(msg: "추천회원을 선택해 주세요.");
+    } else {
+      String response = await Provider.of<UserProvider>(context, listen: false).recomemberinsert(selectedmember); // 나를 추천한 사람을 선택 후 저장
 
-    await Provider.of<UserProvider>(context, listen: false).patchloginReco(); // isFirstLogin 상태 변경
-    String response = await Provider.of<UserProvider>(context, listen: false).recomemberinsert(selectedmember); // 나를 추천한 사람을 선택 후 저장
+      if(response == "true"){
+        Fluttertoast.showToast(msg: "등록이 완료되었습니다.");
+      }else {
+        Fluttertoast.showToast(msg: response);
+      }
 
-    if(response == "true"){
-      Fluttertoast.showToast(msg: "등록이 완료되었습니다.");
-    }else {
-      Fluttertoast.showToast(msg: response);
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
     }
-
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
-
   }
 
 }

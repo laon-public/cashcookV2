@@ -1,12 +1,9 @@
-import 'package:cashcook/src/provider/DiscountProvider.dart';
 import 'package:cashcook/src/provider/QRProvider.dart';
 import 'package:cashcook/src/screens/bargain/bargain.dart';
-import 'package:cashcook/src/screens/buy/buy.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/dialog.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
-import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_qr_bar_scanner/qr_bar_scanner_camera.dart';
 import 'package:fluttertoast/fluttertoast.dart';

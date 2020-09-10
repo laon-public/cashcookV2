@@ -62,7 +62,10 @@ class _RecoFirstState extends State<RecoFrst> {
         Text("추천인"),
         Consumer<UserProvider>(
           builder: (context, user, _){
-            return  DropdownButton<String>(
+            setState(() {
+              selectVal = user.recomemberList.first;
+            });
+            return  (user.isStop) ? DropdownButton<String>(
               underline: Container(
                 width: MediaQuery.of(context).size.width,
                 height: 2,
@@ -87,6 +90,13 @@ class _RecoFirstState extends State<RecoFrst> {
                   selectVal = value;
                 });
               },
+            ) :
+            Center(
+                child: Column(
+                  children: <Widget>[
+                    new Image.asset("assets/resource/public/loading.gif"),
+                  ],
+                )
             );
           },
         ),

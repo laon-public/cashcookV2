@@ -2,14 +2,23 @@ import 'dart:io';
 
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/TextFieldWidget.dart';
+import 'package:cashcook/src/widgets/TextFieldsWidget.dart';
+import 'package:cashcook/src/widgets/TextFieldssWidget.dart';
+import 'package:cashcook/src/widgets/TextFieldsWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class StoreApplyFirstStep extends StatelessWidget {
   TextEditingController nameCtrl = TextEditingController(); //상호명
   TextEditingController bnCtrl = TextEditingController(); //사업자번호
   TextEditingController ownerCtrl = TextEditingController(); //대표자명
-  TextEditingController telCtrl = TextEditingController(); //연락처
+
+  TextEditingController telCtrl1 = TextEditingController(); //연락처1
+  TextEditingController telCtrl2 = TextEditingController(); //연락처2
+  TextEditingController telCtrl3 = TextEditingController(); //연락처3
+
   TextEditingController emailCtrl = TextEditingController(); //이메일주소
   TextEditingController bankCtrl = TextEditingController(); //은행명
   TextEditingController accountCtrl = TextEditingController(); //계좌번호
@@ -24,7 +33,7 @@ class StoreApplyFirstStep extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("가맹점 등록하기 1/2"),
+        title: Text("제휴매장 등록하기 1/2"),
         centerTitle: true,
         elevation: 0.0,
       ),
@@ -45,7 +54,27 @@ class StoreApplyFirstStep extends StatelessWidget {
             BusinessNumber(onSetUri: setBlUri,),
             textField("사업자번호", "사업자등록증의 내용으로 입력해주세요.", bnCtrl,TextInputType.text),
             textField("대표자명", "사업자등록증의 내용으로 입력해주세요.", ownerCtrl,TextInputType.text),
-            textField("연락처", "연락가능한 연락처를 입력하여주세요.", telCtrl,TextInputType.phone),
+            Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Align(child: Text("연락처",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+                Row(
+                   mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                        SizedBox(width: 90,  child: textFieldss( telCtrl1,TextInputType.phone)),
+                        Text("-",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
+                        SizedBox(width: 125, child: textFields( telCtrl2,TextInputType.phone)),
+                        Text("-",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
+                        SizedBox(width: 125, child: textFields( telCtrl3,TextInputType.phone)),
+                    ]
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top:5.0),
+                  child: Align(child: Text("연락가능한 연락처를 입력하여주세요",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerRight,),
+                ),
+
+             ]
+            ),
             textField("이메일 주소", "사업자등록증의 상호명을 입력해주세요.", emailCtrl,TextInputType.emailAddress),
             BackInfo(),
             Padding(
@@ -116,13 +145,36 @@ class StoreApplyFirstStep extends StatelessWidget {
             "company_name": nameCtrl.text,
             "license_number": bnCtrl.text,
             "representative": ownerCtrl.text,
-            "tel":telCtrl.text,
+
+            "tel":telCtrl1.text+telCtrl2.text+telCtrl3.text,
+
             "email": emailCtrl.text,
             "bank": bankCtrl.text,
             "account": accountCtrl.text,
             "bl":blUri
           };
-          Navigator.of(context).pushNamed("/store/apply2",arguments: args);
+          if(nameCtrl.text == '' || nameCtrl.text == null ) {
+            Fluttertoast.showToast(msg: "상호명을 입력해 주세요");
+          }else if(blUri  == '' || blUri == null){
+            Fluttertoast.showToast(msg: "사업자 등록증을 첨부해 주세요");
+          }else if(bnCtrl.text == '' || bnCtrl.text == null ){
+            Fluttertoast.showToast(msg: "사업자번호를 입력해 주세요");
+          }else if(ownerCtrl.text == '' || ownerCtrl.text == null ){
+            Fluttertoast.showToast(msg: "대표자명을 입력해 주세요");
+          }else if(telCtrl1.text == '' || telCtrl1.text == null &&
+                  telCtrl2.text == '' || telCtrl2.text == null &&
+                  telCtrl3.text == '' || telCtrl3.text == null){
+            Fluttertoast.showToast(msg: "연락처를 입력해 주세요");
+          }else if(emailCtrl.text == '' || emailCtrl.text == null ){
+            Fluttertoast.showToast(msg: "이메일주소를 입력해 주세요");
+          }else if(bankCtrl.text == '' || bankCtrl.text == null ){
+            Fluttertoast.showToast(msg: "은행명을 입력해 주세요");
+          }else if(accountCtrl.text == '' || accountCtrl.text == null ){
+            Fluttertoast.showToast(msg: "계좌번호를 입력해 주세요");
+          }else {
+            Navigator.of(context).pushNamed("/store/apply2", arguments: args);
+          }
+
         },
         child: Text("다음"),
         textColor: Colors.white,
