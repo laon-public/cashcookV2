@@ -82,6 +82,7 @@ class _MyPageState extends State<MyPage> {
                   Tabs(name: "FAQ", routesName: "/faq",),
                   Tabs(name: "서비스 문의", routesName: "/inquiry",),
                   Tabs(name: "약관 및 정책", routesName: "",),
+                  Tabs(name: "앱정보", routesName: "/appinfomation",),
                   SizedBox(height: 40,),
                 ],
               ),

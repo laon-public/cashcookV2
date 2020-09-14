@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:cashcook/src/model/phone.dart';
 import 'package:cashcook/src/provider/RecoProvider.dart';
+import 'package:cashcook/src/services/Phone.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -13,6 +16,9 @@ class PhoneProvider with ChangeNotifier {
   // Display Control Variable
   bool allCheck = false;
   int checkCnt = 0;
+
+  // API
+  PhoneService service = PhoneService();
 
   void setCheck(index, value) {
     phoneList[index].isCheck = value;
@@ -50,10 +56,10 @@ class PhoneProvider with ChangeNotifier {
   void fetchPhoneList() async {
     print("fetchPhoneList");
     // 초기화
+    List<Map<String,String>> phoneListTmp = [];
     phoneList = [];
-    checkCnt = 0;
-    allCheck = false;
-    isLoading = false;
+    allCheck = true;
+    isLoading = true;
 
     Map<PermissionGroup,
         PermissionStatus> permissions = await PermissionHandler()
@@ -64,10 +70,21 @@ class PhoneProvider with ChangeNotifier {
 
     contactList.forEach((contact) {
       if(!contact.phones.isEmpty) {
-        phoneList.add(PhoneModel.fromContact(contact));
+        phoneListTmp.add({"name":contact.displayName, "phone": contact.phones.first.value});
+        // phoneList.add(PhoneModel.fromContact(contact));
       }
     });
+    print(phoneListTmp);
 
+    final response = await service.rebuildPhoneList(phoneListTmp);
+    Map<String,dynamic> phoneJson = jsonDecode(response);
+
+    for(var phone in phoneJson['data']){
+      phoneList.add(PhoneModel.fromJson(phone));
+    }
+
+    print(response);
+    checkCnt = phoneList.length;
     isLoading = false;
     notifyListeners();
   }

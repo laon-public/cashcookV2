@@ -21,6 +21,12 @@ class _UserState extends State<UserState> {
       return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24,),
+          ),
           title: Text("회원정보 수정"),
           centerTitle: true,
           elevation: 0.0,

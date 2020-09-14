@@ -100,11 +100,6 @@ class _MainMap extends State<MainMap> {
   getLocation() async {
     currentLocation = await location.getLocation();
     print(currentLocation);
-    /*
-    cameraPosition = CameraPosition(
-        target: LatLng(currentLocation.latitude, currentLocation.longitude),
-        zoom: 14);
-    */
     cameraPosition = CameraPosition(
         target: LatLng(currentLocation.latitude, currentLocation.longitude),
         zoom: 14);
@@ -380,9 +375,9 @@ class _MainMap extends State<MainMap> {
                 print("번호 보내기 ${detailId}" );
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) => Qr(),
-                        settings: RouteSettings(
-                          arguments: detailId
-                        )));
+                    settings: RouteSettings(
+                        arguments: detailId
+                    )));
               },
               child: Image.asset(
                 "assets/resource/map/qr.png",
@@ -557,11 +552,11 @@ class _MainMap extends State<MainMap> {
                               onTap: () {
                                 print("아 여기인가 + ${detailId}");
                                 Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                        builder: (context) => Qr(),
-                                    settings: RouteSettings(
-                                      arguments: detailId
-                                    )),);
+                                  MaterialPageRoute(
+                                      builder: (context) => Qr(),
+                                      settings: RouteSettings(
+                                          arguments: detailId
+                                      )),);
                               },
                               child: Image.asset(
                                 "assets/resource/map/qr.png",

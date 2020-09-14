@@ -298,8 +298,8 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
             Fluttertoast.showToast(msg: "매장명을 입력해 주세요");
           }else if(descCtrl.text  == '' || descCtrl.text == null){
             Fluttertoast.showToast(msg: "매장설명을 입력해 주세요");
-          }else if(timeCtrl1.text == '' || timeCtrl1.text == null &&
-              timeCtrl2.text == '' || timeCtrl2.text == null &&
+          }else if(timeCtrl1.text == '' || timeCtrl1.text == null ||
+              timeCtrl2.text == '' || timeCtrl2.text == null ||
               timeCtrl3.text == '' || timeCtrl3.text == null ){
             Fluttertoast.showToast(msg: "매장 연락처를 입력해 주세요");
           }else if(negotiableTimeCtrl.text == '' || negotiableTimeCtrl.text == null ){
@@ -308,8 +308,8 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
             Fluttertoast.showToast(msg: "매장 주소를 입력해 주세요");
           }else if(detailCtrl.text == '' || detailCtrl.text == null ){
             Fluttertoast.showToast(msg: "매장 상세주소를 입력해 주세요");
-          } else if(shop1_uri == '' || shop1_uri == null &&
-              shop2_uri == '' || shop2_uri == null &&
+          } else if(shop1_uri == '' || shop1_uri == null ||
+              shop2_uri == '' || shop2_uri == null ||
               shop3_uri == '' || shop3_uri == null ){
             Fluttertoast.showToast(msg: "3개의 매장 사진을 첨부해 주세요");
           } else {

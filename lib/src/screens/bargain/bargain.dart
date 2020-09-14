@@ -243,7 +243,7 @@ class _Bargain extends State<Bargain> {
                                   fontWeight: FontWeight.w600),
                             ),
                             Text(
-                              (qrProvider.isStop) ? "재도전 하시겠습니까?" : "여기 문구 뭐 넣을까요?",
+                              (qrProvider.isStop) ? "재도전 하시겠습니까?" : "",
                               style: TextStyle(
                                   color: white,
                                   fontFamily: 'noto',
@@ -254,7 +254,7 @@ class _Bargain extends State<Bargain> {
                       ),
                     ),
                     whiteSpaceH(8),
-                    (qrProvider.isStop) ? Text("재도전 시 1,000 RP가 차감됩니다.") : Text("여기 문구 뭐 넣을까요?"),
+                    Text("재도전 시 1,000 RP가 차감됩니다."),
                     whiteSpaceH(84),
                     Container(
                       width: MediaQuery.of(context).size.width,
@@ -285,7 +285,6 @@ class _Bargain extends State<Bargain> {
               );
             },
           ),
-
         ),
       ),
     );

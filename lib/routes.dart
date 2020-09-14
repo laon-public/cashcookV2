@@ -1,3 +1,4 @@
+import 'package:cashcook/src/screens/center/appinfomation.dart';
 import 'package:cashcook/src/screens/center/faq.dart';
 import 'package:cashcook/src/screens/center/notice.dart';
 import 'package:cashcook/src/screens/center/serviceInquiry.dart';
@@ -33,4 +34,5 @@ final routes = {
   "/userState" : (context) => UserState(),
   "/myUpdate" : (context) => MyUpdate(),
   "/logout" : (context) => Logout(),
+  "/appinfomation" : (context) => AppInfomation(),
 };

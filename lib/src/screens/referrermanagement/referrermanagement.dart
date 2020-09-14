@@ -245,9 +245,9 @@ class _ReferrerManagement extends State {
                                 ),
                               ]
                           ),
-                          whiteSpaceW(120),
+                          whiteSpaceW(110),
                           Container(
-                            width: 105,
+                            width: 120,
                             padding: EdgeInsets.zero,
                             child: Padding(
                               padding: EdgeInsets.zero,

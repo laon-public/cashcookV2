@@ -9,4 +9,9 @@ class PhoneModel {
       : name = contact.displayName,
         phone = contact.phones.first.value,
         isCheck = false;
+
+  PhoneModel.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        phone = json['phone'],
+        isCheck = true;
 }

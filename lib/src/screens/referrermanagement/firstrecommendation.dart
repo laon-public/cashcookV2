@@ -21,8 +21,6 @@ class FirstRecommendation extends StatefulWidget {
 
 
 class _FirstRecommendation extends State<FirstRecommendation> {
-
-
   String _selectedValue = "선택해주세요.";
   String _unSelectedValue = "HOJO Group.";
   String memb = '';
@@ -223,24 +221,29 @@ class _FirstRecommendation extends State<FirstRecommendation> {
     String selectedmember;
 
     int i =0;
-    if(_selectedValue == '랜덤선택'){
-      List<String> ss = [];
-      for(String userid in userProviders.recomemberList ){
-        if(i >= 2 ){
-          ss.add(userid);
-        }
-        i++;
-      }
-      print(ss);
-      int ranmax =ss.length;
-      print(ranmax);
-      var ran=Random().nextInt(ranmax);
 
-      print('$ran');
-      selectedmember = ss[ran];
-      print('$selectedmember');
-    }else{
-      selectedmember = _selectedValue;
+    if(userProviders.recomemberList.length > 2) {
+      if (_selectedValue == '랜덤선택') {
+        List<String> ss = [];
+        for (String userid in userProviders.recomemberList) {
+          if (i >= 2) {
+            ss.add(userid);
+          }
+          i++;
+        }
+        print(ss);
+        int ranmax = ss.length;
+        print(ranmax);
+        var ran = Random().nextInt(ranmax);
+
+        print('$ran');
+        selectedmember = ss[ran];
+        print('$selectedmember');
+      } else {
+        selectedmember = _selectedValue;
+      }
+    } else {
+      selectedmember = "HOJOGroup";
     }
 
     if (userProviders.recomemberList.length > 2 && _selectedValue == '선택해주세요.') {

@@ -161,8 +161,8 @@ class StoreApplyFirstStep extends StatelessWidget {
             Fluttertoast.showToast(msg: "사업자번호를 입력해 주세요");
           }else if(ownerCtrl.text == '' || ownerCtrl.text == null ){
             Fluttertoast.showToast(msg: "대표자명을 입력해 주세요");
-          }else if(telCtrl1.text == '' || telCtrl1.text == null &&
-                  telCtrl2.text == '' || telCtrl2.text == null &&
+          }else if(telCtrl1.text == '' || telCtrl1.text == null ||
+                  telCtrl2.text == '' || telCtrl2.text == null ||
                   telCtrl3.text == '' || telCtrl3.text == null){
             Fluttertoast.showToast(msg: "연락처를 입력해 주세요");
           }else if(emailCtrl.text == '' || emailCtrl.text == null ){
