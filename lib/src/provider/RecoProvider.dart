@@ -44,7 +44,13 @@ class RecoProvider with ChangeNotifier {
       dirAmount = recoJson['data']['dirAmount'];
       inDirAmount = recoJson['data']['inDirAmount'];
       for (var recoList in recoJson['data']['list']) {
-        RecoModel tmp = RecoModel.fromJson(recoList);
+        RecoModel tmp;
+        if(type == "recognition") {
+          tmp = RecoModel.fromRecognition(recoList);
+        } else {
+          tmp = RecoModel.fromJson(recoList);
+        }
+
         if(loginUser.username == tmp.parent.username) {
           referrer.add(Referrer(
               name: tmp.child.name,
@@ -70,6 +76,8 @@ class RecoProvider with ChangeNotifier {
       typeTitle = "직접추천회원 ";
     } else if(type == "inDir") {
       typeTitle = "간접추천회원 ";
+    } else if(type == "recognition") {
+      typeTitle = "가입대기회원 ";
     }
 
     stopLoading();

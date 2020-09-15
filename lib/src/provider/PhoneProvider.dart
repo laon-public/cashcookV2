@@ -81,9 +81,12 @@ class PhoneProvider with ChangeNotifier {
     final response = await service.rebuildPhoneList(phoneListTmp);
     Map<String,dynamic> phoneJson = jsonDecode(response);
 
-    for(var phone in phoneJson['data']){
-      phoneList.add(PhoneModel.fromJson(phone));
+    if(phoneJson['data'] != null){
+      for(var phone in phoneJson['data']){
+        phoneList.add(PhoneModel.fromJson(phone));
+      }
     }
+
 
     print(response);
     checkCnt = phoneList.length;

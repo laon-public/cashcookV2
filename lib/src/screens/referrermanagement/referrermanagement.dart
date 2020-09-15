@@ -258,7 +258,7 @@ class _ReferrerManagement extends State {
                                     color: black,
                                     fontSize: 14,
                                     fontFamily: 'noto'),
-                                items: <String>['전체', '직접 추천회원', '간접 추천회원']
+                                items: <String>['전체', '직접 추천회원', '간접 추천회원', '가입 대기회원']
                                     .map((value) {
                                   return DropdownMenuItem<String>(
                                     value: value,
@@ -285,6 +285,9 @@ class _ReferrerManagement extends State {
                                     } else if (value == '전체') {
                                       print("type ===> all");
                                       type = "all";
+                                    } else if (value == '가입 대기회원') {
+                                      print("type ===> recognition");
+                                      type = "recognition";
                                     }
                                   });
                                 },
@@ -366,7 +369,7 @@ class _ReferrerManagement extends State {
               style: TextStyle(
                   fontSize: 12, fontFamily: 'noto', color: Color(0xFF888888)),
             ),
-            data.type == 1
+            type != "recognition" && data.type == 1
                 ? Text(
                     "By " + data.byName,
                     style: TextStyle(

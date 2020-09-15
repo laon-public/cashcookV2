@@ -19,6 +19,18 @@ class RecoModel {
             phone: json['child']['phone']),
         created_at = json['created_at'],
         updated_at = json['updated_at'];
+
+  RecoModel.fromRecognition(Map<String, dynamic> json)
+      : parent = Parent(
+
+        ),
+        child = Child(
+          name: json['child']['name'],
+          phone: json['child']['phone']
+        )  ,
+        created_at = json['created_at'],
+        updated_at = json['updated_at']
+  ;
 }
 
 class Parent {
