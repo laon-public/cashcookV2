@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cashcook/src/model/page.dart';
+import 'package:cashcook/src/model/phone.dart';
 import 'package:cashcook/src/model/reco.dart';
 import 'package:cashcook/src/model/referrer/referrer.dart';
 import 'package:cashcook/src/model/usercheck.dart';
@@ -75,8 +76,15 @@ class RecoProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String> postReco(String name, String phone) async {
-    Map<String, String> data = {"name": name, "phone": phone};
+  Future<String> postReco(List<PhoneModel> phoneList) async {
+    List<Map<String, String>> data = [];
+
+    phoneList.forEach((phone) {
+      if(phone.isCheck) {
+        data.add({"name": phone.name, "phone": phone.phone});
+      }
+    });
+
     final response = await service.postReco(data);
     Map<String, dynamic> json = jsonDecode(response);
     if(isResponse(json)){

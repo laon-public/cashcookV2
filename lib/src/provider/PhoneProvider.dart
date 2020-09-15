@@ -31,6 +31,8 @@ class PhoneProvider with ChangeNotifier {
 
     if(checkCnt == phoneList.length) {
       allCheck = true;
+    } else {
+      allCheck = false;
     }
 
     notifyListeners();
@@ -90,11 +92,6 @@ class PhoneProvider with ChangeNotifier {
   }
 
   void postReco(){
-    phoneList.forEach((phone) {
-      if(phone.isCheck){
-        RecoProvider().postReco(phone.name, phone.phone);
-      }
-    });
-
+    RecoProvider().postReco(phoneList);
   }
 }

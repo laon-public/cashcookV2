@@ -26,6 +26,7 @@ class _MyUpdate extends State<MyUpdate> {
   String url =
         "http://auth.cashlink.kr/auth_api/users/modify/modifyInfo?client_id=cashcook";
 
+  bool isFirstPage = false;
   bool clearCache = false;
 
   bool userCheck = false;
@@ -35,7 +36,6 @@ class _MyUpdate extends State<MyUpdate> {
     // TODO: implement initState
     super.initState();
     P.Provider.of<UserProvider>(context, listen: false).fetchMyInfo(context);
-//    mainMapMove();
   }
 
   mainMapMove() {
@@ -63,9 +63,6 @@ class _MyUpdate extends State<MyUpdate> {
           child: Stack(
             children: [
               WebView(
-//                gestureRecognizers: [
-//                  Factory(() => PlatformViewVerticalGestureRecognizer()),
-//                ].toSet(),
                 javascriptMode: JavascriptMode.unrestricted,
                 onWebViewCreated: (webViewController) {
                   if (!clearCache) {
@@ -81,7 +78,15 @@ class _MyUpdate extends State<MyUpdate> {
                 },
 
                 onPageStarted: (url) {
+                  if(url == baseUrl && isFirstPage) {
+                    Navigator.of(context).pop();
+                  } else {
+                    setState(() {
+                      isFirstPage = !isFirstPage;
+                    });
+                  }
                   print("onPageStarted");
+                  print(webViewController.canGoBack().toString());
                   if (url == baseUrl) {
 //                  webViewController.clearCache();
                     webViewController.loadUrl(baseUrl + "users/modify/modifyInfo?client_id=cashcook");
@@ -96,15 +101,15 @@ class _MyUpdate extends State<MyUpdate> {
                   List<String> code = List();
                     if (url == baseUrl + "users/modify/success") {
                     print(dataStorage.token);
-                    Navigator.of(context)
-                        .pushReplacement(MaterialPageRoute(builder: (context) => Login()));
+                    Navigator.of(context).pop();
                   }
                 },
+
               ),
             ],
           ),
         ),
       ),
-    );
+      );
   }
 }

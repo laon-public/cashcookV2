@@ -174,16 +174,16 @@ class _Recommendation extends State<Recommendation> {
   apply() async {
     String name = nameController.text;
     String phone = contactUsController.text;
-    String response = await Provider.of<RecoProvider>(context, listen: false).postReco(name, phone);
-
-    if(response == "true"){
-      Fluttertoast.showToast(msg: "등록이 완료되었습니다.");
-    }else {
-      Fluttertoast.showToast(msg: response);
-    }
-
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
+//    // String response = await Provider.of<RecoProvider>(context, listen: false).postReco(phonList);
+//
+//    if(response == "true"){
+//      Fluttertoast.showToast(msg: "등록이 완료되었습니다.");
+//    }else {
+//      Fluttertoast.showToast(msg: response);
+//    }
+//
+//    Navigator.of(context).pushAndRemoveUntil(
+//        MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
 
   }
 
