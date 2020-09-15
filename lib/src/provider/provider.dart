@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/utils/datastorage.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:http/http.dart';
 import 'package:cashcook/src/services/API.dart';
 

@@ -188,6 +188,7 @@ class _ModifyStoreState extends State<ModifyStore> {
             ),
           ),
           TextFormField(
+            enabled: false,
             controller: addressCtrl,
             cursorColor: Color(0xff000000),
             decoration: InputDecoration(

@@ -24,9 +24,11 @@ class StoreApplyFirstStep extends StatelessWidget {
   TextEditingController accountCtrl = TextEditingController(); //계좌번호
   String blUri;
 
-  setBlUri(uri){
+
+  setBlUri(uri) {
     blUri = uri;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -50,35 +52,49 @@ class StoreApplyFirstStep extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            textField("상호명", "사업자등록증의 상호명을 입력해주세요.", nameCtrl, TextInputType.text),
+            textField(
+                "상호명", "사업자등록증의 상호명을 입력해주세요.", nameCtrl, TextInputType.text),
             BusinessNumber(onSetUri: setBlUri,),
-            textField("사업자번호", "사업자등록증의 내용으로 입력해주세요.", bnCtrl,TextInputType.text),
-            textField("대표자명", "사업자등록증의 내용으로 입력해주세요.", ownerCtrl,TextInputType.text),
+            textField(
+                "사업자번호", "사업자등록증의 내용으로 입력해주세요.", bnCtrl, TextInputType.text),
+            textField(
+                "대표자명", "사업자등록증의 내용으로 입력해주세요.", ownerCtrl, TextInputType.text),
             Column(
                 mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Align(child: Text("연락처",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
-                Row(
-                   mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                        SizedBox(width: 90,  child: textFieldss( telCtrl1,TextInputType.phone)),
-                        Text("-",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
-                        SizedBox(width: 125, child: textFields( telCtrl2,TextInputType.phone)),
-                        Text("-",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
-                        SizedBox(width: 125, child: textFields( telCtrl3,TextInputType.phone)),
-                    ]
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top:5.0),
-                  child: Align(child: Text("연락가능한 연락처를 입력하여주세요",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerRight,),
-                ),
+                children: [
+                  Align(child: Text("연락처",
+                    style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
+                    alignment: Alignment.centerLeft,),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(width: 90,
+                            child: textFieldss(telCtrl1, TextInputType.phone)),
+                        Text("-", style: TextStyle(
+                            fontSize: 12, color: Color(0xff888888)),),
+                        SizedBox(width: 125,
+                            child: textFields(telCtrl2, TextInputType.phone)),
+                        Text("-", style: TextStyle(
+                            fontSize: 12, color: Color(0xff888888)),),
+                        SizedBox(width: 125,
+                            child: textFields(telCtrl3, TextInputType.phone)),
+                      ]
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5.0),
+                    child: Align(child: Text("연락가능한 연락처를 입력하여주세요",
+                      style: TextStyle(
+                          fontSize: 12, color: Color(0xff888888)),),
+                      alignment: Alignment.centerRight,),
+                  ),
 
-             ]
+                ]
             ),
-            textField("이메일 주소", "사업자등록증의 상호명을 입력해주세요.", emailCtrl,TextInputType.emailAddress),
+            textField("이메일 주소", "사업자등록증의 상호명을 입력해주세요.", emailCtrl,
+                TextInputType.emailAddress),
             BackInfo(),
             Padding(
-              padding: const EdgeInsets.only(top:40.0,bottom: 40),
+              padding: const EdgeInsets.only(top: 40.0, bottom: 40),
               child: nextBtn(context),
             )
           ],
@@ -88,14 +104,16 @@ class StoreApplyFirstStep extends StatelessWidget {
   }
 
 
-  Widget BackInfo(){
+  Widget BackInfo() {
     return Container(
       width: double.infinity,
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top:5.0),
-            child: Align(child: Text("계좌정보",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+            padding: const EdgeInsets.only(top: 5.0),
+            child: Align(child: Text("계좌정보",
+              style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
+              alignment: Alignment.centerLeft,),
           ),
           TextFormField(
             controller: bankCtrl,
@@ -127,62 +145,64 @@ class StoreApplyFirstStep extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top:5.0),
-            child: Align(child: Text("본인 명의의 계좌를 입력해주세요.",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerRight,),
+            padding: const EdgeInsets.only(top: 5.0),
+            child: Align(child: Text("본인 명의의 계좌를 입력해주세요.",
+              style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
+              alignment: Alignment.centerRight,),
           )
         ],
       ),
     );
   }
 
-  Widget nextBtn(context){
+  Widget nextBtn(context) {
     return Container(
       width: double.infinity,
       height: 40,
       child: RaisedButton(
-        onPressed: (){
+        onPressed: () {
           Map<String, dynamic> args = {
             "company_name": nameCtrl.text,
             "license_number": bnCtrl.text,
             "representative": ownerCtrl.text,
-
-            "tel":telCtrl1.text+telCtrl2.text+telCtrl3.text,
-
+            "tel": telCtrl1.text + telCtrl2.text + telCtrl3.text,
             "email": emailCtrl.text,
             "bank": bankCtrl.text,
             "account": accountCtrl.text,
-            "bl":blUri
+            "bl": blUri
           };
-          if(nameCtrl.text == '' || nameCtrl.text == null ) {
+          if (nameCtrl.text == '' || nameCtrl.text == null) {
             Fluttertoast.showToast(msg: "상호명을 입력해 주세요");
-          }else if(blUri  == '' || blUri == null){
+          } else if (blUri == '' || blUri == null) {
             Fluttertoast.showToast(msg: "사업자 등록증을 첨부해 주세요");
-          }else if(bnCtrl.text == '' || bnCtrl.text == null ){
+          } else if (bnCtrl.text == '' || bnCtrl.text == null) {
             Fluttertoast.showToast(msg: "사업자번호를 입력해 주세요");
-          }else if(ownerCtrl.text == '' || ownerCtrl.text == null ){
+          } else if (ownerCtrl.text == '' || ownerCtrl.text == null) {
             Fluttertoast.showToast(msg: "대표자명을 입력해 주세요");
-          }else if(telCtrl1.text == '' || telCtrl1.text == null ||
-                  telCtrl2.text == '' || telCtrl2.text == null ||
-                  telCtrl3.text == '' || telCtrl3.text == null){
+          } else if (telCtrl1.text == '' || telCtrl1.text == null ||
+              telCtrl2.text == '' || telCtrl2.text == null ||
+              telCtrl3.text == '' || telCtrl3.text == null) {
             Fluttertoast.showToast(msg: "연락처를 입력해 주세요");
-          }else if(emailCtrl.text == '' || emailCtrl.text == null ){
+          } else if (emailCtrl.text == '' || emailCtrl.text == null) {
             Fluttertoast.showToast(msg: "이메일주소를 입력해 주세요");
-          }else if(bankCtrl.text == '' || bankCtrl.text == null ){
+          } else if (bankCtrl.text == '' || bankCtrl.text == null) {
             Fluttertoast.showToast(msg: "은행명을 입력해 주세요");
-          }else if(accountCtrl.text == '' || accountCtrl.text == null ){
+          } else if (accountCtrl.text == '' || accountCtrl.text == null) {
             Fluttertoast.showToast(msg: "계좌번호를 입력해 주세요");
-          }else {
+          } else {
             Navigator.of(context).pushNamed("/store/apply2", arguments: args);
           }
-
         },
         child: Text("다음"),
         textColor: Colors.white,
-          color: mainColor,
+        color: mainColor,
       ),
     );
   }
 }
+
+
+
 
 class BusinessNumber extends StatefulWidget {
 

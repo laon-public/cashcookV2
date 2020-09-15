@@ -29,16 +29,6 @@ class _FirstRecommendation extends State<FirstRecommendation> {
   void initState() {
     super.initState();
     Provider.of<UserProvider>(context, listen: false).recoemberlist();
-
-    // print('----------------------');
-    // print(userProvider.recomemberList );
-    // print('----------------------');
-    // if(userProvider.recomemberList == '' || userProvider.recomemberList.isEmpty){
-    //   memb = '추천자가 아무도 없습니다.';
-    // }else{
-    //   memb = '캐시쿡을 추천해준 친구를 선택해주세요.';
-    // }
-
   }
 
   bool userCheck = false;
@@ -221,7 +211,6 @@ class _FirstRecommendation extends State<FirstRecommendation> {
     String selectedmember;
 
     int i =0;
-
     if(userProviders.recomemberList.length > 2) {
       if (_selectedValue == '랜덤선택') {
         List<String> ss = [];

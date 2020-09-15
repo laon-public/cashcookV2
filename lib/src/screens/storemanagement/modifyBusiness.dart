@@ -4,6 +4,7 @@ import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
+import 'package:cashcook/src/screens/storemanagement/storemanagement.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/TextFieldWidget.dart';
 import 'package:flutter/material.dart';
@@ -146,7 +147,7 @@ class ModifyBusiness extends StatelessWidget {
           }else {
             Fluttertoast.showToast(msg: "사업자정보 수정이 실패하였습니다.");
           }
-          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
+          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => StoreManagement()), (route) => false);
         },
         child: Text("수정"),
         textColor: Colors.white,
