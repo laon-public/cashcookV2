@@ -155,7 +155,7 @@ class _ChargePointState extends State<ChargePoint> {
                       setState(() {
                         pay = int.parse(value);
                         quantity = int.parse(value);
-                        if(pay >= 10000) {
+                        if(pay >= 500000) {
                           dlCtrl.text = (pay / 100).toInt().toString();
                         } else {
                           dlCtrl.text = "";
@@ -170,7 +170,7 @@ class _ChargePointState extends State<ChargePoint> {
             padding: const EdgeInsets.only(top: 5.0),
             child: Align(
               child: Text(
-                (pay >= 10000) ? "= ${pay} 원": "10000ADP 이상 충전 가능합니다",
+                (pay >= 500000) ? "= ${pay} 원": "500000ADP 이상 충전 가능합니다",
                 style: TextStyle(fontSize: 12, color: Color(0xff888888)),
               ),
               alignment: Alignment.centerRight,
@@ -360,7 +360,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
             ),
             whiteSpaceW(49),
             Text(
-              "${(dlCtrl.text != "") ? "-${dlCtrl.text} DL" : "10000ADP 이상 가능합니다."}",
+              "${(dlCtrl.text != "") ? "-${dlCtrl.text} DL" : "500000ADP 이상 가능합니다."}",
               style: textstyle,
             )
           ],
@@ -423,8 +423,8 @@ class _PaymentMethodState extends State<PaymentMethod> {
             buyMove(name, widget.pay, widget.id, widget.quantity,
                 paymentType[currentMethod]);
           } else {
-            if (widget.pay < 10000) {
-              showToast("10000ADP 이상 충전 가능합니다.`");
+            if (widget.pay < 500000) {
+              showToast("500000ADP 이상 충전 가능합니다.`");
             } else {
               bool response =
               await Provider.of<UserProvider>(context, listen: false)
@@ -447,8 +447,8 @@ class _PaymentMethodState extends State<PaymentMethod> {
 
   buyMove(name, pay, id, q, payType) {
     print("결제");
-    if(q < 10000){
-      showToast("10000ADP 이상 충전 가능합니다.`");
+    if(q < 500000){
+      showToast("500000ADP 이상 충전 가능합니다.`");
     } else {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) =>

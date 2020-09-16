@@ -50,21 +50,36 @@ class RecoProvider with ChangeNotifier {
         } else {
           tmp = RecoModel.fromJson(recoList);
         }
-
-        if(loginUser.username == tmp.parent.username) {
+        if(type != "recognition") {
+          if (loginUser.username == tmp.parent.username) {
+            referrer.add(Referrer(
+                name: tmp.child.username,
+                phone: tmp.child.phone,
+                type: 0,
+                byName: "me",
+                date: tmp.created_at
+                    .split("T")
+                    .first));
+          } else {
+            referrer.add(Referrer(
+                name: tmp.child.username,
+                phone: tmp.child.phone,
+                type: 1,
+                byName: tmp.parent.username,
+                date: tmp.created_at
+                    .split("T")
+                    .first));
+          }
+        }
+        else {
           referrer.add(Referrer(
               name: tmp.child.name,
               phone: tmp.child.phone,
-              type: 0,
-              byName: "me",
-              date: tmp.created_at.split("T").first));
-        } else {
-          referrer.add(Referrer(
-              name: tmp.child.name,
-              phone: tmp.child.phone,
-              type: 1,
+              type: 2,
               byName: tmp.parent.name,
-              date: tmp.created_at.split("T").first));
+              date: tmp.created_at
+                  .split("T")
+                  .first));
         }
       }
       print(referrer);

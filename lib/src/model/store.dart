@@ -12,6 +12,7 @@ class StoreModel {
   final Store store;
   final Address address;
   final Bank bank;
+  final String status;
 
   StoreModel(
       {this.id,
@@ -23,7 +24,8 @@ class StoreModel {
       this.updated_at,
       this.store,
       this.address,
-      this.bank});
+      this.bank,
+      this.status});
 
   StoreModel.fromJson(Map<String, dynamic> json)
       : id = json['id'],
@@ -33,6 +35,7 @@ class StoreModel {
         tel = json['tel'],
         create_at = json['create_at'],
         updated_at = json['updated_at'],
+        status = json['status'],
         store = Store(
             name: json['store']['name'],
             description: json['store']['description'],

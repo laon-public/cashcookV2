@@ -4,22 +4,21 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cashcook/src/model/franchisee/franchisee.dart';
-import 'package:cashcook/src/model/place.dart';
 import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
+import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/qr/qr.dart';
+import 'package:cashcook/src/screens/referrermanagement/referrermanagement.dart';
+import 'package:cashcook/src/screens/storemanagement/storemanagement.dart';
 import 'package:cashcook/src/screens/mypage/mypage.dart';
-import 'package:cashcook/src/services/Search.dart';
 import 'package:cashcook/src/utils/colors.dart';
+import 'package:cashcook/src/widgets/dialog.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'dart:async';
 
 class MainMap extends StatefulWidget {
   @override
@@ -27,8 +26,6 @@ class MainMap extends StatefulWidget {
 }
 
 class _MainMap extends State<MainMap> {
-  TextEditingController searchCtrl = TextEditingController();
-
   AppBar appBar;
 
   var currentLocation;
@@ -41,13 +38,9 @@ class _MainMap extends State<MainMap> {
 
   List<Franchisee> franchiseeData = List();
 
-  SearchService searchService = SearchService();
-  PlaceDetail placeDetail;
-
   Set<Marker> markers = {};
 
   bool detailView = false;
-  int detailId = 0;
   String detailImage = "";
   String detailName = "";
   String detailAddress = "";
@@ -59,27 +52,19 @@ class _MainMap extends State<MainMap> {
   void initState() {
     super.initState();
     getLocation();
+//    franchiseeData.add(Franchisee(
+//        imageUrl:
+//            "https://s3.ap-northeast-2.amazonaws.com/img.kormedi.com/news/article/__icsFiles/artimage/2016/03/29/c_km601/911811_540.jpg",
+//        address: "서울 뭐시구 뭐시로 24, 치킨타운 701호",
+//        name: "라온치킨",
+//        phone: "070-0000-0000",
+//        type: "치킨",
+//        lat: "37.468569",
+//        lon: "126.887354"));
+//
+//    markerAdds();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) => initSetting());
     isCurrentPage = 0;
-  }
-
-  moveCamera() async {
-    googleMapController.animateCamera(
-      CameraUpdate.newLatLng(
-        LatLng(placeDetail.lat, placeDetail.lng),
-      ),
-    );
-
-    final icon = await getBitmapDescriptorFromAssetBytes("assets/icon/a.png", 128);
-
-    setState(() {
-      markers.add(Marker(
-        markerId: MarkerId("marker"),
-        position: LatLng( placeDetail.lat, placeDetail.lng ),
-        icon: icon,
-      ));
-    });
-
   }
 
   initSetting() {
@@ -99,7 +84,6 @@ class _MainMap extends State<MainMap> {
 
   getLocation() async {
     currentLocation = await location.getLocation();
-    print(currentLocation);
     cameraPosition = CameraPosition(
         target: LatLng(currentLocation.latitude, currentLocation.longitude),
         zoom: 14);
@@ -146,7 +130,6 @@ class _MainMap extends State<MainMap> {
         "assets/resource/map/marker.png", 128);
     List<StoreModel> stores =
         Provider.of<StoreProvider>(context, listen: false).store;
-    print(stores);
     setState(() {
       markers.add(Marker(
           markerId: markerId,
@@ -157,14 +140,13 @@ class _MainMap extends State<MainMap> {
           onTap: () {
             setState(() {
               print("checkMarker");
-              detailId = stores[num].id;
-              print(detailId);
               detailView = true;
-              detailImage = stores[num].store.shop_img1;
-              detailName = stores[num].store.name;
+              detailImage =
+              "https://s3.ap-northeast-2.amazonaws.com/img.kormedi.com/news/article/__icsFiles/artimage/2016/03/29/c_km601/911811_540.jpg";
+              detailName = stores[num].company_name;
               detailAddress = stores[num].address.address;
               detailType = "타입";
-              detailPhone = stores[num].store.tel;
+              detailPhone = stores[num].tel;
               distanceLocation(num);
             });
           }));
@@ -215,7 +197,6 @@ class _MainMap extends State<MainMap> {
             child: GoogleMap(
               initialCameraPosition: cameraPosition,
               mapType: MapType.normal,
-
               myLocationEnabled: true,
               myLocationButtonEnabled: false,
               zoomControlsEnabled: false,
@@ -227,6 +208,7 @@ class _MainMap extends State<MainMap> {
                     .then((value) async {
 //                        print(value.northeast.toString());
 //                        print(value.southwest.toString());
+                  print(123);
                   String start = value.northeast.latitude.toString() +
                       "," +
                       value.northeast.longitude.toString();
@@ -236,6 +218,7 @@ class _MainMap extends State<MainMap> {
 
                   await Provider.of<StoreProvider>(context, listen: false)
                       .getStore(start, end);
+                  print(123);
                   markerAdds();
                 });
               },
@@ -266,41 +249,37 @@ class _MainMap extends State<MainMap> {
                         color: Color.fromRGBO(0, 0, 0, 0.15), blurRadius: 8)
                   ],
                 ),
-                child: SingleChildScrollView(
-                    child: Column (
-                      children: [
-                        TypeAheadField(
-                          textFieldConfiguration: TextFieldConfiguration(
-                            controller: searchCtrl,
-                            decoration: InputDecoration(
-                              hintText: "검색",
-                              hintStyle: TextStyle(
-                                  fontFamily: 'noto',
-                                  color: black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 12, horizontal: 16),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        style: TextStyle(
+                            fontFamily: 'noto',
+                            color: black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600),
+                        decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            onPressed: () {},
+                            icon: Image.asset(
+                              "assets/resource/main/search.png",
+                              width: 24,
+                              height: 24,
+                              fit: BoxFit.cover,
                             ),
                           ),
-                          suggestionsCallback: (pattern) async{
-                            return await searchService.getSearchList(pattern);
-                          },
-                          itemBuilder: (context, suggestion) {
-                            return ListTile(
-                              title: Text(suggestion.description),
-                            );
-                          },
-                          onSuggestionSelected: (suggestion) async{
-                            placeDetail = await searchService.getPlaceDetail(
-                                suggestion.placeId
-                            );
-                            moveCamera();
-                          },
-                          hideOnEmpty: true,
+                          hintText: "검색",
+                          hintStyle: TextStyle(
+                              fontFamily: 'noto',
+                              color: black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 16),
                         ),
-                      ],
-                    )
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -372,12 +351,8 @@ class _MainMap extends State<MainMap> {
             padding: EdgeInsets.only(right: 14),
             child: InkWell(
               onTap: () {
-                print("번호 보내기 ${detailId}" );
                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => Qr(),
-                    settings: RouteSettings(
-                        arguments: detailId
-                    )));
+                    .push(MaterialPageRoute(builder: (context) => Qr()));
               },
               child: Image.asset(
                 "assets/resource/map/qr.png",
@@ -498,7 +473,6 @@ class _MainMap extends State<MainMap> {
                               fit: BoxFit.fill,
                               width: 64,
                               height: 64,
-
                             ),
                             whiteSpaceW(12),
                             Expanded(
@@ -550,13 +524,9 @@ class _MainMap extends State<MainMap> {
                             whiteSpaceW(12),
                             InkWell(
                               onTap: () {
-                                print("아 여기인가 + ${detailId}");
                                 Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (context) => Qr(),
-                                      settings: RouteSettings(
-                                          arguments: detailId
-                                      )),);
+                                    MaterialPageRoute(
+                                        builder: (context) => Qr()));
                               },
                               child: Image.asset(
                                 "assets/resource/map/qr.png",

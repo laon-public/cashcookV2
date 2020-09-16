@@ -116,6 +116,9 @@ class UserProvider with ChangeNotifier {
       dynamic franchise = json.decode(response)['data']['franchise'];
       if (franchise != null) {
         print("프랜차이즈 넣기");
+        if(franchise['status'] == 'DENY') {
+          Fluttertoast.showToast(msg: "매장 권한이 상실되었습니다. ADP를 충전해주세요.");
+        }
         await P.Provider.of<UserProvider>(context, listen: false)
             .setStoreModel(StoreModel.fromJson(franchise));
       } else {
@@ -127,6 +130,7 @@ class UserProvider with ChangeNotifier {
           .setLoginUser(userCheck);
     }
 
+    
     notifyListeners();
     return;
   }
