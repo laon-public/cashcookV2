@@ -130,13 +130,29 @@ class _Login extends State<Login> {
 //                                  .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => RecoFrst()), (route) => false);
 //                            }else {
                 P.Provider.of<UserProvider>(context, listen: false).setStoreModel(null);
+
+
+
                 //최초 로그인 인지 판단하는 곳
                 if (userCheck.isFirstLogin != true) {
                   Navigator.of(context)
                       .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
                 } else{
-                  Navigator.of(context)
-                      .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => FirstRecommendation()), (route) => false); //첫 로그인시 추전회원 입력 페이지면
+
+                  UserProvider userProviders = P.Provider.of<UserProvider>(context,listen: false);
+                  if(userProviders.recomemberList.length < 2) {
+                    String selectedmember = 'HOJOGroup';
+
+                    P.Provider.of<UserProvider>(context, listen: false).recomemberinsert(selectedmember); // 나를 추천한 사람을 선택 후 저장
+
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
+                  }else {
+                    Navigator.of(context)
+                        .pushAndRemoveUntil(MaterialPageRoute(builder: (
+                        context) => FirstRecommendation()), (
+                        route) => false); //첫 로그인시 추전회원 입력 페이지면
+                  }
                 }
               }
 

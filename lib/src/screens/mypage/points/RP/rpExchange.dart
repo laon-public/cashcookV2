@@ -212,7 +212,14 @@ class _RPExchangeState extends State<RPExchange> {
           };
           await Provider.of<UserProvider>(context, listen: false).exchangeRp(id, data);
 
-          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
+          //Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
+          Map<String, dynamic> args = {
+            'account': accountModel,
+            'id' : id,
+            'point': "RP",
+            "pointImg":"assets/icon/rp-coin.png"
+          };
+          Navigator.of(context).pop(); // pop으로 하면 리턴 값을 받을 수 있다.
         },
       ),
     );

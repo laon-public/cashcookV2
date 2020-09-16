@@ -243,7 +243,7 @@ class UserProvider with ChangeNotifier {
     if (json['data']['resultMsg'] == {} || json['data']['resultMsg'] == null ||
         json['data']['resultMsg'].isEmpty) {
 
-      recomemberList.add("HOJO Group.");
+      //recomemberList.add("HOJO Group.");
     } else {
       recomemberList.add("선택해주세요.");
       recomemberList.add("랜덤선택");

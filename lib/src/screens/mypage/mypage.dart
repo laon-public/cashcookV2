@@ -88,7 +88,6 @@ class _MyPageState extends State<MyPage> {
               ),
             ),
             userProvider.storeModel == null ? Tabs2(name: "제휴매장 등록하기", routesName: "/store/apply1",img: "assets/icon/shop.png",): SizedBox(),
-
             SizedBox(height: 12,),
             Tabs2(name: "캐시링크 가기", routesName: "cashlink",img: "assets/icon/cashlink-icon.png",),
           ],
