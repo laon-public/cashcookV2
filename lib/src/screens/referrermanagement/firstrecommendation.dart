@@ -29,23 +29,6 @@ class _FirstRecommendation extends State<FirstRecommendation> {
   void initState() {
     super.initState();
     Provider.of<UserProvider>(context, listen: false).recoemberlist();
-
-    // UserProvider user =  Provider.of<UserProvider>(context,listen: false);
-    // print('---------------------');
-    // print('값 확인1');
-    // print(user.recomemberList.length);
-    // print('---------------------');
-    // UserProvider user =  Provider.of<UserProvider>(context,listen: false);
-    // print('---------------------');
-    // print('값 확인');
-    // print(user.recomemberList.length);
-    // // print('---------------------');
-    // String selectedmember = 'HOJOGroup';
-    //
-    // Provider.of<UserProvider>(context, listen: false).recomemberinsert(selectedmember); // 나를 추천한 사람을 선택 후 저장
-    //
-    // Navigator.of(context)
-    //     .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
   }
 
   bool userCheck = false;
