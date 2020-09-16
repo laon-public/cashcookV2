@@ -25,6 +25,8 @@ class _Bargain extends State<Bargain> {
   var _rollSlotController10 = RollSlotController();
   var _rollSlotController1 = RollSlotController();
 
+  var rp;
+
   @override
   void initState() {
     super.initState();
@@ -254,7 +256,7 @@ class _Bargain extends State<Bargain> {
                       ),
                     ),
                     whiteSpaceH(8),
-                    Text("재도전 시 1,000 RP가 차감됩니다."),
+                    Text("재도전 시 ${(((qrProvider.paymentModel.price / 100000)+1).floor()*1000)} RP가 차감됩니다."),
                     whiteSpaceH(84),
                     Container(
                       width: MediaQuery.of(context).size.width,

@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:cashcook/src/widgets/TextFieldsWidget.dart';
+import 'package:cashcook/src/widgets/TextFieldssWidget.dart';
 
 
 class ModifyBusiness extends StatelessWidget {
@@ -19,6 +21,11 @@ class ModifyBusiness extends StatelessWidget {
   TextEditingController bnCtrl = TextEditingController(); //사업자번호
   TextEditingController ownerCtrl = TextEditingController(); //대표자명
   TextEditingController telCtrl = TextEditingController(); //연락처
+
+  TextEditingController telCtrl1 = TextEditingController(); //연락처
+  TextEditingController telCtrl2 = TextEditingController(); //연락처
+  TextEditingController telCtrl3 = TextEditingController(); //연락처
+
   TextEditingController emailCtrl = TextEditingController(); //이메일주소
   TextEditingController bankCtrl = TextEditingController(); //은행명
   TextEditingController accountCtrl = TextEditingController(); //계좌번호
@@ -34,7 +41,17 @@ class ModifyBusiness extends StatelessWidget {
     nameCtrl.text = store.company_name;
     bnCtrl.text = store.business_number;
     ownerCtrl.text = store.owner;
-    telCtrl.text = store.tel;
+
+    //telCtrl.text = store.tel;
+    telCtrl1.text = store.tel.substring(0,3);
+    telCtrl2.text = store.tel.substring(3,7);
+    telCtrl3.text = store.tel.substring(7,11);
+    print("----------------");
+    print(telCtrl1.text);
+    print(telCtrl2.text);
+    print(telCtrl3.text);
+    print("----------------");
+
     emailCtrl.text = store.store.email;
     bankCtrl.text = store.bank.bank;
     accountCtrl.text = store.bank.number;
@@ -63,7 +80,25 @@ class ModifyBusiness extends StatelessWidget {
             BusinessNumber(onSetUri: setBlUri,),
             textField("사업자번호", "사업자등록증의 내용으로 입력해주세요.", bnCtrl,TextInputType.text),
             textField("대표자명", "사업자등록증의 내용으로 입력해주세요.", ownerCtrl,TextInputType.text),
-            textField("연락처", "연락가능한 연락처를 입력하여주세요.", telCtrl,TextInputType.phone),
+
+            //textField("연락처", "연락가능한 연락처를 입력하여주세요.", telCtrl,TextInputType.phone),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(width: 90,
+                    child: textFieldss(telCtrl1, TextInputType.phone)),
+                Text("-", style: TextStyle(
+                    fontSize: 12, color: Color(0xff888888)),),
+                SizedBox(width: 125,
+                    child: textFields(telCtrl2, TextInputType.phone)),
+                Text("-", style: TextStyle(
+                    fontSize: 12, color: Color(0xff888888)),),
+                SizedBox(width: 125,
+                    child: textFields(telCtrl3, TextInputType.phone)),
+              ]
+          ),
+
+
             textField("이메일 주소", "사업자등록증의 상호명을 입력해주세요.", emailCtrl,TextInputType.emailAddress),
             BackInfo(),
             Padding(
@@ -136,7 +171,10 @@ class ModifyBusiness extends StatelessWidget {
           if(store.company_name != nameCtrl.text) data["company_name"] = nameCtrl.text;
           if(store.business_number != bnCtrl.text) data["business_number"] = bnCtrl.text;
           if(store.owner != ownerCtrl.text) data["owner"] = ownerCtrl.text;
-          if(store.tel != telCtrl.text) data["tel"] = telCtrl.text;
+
+          //if(store.tel != telCtrl.text) data["tel"] = telCtrl.text;
+          if(store.tel != telCtrl1.text+telCtrl2.text+telCtrl3.text) data["tel"] = telCtrl1.text+telCtrl2.text+telCtrl3.text;
+
           if(store.store.email != emailCtrl.text) data["email"] = emailCtrl.text;
           if(store.bank.bank != bankCtrl.text) data["bank"] = bankCtrl.text;
           if(store.bank.number != accountCtrl.text) data["account"] = accountCtrl.text;

@@ -146,7 +146,9 @@ class _ModifyStoreState extends State<ModifyStore> {
           }else {
             Fluttertoast.showToast(msg: "가맹점 수정이 실패하였습니다.");
           }
-          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
+          //Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
+          Navigator.of(context).pop();
+
         },
         child: Text("수정"),
         textColor: Colors.white,

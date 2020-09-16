@@ -17,6 +17,7 @@ import 'package:provider/provider.dart' as P;
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:cashcook/src/services/API.dart';
 
+
 class Login extends StatefulWidget {
   final int authCheck;
 
@@ -138,21 +139,8 @@ class _Login extends State<Login> {
                   Navigator.of(context)
                       .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
                 } else{
-
-                  UserProvider userProviders = P.Provider.of<UserProvider>(context,listen: false);
-                  if(userProviders.recomemberList.length < 2) {
-                    String selectedmember = 'HOJOGroup';
-
-                    P.Provider.of<UserProvider>(context, listen: false).recomemberinsert(selectedmember); // 나를 추천한 사람을 선택 후 저장
-
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
-                  }else {
                     Navigator.of(context)
-                        .pushAndRemoveUntil(MaterialPageRoute(builder: (
-                        context) => FirstRecommendation()), (
-                        route) => false); //첫 로그인시 추전회원 입력 페이지면
-                  }
+                        .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => FirstRecommendation()), (route) => false); //첫 로그인시 추전회원 입력 페이지면
                 }
               }
 

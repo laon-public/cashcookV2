@@ -132,6 +132,10 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<bool> postCharge(String id, int quantity, String payment) async {
+    print('=============');
+    print(quantity);
+    print(payment);
+    print('=============');
     print(123);
     final response = await service.postCharge(id, quantity, payment);
     print(response);
@@ -239,7 +243,7 @@ class UserProvider with ChangeNotifier {
     if (json['data']['resultMsg'] == {} || json['data']['resultMsg'] == null ||
         json['data']['resultMsg'].isEmpty) {
 
-      //recomemberList.add("HOJO Group.");
+      recomemberList.add("HOJO Group.");
     } else {
       recomemberList.add("선택해주세요.");
       recomemberList.add("랜덤선택");

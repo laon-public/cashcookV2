@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart' as P;
 import 'package:webview_flutter/webview_flutter.dart';
 
+
 class MyUpdate extends StatefulWidget {
   final int authCheck;
 
@@ -23,6 +24,7 @@ class MyUpdate extends StatefulWidget {
 
 class _MyUpdate extends State<MyUpdate> {
   WebViewController webViewController;
+
   String url =
         "http://auth.cashlink.kr/auth_api/users/modify/modifyInfo?client_id=cashcook";
 
@@ -30,6 +32,7 @@ class _MyUpdate extends State<MyUpdate> {
   bool clearCache = false;
 
   bool userCheck = false;
+
 
   @override
   void initState() {
@@ -53,13 +56,24 @@ class _MyUpdate extends State<MyUpdate> {
     return Scaffold(
       backgroundColor: white,
       resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24,),
+        ),
+        title: Text("회원정보 수정"),
+        centerTitle: true,
+        elevation: 0.0,
+      ),
       body: SingleChildScrollView(
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height -
               MediaQuery.of(context).padding.top -
               MediaQuery.of(context).padding.bottom,
-          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top,bottom: MediaQuery.of(context).viewInsets.bottom),
+          //padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top,bottom: MediaQuery.of(context).viewInsets.bottom),
           child: Stack(
             children: [
               WebView(

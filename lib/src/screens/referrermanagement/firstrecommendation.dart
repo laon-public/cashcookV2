@@ -24,11 +24,28 @@ class _FirstRecommendation extends State<FirstRecommendation> {
   String _selectedValue = "선택해주세요.";
   String _unSelectedValue = "HOJO Group.";
   String memb = '';
-
+  int _check;
   @override
   void initState() {
     super.initState();
     Provider.of<UserProvider>(context, listen: false).recoemberlist();
+
+    // UserProvider user =  Provider.of<UserProvider>(context,listen: false);
+    // print('---------------------');
+    // print('값 확인1');
+    // print(user.recomemberList.length);
+    // print('---------------------');
+    // UserProvider user =  Provider.of<UserProvider>(context,listen: false);
+    // print('---------------------');
+    // print('값 확인');
+    // print(user.recomemberList.length);
+    // // print('---------------------');
+    // String selectedmember = 'HOJOGroup';
+    //
+    // Provider.of<UserProvider>(context, listen: false).recomemberinsert(selectedmember); // 나를 추천한 사람을 선택 후 저장
+    //
+    // Navigator.of(context)
+    //     .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
   }
 
   bool userCheck = false;
@@ -74,7 +91,8 @@ class _FirstRecommendation extends State<FirstRecommendation> {
           height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom - appBar.preferredSize.height,
           child: Padding(
             padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
-            child: Column(
+            child:
+              Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 whiteSpaceH(24),
@@ -87,6 +105,9 @@ class _FirstRecommendation extends State<FirstRecommendation> {
                   builder: (context, user, _){
                     memb = (user.recomemberList.length < 2) ? '추천자가 아무도 없습니다.'
                         : '캐시쿡을 추천해준 친구를 선택해주세요.';
+                    (user.isStop && user.recomemberList.length < 2) ?
+                    (user.recomemberList.length < 2) ? nextPage(userProvider.loginUser) : print("확인1") :
+                        print("확인2");
                     return (user.isStop) ? SizedBox(
                       child: DropdownButton(
                         isExpanded: true,
@@ -249,6 +270,20 @@ class _FirstRecommendation extends State<FirstRecommendation> {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
     }
+  }
+
+  nextPage(UserCheck user) async {
+    String selectedmember = "HOJOGroup";
+    String response = await Provider.of<UserProvider>(context, listen: false).recomemberinsert(selectedmember); // HOJOGroup저장
+
+    if(response == "true"){
+      Fluttertoast.showToast(msg: "등록이 완료되었습니다.");
+    }else {
+      Fluttertoast.showToast(msg: response);
+    }
+
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
   }
 
 }
