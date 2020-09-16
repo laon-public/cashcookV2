@@ -14,6 +14,7 @@ class StoreProvider with ChangeNotifier{
       print(start);
       print(end);
     store.clear();
+    print("여기 부르냐?");
     String response = await service.getStore(start, end);
     print(response);
     Map<String, dynamic> mapJson = jsonDecode(response);
@@ -23,6 +24,7 @@ class StoreProvider with ChangeNotifier{
         store.add(tmp);
       }
     }
+    print("여기 부르냐?");
     notifyListeners();
   }
 
