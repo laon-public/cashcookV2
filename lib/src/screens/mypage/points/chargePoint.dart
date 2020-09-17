@@ -435,9 +435,8 @@ class _PaymentMethodState extends State<PaymentMethod> {
               } else {
                 Fluttertoast.showToast(msg: "충전이 완료되었습니다.");
               }
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => MainMap()),
-                      (route) => false);
+             // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
+              Navigator.of(context).pop();
             }
           }
         },

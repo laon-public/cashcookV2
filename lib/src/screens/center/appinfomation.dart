@@ -53,7 +53,7 @@ class AppInfomation extends StatelessWidget {
               padding: const EdgeInsets.only(right: 16.0),
               child: InkWell(
                 onTap: (){
-                  Navigator.of(context).pushNamed("/inquiry/write"); //공유 버튼을 눌렀을때 이동할 주소 (임시)
+                  //Navigator.of(context).pushNamed("/inquiry/write"); //공유 버튼을 눌렀을때 이동할 주소 (임시)
                 },
                 child: Text("공유",style: TextStyle(fontSize: 14,decoration: TextDecoration.underline),), //오른쪽 상단에 텍스트 출력
               ),

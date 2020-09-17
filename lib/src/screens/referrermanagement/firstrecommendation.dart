@@ -165,9 +165,11 @@ class _FirstRecommendation extends State<FirstRecommendation> {
                       ),
                       whiteSpaceW(12),
                       Container(
-                        width: 48,
-                        height: 48,
-                        color: Color(0xFFDDDDDD),
+                        child: Image.asset(
+                          "assets/resource/public/payment.png",
+                          width: 48,
+                          height: 48,
+                        ),
                       )
                     ],
                   ),

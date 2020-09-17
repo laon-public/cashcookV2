@@ -335,7 +335,10 @@ class _ReferrerManagement extends State {
         Image.asset(
           data.type == 0
               ? "assets/resource/public/directly.png"
-              : "assets/resource/public/indirect.png",
+              : data.type == 1
+              ? "assets/resource/public/indirect.png"
+              : "assets/resource/public/friend-none.png",
+
           width: 32,
           height: 60,
         ),

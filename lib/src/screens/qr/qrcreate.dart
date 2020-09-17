@@ -1,6 +1,7 @@
 import 'package:cashcook/src/provider/QRProvider.dart';
 import 'package:cashcook/src/screens/qr/qrcheck.dart';
 import 'package:cashcook/src/utils/colors.dart';
+import 'package:cashcook/src/widgets/TextFieldWidget.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,7 +22,7 @@ class _QrCreate extends State<QrCreate> {
 
   TextEditingController payController = TextEditingController();
   TextEditingController dlController = TextEditingController();
-
+  FocusNode payMove = FocusNode ();
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -82,6 +83,7 @@ class _QrCreate extends State<QrCreate> {
                       width: MediaQuery.of(context).size.width,
                       height: 40,
                       child: TextFormField(
+                        focusNode: payMove,
                         textInputAction: TextInputAction.done,
                         keyboardType: TextInputType.number,
                         controller: payController,
@@ -101,6 +103,7 @@ class _QrCreate extends State<QrCreate> {
                         },
                         cursorColor: mainColor,
                         decoration: InputDecoration(
+                            hintText: widget.type == 0 ? "결제 금액은 1000원 단위로 해주세요." : "결제 금액은 100원 단위로 해주세요.",
                             filled: true,
                             suffixText: "KRW",
                             suffixStyle: TextStyle(
@@ -249,20 +252,46 @@ class _QrCreate extends State<QrCreate> {
                 height: 40,
                 child: RaisedButton(
                   onPressed: () async{
+
                     print(111);
                     int price = int.parse(payController.text == "" ? 0: payController.text);
                     int dilling = widget.type == 0 ? 0 : int.parse(dlController.text == "" ? 0: dlController.text.split(".").first);
                     String payment = widget.type == 0 ? "NORMAL": "DILLING";
                     print(price);
                     print(dilling);
-                    print(payment);
+                    print("현재 상태 : ${ payment } ");
                     String uuid = await Provider.of<QRProvider>(context,listen: false).postCreateQR(price, dilling, payment);
                     print(uuid);
                     if(uuid == ""){
                       Fluttertoast.showToast(msg: "QR코드 생성에 실패하였습니다.");
                     }else {
-                      Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (context) => QrCheck(uuid)));
+
+                      if(  (widget.type == 0 && payController.text.length <= 2) || (widget.type == 1 && payController.text.length <= 3)){
+                        FocusScope.of(context).requestFocus(payMove);
+                        _showDialog();
+                      }
+
+                      if( widget.type == 0 ){
+                          if(payController.text.substring( payController.text.length-3 , payController.text.length) != "000"){
+                            print(" 100원 단위 있음 : ${payController.text.substring( payController.text.length-3 , payController.text.length)}");
+                            FocusScope.of(context).requestFocus(payMove);
+                            _showDialog();
+
+                          }else{
+                            print(" 100원 단위 없음 : ${payController.text.substring( payController.text.length-3 , payController.text.length)}");
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => QrCheck(uuid)));
+                          }
+                      } else if( widget.type == 1 ){
+                        if(payController.text.substring( payController.text.length-2 , payController.text.length) != "00" ){
+                          print(" 10원 단위 있음 : ${payController.text.substring( payController.text.length-3 , payController.text.length)}");
+                          FocusScope.of(context).requestFocus(payMove);
+                          _showDialog();
+
+                        }else{
+                          print(" 10원 단위 없음 : ${payController.text.substring( payController.text.length-2 , payController.text.length)}");
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => QrCheck(uuid)));
+                        }
+                      }
                     }
 
                   },
@@ -284,4 +313,32 @@ class _QrCreate extends State<QrCreate> {
       ),
     );
   }
+  void _showDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("${ widget.type == 0 ? "결제 금액은 1000원 단위로 해주세요." : "결제 금액은 100원 단위로 해주세요." }",
+            style: TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.w600,
+            color: Color(0xff444444),
+          ),),
+
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                payController.text = '';
+                Navigator.pop(context);
+
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
+

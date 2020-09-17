@@ -8,6 +8,9 @@ class InquiryWrite extends StatelessWidget {
   TextEditingController titleCtrl = TextEditingController();
   TextEditingController contentCtrl = TextEditingController();
 
+  FocusNode moveOne = FocusNode ();
+  FocusNode moveTwo = FocusNode ();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +26,19 @@ class InquiryWrite extends StatelessWidget {
               padding: const EdgeInsets.only(right: 16.0),
               child: InkWell(
                 onTap: (){
-                  Provider.of<CenterProvider>(context,listen: false).inputInquiry(titleCtrl.text, contentCtrl.text, context);
+                  if( titleCtrl.text == "" || contentCtrl.text == ""){
+                    if(titleCtrl.text == "" ) {
+                      FocusScope.of(context).requestFocus(moveOne);
+                      _showDialog(context);
+                    }else{
+                      FocusScope.of(context).requestFocus(moveTwo);
+                      _showDialog(context);
+                    }
+
+                  }else {
+                    Provider.of<CenterProvider>(context, listen: false)
+                        .inputInquiry(titleCtrl.text, contentCtrl.text, context);
+                  }
                 },
                 child: Text("보내기",style: TextStyle(fontSize: 14, color: mainColor,decoration: TextDecoration.underline),),
               ),
@@ -80,6 +95,7 @@ class InquiryWrite extends StatelessWidget {
             child: Align(child: Text("제목",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
           ),
           TextFormField(
+            focusNode: moveOne,
             cursorColor: Color(0xff000000),
             controller: titleCtrl,
             decoration: InputDecoration(
@@ -110,6 +126,7 @@ class InquiryWrite extends StatelessWidget {
             child: Align(child: Text("내용",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
           ),
           TextFormField(
+            focusNode: moveTwo,
             maxLines: 10,
             cursorColor: Color(0xff000000),
             controller: contentCtrl,
@@ -140,10 +157,49 @@ class InquiryWrite extends StatelessWidget {
         textColor: Colors.white,
         color: mainColor,
         onPressed: (){
-          Provider.of<CenterProvider>(context,listen: false).inputInquiry(titleCtrl.text, contentCtrl.text, context);
+
+          if( titleCtrl.text == "" || contentCtrl.text == ""){
+            if(titleCtrl.text == "" ) {
+              //FocusScope.of(context).requestFocus(moveOne);
+              _showDialog(context);
+            }else{
+             // FocusScope.of(context).requestFocus(moveTwo);
+              _showDialog(context);
+            }
+
+          }else{
+            Provider.of<CenterProvider>(context,listen: false).inputInquiry(titleCtrl.text, contentCtrl.text, context);
+          }
+
         },
         elevation: 0.0,
       ),
     );
   }
+
+  void _showDialog(context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("${ titleCtrl.text == "" ? "제목을 입력해 주세요." :"내용을 입력해 주세요."}",
+            style: TextStyle(
+              fontSize: 17,
+              fontWeight: FontWeight.w600,
+              color: Color(0xff444444),
+            ),),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
+
