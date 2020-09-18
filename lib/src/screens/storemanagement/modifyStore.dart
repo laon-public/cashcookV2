@@ -6,6 +6,8 @@ import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/TextFieldWidget.dart';
+import 'package:cashcook/src/widgets/TextFieldsWidget.dart';
+import 'package:cashcook/src/widgets/TextFieldssWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -25,6 +27,9 @@ class _ModifyStoreState extends State<ModifyStore> {
   TextEditingController descCtrl = TextEditingController();
 
   TextEditingController telCtrl = TextEditingController();
+  TextEditingController telCtrl1 = TextEditingController();
+  TextEditingController telCtrl2 = TextEditingController();
+  TextEditingController telCtrl3 = TextEditingController();
 
   TextEditingController negotiableTimeCtrl = TextEditingController();
 
@@ -37,7 +42,12 @@ class _ModifyStoreState extends State<ModifyStore> {
     StoreModel store = Provider.of<UserProvider>(context,listen: false).storeModel;
     nameCtrl.text = store.store.name;
     descCtrl.text = store.store.description;
-    telCtrl.text = store.store.tel;
+
+    //telCtrl.text = store.tel;
+    telCtrl1.text = store.tel.substring(0,3);
+    telCtrl2.text = store.tel.substring(3,7);
+    telCtrl3.text = store.tel.substring(7,11);
+
     negotiableTimeCtrl.text = store.store.negotiable_time;
     addressCtrl.text = store.address.address;
     detailCtrl.text = store.address.detail;
@@ -92,6 +102,38 @@ class _ModifyStoreState extends State<ModifyStore> {
             textField("매장명", "사업자등록증의 상호명을 입력해주세요.", nameCtrl,TextInputType.text),
             textField("매장설명", "100자 내외로 입력해주세요.", descCtrl,TextInputType.text),
             textField("매장 연락처", "연락가능한 연락처를 입력하여주세요.", telCtrl,TextInputType.phone),
+
+            Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Align(child: Text("매장 연락처",
+                    style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
+                    alignment: Alignment.centerLeft,),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(width: 90,
+                            child: textFieldss(telCtrl1, TextInputType.phone)),
+                        Text("-", style: TextStyle(
+                            fontSize: 12, color: Color(0xff888888)),),
+                        SizedBox(width: 125,
+                            child: textFields(telCtrl2, TextInputType.phone)),
+                        Text("-", style: TextStyle(
+                            fontSize: 12, color: Color(0xff888888)),),
+                        SizedBox(width: 125,
+                            child: textFields(telCtrl3, TextInputType.phone)),
+                      ]
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5.0),
+                    child: Align(child: Text("연락가능한 연락처를 입력하여주세요",
+                      style: TextStyle(
+                          fontSize: 12, color: Color(0xff888888)),),
+                      alignment: Alignment.centerRight,),
+                  ),
+
+                ]
+            ),
             textField("흥정시간", "실시간 흥정 가능시간.", negotiableTimeCtrl,TextInputType.text),
             addressInfo(context),
             Padding(
@@ -137,17 +179,24 @@ class _ModifyStoreState extends State<ModifyStore> {
           }
           if(store.address.detail != detailCtrl.text) data["address_detail"] = detailCtrl.text;
 
-          bool isReturn = await Provider.of<StoreProvider>(context,listen: false).patchStore(data, "", shop1_uri, shop2_uri, shop3_uri);
 
-          if(isReturn){
-            Fluttertoast.showToast(msg: "가맹점 수정이 성공하였습니다.");
-            DefaultCacheManager cacheManager = new DefaultCacheManager();
-            cacheManager.emptyCache();
-          }else {
-            Fluttertoast.showToast(msg: "가맹점 수정이 실패하였습니다.");
+          if( telCtrl1.text.length < 3 || telCtrl2.text.length < 4 ||  telCtrl3.text.length < 4 ){
+            Fluttertoast.showToast(msg: "전화 번호의 자릿수가 부족 합니다.");
+          }else{
+
+            bool isReturn = await Provider.of<StoreProvider>(context,listen: false).patchStore(data, "", shop1_uri, shop2_uri, shop3_uri);
+
+            if(isReturn){
+              Fluttertoast.showToast(msg: "가맹점 수정이 성공하였습니다.");
+              DefaultCacheManager cacheManager = new DefaultCacheManager();
+              cacheManager.emptyCache();
+            }else {
+              Fluttertoast.showToast(msg: "가맹점 수정이 실패하였습니다.");
+            }
+
+            //Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => StoreManagement()), (route) => false);
+            Navigator.of(context).pop();
           }
-          //Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
-          Navigator.of(context).pop();
 
         },
         child: Text("수정"),

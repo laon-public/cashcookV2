@@ -296,17 +296,19 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
 
           if(nameCtrl.text == '' || nameCtrl.text == null ) {
             Fluttertoast.showToast(msg: "매장명을 입력해 주세요");
-          }else if(descCtrl.text  == '' || descCtrl.text == null){
+          } else if(descCtrl.text  == '' || descCtrl.text == null){
             Fluttertoast.showToast(msg: "매장설명을 입력해 주세요");
-          }else if(timeCtrl1.text == '' || timeCtrl1.text == null ||
+          } else if(timeCtrl1.text == '' || timeCtrl1.text == null ||
               timeCtrl2.text == '' || timeCtrl2.text == null ||
               timeCtrl3.text == '' || timeCtrl3.text == null ){
             Fluttertoast.showToast(msg: "매장 연락처를 입력해 주세요");
-          }else if(negotiableTimeCtrl.text == '' || negotiableTimeCtrl.text == null ){
+          } else if(timeCtrl1.text.length < 3 || timeCtrl2.text.length < 4 || timeCtrl3.text.length < 4){
+            Fluttertoast.showToast(msg: "전화 번호의 자릿수가 부족 합니다.");
+          } else if(negotiableTimeCtrl.text == '' || negotiableTimeCtrl.text == null ){
             Fluttertoast.showToast(msg: "흥정시간을 입력해 주세요");
-          }else if(addressCtrl.text == '' || addressCtrl.text == null ){
+          } else if(addressCtrl.text == '' || addressCtrl.text == null ){
             Fluttertoast.showToast(msg: "매장 주소를 입력해 주세요");
-          }else if(detailCtrl.text == '' || detailCtrl.text == null ){
+          } else if(detailCtrl.text == '' || detailCtrl.text == null ){
             Fluttertoast.showToast(msg: "매장 상세주소를 입력해 주세요");
           } else if(shop1_uri == '' || shop1_uri == null ||
               shop2_uri == '' || shop2_uri == null ||

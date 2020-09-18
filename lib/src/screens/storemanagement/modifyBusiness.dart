@@ -34,7 +34,7 @@ class ModifyBusiness extends StatelessWidget {
   setBlUri(uri){
     blUri = uri;
   }
-  
+
   @override
   Widget build(BuildContext context) {
     StoreModel store = Provider.of<UserProvider>(context,listen: false).storeModel;
@@ -46,11 +46,7 @@ class ModifyBusiness extends StatelessWidget {
     telCtrl1.text = store.tel.substring(0,3);
     telCtrl2.text = store.tel.substring(3,7);
     telCtrl3.text = store.tel.substring(7,11);
-    print("----------------");
-    print(telCtrl1.text);
-    print(telCtrl2.text);
-    print(telCtrl3.text);
-    print("----------------");
+
 
     emailCtrl.text = store.store.email;
     bankCtrl.text = store.bank.bank;
@@ -82,22 +78,37 @@ class ModifyBusiness extends StatelessWidget {
             textField("대표자명", "사업자등록증의 내용으로 입력해주세요.", ownerCtrl,TextInputType.text),
 
             //textField("연락처", "연락가능한 연락처를 입력하여주세요.", telCtrl,TextInputType.phone),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(width: 90,
-                    child: textFieldss(telCtrl1, TextInputType.phone)),
-                Text("-", style: TextStyle(
-                    fontSize: 12, color: Color(0xff888888)),),
-                SizedBox(width: 125,
-                    child: textFields(telCtrl2, TextInputType.phone)),
-                Text("-", style: TextStyle(
-                    fontSize: 12, color: Color(0xff888888)),),
-                SizedBox(width: 125,
-                    child: textFields(telCtrl3, TextInputType.phone)),
-              ]
-          ),
+            Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Align(child: Text("연락처",
+                    style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
+                    alignment: Alignment.centerLeft,),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(width: 90,
+                            child: textFieldss(telCtrl1, TextInputType.phone)),
+                        Text("-", style: TextStyle(
+                            fontSize: 12, color: Color(0xff888888)),),
+                        SizedBox(width: 125,
+                            child: textFields(telCtrl2, TextInputType.phone)),
+                        Text("-", style: TextStyle(
+                            fontSize: 12, color: Color(0xff888888)),),
+                        SizedBox(width: 125,
+                            child: textFields(telCtrl3, TextInputType.phone)),
+                      ]
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5.0),
+                    child: Align(child: Text("연락가능한 연락처를 입력하여주세요",
+                      style: TextStyle(
+                          fontSize: 12, color: Color(0xff888888)),),
+                      alignment: Alignment.centerRight,),
+                  ),
 
+                ]
+            ),
 
             textField("이메일 주소", "사업자등록증의 상호명을 입력해주세요.", emailCtrl,TextInputType.emailAddress),
             BackInfo(),
@@ -168,24 +179,31 @@ class ModifyBusiness extends StatelessWidget {
           StoreModel store = Provider.of<UserProvider>(context,listen: false).storeModel;
 
           Map<String, String> data = {};
-          if(store.company_name != nameCtrl.text) data["company_name"] = nameCtrl.text;
-          if(store.business_number != bnCtrl.text) data["business_number"] = bnCtrl.text;
-          if(store.owner != ownerCtrl.text) data["owner"] = ownerCtrl.text;
 
-          //if(store.tel != telCtrl.text) data["tel"] = telCtrl.text;
-          if(store.tel != telCtrl1.text+telCtrl2.text+telCtrl3.text) data["tel"] = telCtrl1.text+telCtrl2.text+telCtrl3.text;
 
-          if(store.store.email != emailCtrl.text) data["email"] = emailCtrl.text;
-          if(store.bank.bank != bankCtrl.text) data["bank"] = bankCtrl.text;
-          if(store.bank.number != accountCtrl.text) data["account"] = accountCtrl.text;
+            if(store.company_name != nameCtrl.text) data["company_name"] = nameCtrl.text;
+            if(store.business_number != bnCtrl.text) data["business_number"] = bnCtrl.text;
+            if(store.owner != ownerCtrl.text) data["owner"] = ownerCtrl.text;
+            if(store.tel != telCtrl1.text+telCtrl2.text+telCtrl3.text) data["tel"] = telCtrl1.text+telCtrl2.text+telCtrl3.text;
+            if(store.store.email != emailCtrl.text) data["email"] = emailCtrl.text;
+            if(store.bank.bank != bankCtrl.text) data["bank"] = bankCtrl.text;
+            if(store.bank.number != accountCtrl.text) data["account"] = accountCtrl.text;
 
-          bool isReturn = await Provider.of<StoreProvider>(context,listen: false).patchStore(data, blUri, "", "", "");
-          if(isReturn){
-            Fluttertoast.showToast(msg: "사업자정보 수정이 성공하였습니다.");
-          }else {
-            Fluttertoast.showToast(msg: "사업자정보 수정이 실패하였습니다.");
+
+          if( telCtrl1.text.length < 3 || telCtrl2.text.length < 4 ||  telCtrl3.text.length < 4 ){
+            Fluttertoast.showToast(msg: "전화 번호의 자릿수가 부족 합니다.");
+          }else{
+
+            bool isReturn = await Provider.of<StoreProvider>(context,listen: false).patchStore(data, blUri, "", "", "");
+            if(isReturn){
+              Fluttertoast.showToast(msg: "사업자정보 수정이 성공하였습니다.");
+            }else {
+              Fluttertoast.showToast(msg: "사업자정보 수정이 실패하였습니다.");
+            }
+            //Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => StoreManagement()), (route) => false);
+            Navigator.of(context).pop();
           }
-          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => StoreManagement()), (route) => false);
+
         },
         child: Text("수정"),
         textColor: Colors.white,

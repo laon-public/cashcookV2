@@ -266,7 +266,7 @@ class _QrCreate extends State<QrCreate> {
                       Fluttertoast.showToast(msg: "QR코드 생성에 실패하였습니다.");
                     }else {
 
-                      if(  (widget.type == 0 && payController.text.length <= 2) || (widget.type == 1 && payController.text.length <= 3)){
+                      if(  (widget.type == 0 && payController.text.length <= 2) || (widget.type == 1 && payController.text.length <= 2)){
                         FocusScope.of(context).requestFocus(payMove);
                         _showDialog();
                       }
