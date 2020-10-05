@@ -22,6 +22,8 @@ class _ChargePointState extends State<ChargePoint> {
 
   String id;
 
+  bool _isButtonDisabled;
+
   AccountModel accountModel;
   AccountModel dlAccountModel;
 
@@ -411,7 +413,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
         elevation: 0.0,
         textColor: Colors.white,
         color: mainColor,
-        onPressed: () async {
+        onPressed: isAgreeCheck == false? null : () async {
           if(!isAgreeCheck){
             showToast("개인정보이용 동의를 해주셔야 합니다.");
             return;

@@ -19,13 +19,17 @@ class Inquiry extends StatelessWidget {
       center.startLoading();
       center.fetchInquiry(currentPage);
     }
+    print("값확인");
+    print(center);
   }
 
   @override
   Widget build(BuildContext context) {
+    print("시작");
     Provider.of<CenterProvider>(context,listen: false).fetchInquiry(currentPage);
     _scrollController.addListener(() {
       if(_scrollController.offset == _scrollController.position.maxScrollExtent)
+        print("loadMore");
         loadMore(context);
     });
     return Scaffold(
@@ -59,9 +63,12 @@ class Inquiry extends StatelessWidget {
   Widget InquiryList() {
     return Consumer<CenterProvider>(
       builder: (context, center, _){
+        print("builder");
         return ListView.builder(
           itemBuilder: (context, idx) {
             if(idx < center.inquiry.length){
+              print(center.inquiry[idx].status);
+              print(center.inquiry[idx].title);
               return InquiryItem(center.inquiry[idx]);
             }
             return Center(
@@ -92,7 +99,7 @@ class InquiryItem extends StatefulWidget {
 class _InquiryItemState extends State<InquiryItem> {
 
   bool isOpen = false;
-
+  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -136,12 +143,12 @@ class _InquiryItemState extends State<InquiryItem> {
                         color: Color(0xff444444),
                       ),
                     ),
-
+                    Provider.of<CenterProvider>(context).inquiry[0].status == "ANSWER"?
                     Image.asset(
                       "assets/icon/n.png",
                       width: 24,
                       fit: BoxFit.contain,
-                    )
+                    ) : Image.asset("assets/icon/n.png",width:0),
                   ],
                 ),
                 Text(

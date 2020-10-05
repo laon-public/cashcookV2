@@ -228,11 +228,11 @@ class _DlSell extends State<DlSell> {
                 width: MediaQuery.of(context).size.width,
                 height: 40,
                 child: RaisedButton(
-                  onPressed: () {
+                  onPressed: dlController.text != ""? () {
                     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
                       builder: (context) => MainMap()
                     ), (route) => false);
-                  },
+                  } : null,
                   elevation: 0.0,
                   color: mainColor,
                   child: Center(

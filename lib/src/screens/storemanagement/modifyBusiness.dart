@@ -15,8 +15,14 @@ import 'package:cashcook/src/widgets/TextFieldsWidget.dart';
 import 'package:cashcook/src/widgets/TextFieldssWidget.dart';
 
 
-class ModifyBusiness extends StatelessWidget {
-  
+class ModifyBusiness extends StatefulWidget {
+  @override
+  _ModifyBusiness createState() => _ModifyBusiness();
+
+}
+
+class _ModifyBusiness extends State<ModifyBusiness> {
+
   TextEditingController nameCtrl = TextEditingController(); //상호명
   TextEditingController bnCtrl = TextEditingController(); //사업자번호
   TextEditingController ownerCtrl = TextEditingController(); //대표자명
@@ -35,14 +41,26 @@ class ModifyBusiness extends StatelessWidget {
     blUri = uri;
   }
 
+//  bool check = true;
+
+//  change(String text){
+//    print(text);
+//    print(text.isNotEmpty);
+//    if (text.isNotEmpty) {
+//      check = false;
+//    } else {
+//      check = true;
+//    }
+//  }
+
   @override
   Widget build(BuildContext context) {
+
     StoreModel store = Provider.of<UserProvider>(context,listen: false).storeModel;
     nameCtrl.text = store.company_name;
     bnCtrl.text = store.business_number;
     ownerCtrl.text = store.owner;
 
-    //telCtrl.text = store.tel;
     telCtrl1.text = store.tel.substring(0,3);
     telCtrl2.text = store.tel.substring(3,7);
     telCtrl3.text = store.tel.substring(7,11);
@@ -51,6 +69,7 @@ class ModifyBusiness extends StatelessWidget {
     emailCtrl.text = store.store.email;
     bankCtrl.text = store.bank.bank;
     accountCtrl.text = store.bank.number;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -62,7 +81,6 @@ class ModifyBusiness extends StatelessWidget {
     );
   }
 
-
   Widget body(context) {
     return SingleChildScrollView(
       child: Padding(
@@ -72,10 +90,46 @@ class ModifyBusiness extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            textField("상호명", "사업자등록증의 상호명을 입력해주세요.", nameCtrl, TextInputType.text),
+            nameWidget(),
             BusinessNumber(onSetUri: setBlUri,),
-            textField("사업자번호", "사업자등록증의 내용으로 입력해주세요.", bnCtrl,TextInputType.text),
-            textField("대표자명", "사업자등록증의 내용으로 입력해주세요.", ownerCtrl,TextInputType.text),
+            Padding(
+              padding: const EdgeInsets.only(top:5.0),
+              child: Align(child: Text("사업자번호",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+            ),
+            TextFormField(
+              controller: bnCtrl,
+              cursorColor: Color(0xff000000),
+              decoration: InputDecoration(
+                hintText: "사업자등록증의 내용으로 입력해주세요.",
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+                border: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xffdddddd), width: 2.0),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: mainColor, width: 2.0),
+                ),
+              ),
+            ),
+//            textField("사업자번호", "사업자등록증의 내용으로 입력해주세요.", bnCtrl,TextInputType.text),
+            Padding(
+              padding: const EdgeInsets.only(top:5.0),
+              child: Align(child: Text("대표자명",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+            ),
+            TextFormField(
+              controller: ownerCtrl,
+              cursorColor: Color(0xff000000),
+              decoration: InputDecoration(
+                hintText: "사업자등록증의 내용으로 입력해주세요.",
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+                border: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xffdddddd), width: 2.0),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: mainColor, width: 2.0),
+                ),
+              ),
+            ),
+//            textField("대표자명", "사업자등록증의 내용으로 입력해주세요.", ownerCtrl,TextInputType.text),
 
             //textField("연락처", "연락가능한 연락처를 입력하여주세요.", telCtrl,TextInputType.phone),
             Column(
@@ -88,15 +142,60 @@ class ModifyBusiness extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(width: 90,
-                            child: textFieldss(telCtrl1, TextInputType.phone)),
+                            child:
+                            TextFormField(
+                              controller: telCtrl1,
+                              textAlign: TextAlign.center,
+                              keyboardType: TextInputType.phone,
+                              cursorColor: Color(0xff000000),
+                              decoration: InputDecoration(
+                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                border: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Color(0xffdddddd), width: 2.0),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: mainColor, width: 2.0),
+                                ),
+                              ),
+                            )),
                         Text("-", style: TextStyle(
                             fontSize: 12, color: Color(0xff888888)),),
                         SizedBox(width: 125,
-                            child: textFields(telCtrl2, TextInputType.phone)),
+                            child:
+                            TextFormField(
+                              controller: telCtrl2,
+                              textAlign: TextAlign.center,
+                              keyboardType: TextInputType.phone,
+                              cursorColor: Color(0xff000000),
+                              decoration: InputDecoration(
+                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                border: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Color(0xffdddddd), width: 2.0),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: mainColor, width: 2.0),
+                                ),
+                              ),
+                            )),
                         Text("-", style: TextStyle(
                             fontSize: 12, color: Color(0xff888888)),),
                         SizedBox(width: 125,
-                            child: textFields(telCtrl3, TextInputType.phone)),
+                            child:
+                            TextFormField(
+                              controller: telCtrl3,
+                              textAlign: TextAlign.center,
+                              keyboardType: TextInputType.phone,
+                              cursorColor: Color(0xff000000),
+                              decoration: InputDecoration(
+                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                border: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Color(0xffdddddd), width: 2.0),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: mainColor, width: 2.0),
+                                ),
+                              ),
+                            )),
                       ]
                   ),
                   Padding(
@@ -110,7 +209,25 @@ class ModifyBusiness extends StatelessWidget {
                 ]
             ),
 
-            textField("이메일 주소", "사업자등록증의 상호명을 입력해주세요.", emailCtrl,TextInputType.emailAddress),
+            Padding(
+              padding: const EdgeInsets.only(top:5.0),
+              child: Align(child: Text("이메일 주소",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+            ),
+            TextFormField(
+              controller: emailCtrl,
+              keyboardType: TextInputType.emailAddress,
+              cursorColor: Color(0xff000000),
+              decoration: InputDecoration(
+                hintText: "사업자등록증의 이메일을 입력해주세요.",
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+                border: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xffdddddd), width: 2.0),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: mainColor, width: 2.0),
+                ),
+              ),
+            ),
             BackInfo(),
             Padding(
               padding: const EdgeInsets.only(top:40.0),
@@ -120,6 +237,33 @@ class ModifyBusiness extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget nameWidget(){
+    return Container(
+      child: Column(
+          children: [
+              Padding(
+                padding: const EdgeInsets.only(top:5.0),
+                child: Align(child: Text("상호명",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+              ),
+              TextFormField(
+              controller: nameCtrl,
+              cursorColor: Color(0xff000000),
+              decoration: InputDecoration(
+              hintText: "사업자등록증의 상호명을 입력해주세요.",
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              border: UnderlineInputBorder(
+              borderSide: BorderSide(color: Color(0xffdddddd), width: 2.0),
+              ),
+              focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: mainColor, width: 2.0),
+              ),
+              ),
+              ),
+            ],
+          ),
+        );
   }
 
 
@@ -175,12 +319,34 @@ class ModifyBusiness extends StatelessWidget {
       width: double.infinity,
       height: 40,
       child: RaisedButton(
-        onPressed: ()async{
-          StoreModel store = Provider.of<UserProvider>(context,listen: false).storeModel;
+        onPressed: () async{
+            if(nameCtrl.text.length < 1) {
+              Fluttertoast.showToast(msg: "상호명을 입력해주세요.");
+              return;
+            }
+            if(bnCtrl.text.length < 1) {
+              Fluttertoast.showToast(msg: "사업자번호를 입력해주세요.");
+              return;
+            }
+            if(nameCtrl.text.length < 1) {
+              Fluttertoast.showToast(msg: "대표자명을 입력해주세요.");
+              return;
+            }
+            if(emailCtrl.text.length < 1) {
+              Fluttertoast.showToast(msg: "이메일주소를 입력해주세요.");
+              return;
+            }
+            if(bankCtrl.text.length < 1) {
+              Fluttertoast.showToast(msg: "은행명을 입력해주세요.");
+              return;
+            }
+            if(accountCtrl.text.length < 1) {
+              Fluttertoast.showToast(msg: "계좌번호를 입력해주세요.");
+              return;
+            }
 
-          Map<String, String> data = {};
-
-
+            StoreModel store = Provider.of<UserProvider>(context,listen: false).storeModel;
+            Map<String, String> data = {};
             if(store.company_name != nameCtrl.text) data["company_name"] = nameCtrl.text;
             if(store.business_number != bnCtrl.text) data["business_number"] = bnCtrl.text;
             if(store.owner != ownerCtrl.text) data["owner"] = ownerCtrl.text;
@@ -190,21 +356,20 @@ class ModifyBusiness extends StatelessWidget {
             if(store.bank.number != accountCtrl.text) data["account"] = accountCtrl.text;
 
 
-          if( telCtrl1.text.length < 3 || telCtrl2.text.length < 4 ||  telCtrl3.text.length < 4 ){
-            Fluttertoast.showToast(msg: "전화 번호의 자릿수가 부족 합니다.");
-          }else{
+            if( telCtrl1.text.length < 3 || telCtrl2.text.length < 4 ||  telCtrl3.text.length < 4 ){
+              Fluttertoast.showToast(msg: "전화 번호의 자릿수가 부족 합니다.");
+            }else{
 
-            bool isReturn = await Provider.of<StoreProvider>(context,listen: false).patchStore(data, blUri, "", "", "");
-            if(isReturn){
-              Fluttertoast.showToast(msg: "사업자정보 수정이 성공하였습니다.");
-            }else {
-              Fluttertoast.showToast(msg: "사업자정보 수정이 실패하였습니다.");
-            }
-            //Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => StoreManagement()), (route) => false);
+              bool isReturn = await Provider.of<StoreProvider>(context,listen: false).patchStore(data, blUri, "", "", "");
+              if(isReturn){
+                Fluttertoast.showToast(msg: "사업자정보 수정이 성공하였습니다.");
+              }else {
+                Fluttertoast.showToast(msg: "사업자정보 수정이 실패하였습니다.");
+              }
+              //Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => StoreManagement()), (route) => false);
             Navigator.of(context).pop();
-          }
-
-        },
+            }
+          },
         child: Text("수정"),
         textColor: Colors.white,
         color: mainColor,
@@ -212,7 +377,6 @@ class ModifyBusiness extends StatelessWidget {
     );
   }
 }
-
 
 class BusinessNumber extends StatefulWidget {
 

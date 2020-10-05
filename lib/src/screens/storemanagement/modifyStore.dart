@@ -43,10 +43,10 @@ class _ModifyStoreState extends State<ModifyStore> {
     nameCtrl.text = store.store.name;
     descCtrl.text = store.store.description;
 
-    //telCtrl.text = store.tel;
-    telCtrl1.text = store.tel.substring(0,3);
-    telCtrl2.text = store.tel.substring(3,7);
-    telCtrl3.text = store.tel.substring(7,11);
+    telCtrl.text = store.store.tel;
+    telCtrl1.text = store.store.tel.substring(0,3);
+    telCtrl2.text = store.store.tel.substring(3,7);
+    telCtrl3.text = store.store.tel.substring(7,11);
 
     negotiableTimeCtrl.text = store.store.negotiable_time;
     addressCtrl.text = store.address.address;
@@ -101,7 +101,6 @@ class _ModifyStoreState extends State<ModifyStore> {
           children: [
             textField("매장명", "사업자등록증의 상호명을 입력해주세요.", nameCtrl,TextInputType.text),
             textField("매장설명", "100자 내외로 입력해주세요.", descCtrl,TextInputType.text),
-            textField("매장 연락처", "연락가능한 연락처를 입력하여주세요.", telCtrl,TextInputType.phone),
 
             Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -168,10 +167,16 @@ class _ModifyStoreState extends State<ModifyStore> {
           StoreModel store = Provider.of<UserProvider>(context,listen: false).storeModel;
 
           Map<String, String> data = {};
+          if(nameCtrl.text.length < 1) Fluttertoast.showToast(msg: "매장명을 입력해주세요.");
+          if(descCtrl.text.length < 1) Fluttertoast.showToast(msg: "매장설명을 입력해주세요.");
+          if(negotiableTimeCtrl.text.length < 1) Fluttertoast.showToast(msg: "흥정시간을 입력해주세요.");
+          if(addressCtrl.text.length < 1) Fluttertoast.showToast(msg: "매장주소를 입력해주세요.");
+          if(detailCtrl.text.length < 1) Fluttertoast.showToast(msg: "매장상세주소를 입력해주세요.");
+
           if(store.store.name != nameCtrl.text) data["shop_name"] = nameCtrl.text;
           if(store.store.description != descCtrl.text) data["shop_description"] = descCtrl.text;
-          if(store.store.tel != telCtrl.text) data["shop_tel"] = telCtrl.text;
           if(store.store.negotiable_time != negotiableTimeCtrl.text) data["negotiable_time"] = negotiableTimeCtrl.text;
+          if(store.store.tel != telCtrl1.text + telCtrl2.text + telCtrl3.text) data["shop_tel"] = telCtrl1.text + telCtrl2.text + telCtrl3.text;
           if(store.address.address != addressCtrl.text) {
             data["address"] = addressCtrl.text;
             data["latitude"] = lat.toString();
@@ -384,3 +389,4 @@ class _PicturesState extends State<Pictures> {
     );
   }
 }
+

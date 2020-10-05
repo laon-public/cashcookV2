@@ -100,6 +100,7 @@ class UserService {
     // List<String> selectmember = selectedmember.split('/') ;
     // String name = selectmember[0];
     // String phone = selectmember[1];
+    print("recomemberinsert");
     print('확인 : $selectedmember');
     // print('확인 : $phone');
     //실제로 저장 되는 것은 나를 추천한 유저의 아이디 이다.
@@ -108,6 +109,16 @@ class UserService {
     final response = await client.post(cookURL+"/users/me/reco/memberinsert/$selectedmember",
       headers: {"Authorization": "BEARER ${dataStorage.token}","Content-Type": "application/json",},);
 
+    print(response.body);
+    return utf8.decode(response.bodyBytes);
+
+  }
+
+  Future<String> recognitionSelect() async {
+    print("UserProvider recognitionSelect 실행");
+    final response = await client.post(cookURL+"/users/me/reco/recognitionSelect",
+      headers: {"Authorization": "BEARER ${dataStorage.token}","Content-Type": "application/json",},);
+    print("리스폰 바디");
     print(response.body);
     return utf8.decode(response.bodyBytes);
 

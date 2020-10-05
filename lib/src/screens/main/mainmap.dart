@@ -218,14 +218,6 @@ class _MainMap extends State<MainMap> {
 
   double distance = 0.0;
 
-  String getTitle() {
-    if (isCurrentPage == 0)
-      return "CASH COOK";
-    else if (isCurrentPage == 1)
-      return "CASH COOK";
-    else if (isCurrentPage == 2) return "마이페이지";
-  }
-
   Widget getChild() {
     if (isCurrentPage == 0) {
       return Stack(
@@ -378,13 +370,19 @@ class _MainMap extends State<MainMap> {
         elevation: 0.5,
         centerTitle: true,
         automaticallyImplyLeading: false,
-        title: Text(
-          getTitle(),
-          style: TextStyle(
-              fontFamily: 'noto',
-              color: isCurrentPage == 0 ? mainColor : Color(0xff444444),
-              fontSize: 20,
-              fontWeight: FontWeight.w600),
+        title: isCurrentPage == 2 ?
+        Text(
+            "마이페이지",
+            style: TextStyle(
+                fontFamily: 'noto',
+                color: isCurrentPage == 0 ? mainColor : Color(0xff444444),
+                fontSize: 20,
+                fontWeight: FontWeight.w600),
+          ) :
+        Image.asset(
+          "assets/icon/splash.png",
+          width: 150,
+          height: 80,
         ),
         actions: [
           detailView

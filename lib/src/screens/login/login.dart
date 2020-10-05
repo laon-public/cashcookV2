@@ -139,8 +139,13 @@ class _Login extends State<Login> {
                   Navigator.of(context)
                       .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
                 } else{
+                  var cnt = P.Provider.of<UserProvider>(context,listen: false).recognitionSelect();
+                  print("추천한 회원 있는지 체크");
+                  print(cnt);
+                  print(cnt.toString());
+                  // 추천한 회원이 있을 경우에만 추천회원 입력 화면으로 이동, 없으면 바로 메인 페이지로(자동으로 HOJOGroup insert)
                     Navigator.of(context)
-                        .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => FirstRecommendation()), (route) => false); //첫 로그인시 추전회원 입력 페이지면
+                        .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => FirstRecommendation()), (route) => false); //첫 로그인시 추천회원 입력 페이지면
                 }
               }
 

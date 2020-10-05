@@ -270,4 +270,17 @@ class UserProvider with ChangeNotifier {
     }
     return json['resultMsg'];
   }
+
+  Future<String> recognitionSelect() async {
+    print("UserProvider recognitionSelect");
+    final response = await service.recognitionSelect();
+    Map<String, dynamic> json = jsonDecode(response);
+    print("json 실행");
+    print(json);
+    print(isResponse(json));
+    if (isResponse(json)) {
+      return "true";
+    }
+    return json['data'];
+  }
 }

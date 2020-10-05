@@ -284,11 +284,12 @@ class _MyPageState extends State<MyPage> {
           border: Border.all(),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal:12, vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal:6, vertical: 8),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset("assets/icon/friends-wt.png", height: 32, fit: BoxFit.contain,),
+//              Image.asset("assets/icon/friends-wt.png", height: 32, fit: BoxFit.contain,),
+              Image.asset("assets/icon/storeManage.png", height: 42, fit: BoxFit.contain,),
               SizedBox(width: 12,),
               Text("매장 관리",style: TextStyle(fontSize: 16,color: Color(0xff444444))),
               Spacer(),
@@ -315,11 +316,12 @@ class _MyPageState extends State<MyPage> {
           border: Border.all(),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset("assets/icon/friends-wt.png", height: 32, fit: BoxFit.contain,),
+//              Image.asset("assets/icon/friends-wt.png", height: 32, fit: BoxFit.contain,),
+              Image.asset("assets/icon/recommend.png", height: 42, fit: BoxFit.contain,),
               SizedBox(width: 12,),
               Text("추천인 관리",style: TextStyle(fontSize: 16,color: Color(0xff444444))),
               Spacer(),

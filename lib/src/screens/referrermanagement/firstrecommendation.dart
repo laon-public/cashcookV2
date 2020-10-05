@@ -207,7 +207,7 @@ class _FirstRecommendation extends State<FirstRecommendation> {
 
 
   apply(UserCheck user) async {
-    // aip 요정하는 곳
+    // api 요정하는 곳
     // String firstlogin = user.isFirstLogin.toString();
     // String username = user.username;
 
@@ -252,8 +252,8 @@ class _FirstRecommendation extends State<FirstRecommendation> {
         Fluttertoast.showToast(msg: response);
       }
 
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
+//      Navigator.of(context).pushAndRemoveUntil(
+//          MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
     }
   }
 
@@ -267,8 +267,8 @@ class _FirstRecommendation extends State<FirstRecommendation> {
       Fluttertoast.showToast(msg: response);
     }
 
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
+//    Navigator.of(context).pushAndRemoveUntil(
+//        MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
   }
 
 }

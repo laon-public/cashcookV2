@@ -136,7 +136,7 @@ class _InvitationList extends State<InvitationList> {
                         width: MediaQuery.of(context).size.width,
                         height: 50,
                         child: RaisedButton(
-                          onPressed: () {
+                          onPressed: phoneProvider.checkCnt != 0? () async {
                             if(phoneProvider.checkCnt == 0){
                               showToast("연락처를 체크해주세요.");
                             } else {
@@ -144,7 +144,7 @@ class _InvitationList extends State<InvitationList> {
                               showToast("초대하기를 성공하셨습니다.");
                               Navigator.of(context).pop(true);
                             }
-                          },
+                          } : null,
                           elevation: 0.0,
                           color: mainColor,
                           child: Center(

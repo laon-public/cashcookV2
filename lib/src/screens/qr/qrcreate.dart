@@ -251,9 +251,9 @@ class _QrCreate extends State<QrCreate> {
                 width: MediaQuery.of(context).size.width,
                 height: 40,
                 child: RaisedButton(
-                  onPressed: () async{
-
-                    print(111);
+                  onPressed: (widget.type == 0 && payController.text.isNotEmpty && int.parse(payController.text) >= 1000) ||
+                      (widget.type == 1 && payController.text.isNotEmpty && int.parse(payController.text) >= 100) ? () async{
+                    print(1112);
                     int price = int.parse(payController.text == "" ? 0: payController.text);
                     int dilling = widget.type == 0 ? 0 : int.parse(dlController.text == "" ? 0: dlController.text.split(".").first);
                     String payment = widget.type == 0 ? "NORMAL": "DILLING";
@@ -294,7 +294,7 @@ class _QrCreate extends State<QrCreate> {
                       }
                     }
 
-                  },
+                  } : null,
                   elevation: 0.0,
                   color: mainColor,
                   child: Center(

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cashcook/src/utils/colors.dart';
+import 'package:cashcook/src/widgets/dialog.dart';
 import 'package:flutter/material.dart';
 
 import 'login/login.dart';
@@ -11,6 +12,11 @@ class Splash extends StatefulWidget {
 }
 
 class _Splash extends State<Splash> {
+
+  qrCreate(type) {
+    print("type : " + type);
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -42,6 +48,18 @@ class _Splash extends State<Splash> {
                 fit: BoxFit.contain,
               ),
             )
+//            Expanded(
+//                child: dialog(
+//                    title: "앱버전 안내",
+//                    content: "최신버전이 있습니다.\n지금 업데이트 하시겠습니까?",
+//                    sub: "",
+//                    context: context,
+//                    selectOneText: "예",
+//                    selectTwoText: "아니요",
+//                    selectOneVoid: () => qrCreate(0),
+//                    selectTwoVoid: () => qrCreate(1)
+//                ),
+//            ),
           ],
         ),
       ),

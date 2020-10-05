@@ -156,7 +156,7 @@ class InquiryWrite extends StatelessWidget {
         child: Text("보내기"),
         textColor: Colors.white,
         color: mainColor,
-        onPressed: (){
+        onPressed: ( titleCtrl.text != "" && contentCtrl.text != "")? () async {
 
           if( titleCtrl.text == "" || contentCtrl.text == ""){
             if(titleCtrl.text == "" ) {
@@ -171,7 +171,7 @@ class InquiryWrite extends StatelessWidget {
             Provider.of<CenterProvider>(context,listen: false).inputInquiry(titleCtrl.text, contentCtrl.text, context);
           }
 
-        },
+        } : null,
         elevation: 0.0,
       ),
     );
