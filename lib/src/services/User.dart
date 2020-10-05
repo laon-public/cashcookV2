@@ -77,6 +77,40 @@ class UserService {
     return utf8.decode(response.bodyBytes);
   }
 
+  Future<String> withoutRecoDis() async {
+    final response = await client.post(cookURL+"/users/dis/reco/without",headers: {
+      "Authorization": "BEARER ${dataStorage.token}"
+    });
+    print(response.body);
+    return utf8.decode(response.bodyBytes);
+  }
+
+  Future<String> withoutRecoAge() async {
+    final response = await client.post(cookURL+"/users/age/reco/without",headers: {
+      "Authorization": "BEARER ${dataStorage.token}"
+    });
+    print(response.body);
+    return utf8.decode(response.bodyBytes);
+  }
+
+  Future<String> inserDis(username) async {
+    final response = await client.post(cookURL+"/users/dis/insert", body: json.encode({"username" : username }),
+        headers: {
+          "Content-Type": "application/json",
+      "Authorization": "BEARER ${dataStorage.token}"
+    });
+    print(response.body);
+    return utf8.decode(response.bodyBytes);
+  }
+
+  Future<String> selectDis() async {
+    final response = await client.get(cookURL+"/users/dis",headers: {
+      "Authorization": "BEARER ${dataStorage.token}"
+    });
+    print(response.body);
+    return utf8.decode(response.bodyBytes);
+  }
+
   Future<String> exchangeRp(String id, Map<String, String> data) async {
     final response = await client.post(cookURL + "/accounts/$id/exchange",
         headers: {"Authorization": "BEARER ${dataStorage.token}","Content-Type": "application/json",},
@@ -95,7 +129,7 @@ class UserService {
 
   }
 
-  Future<String> recomemberinsert(String selectedmember) async {
+  Future<String> recomemberinsert(String selectedmember, String type) async {
 
     // List<String> selectmember = selectedmember.split('/') ;
     // String name = selectmember[0];
@@ -106,7 +140,11 @@ class UserService {
     //실제로 저장 되는 것은 나를 추천한 유저의 아이디 이다.
 
     // print('확인 : selectedmember');
-    final response = await client.post(cookURL+"/users/me/reco/memberinsert/$selectedmember",
+    final response = await client.post(cookURL+"/users/me/reco/memberinsert",
+      body: json.encode({
+        "username" : selectedmember,
+        "type" : type
+      }),
       headers: {"Authorization": "BEARER ${dataStorage.token}","Content-Type": "application/json",},);
 
     print(response.body);
@@ -115,13 +153,10 @@ class UserService {
   }
 
   Future<String> recognitionSelect() async {
-    print("UserProvider recognitionSelect 실행");
+    print("UserProvider recognitionSelect");
     final response = await client.post(cookURL+"/users/me/reco/recognitionSelect",
       headers: {"Authorization": "BEARER ${dataStorage.token}","Content-Type": "application/json",},);
-    print("리스폰 바디");
-    print(response.body);
     return utf8.decode(response.bodyBytes);
-
   }
 
 }

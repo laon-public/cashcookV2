@@ -14,6 +14,9 @@ import 'package:cashcook/src/model/recomemberlist.dart';
 import 'dart:math';
 
 class FirstRecommendation extends StatefulWidget {
+  final String type;
+
+  FirstRecommendation({this.type});
   @override
   _FirstRecommendation createState() => _FirstRecommendation();
 }
@@ -24,6 +27,7 @@ class _FirstRecommendation extends State<FirstRecommendation> {
   String _selectedValue = "선택해주세요.";
   String _unSelectedValue = "HOJO Group.";
   String memb = '';
+
   int _check;
   @override
   void initState() {
@@ -207,10 +211,6 @@ class _FirstRecommendation extends State<FirstRecommendation> {
 
 
   apply(UserCheck user) async {
-    // api 요정하는 곳
-    // String firstlogin = user.isFirstLogin.toString();
-    // String username = user.username;
-
     UserProvider userProviders = Provider.of<UserProvider>(context,listen: false);
     print(userProviders.recomemberList);
     print('추천해준 사람 선택 : $_selectedValue');
@@ -244,7 +244,7 @@ class _FirstRecommendation extends State<FirstRecommendation> {
     if (userProviders.recomemberList.length > 2 && _selectedValue == '선택해주세요.') {
       Fluttertoast.showToast(msg: "추천회원을 선택해 주세요.");
     } else {
-      String response = await Provider.of<UserProvider>(context, listen: false).recomemberinsert(selectedmember); // 나를 추천한 사람을 선택 후 저장
+      String response = await Provider.of<UserProvider>(context, listen: false).recomemberinsert(selectedmember, widget.type); // 나를 추천한 사람을 선택 후 저장
 
       if(response == "true"){
         Fluttertoast.showToast(msg: "등록이 완료되었습니다.");
@@ -252,14 +252,14 @@ class _FirstRecommendation extends State<FirstRecommendation> {
         Fluttertoast.showToast(msg: response);
       }
 
-//      Navigator.of(context).pushAndRemoveUntil(
-//          MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
+     Navigator.of(context).pushAndRemoveUntil(
+         MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
     }
   }
 
   nextPage(UserCheck user) async {
     String selectedmember = "HOJOGroup";
-    String response = await Provider.of<UserProvider>(context, listen: false).recomemberinsert(selectedmember); // HOJOGroup저장
+    String response = await Provider.of<UserProvider>(context, listen: false).recomemberinsert(selectedmember, widget.type); // HOJOGroup저장
 
     if(response == "true"){
       Fluttertoast.showToast(msg: "등록이 완료되었습니다.");

@@ -25,6 +25,8 @@ class UserProvider with ChangeNotifier {
   List<AccountListModel> accountHistory = [];
   List<Map<String, dynamic>> result = [];
   List<Map<int, String>> recoList= [{0: "추천인 없음"}];
+  List<dynamic> disList = [];
+  String disSelected = '총판';
 
   List<String> recomemberList = [];
 
@@ -35,6 +37,11 @@ class UserProvider with ChangeNotifier {
 
   void stopLoading() {
     isLoading = false;
+    notifyListeners();
+  }
+
+  void setDisSelected(value) {
+    disSelected = value;
     notifyListeners();
   }
 
@@ -228,6 +235,14 @@ class UserProvider with ChangeNotifier {
     await service.withoutReco();
   }
 
+  Future<void> withoutRecoDis() async {
+    await service.withoutRecoDis();
+  }
+
+  Future<void> withoutRecoAge() async {
+    await service.withoutRecoAge();
+  }
+
   Future<void> exchangeRp(String id, Map<String, String> data) async {
     final response = await service.exchangeRp(id, data);
     Map<String, dynamic> json = jsonDecode(response);
@@ -238,6 +253,30 @@ class UserProvider with ChangeNotifier {
     }
     return;
   }
+
+  void insertDis() async {
+    final response = await service.inserDis(disSelected);
+
+    Map<String, dynamic> json = jsonDecode(response);
+    print("json 실행");
+    print(json);
+  }
+
+  void selectDis() async {
+    startLoading();
+
+    disList.clear();
+    disList.add('총판');
+    final response = await service.selectDis();
+
+    Map<String, dynamic> json = jsonDecode(response);
+    print("json 실행");
+    print(json);
+
+    disList.addAll(json['data']['list']);
+
+    stopLoading();
+}
 
   Future<String> recoemberlist() async {
     final response = await service.recoemberlist();
@@ -262,8 +301,8 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String> recomemberinsert(String selectedmember) async {
-    final response = await service.recomemberinsert(selectedmember);
+  Future<String> recomemberinsert(String selectedmember, String type) async {
+    final response = await service.recomemberinsert(selectedmember, type);
     Map<String, dynamic> json = jsonDecode(response);
     if (isResponse(json)) {
       return "true";
@@ -271,16 +310,14 @@ class UserProvider with ChangeNotifier {
     return json['resultMsg'];
   }
 
-  Future<String> recognitionSelect() async {
+  Future<int> recognitionSelect() async {
     print("UserProvider recognitionSelect");
     final response = await service.recognitionSelect();
     Map<String, dynamic> json = jsonDecode(response);
     print("json 실행");
     print(json);
     print(isResponse(json));
-    if (isResponse(json)) {
-      return "true";
-    }
-    return json['data'];
+
+    return json['data']['cnt'];
   }
 }
