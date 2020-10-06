@@ -17,31 +17,23 @@ class AccountModel {
 }
 
 class AccountListModel {
-  final int id;
+  final int idx;
   final String amount;
   final String purpose;
   final String created_at;
   final String updated_at;
-  final AccountModel account;
 
   AccountListModel(
-      {this.id,
+      {this.idx,
       this.amount,
       this.purpose,
       this.created_at,
-      this.updated_at,
-      this.account});
+      this.updated_at});
 
   AccountListModel.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
+      : idx = json['idx'],
         amount = json['amount'],
-        purpose = json['purpose'],
+        purpose = json['description'],
         created_at = json['created_at'],
-        updated_at = json['updated_at'],
-        account = AccountModel(
-            id: json['account']['id'],
-            type: json['account']['type'],
-            quantity: json['account']['quantity'],
-            created_at: json['account']['created_at'],
-            updated_at: json['account']['updated_at']);
+        updated_at = json['updated_at'];
 }

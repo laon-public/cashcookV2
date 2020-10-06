@@ -6,6 +6,8 @@ class UserCheck {
   int gender;
   String token;
   bool isFirstLogin;
+  bool isFran;
+  String userGrade;
 
-  UserCheck({this.username, this.name, this.phone, this.birth, this.gender, this.token, this.isFirstLogin});
+  UserCheck({this.username, this.name, this.phone, this.birth, this.gender, this.token, this.isFirstLogin, this.isFran, this.userGrade});
 }

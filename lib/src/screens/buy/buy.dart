@@ -125,9 +125,7 @@ class _Buy extends State<Buy> {
           } else {
             Fluttertoast.showToast(msg: "충전이 완료되었습니다.");
           }
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => MainMap()),
-                  (route) => false);
+          Navigator.of(context).pop();
 //          dialog(
 //              title: "결제안내",
 //              context: context,

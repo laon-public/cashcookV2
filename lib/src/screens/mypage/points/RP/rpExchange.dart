@@ -20,16 +20,14 @@ class _RPExchangeState extends State<RPExchange> {
   bool isAgreeCheck = false;
   String point;
   String pointImg;
-  String id;
-  AccountModel accountModel;
+  int quantity;
 
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     point = args['point'];
     pointImg = args['pointImg'];
-    id = args['id'];
-    accountModel = args['account'];
+    quantity = args['quantity'];
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
@@ -82,7 +80,7 @@ class _RPExchangeState extends State<RPExchange> {
                       width: 24,
                     ),
                   ),
-                  Text("${demicalFormat.format(double.parse(accountModel.quantity))} ${point}")
+                  Text("${demicalFormat.format(quantity)} ${point}")
                 ],
               ),
             ],
@@ -90,7 +88,12 @@ class _RPExchangeState extends State<RPExchange> {
           Container(
             width: 64,
             height: 64,
-            color: Colors.grey,
+            color: Colors.white,
+              child: Image.asset(
+                pointImg,
+                fit: BoxFit.contain,
+                width: 24,
+              )
           ),
         ],
       ),
@@ -148,7 +151,7 @@ class _RPExchangeState extends State<RPExchange> {
             padding: const EdgeInsets.only(top: 5.0),
             child: Align(
               child: Text(
-                "${ctrl.text.length < 4 ? "1000RP = 1DL" : "= ${(int.parse(ctrl.text) / 1000).toInt()} DL"}",
+                "${ctrl.text.length < 4 ? "1000RP = 1BZA" : "= ${(int.parse(ctrl.text) / 1000).toInt()} BZA"}",
                 style: TextStyle(fontSize: 12, color: Color(0xff888888)),
               ),
               alignment: Alignment.centerRight,
@@ -210,12 +213,11 @@ class _RPExchangeState extends State<RPExchange> {
           Map<String, String> data = {
             "quantity":ctrl.text.toString()
           };
-          await Provider.of<UserProvider>(context, listen: false).exchangeRp(id, data);
+          await Provider.of<UserProvider>(context, listen: false).exchangeRp(data);
 
           //Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
           Map<String, dynamic> args = {
-            'account': accountModel,
-            'id' : id,
+            "quantity": quantity,
             'point': "RP",
             "pointImg":"assets/icon/rp-coin.png"
           };

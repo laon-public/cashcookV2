@@ -11,7 +11,7 @@ class History extends StatelessWidget {
   String pointImg;
   String id;
   AccountModel accountModel;
-  AccountModel dlAccountModel;
+  int dl = 0;
   ScrollController _scrollController = ScrollController();
   int currentPage = 0;
 
@@ -23,7 +23,7 @@ class History extends StatelessWidget {
         return;
       }
       users.startLoading();
-      users.getAccountsHistory(id, currentPage);
+      users.getAccountsHistory(point, currentPage);
     }
   }
 
@@ -36,13 +36,12 @@ class History extends StatelessWidget {
         .arguments as Map<String, dynamic>;
     point = args['point'];
     pointImg = args['pointImg'];
-    id = args['id'];
-    accountModel = args['account'];
 
     if(point == "ADP") {
-      dlAccountModel = args['dlAccount'];
+      dl = args['dlAccount'];
     }
-    Provider.of<UserProvider>(context, listen: false).getAccountsHistory(id, 0);
+
+    Provider.of<UserProvider>(context, listen: false).getAccountsHistory(point, 0);
 
     _scrollController.addListener(() {
       if(_scrollController.offset == _scrollController.position.maxScrollExtent)
@@ -93,17 +92,22 @@ class History extends StatelessWidget {
             children: [
               Image.asset(pointImg, fit: BoxFit.contain, width: 24,),
               whiteSpaceW(12),
-              RichText(
-                text: TextSpan(
-                    style: TextStyle(fontSize: 24,
-                        color: Color(0xff444444),
-                        fontWeight: FontWeight.w600),
-                    children: [
-                      TextSpan(text: "${demicalFormat.format(double.parse(accountModel.quantity))}"),
-                      TextSpan(text: "$point", style: TextStyle(fontSize: 14))
-                    ]
-                ),
+              Consumer<UserProvider>(
+                builder: (context, user, _){
+                  return RichText(
+                    text: TextSpan(
+                        style: TextStyle(fontSize: 24,
+                            color: Color(0xff444444),
+                            fontWeight: FontWeight.w600),
+                        children: [
+                          TextSpan(text: "${demicalFormat.format(user.nowPoint)}"),
+                          TextSpan(text: "$point", style: TextStyle(fontSize: 14))
+                        ]
+                    ),
+                  );
+                }
               )
+
             ],
           ),
           btn(point, context),
@@ -115,16 +119,16 @@ class History extends StatelessWidget {
   Widget btn(type, context) {
     if (type == "ADP") {
       return RaisedButton(
-        onPressed: () {
+        onPressed: () async {
           Map<String, dynamic> args = {
             'point': point,
             "pointImg": pointImg,
             "id": id,
-            "account": accountModel,
-            "dlAccount": dlAccountModel
+            "account": Provider.of<UserProvider>(context, listen:false).nowPoint,
+            "dlAccount": dl
           };
           String path = "charge";
-          Navigator.of(context).pushNamed("/point/$path", arguments: args);
+          await Navigator.of(context).pushNamed("/point/$path", arguments: args);
         },
         child: Text("충전하기", style: TextStyle(fontSize: 14),),
         padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
@@ -146,8 +150,7 @@ class History extends StatelessWidget {
               Map<String, dynamic> args = {
                 'point': point,
                 "pointImg": pointImg,
-                "id": id,
-                "account": accountModel
+                "quantity": Provider.of<UserProvider>(context, listen: false).nowPoint,
               };
               String path = "rp";
 
@@ -180,6 +183,8 @@ class History extends StatelessWidget {
   Widget historyList() {
     return Consumer<UserProvider>(
       builder: (context, users, _) {
+        print("여기임");
+        print(users.result);
         return ListView.builder(
           controller: _scrollController,
           itemBuilder: (context, idx) {
@@ -205,20 +210,6 @@ class History extends StatelessWidget {
         );
       },
     );
-//    return SingleChildScrollView(
-//      child: Consumer<UserProvider>(
-//        builder: (context, users, _){
-//          return Column(
-//              children: users.result.map((Map<String, dynamic> data) {
-//                return Padding(
-//                  padding: const EdgeInsets.only(top: 20.0),
-//                  child: historyItem(data),
-//                );
-//              }).toList()
-//          );
-//        },
-//      ),
-//    );
   }
 
   Widget historyItem(Map<String, dynamic> data) {
@@ -268,4 +259,6 @@ class History extends StatelessWidget {
       ],
     );
   }
+
+
 }

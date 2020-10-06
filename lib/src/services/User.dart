@@ -16,7 +16,7 @@ class UserService {
 
   Future<String> getUserAccounts() async {
     print("cookURL : " + cookURL);
-    final response = await client.get(cookURL + "/users/me/accounts",
+    final response = await client.get(cookURL + "/users/me/point",
         headers: {"Authorization": "BEARER ${dataStorage.token}"});
     return utf8.decode(response.bodyBytes);
   }
@@ -27,16 +27,17 @@ class UserService {
     return utf8.decode(response.bodyBytes);
   }
 
-  Future<String> postCharge(String id, int quantity, String payment) async {
-    final response = await client.post(cookURL + "/accounts/$id/charge",
+  Future<String> postCharge(int quantity, String payment) async {
+    final response = await client.post(cookURL + "/accounts/charge",
         headers: {"Authorization": "BEARER ${dataStorage.token}","Content-Type": "application/json",},
         body: json.encode({"quantity": quantity, "payment": payment}));
     return utf8.decode(response.bodyBytes);
   }
 
-  Future<String> getAccountsHistory(String id, page) async {
+  Future<String> getAccountsHistory(String type, page) async {
     print(1);
-    final response = await client.get(cookURL + "/users/me/accounts/$id/tx?page=$page", headers: {"Authorization": "BEARER ${dataStorage.token}"});
+    print(type);
+    final response = await client.get(cookURL + "/users/me/accounts/$type/tx?page=$page", headers: {"Authorization": "BEARER ${dataStorage.token}"});
     print(response);
     return utf8.decode(response.bodyBytes);
   }
@@ -111,8 +112,16 @@ class UserService {
     return utf8.decode(response.bodyBytes);
   }
 
-  Future<String> exchangeRp(String id, Map<String, String> data) async {
-    final response = await client.post(cookURL + "/accounts/$id/exchange",
+  Future<String> selectAge() async {
+    final response = await client.get(cookURL+"/users/age",headers: {
+      "Authorization": "BEARER ${dataStorage.token}"
+    });
+    print(response.body);
+    return utf8.decode(response.bodyBytes);
+  }
+
+  Future<String> exchangeRp(Map<String, String> data) async {
+    final response = await client.post(cookURL + "/accounts/exchange",
         headers: {"Authorization": "BEARER ${dataStorage.token}","Content-Type": "application/json",},
         body: json.encode(data));
     print(response.body);

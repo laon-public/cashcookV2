@@ -365,13 +365,13 @@ class _MainMap extends State<MainMap> {
     return Scaffold(
       backgroundColor: white,
       resizeToAvoidBottomInset: true,
-      appBar: appBar = AppBar(
+      appBar: isCurrentPage != 2 ? AppBar(
         backgroundColor: white,
         elevation: 0.5,
         centerTitle: true,
         automaticallyImplyLeading: false,
         title: isCurrentPage == 2 ?
-        Text(
+          Text(
             "마이페이지",
             style: TextStyle(
                 fontFamily: 'noto',
@@ -406,7 +406,12 @@ class _MainMap extends State<MainMap> {
           )
               : Container()
         ],
-      ),
+      )
+      :
+      PreferredSize(
+        preferredSize: Size(0,0),
+          child: Container(),
+        ),
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
@@ -415,8 +420,7 @@ class _MainMap extends State<MainMap> {
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height -
               MediaQuery.of(context).padding.top -
-              MediaQuery.of(context).padding.bottom -
-              appBar.preferredSize.height,
+              MediaQuery.of(context).padding.bottom,
           color: white,
           child: Stack(
             children: [
@@ -427,7 +431,6 @@ class _MainMap extends State<MainMap> {
                   height: MediaQuery.of(context).size.height -
                       MediaQuery.of(context).padding.top -
                       MediaQuery.of(context).padding.bottom -
-                      appBar.preferredSize.height -
                       53,
                   child: getChild(),
                 ),

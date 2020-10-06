@@ -99,7 +99,10 @@ class _Login extends State<Login> {
                     birth: authCheck['birth'],
                     token: authCheck['token'],
                     gender: sex,
-                    isFirstLogin: authCheck['isFirstLogin']);
+                    isFirstLogin: authCheck['isFirstLogin'],
+                    isFran: authCheck['isFran'],
+                  userGrade: authCheck['userGrade'],
+                );
               } else {
                 userCheck = UserCheck(
                     username: authCheck['username'],
@@ -108,7 +111,10 @@ class _Login extends State<Login> {
                     birth: authCheck['birth'],
                     token: authCheck['token'],
                     gender: sex,
-                    isFirstLogin: authCheck['isFirstLogin']);
+                    isFirstLogin: authCheck['isFirstLogin'],
+                    isFran: authCheck['isFran'],
+                    userGrade: authCheck['userGrade'],
+                );
               }
 
               print(authCheck['token']);
@@ -119,19 +125,21 @@ class _Login extends State<Login> {
               print(authCheck);
 
               if (userCheck.username != "") {
-                dynamic franchise = json.decode(value)['data']['franchise'];
-                if(franchise != null){
-                  P.Provider.of<UserProvider>(context,listen: false).setStoreModel(StoreModel.fromJson(franchise));
-                }
-
                 P.Provider.of<UserProvider>(context,listen: false).setLoginUser(userCheck);
+                dynamic franchise = json.decode(value)['data']['franchise'];
+
+                 if(franchise != null){
+                   P.Provider.of<UserProvider>(context,listen: false).setStoreModel(StoreModel.fromJson(franchise));
+                 }
+
+
 //              await P.Provider.of<UserProvider>(context, listen: false).userSync();
 //                            if(userCheck.isFirstLogin) {
 ////                              P.Provider.of<UserProvider>(context,listen: false).postReco();
 //                              Navigator.of(context)
 //                                  .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => RecoFrst()), (route) => false);
 //                            }else {
-                P.Provider.of<UserProvider>(context, listen: false).setStoreModel(null);
+//                 P.Provider.of<UserProvider>(context, listen: false).setStoreModel(null);
 
 
 
@@ -144,30 +152,6 @@ class _Login extends State<Login> {
                         .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => FirstBiz()), (route) => false); //첫 로그인시 추천회원 입력 페이지면
                 }
               }
-
-//                          await provider
-//                              .selectUser(userCheck.username)
-//                              .then((value) {
-//                            print(value);
-//                            dynamic selectUser = json.decode(value);
-//                            if (selectUser['data'] != null) {
-//                              User user = User.fromJson(selectUser['data']);
-//
-//                              dataStorage.user = user;
-//
-//                              Navigator.of(context).pushAndRemoveUntil(
-//                                  MaterialPageRoute(
-//                                      builder: (context) => Home()),
-//                                      (Route<dynamic> route) => false);
-//                            } else {
-//                              Navigator.of(context).pushAndRemoveUntil(
-//                                  MaterialPageRoute(
-//                                      builder: (context) => NewSignUp(
-//                                        userCheck: userCheck,
-//                                      )),
-//                                      (Route<dynamic> route) => false);
-//                            }
-//                          });
             });
           }
         });

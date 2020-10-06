@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:cashcook/src/provider/StoreProvider.dart';
+import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
+import 'package:cashcook/src/screens/referrermanagement/franBizSelect.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/utils/geocoder.dart';
 import 'package:cashcook/src/widgets/TextFieldWidget.dart';
@@ -315,6 +317,13 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
               shop3_uri == '' || shop3_uri == null ){
             Fluttertoast.showToast(msg: "3개의 매장 사진을 첨부해 주세요");
           } else {
+          if(Provider.of<UserProvider>(context, listen: false).loginUser.userGrade == "NORMAL"){
+            await Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => FranBizSelect()));
+
+                Fluttertoast.showToast(msg: "제휴매장 등록 진행 중 입니다.");
+          }
+            
           bool isReturn = await Provider.of<StoreProvider>(context, listen: false).postStore(data, blUri, shop1_uri, shop2_uri, shop3_uri);
 
           if(isReturn){

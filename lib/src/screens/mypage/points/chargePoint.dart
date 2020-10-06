@@ -24,8 +24,8 @@ class _ChargePointState extends State<ChargePoint> {
 
   bool _isButtonDisabled;
 
-  AccountModel accountModel;
-  AccountModel dlAccountModel;
+  int accountModel = 0;
+  int dlAccountModel = 0;
 
   TextEditingController dlCtrl = new TextEditingController(text: "");
 
@@ -99,7 +99,7 @@ class _ChargePointState extends State<ChargePoint> {
                       width: 24,
                     ),
                   ),
-                  Text("${demicalFormat.format(double.parse(accountModel.quantity))} $point")
+                  Text("${demicalFormat.format(accountModel)} $point")
                 ],
               ),
             ],
@@ -107,7 +107,12 @@ class _ChargePointState extends State<ChargePoint> {
           Container(
             width: 64,
             height: 64,
-            color: Colors.grey,
+            color: Colors.white,
+              child :Image.asset(
+                pointImg,
+                fit: BoxFit.contain,
+                width: 24,
+              )
           ),
         ],
       ),
@@ -157,7 +162,7 @@ class _ChargePointState extends State<ChargePoint> {
                       setState(() {
                         pay = int.parse(value);
                         quantity = int.parse(value);
-                        if(pay >= 500000) {
+                        if(pay >= 10000) {
                           dlCtrl.text = (pay / 100).toInt().toString();
                         } else {
                           dlCtrl.text = "";
@@ -172,7 +177,7 @@ class _ChargePointState extends State<ChargePoint> {
             padding: const EdgeInsets.only(top: 5.0),
             child: Align(
               child: Text(
-                (pay >= 500000) ? "= ${pay} 원": "500000ADP 이상 충전 가능합니다",
+                (pay >= 10000) ? "= ${pay} 원": "500000ADP 이상 충전 가능합니다",
                 style: TextStyle(fontSize: 12, color: Color(0xff888888)),
               ),
               alignment: Alignment.centerRight,
@@ -189,7 +194,7 @@ class PaymentMethod extends StatefulWidget {
   final int pay;
   final int quantity;
   final String type;
-  final AccountModel dlAccountModel;
+  final int dlAccountModel;
   final TextEditingController dlCtrl;
 
   PaymentMethod(this.id, this.pay,this.quantity, this.type, this.dlAccountModel, this.dlCtrl);
@@ -200,7 +205,7 @@ class PaymentMethod extends StatefulWidget {
 
 class _PaymentMethodState extends State<PaymentMethod> {
   final TextEditingController dlCtrl;
-  AccountModel dlAccount;
+  int dlAccount;
 
   int currentMethod = 0;
   bool isAgreeCheck = false;
@@ -240,7 +245,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
     );
   }
 
-  Widget methodView(TextEditingController dlCtrl,AccountModel dlAccount) {
+  Widget methodView(TextEditingController dlCtrl,int dlAccount) {
     if (currentMethod == 0)
       return Container();
     else if (currentMethod == 1)
@@ -336,7 +341,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
   }
 
   //DL결제
-  Widget accountDL(TextEditingController dlCtrl,AccountModel dlAccount) {
+  Widget accountDL(TextEditingController dlCtrl,int dlAccount) {
     final textstyle = TextStyle(fontSize: 14, color: Color(0xff444444));
     return Column(
       children: [
@@ -348,7 +353,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
             ),
             whiteSpaceW(49),
             Text(
-              "${demicalFormat.format(double.parse(dlAccount.quantity))} DL",
+              "${demicalFormat.format(dlAccount)} DL",
               style: textstyle,
             )
           ],
@@ -425,7 +430,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
             buyMove(name, widget.pay, widget.id, widget.quantity,
                 paymentType[currentMethod]);
           } else {
-            if (widget.pay < 500000) {
+            if (widget.pay < 10000) {
               showToast("500000ADP 이상 충전 가능합니다.`");
             } else {
               bool response =
@@ -448,7 +453,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
 
   buyMove(name, pay, id, q, payType) {
     print("결제");
-    if(q < 500000){
+    if(q < 10000){
       showToast("500000ADP 이상 충전 가능합니다.`");
     } else {
       Navigator.of(context).push(MaterialPageRoute(

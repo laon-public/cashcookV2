@@ -20,13 +20,17 @@ class UserProvider with ChangeNotifier {
   StoreModel storeModel = null;
   UserCheck loginUser = null;
   Pageing pageing = null;
-  bool isLoading = false;
+  bool isLoading = true;
   bool isStop = false;
   List<AccountListModel> accountHistory = [];
+  Map<String, int> pointMap = {};
   List<Map<String, dynamic>> result = [];
   List<Map<int, String>> recoList= [{0: "추천인 없음"}];
   List<dynamic> disList = [];
+  List<dynamic> ageList = [];
   String disSelected = '총판';
+  String ageSelected = '대리점';
+  int nowPoint = 0;
 
   List<String> recomemberList = [];
 
@@ -42,6 +46,11 @@ class UserProvider with ChangeNotifier {
 
   void setDisSelected(value) {
     disSelected = value;
+    notifyListeners();
+  }
+
+  void setAgeSelected(value) {
+    ageSelected = value;
     notifyListeners();
   }
 
@@ -64,24 +73,27 @@ class UserProvider with ChangeNotifier {
 
   void fetchAccounts() async {
     print("fetchAccount");
-    account.clear();
+    pointMap.clear();
+
+    startLoading();
     final response = await service.getUserAccounts();
     Map<String, dynamic> accountsJson = jsonDecode(response);
     print("fetchAccounts 들어옴");
     print(accountsJson);
     if(isResponse(accountsJson)){
-      for (var accountsList in accountsJson['data']["list"]) {
-        var tmp = AccountModel.fromJson(accountsList);
-        print(tmp);
-        account.add(tmp);
-      }
+      pointMap = {
+        "DL" : accountsJson['data']['DL'],
+        "RP" : accountsJson['data']['RP'],
+        "ADP" : accountsJson['data']['ADP'],
+      };
     }
-    notifyListeners();
+    stopLoading();
   }
 
   Future<void> fetchMyInfo(context) async {
+    startLoading();
     print("fetch");
-    final response = await provider.authCheck(dataStorage.token);
+    var response = await provider.authCheck(dataStorage.token);
     dynamic authCheck = json.decode(response)['data']['user'];
     int sex = 0;
 
@@ -103,7 +115,9 @@ class UserProvider with ChangeNotifier {
           birth: authCheck['birth'],
           token: authCheck['token'],
           gender: sex,
-          isFirstLogin: authCheck['isFirstLogin']);
+          isFirstLogin: authCheck['isFirstLogin'],
+          userGrade: authCheck['userGrade'],
+          isFran: authCheck['isFran'],);
     } else {
       userCheck = UserCheck(
           username: authCheck['username'],
@@ -112,7 +126,9 @@ class UserProvider with ChangeNotifier {
           birth: authCheck['birth'],
           token: authCheck['token'],
           gender: sex,
-          isFirstLogin: authCheck['isFirstLogin']);
+          isFirstLogin: authCheck['isFirstLogin'],
+          userGrade: authCheck['userGrade'],
+          isFran: authCheck['isFran'],);
     }
 
     print(authCheck['token']);
@@ -135,11 +151,21 @@ class UserProvider with ChangeNotifier {
 
       await P.Provider.of<UserProvider>(context, listen: false)
           .setLoginUser(userCheck);
+
+      response = await service.getUserAccounts();
+      Map<String, dynamic> accountsJson = jsonDecode(response);
+      print("fetchAccounts 들어옴");
+      print(accountsJson);
+      if(isResponse(accountsJson)){
+        pointMap = {
+          "DL" : accountsJson['data']['DL'],
+          "RP" : accountsJson['data']['RP'],
+          "ADP" : accountsJson['data']['ADP'],
+        };
+      }
     }
 
-    
-    notifyListeners();
-    return;
+    stopLoading();
   }
 
   Future<bool> postCharge(String id, int quantity, String payment) async {
@@ -148,7 +174,7 @@ class UserProvider with ChangeNotifier {
     print(payment);
     print('=============');
     print(123);
-    final response = await service.postCharge(id, quantity, payment);
+    final response = await service.postCharge(quantity, payment);
     print(response);
     if (isResponse(jsonDecode(response))) {
       return true;
@@ -156,10 +182,10 @@ class UserProvider with ChangeNotifier {
     return false;
   }
 
-  Future<String> getAccountsHistory(String id, page) async {
+  Future<String> getAccountsHistory(type,page) async {
     if (page == 0) result.clear();
 
-    final response = await service.getAccountsHistory(id, page);
+    final response = await service.getAccountsHistory(type,page);
     print(response);
     Map<String, dynamic> json = jsonDecode(response);
     if(isResponse(json)){
@@ -171,6 +197,7 @@ class UserProvider with ChangeNotifier {
       for (var history in json["data"]['list']) {
         try {
           AccountListModel accountListModel = AccountListModel.fromJson(history);
+          print(accountListModel);
           accountHistory.add(accountListModel);
           String time = accountListModel.created_at.split("T").first;
           if (date != time) {
@@ -183,11 +210,13 @@ class UserProvider with ChangeNotifier {
             obj["history"] = [];
             obj["history"].add({
               "title": accountListModel.purpose,
-              "type": accountListModel.amount.contains("-") ? "차감" : "충전",
+              "type": (double.parse(accountListModel.amount) < 0) ? "차감" : "충전",
               "time": accountListModel.created_at.split("T").last,
               "price": demicalFormat.format(double.parse(accountListModel.amount)),
             });
+            print(obj);
           } else {
+            print("여기겠지");
             obj["history"].add({
               "title": accountListModel.purpose,
               "type": accountListModel.amount.contains("-") ? "차감" : "충전",
@@ -196,11 +225,13 @@ class UserProvider with ChangeNotifier {
             });
           }
         } catch (e) {
+          print("ㅋㅋ 에러났네");
           print(e.toString());
         }
       }
       if (obj.isNotEmpty) result.add(obj);
 
+      nowPoint = json['data']['nowPoint'];
       print(result);
     }
     stopLoading();
@@ -243,8 +274,8 @@ class UserProvider with ChangeNotifier {
     await service.withoutRecoAge();
   }
 
-  Future<void> exchangeRp(String id, Map<String, String> data) async {
-    final response = await service.exchangeRp(id, data);
+  Future<void> exchangeRp(Map<String, String> data) async {
+    final response = await service.exchangeRp(data);
     Map<String, dynamic> json = jsonDecode(response);
     print(json);
     if(isResponse(json)){
@@ -256,6 +287,15 @@ class UserProvider with ChangeNotifier {
 
   void insertDis() async {
     final response = await service.inserDis(disSelected);
+
+    Map<String, dynamic> json = jsonDecode(response);
+    print("json 실행");
+    print(json);
+  }
+
+  void insertDisAge() async {
+    var response = await service.inserDis(disSelected);
+    response = await service.inserDis(ageSelected);
 
     Map<String, dynamic> json = jsonDecode(response);
     print("json 실행");
@@ -277,6 +317,32 @@ class UserProvider with ChangeNotifier {
 
     stopLoading();
 }
+
+  void selectDisAge() async {
+    startLoading();
+
+    disList.clear();
+    disList.add('총판');
+    var response = await service.selectDis();
+
+    Map<String, dynamic> json = jsonDecode(response);
+    print("json 실행");
+    print(json);
+
+    disList.addAll(json['data']['list']);
+
+    ageList.clear();
+    ageList.add('대리점');
+    response = await service.selectAge();
+    json = jsonDecode(response);
+    print("json 실행");
+    print(json);
+
+    ageList.addAll(json['data']['list']);
+
+    stopLoading();
+  }
+
 
   Future<String> recoemberlist() async {
     final response = await service.recoemberlist();
