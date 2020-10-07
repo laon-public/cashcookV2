@@ -7,12 +7,14 @@ import 'package:cashcook/src/model/account.dart';
 import 'package:cashcook/src/model/franchisee/franchisee.dart';
 import 'package:cashcook/src/model/place.dart';
 import 'package:cashcook/src/model/store.dart';
+import 'package:cashcook/src/model/usercheck.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/qr/qr.dart';
 import 'package:cashcook/src/screens/referrermanagement/referrermanagement.dart';
 import 'package:cashcook/src/screens/storemanagement/storemanagement.dart';
 import 'package:cashcook/src/screens/mypage/mypage.dart';
+import 'package:cashcook/src/services/API.dart';
 import 'package:cashcook/src/services/Search.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/dialog.dart';
@@ -74,6 +76,8 @@ class _MainMap extends State<MainMap> {
   String detailCategoryName = "";
   String detailCategorySubName = "";
   String detailDescription = "";
+  String loginID = "";
+  String franchiseUserID = "";
   int isCurrentPage = 0; // 0: 지도, 1: 배달서비스, 2: 마이페이지
 
   // 매장정보/수정 팝업
@@ -144,7 +148,7 @@ class _MainMap extends State<MainMap> {
                         ),
                     ),
                     whiteSpaceW(6),
-                     1 == 1?
+                      loginID == franchiseUserID?
                      SizedBox(
                        width: 65,
                        child:
@@ -431,9 +435,10 @@ class _MainMap extends State<MainMap> {
         Provider.of<StoreProvider>(context, listen: false).store;
     List<AccountModel> accounts =
         Provider.of<UserProvider>(context, listen: false).account;
-    List<UserProvider> users =
-        Provider.of<UserProvider>(context, listen: false).userSync() as List<UserProvider>;
-    print(stores);
+    Map<String, int> pointMap =
+        Provider.of<UserProvider>(context, listen: false).pointMap;
+    UserProvider userProvider = Provider.of<UserProvider>(context,listen: false);
+
     setState(() {
       markers.add(Marker(
           markerId: markerId,
@@ -444,6 +449,8 @@ class _MainMap extends State<MainMap> {
           onTap: () {
             setState(() {
               print("checkMarker");
+              loginID = userProvider.loginUser.id.toString();
+              franchiseUserID = stores[num].user_id;
               detailId = stores[num].id;
               detailView = true;
               detailImage = stores[num].store.shop_img1;
@@ -458,10 +465,10 @@ class _MainMap extends State<MainMap> {
               detailLimitDL = stores[num].store.limitDL;
               detailFromDL = stores[num].store.fromDL;
               detailToDL = stores[num].store.toDL;
-              detailAdp = demicalFormat.format(double.parse(accounts[3].quantity));
-              detailDl = demicalFormat.format(double.parse(accounts[0].quantity));
               detailCategoryName = stores[num].store.category_name;
               detailCategorySubName = stores[num].store.category_sub_name;
+              detailAdp = demicalFormat.format(double.parse(pointMap.values.elementAt(2).toString()));
+              detailDl = demicalFormat.format(double.parse(pointMap.values.elementAt(0).toString()));
               distanceLocation(num);
             });
           }));
@@ -514,8 +521,6 @@ class _MainMap extends State<MainMap> {
                 googleMapController
                     .getVisibleRegion()
                     .then((value) async {
-//                        print(value.northeast.toString());
-//                        print(value.southwest.toString());
                   String start = value.northeast.latitude.toString() +
                       "," +
                       value.northeast.longitude.toString();
@@ -714,7 +719,7 @@ class _MainMap extends State<MainMap> {
               ),
               detailView
                   ? Positioned(
-                bottom: 222,
+                bottom: loginID == franchiseUserID? 310 : 235,
                 right: 16,
                 child: Container(
                   width: 180,
@@ -751,7 +756,7 @@ class _MainMap extends State<MainMap> {
                 bottom: 53,
                 child: Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 1 == 1? 253 : 180,
+                  height: loginID == franchiseUserID? 253 : 180,
                   color: white,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -781,110 +786,115 @@ class _MainMap extends State<MainMap> {
                         height: 1,
                         color: Color(0xFFDDDDDD),
                       ),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-//                        height: 132,
-                        height: 150,
-                        color: white,
-                        padding: EdgeInsets.all(16),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CachedNetworkImage(
-                              imageUrl: detailImage,
-                              fit: BoxFit.fill,
-                              width: 74,
-                              height: 84,
-                            ),
-                            whiteSpaceW(12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: <Widget>[
-                                      Text(
-                                        detailName,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 14,
-                                            color: black,
-                                            fontFamily: 'noto'),
-                                      ),
-                                      whiteSpaceW(20),
-                                      Text(
-                                        "$detailCategoryName / $detailCategorySubName",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w100,
-                                            fontSize: 13,
-                                            color: Colors.cyan,
-                                            fontFamily: 'noto'),
-                                      )
-                                    ],
-                                  ),
-                                  whiteSpaceH(5),
-                                  Text(
-                                    detailAddress,
-                                    style: TextStyle(
-                                        fontFamily: 'noto',
-                                        color: Color(0xFF888888),
-                                        fontSize: 12),
-                                  ),
-                                  whiteSpaceH(12),
-                                  1 == 1?
-                                  Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.start,
+                      InkWell(
+                        onTap: (){
+                          _showDialog();
+                        },
+                        child:
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 150,
+                          color: white,
+                          padding: EdgeInsets.all(16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CachedNetworkImage(
+                                imageUrl: detailImage,
+                                fit: BoxFit.fill,
+                                width: 74,
+                                height: 84,
+                              ),
+                              whiteSpaceW(12),
+                              Expanded(
+                                child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
                                     children: [
-                                      Image.asset("assets/icon/adp.png",height: 30, fit: BoxFit.contain,),
-                                      Text(
-//                                        "  ${demicalFormat.format(double.parse(detailAdp))}",
-                                        "  $detailAdp",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: black,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'noto'),
+                                      Row(
+                                        children: <Widget>[
+                                          Text(
+                                            detailName,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 14,
+                                                color: black,
+                                                fontFamily: 'noto'),
+                                          ),
+                                          whiteSpaceW(20),
+                                          Text(
+                                            "$detailCategoryName / $detailCategorySubName",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w100,
+                                                fontSize: 13,
+                                                color: Colors.cyan,
+                                                fontFamily: 'noto'),
+                                          )
+                                        ],
                                       ),
-                                      whiteSpaceW(12),
-                                      Image.asset("assets/icon/DL 2.png",height: 30, fit: BoxFit.contain,),
+                                      whiteSpaceH(5),
                                       Text(
-//                                        "  ${demicalFormat.format(double.parse(detailDl))}",
-                                        "  $detailDl",
+                                        detailAddress,
                                         style: TextStyle(
                                             fontFamily: 'noto',
-                                            color: black,
-                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xFF888888),
                                             fontSize: 12),
-                                      )
-                                    ],
-                                  ) : Row(),
-                                ]
+                                      ),
+                                      whiteSpaceH(12),
+                                      loginID == franchiseUserID?
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.start,
+                                        children: [
+                                          Image.asset("assets/icon/adp.png",height: 30, fit: BoxFit.contain,),
+                                          Text(
+                                            "  $detailAdp",
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: black,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: 'noto'),
+                                          ),
+                                          whiteSpaceW(12),
+                                          Image.asset("assets/icon/DL 2.png",height: 30, fit: BoxFit.contain,),
+                                          Text(
+                                            "  $detailDl",
+                                            style: TextStyle(
+                                                fontFamily: 'noto',
+                                                color: black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12),
+                                          )
+                                        ],
+                                      ) : Row(),
+                                    ]
+                                ),
                               ),
-                            ),
-                            whiteSpaceW(6),
-                            InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(
+                              whiteSpaceW(6),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(
                                     MaterialPageRoute(
                                         builder: (context) => Qr(),
                                         settings: RouteSettings(
                                             arguments: detailId
                                         )),);
-                              },
-                              child: Image.asset(
-                                "assets/resource/map/qr.png",
-                                width: 24,
-                                height: 24,
-                                fit: BoxFit.contain,
+                                },
+                                child: Image.asset(
+                                  "assets/resource/map/qr.png",
+                                  width: 24,
+                                  height: 24,
+                                  fit: BoxFit.contain,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
+
                       ),
-                      1 == 1?
+
+                      loginID == franchiseUserID?
                       Container(
                         width: MediaQuery.of(context).size.width,
                         height: 80,

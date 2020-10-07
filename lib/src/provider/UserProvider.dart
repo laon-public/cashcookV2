@@ -110,6 +110,7 @@ class UserProvider with ChangeNotifier {
     UserCheck userCheck;
     if (authCheck['phone'].toString().contains("-")) {
       userCheck = UserCheck(
+          id: authCheck['id'],
           username: authCheck['username'],
           name: authCheck['name'],
           phone: phoneSplit[0] + phoneSplit[1] + phoneSplit[2],
@@ -121,6 +122,7 @@ class UserProvider with ChangeNotifier {
           isFran: authCheck['isFran'],);
     } else {
       userCheck = UserCheck(
+          id: authCheck['id'],
           username: authCheck['username'],
           name: authCheck['name'],
           phone: authCheck['phone'],

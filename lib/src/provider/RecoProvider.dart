@@ -107,6 +107,8 @@ class RecoProvider with ChangeNotifier {
     gradeReferrer.clear();
     final response = await service.fetchGradeReco();
     Map<String, dynamic> recoJson = jsonDecode(response);
+    print("아바자로");
+    print(recoJson);
     if(isResponse(recoJson)){
       ageAmount = recoJson['data']['ageCount'];
       franAmount = recoJson['data']['franCount'];

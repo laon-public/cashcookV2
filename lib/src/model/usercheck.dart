@@ -1,4 +1,5 @@
 class UserCheck {
+  int id;
   String username;
   String name;
   String phone;
@@ -9,5 +10,5 @@ class UserCheck {
   bool isFran;
   String userGrade;
 
-  UserCheck({this.username, this.name, this.phone, this.birth, this.gender, this.token, this.isFirstLogin, this.isFran, this.userGrade});
+  UserCheck({this.id, this.username, this.name, this.phone, this.birth, this.gender, this.token, this.isFirstLogin, this.isFran, this.userGrade});
 }
