@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cashcook/src/model/account.dart';
 import 'package:cashcook/src/model/franchisee/franchisee.dart';
 import 'package:cashcook/src/model/place.dart';
 import 'package:cashcook/src/model/store.dart';
@@ -15,7 +16,9 @@ import 'package:cashcook/src/screens/mypage/mypage.dart';
 import 'package:cashcook/src/services/Search.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/dialog.dart';
+import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +28,8 @@ import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:cashcook/src/model/place.dart';
 import 'dart:async';
+import 'package:cashcook/src/widgets/numberFormat.dart';
+import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
 
 class MainMap extends StatefulWidget {
   @override
@@ -54,11 +59,268 @@ class _MainMap extends State<MainMap> {
   bool detailView = false;
   int detailId = 0;
   String detailImage = "";
+  String detailImage2 = "";
+  String detailImage3 = "";
   String detailName = "";
   String detailAddress = "";
-  String detailType = "";
+  String detailAddressDetail = "";
   String detailPhone = "";
+  String detailNegotiableTime = "";
+  String detailLimitDL = "";
+  String detailFromDL = "";
+  String detailToDL = "";
+  String detailAdp = "";
+  String detailDl = "";
+  String detailCategoryName = "";
+  String detailCategorySubName = "";
+  String detailDescription = "";
   int isCurrentPage = 0; // 0: 지도, 1: 배달서비스, 2: 마이페이지
+
+  // 매장정보/수정 팝업
+  void _showDialog() {
+    slideDialog.showSlideDialog(
+      context: context,
+      barrierColor: Colors.white.withOpacity(0.7),
+      pillColor: Color(0xFF888888),
+      backgroundColor: Colors.white,
+      child:
+        Container(
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child:
+            Column(
+              children: <Widget>[
+                InkWell(
+                  child:
+                  Row(
+                    children: <Widget>[
+                      CachedNetworkImage(
+                        imageUrl: detailImage,
+                        fit: BoxFit.fill,
+                        width: 74,
+                        height: 84,
+                      ),
+                      whiteSpaceW(10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment:
+                          CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                                children: <Widget>[
+                                  Text(
+                                    detailName,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14,
+                                        color: black,
+                                        fontFamily: 'noto'),
+                                  ),
+                                  whiteSpaceW(15),
+                                  Text(
+                                    "$detailCategoryName / $detailCategorySubName",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w100,
+                                        fontSize: 13,
+                                        color: Colors.deepOrangeAccent,
+                                        fontFamily: 'noto'),
+                                  )
+                                ]
+                            ),
+                            whiteSpaceH(10),
+                            Row(
+                              children: <Widget>[
+                                Text(
+                                  detailDescription,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w100,
+                                      fontSize: 11,
+                                      color: black,
+                                      fontFamily: 'noto'),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                    ),
+                    whiteSpaceW(6),
+                     1 == 1?
+                     SizedBox(
+                       width: 65,
+                       child:
+                         RaisedButton(
+                           color: Colors.cyan,
+                           onPressed: () {
+                             Navigator.of(context).pushNamed("/store/modify/store");
+                           },
+                           elevation: 0.0,
+                           child: Center(
+                             child: Text(
+                               "수정",
+                               style: TextStyle(
+                                   fontSize: 14,
+                                   color: white,
+                                   fontFamily: 'noto'),
+                             ),
+                           ),
+                         )
+                        )
+                     : InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => Qr(),
+                              settings: RouteSettings(
+                                  arguments: detailId
+                              )),);
+                      },
+                      child: Image.asset(
+                        "assets/resource/map/qr.png",
+                        width: 24,
+                        height: 24,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 20),
+                child:
+                  Row(
+                    children: <Widget>[
+                      CachedNetworkImage(
+                        imageUrl: detailImage,
+                        fit: BoxFit.fill,
+                        width: MediaQuery.of(context).size.width/3.5,
+                        height: 130,
+                      ),
+                      whiteSpaceW(10),
+                      CachedNetworkImage(
+                        imageUrl: detailImage2,
+                        fit: BoxFit.fill,
+                        width: MediaQuery.of(context).size.width/3.5,
+                        height: 130,
+                      ),
+                      whiteSpaceW(10),
+                      CachedNetworkImage(
+                        imageUrl: detailImage3,
+                        fit: BoxFit.fill,
+                        width: MediaQuery.of(context).size.width/3.5,
+                        height: 130,
+                      ),
+                    ],
+                  ),
+              ),
+                Row(
+                  children: <Widget>[
+                    whiteSpaceH(50),
+                    Text(
+                      detailDescription,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w100,
+                          fontSize: 12,
+                          color: black,
+                          fontFamily: 'noto'),
+                    ),
+                  ],
+                ),
+                whiteSpaceH(5),
+                Row(
+                  children: <Widget>[
+                    whiteSpaceH(20),
+                    Text(
+                      "연락처",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w100,
+                          fontSize: 11,
+                          color: black,
+                          fontFamily: 'noto'),
+                    ),
+                    whiteSpaceW(45),
+                    Text(
+                      detailPhone,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w200,
+                          fontSize: 11,
+                          color: black,
+                          fontFamily: 'noto'),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    whiteSpaceH(20),
+                    Text(
+                      "영업시간",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w100,
+                          fontSize: 11,
+                          color: black,
+                          fontFamily: 'noto'),
+                    ),
+                    whiteSpaceW(35),
+                    Text(
+                      detailNegotiableTime,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w200,
+                          fontSize: 11,
+                          color: black,
+                          fontFamily: 'noto'),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    whiteSpaceH(20),
+                    Text(
+                      "주소",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w100,
+                          fontSize: 11,
+                          color: black,
+                          fontFamily: 'noto'),
+                    ),
+                    whiteSpaceW(58),
+                    Text(
+                      "$detailAddress $detailAddressDetail",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w200,
+                          fontSize: 11,
+                          color: black,
+                          fontFamily: 'noto'),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    whiteSpaceH(20),
+                    Text(
+                      "BZA 결제한도",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w100,
+                          fontSize: 11,
+                          color: black,
+                          fontFamily: 'noto'),
+                    ),
+                    whiteSpaceW(10),
+                    Text(
+                      detailLimitDL == "1"?
+                      "$detailFromDL BZA  ~  $detailToDL BZA" : "결제한도가 없습니다.",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w200,
+                          fontSize: 11,
+                          color: black,
+                          fontFamily: 'noto'),
+                    ),
+                  ],
+                ),
+            ],
+        ),
+      ),
+    ),
+    );
+  }
 
   @override
   void initState() {
@@ -167,6 +429,10 @@ class _MainMap extends State<MainMap> {
         "assets/resource/map/marker.png", 128);
     List<StoreModel> stores =
         Provider.of<StoreProvider>(context, listen: false).store;
+    List<AccountModel> accounts =
+        Provider.of<UserProvider>(context, listen: false).account;
+    List<UserProvider> users =
+        Provider.of<UserProvider>(context, listen: false).userSync() as List<UserProvider>;
     print(stores);
     setState(() {
       markers.add(Marker(
@@ -181,10 +447,21 @@ class _MainMap extends State<MainMap> {
               detailId = stores[num].id;
               detailView = true;
               detailImage = stores[num].store.shop_img1;
+              detailImage2 = stores[num].store.shop_img2;
+              detailImage3 = stores[num].store.shop_img3;
               detailName = stores[num].store.name;
+              detailDescription = stores[num].store.description;
               detailAddress = stores[num].address.address;
-              detailType = "타입";
+              detailAddressDetail = stores[num].address.detail;
               detailPhone = stores[num].store.tel;
+              detailNegotiableTime = stores[num].store.negotiable_time;
+              detailLimitDL = stores[num].store.limitDL;
+              detailFromDL = stores[num].store.fromDL;
+              detailToDL = stores[num].store.toDL;
+              detailAdp = demicalFormat.format(double.parse(accounts[3].quantity));
+              detailDl = demicalFormat.format(double.parse(accounts[0].quantity));
+              detailCategoryName = stores[num].store.category_name;
+              detailCategorySubName = stores[num].store.category_sub_name;
               distanceLocation(num);
             });
           }));
@@ -474,7 +751,7 @@ class _MainMap extends State<MainMap> {
                 bottom: 53,
                 child: Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 153,
+                  height: 1 == 1? 253 : 180,
                   color: white,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -506,7 +783,8 @@ class _MainMap extends State<MainMap> {
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        height: 132,
+//                        height: 132,
+                        height: 150,
                         color: white,
                         padding: EdgeInsets.all(16),
                         child: Row(
@@ -516,9 +794,8 @@ class _MainMap extends State<MainMap> {
                             CachedNetworkImage(
                               imageUrl: detailImage,
                               fit: BoxFit.fill,
-                              width: 64,
-                              height: 64,
-
+                              width: 74,
+                              height: 84,
                             ),
                             whiteSpaceW(12),
                             Expanded(
@@ -526,13 +803,26 @@ class _MainMap extends State<MainMap> {
                                 crossAxisAlignment:
                                 CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    detailName,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 14,
-                                        color: black,
-                                        fontFamily: 'noto'),
+                                  Row(
+                                    children: <Widget>[
+                                      Text(
+                                        detailName,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 14,
+                                            color: black,
+                                            fontFamily: 'noto'),
+                                      ),
+                                      whiteSpaceW(20),
+                                      Text(
+                                        "$detailCategoryName / $detailCategorySubName",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w100,
+                                            fontSize: 13,
+                                            color: Colors.cyan,
+                                            fontFamily: 'noto'),
+                                      )
+                                    ],
                                   ),
                                   whiteSpaceH(5),
                                   Text(
@@ -543,31 +833,38 @@ class _MainMap extends State<MainMap> {
                                         fontSize: 12),
                                   ),
                                   whiteSpaceH(12),
+                                  1 == 1?
                                   Row(
                                     mainAxisAlignment:
                                     MainAxisAlignment.start,
                                     children: [
+                                      Image.asset("assets/icon/adp.png",height: 30, fit: BoxFit.contain,),
                                       Text(
-                                        detailType,
+//                                        "  ${demicalFormat.format(double.parse(detailAdp))}",
+                                        "  $detailAdp",
                                         style: TextStyle(
                                             fontSize: 12,
-                                            color: mainColor,
+                                            color: black,
+                                            fontWeight: FontWeight.bold,
                                             fontFamily: 'noto'),
                                       ),
                                       whiteSpaceW(12),
+                                      Image.asset("assets/icon/DL 2.png",height: 30, fit: BoxFit.contain,),
                                       Text(
-                                        detailPhone,
+//                                        "  ${demicalFormat.format(double.parse(detailDl))}",
+                                        "  $detailDl",
                                         style: TextStyle(
                                             fontFamily: 'noto',
-                                            color: Color(0xFF888888),
+                                            color: black,
+                                            fontWeight: FontWeight.bold,
                                             fontSize: 12),
                                       )
                                     ],
-                                  )
-                                ],
+                                  ) : Row(),
+                                ]
                               ),
                             ),
-                            whiteSpaceW(12),
+                            whiteSpaceW(6),
                             InkWell(
                               onTap: () {
                                 Navigator.of(context).push(
@@ -583,10 +880,58 @@ class _MainMap extends State<MainMap> {
                                 height: 24,
                                 fit: BoxFit.contain,
                               ),
-                            )
+                            ),
+                          ],
+                        ),
+                      ),
+                      1 == 1?
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 80,
+                        color: white,
+                        padding: EdgeInsets.only(left: 50, right: 50, bottom: 30),
+                        child:
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            RaisedButton(
+                              color: Colors.cyan,
+                              onPressed: () {
+                                _showDialog();
+                              },
+                              elevation: 0.0,
+                              child: Center(
+                                child: Text(
+                                  "매장정보/수정",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: white,
+                                      fontFamily: 'noto'),
+                                ),
+                              ),
+                            ),
+                            whiteSpaceW(50),
+                            RaisedButton(
+                              color: Colors.cyan,
+                              onPressed: () {
+
+                              },
+                              elevation: 0.0,
+                              child: Center(
+                                child: Text(
+                                  "이용내역",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: white,
+                                      fontFamily: 'noto'),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       )
+                          : Container(),
                     ],
                   ),
                 ),

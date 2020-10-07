@@ -7,6 +7,7 @@ class StoreModel {
   final String business_number;
   final String owner;
   final String tel;
+  final String user_id;
   final String create_at;
   final String updated_at;
   final Store store;
@@ -20,6 +21,7 @@ class StoreModel {
       this.business_number,
       this.owner,
       this.tel,
+      this.user_id,
       this.create_at,
       this.updated_at,
       this.store,
@@ -33,6 +35,7 @@ class StoreModel {
         business_number = json['business_number'],
         owner = json['owner'],
         tel = json['tel'],
+        user_id = json['user_id'],
         create_at = json['create_at'],
         updated_at = json['updated_at'],
         status = json['status'],
@@ -43,6 +46,11 @@ class StoreModel {
             email: json['store']['email'],
             negotiable_time: json['store']['negotiable_time'],
             useDL: json['store']['useDL'],
+            limitDL: json['store']['limitDL'],
+            fromDL: json['store']['fromDL'],
+            toDL: json['store']['toDL'],
+            category_name: json['store']['category_name'],
+            category_sub_name: json['store']['category_sub_name'],
             shop_img1: json['store']['shop_img1'],
             shop_img2: json['store']['shop_img2'],
             shop_img3: json['store']['shop_img3'],),
@@ -60,6 +68,11 @@ class Store {
   final String email;
   final String negotiable_time;
   final bool useDL;
+  final String limitDL;
+  final String fromDL;
+  final String toDL;
+  final String category_name;
+  final String category_sub_name;
   final String shop_img1;
   final String shop_img2;
   final String shop_img3;
@@ -71,6 +84,11 @@ class Store {
       this.email,
       this.negotiable_time,
       this.useDL,
+      this.limitDL,
+      this.fromDL,
+      this.toDL,
+      this.category_name,
+      this.category_sub_name,
       this.shop_img1,
       this.shop_img2,
       this.shop_img3
