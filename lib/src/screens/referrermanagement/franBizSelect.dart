@@ -98,7 +98,11 @@ class _FranBizSelect extends State<FranBizSelect> {
                             }
                         ).toList(),
                         onChanged: (value){
-                            Provider.of<UserProvider>(context, listen: false).setDisSelected(value);
+                          if(value != "총판"){
+                            Provider.of<UserProvider>(context, listen: false).selectAge(value);
+                          } else {
+                            Provider.of<UserProvider>(context, listen: false).clearAge(value);
+                          }
                         },
                       ),
                     ),

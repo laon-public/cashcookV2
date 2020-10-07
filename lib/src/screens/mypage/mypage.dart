@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cashcook/src/model/account.dart';
 import 'package:cashcook/src/model/usercheck.dart';
+import 'package:cashcook/src/provider/RecoProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/mypage/points/pointMgmt.dart';
+import 'package:cashcook/src/screens/mypage/points/pointMgmtUser.dart';
 import 'package:cashcook/src/screens/qr/qrcreate.dart';
 import 'package:cashcook/src/screens/referrermanagement/referrermanagement.dart';
 import 'package:cashcook/src/screens/storemanagement/storemanagement.dart';
@@ -325,102 +327,107 @@ class _MyPageState extends State<MyPage> {
                   ],
                 ),
                 child:
-                Row(
-                    children: [
-                      Expanded(
-                        flex: 4,
-                        child:
-                        Padding(
-                          padding: const EdgeInsets.only(top: 5.0, left: 10.0, right: 10.0, bottom: 5.0),
-                          child:Column(
-                            children: [
-                              Text("ADP 리워드",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xff888888),
-                                  )),
-                              whiteSpaceH(5),
-                              Text("${numberFormat.format(100000)} ADP",
-                                  style: TextStyle(
+                  Consumer<RecoProvider>(
+                  builder: (context, reco, _){
+                  return Row(
+                      children: [
+                        Expanded(
+                          flex: 4,
+                          child:
+
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5.0, left: 10.0, right: 10.0, bottom: 5.0),
+                            child:Column(
+                              children: [
+                                Text("ADP 리워드",
+                                    style: TextStyle(
                                       fontSize: 12,
-                                      color: Color(0xffD4145A),
-                                      fontWeight: FontWeight.w600
-                                  )),
-                            ],
+                                      color: Color(0xff888888),
+                                    )),
+                                whiteSpaceH(5),
+                                Text("${numberFormat.format(100000)} ADP",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xffD4145A),
+                                        fontWeight: FontWeight.w600
+                                    )),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 4,
-                        child:
-                        Padding(
-                          padding: const EdgeInsets.only(top: 5.0, left: 10.0, right: 10.0, bottom: 5.0),
-                          child:Column(
-                            children: [
-                              Text("현금리워드",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xff888888),
-                                  )),
-                              whiteSpaceH(5),
-                              Text("${numberFormat.format(322000)}원",
-                                  style: TextStyle(
+                        Expanded(
+                          flex: 4,
+                          child:
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5.0, left: 10.0, right: 10.0, bottom: 5.0),
+                            child:Column(
+                              children: [
+                                Text("현금리워드",
+                                    style: TextStyle(
                                       fontSize: 12,
-                                      color: Color(0xffFF6622),
-                                      fontWeight: FontWeight.w600
-                                  )),
-                            ],
+                                      color: Color(0xff888888),
+                                    )),
+                                whiteSpaceH(5),
+                                Text("${numberFormat.format(322000)}원",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xffFF6622),
+                                        fontWeight: FontWeight.w600
+                                    )),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child:
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15.0, left: 12.0, right: 12.0, bottom: 15.0),
-                          child:Column(
-                            children: [
-                              Text("대리점수",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xff888888),
-                                  )),
-                              whiteSpaceH(5),
-                              Text("${numberFormat.format(300)} 개",
-                                  style: TextStyle(
+                        Expanded(
+                          flex: 3,
+                          child:
+                          Padding(
+                            padding: const EdgeInsets.only(top: 15.0, left: 12.0, right: 12.0, bottom: 15.0),
+                            child:Column(
+                              children: [
+                                Text("대리점수",
+                                    style: TextStyle(
                                       fontSize: 12,
-                                      color: Color(0xffD4145A),
-                                      fontWeight: FontWeight.w600
-                                  )),
-                            ],
+                                      color: Color(0xff888888),
+                                    )),
+                                whiteSpaceH(5),
+                                Text("${numberFormat.format(reco.ageAmount)} 개",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xffD4145A),
+                                        fontWeight: FontWeight.w600
+                                    )),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child:
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15.0, left: 12.0, right: 12.0, bottom: 15.0),
-                          child:Column(
-                            children: [
-                              Text("가맹점 수",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xff888888),
-                                  )),
-                              whiteSpaceH(5),
-                              Text("${numberFormat.format(1000)}개",
-                                  style: TextStyle(
+                        Expanded(
+                          flex: 3,
+                          child:
+                          Padding(
+                            padding: const EdgeInsets.only(top: 15.0, left: 12.0, right: 12.0, bottom: 15.0),
+                            child:Column(
+                              children: [
+                                Text("가맹점 수",
+                                    style: TextStyle(
                                       fontSize: 12,
-                                      color: Color(0xffFF6622),
-                                      fontWeight: FontWeight.w600
-                                  )),
-                            ],
+                                      color: Color(0xff888888),
+                                    )),
+                                whiteSpaceH(5),
+                                Text("${numberFormat.format(reco.franAmount)}개",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xffFF6622),
+                                        fontWeight: FontWeight.w600
+                                    )),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ]
-                )
+                      ]
+                  );
+                  }
+                  ),
             ),
           ),
           Padding(
@@ -435,7 +442,6 @@ class _MyPageState extends State<MyPage> {
                   padding: const EdgeInsets.only(left: 15.0, right: 15.0),
                   height: 50,
                   child: Row (
-
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         InkWell(
@@ -488,8 +494,121 @@ class _MyPageState extends State<MyPage> {
               ],
             ),
           ),
+          (ageView == "History") ?
+              GradeRecoForm()
+                :
+              RewardForm(),
         ]
     );  
+  }
+
+  Widget GradeRecoForm() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<RecoProvider>(context, listen: false).fetchGradeReco(
+        Provider.of<UserProvider>(context, listen: false).loginUser
+      );
+    });
+    return Consumer<RecoProvider>(
+      builder: (context, reco, _) {
+        print(reco.gradeReferrer);
+        return
+          Container(
+            height: 300,
+            child:
+            ListView.builder(
+              itemBuilder: (context, idx) {
+                if (idx < reco.gradeReferrer.length) {
+                  return RecoItem(reco.gradeReferrer[idx]);
+                }
+                return Center(
+                  child: Opacity(
+                    opacity: reco.isLoading ? 1.0 : 0.0,
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              },
+              itemCount: reco.gradeReferrer.length,
+              shrinkWrap: true,
+              physics: AlwaysScrollableScrollPhysics(),
+            )
+          );
+      },
+    );
+  }
+
+  Widget RecoItem(data) {
+    return Row(
+      children: [
+        whiteSpaceW(16),
+        Image.asset(
+          data.type == 0
+              ? "assets/resource/public/directly.png"
+              : data.type == 1
+              ? "assets/resource/public/indirect.png"
+              : "assets/resource/public/friend-none.png",
+
+          width: 32,
+          height: 60,
+        ),
+        whiteSpaceW(12),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(
+                  data.name,
+                  style: TextStyle(
+                      fontFamily: 'noto',
+                      fontSize: 14,
+                      color: black,
+                      fontWeight: FontWeight.w600),
+                ),
+                Text(
+                  (data.type == 1) ? " (가맹점)" : " (대리점)",
+                  style: TextStyle(
+                      fontFamily: 'noto',
+                      fontSize: 14,
+                      color: (data.type == 1) ? mainColor : Colors.amberAccent,
+                      fontWeight: FontWeight.w600),
+                ),
+              ]
+            ),
+            Text(
+              data.phone,
+              style: TextStyle(
+                  color: Color(0xFF888888), fontSize: 12, fontFamily: 'noto'),
+            )
+          ],
+        ),
+        Expanded(
+          child: Container(),
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Text(
+              data.date,
+              style: TextStyle(
+                  fontSize: 12, fontFamily: 'noto', color: Color(0xFF888888)),
+            ),
+            data.type == 1
+                ? Text(
+              "By " + data.byName,
+              style: TextStyle(
+                  fontFamily: 'noto', fontSize: 12, color: mainColor),
+              textAlign: TextAlign.end,
+            )
+                : Container()
+          ],
+        ),
+        whiteSpaceW(16)
+      ],
+    );
+  }
+
+  Widget RewardForm() {
+    return Text("리워드 폼 입니다.");
   }
   
   Widget storeForm(){
@@ -617,9 +736,15 @@ class _MyPageState extends State<MyPage> {
   Widget HistoryCard(){
     return InkWell(
       onTap: (){
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => pointMgmt()
-        ));
+        if(view == "My"){
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => pointMgmtUser()
+          ));
+        } else {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => pointMgmt()
+          ));
+        }
       },
       child: Container(
         width: double.infinity,

@@ -14,12 +14,15 @@ import 'package:provider/provider.dart';
 class RecoProvider with ChangeNotifier {
   final service = RecoService();
 
-//  List<RecoModel> reco = [];
   List<Referrer> referrer = [];
+  List<Referrer> gradeReferrer = [];
   int allCount = 0;
   int dirAmount = 0;
   int inDirAmount = 0;
   String typeTitle = "전체추천회원 ";
+
+  int ageAmount = 0;
+  int franAmount = 0;
 
   Pageing pageing = null;
   bool isLoading = false;
@@ -97,6 +100,43 @@ class RecoProvider with ChangeNotifier {
 
     stopLoading();
     notifyListeners();
+  }
+
+  void fetchGradeReco(UserCheck loginUser) async {
+    startLoading();
+    gradeReferrer.clear();
+    final response = await service.fetchGradeReco();
+    Map<String, dynamic> recoJson = jsonDecode(response);
+    if(isResponse(recoJson)){
+      ageAmount = recoJson['data']['ageCount'];
+      franAmount = recoJson['data']['franCount'];
+      for (var recoList in recoJson['data']['list']) {
+        RecoModel tmp;
+        tmp = RecoModel.fromJson(recoList);
+          if (loginUser.username == tmp.parent.username) {
+            gradeReferrer.add(Referrer(
+                name: tmp.child.username,
+                phone: tmp.child.phone,
+                type: 0,
+                byName: "me",
+                date: tmp.created_at
+                    .split("T")
+                    .first));
+          } else {
+            gradeReferrer.add(Referrer(
+                name: tmp.child.username,
+                phone: tmp.child.phone,
+                type: 1,
+                byName: tmp.parent.username,
+                date: tmp.created_at
+                    .split("T")
+                    .first));
+          }
+      }
+      print(gradeReferrer);
+    }
+
+    stopLoading();
   }
 
   Future<String> postReco(List<PhoneModel> phoneList) async {

@@ -15,6 +15,7 @@ class PointMgmtProvider with ChangeNotifier {
 
   // My
   List<Map<String,dynamic>> pfmList = [];
+  List<Map<String,dynamic>> pumList = [];
   int adp = 0;
   int pay = 0;
   int dl = 0;
@@ -85,6 +86,64 @@ class PointMgmtProvider with ChangeNotifier {
     if (obj.isNotEmpty) pfmList.add(obj);
 
     print(pfmList.toString());
+
+    stopLoading();
+  }
+
+  void fetchUserMgmt() async {
+    startLoading();
+
+    print("fetchUserMgmt");
+    final response = await pmService.getMgmtUser();
+    Map<String, dynamic> json = jsonDecode(response);
+
+    print(json);
+    dl = json['data']['DL'];
+    pay = json['data']['PAY'];
+
+    String date = "";
+    Map<String, dynamic> obj = {};
+    pumList.clear();
+
+    for (var history in json["data"]['list']) {
+      try {
+        PointFranModel pfmModel = PointFranModel.fromJson(history);
+        print(pfmModel.point_img);
+        String time = pfmModel.created_at.split("T").first;
+        if (date != time) {
+          if (date != "") {
+            pumList.add(obj);
+            obj = {};
+          }
+          date = pfmModel.created_at.split("T").first;
+          obj["date"] = date;
+          obj["history"] = [];
+          obj["history"].add({
+            "title": pfmModel.type == "DILLING" ? numberFormat.format(double.parse(pfmModel.amount)) + " BZA"
+                : numberFormat.format(double.parse(pfmModel.amount)) + " 원",
+            "time": pfmModel.created_at.split("T").last.split(".").first,
+            "price": demicalFormat.format(double.parse(pfmModel.amount)),
+            "point_img": pfmModel.point_img,
+            "description": history['description']
+          });
+        } else {
+          print("여기겠지");
+          obj["history"].add({
+            "title": pfmModel.type == "DILLING" ? numberFormat.format(double.parse(pfmModel.amount)) + " BZA"
+                : numberFormat.format(double.parse(pfmModel.amount)) + " 원",
+            "time": pfmModel.created_at.split("T").last.split(".").first,
+            "price": numberFormat.format(double.parse(pfmModel.amount)),
+            "point_img": pfmModel.point_img,
+            "description": history['description']
+          });
+        }
+      } catch (e) {
+        print(e.toString());
+      }
+    }
+    if (obj.isNotEmpty) pumList.add(obj);
+
+    print(pumList.toString());
 
     stopLoading();
   }

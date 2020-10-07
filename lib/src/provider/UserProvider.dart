@@ -7,6 +7,7 @@ import 'package:cashcook/src/model/usercheck.dart';
 import 'package:cashcook/src/provider/provider.dart';
 import 'package:cashcook/src/utils/responseCheck.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
+import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart' as P;
 import 'package:cashcook/src/services/User.dart';
@@ -29,7 +30,7 @@ class UserProvider with ChangeNotifier {
   List<dynamic> disList = [];
   List<dynamic> ageList = [];
   String disSelected = '총판';
-  String ageSelected = '대리점';
+  String ageSelected = '총판을 선택해주세요.';
   int nowPoint = 0;
 
   List<String> recomemberList = [];
@@ -294,8 +295,7 @@ class UserProvider with ChangeNotifier {
   }
 
   void insertDisAge() async {
-    var response = await service.inserDis(disSelected);
-    response = await service.inserDis(ageSelected);
+    var response = await service.inserDis(ageSelected);
 
     Map<String, dynamic> json = jsonDecode(response);
     print("json 실행");
@@ -322,6 +322,7 @@ class UserProvider with ChangeNotifier {
     startLoading();
 
     disList.clear();
+    disSelected = "총판";
     disList.add('총판');
     var response = await service.selectDis();
 
@@ -332,15 +333,36 @@ class UserProvider with ChangeNotifier {
     disList.addAll(json['data']['list']);
 
     ageList.clear();
-    ageList.add('대리점');
-    response = await service.selectAge();
-    json = jsonDecode(response);
+    ageSelected = "총판을 선택해주세요.";
+    ageList.add('총판을 선택해주세요.');
+
+    stopLoading();
+  }
+
+  void selectAge(value) async {
+    showToast("해당 총판의 대리점 목록을 불러오는 중 입니다.");
+
+    ageSelected = "대리점";
+    var response = await service.selectAge(value);
+    Map<String, dynamic> json = jsonDecode(response);
     print("json 실행");
     print(json);
 
+    ageList.clear();
+    ageList.add("대리점");
     ageList.addAll(json['data']['list']);
 
-    stopLoading();
+    setDisSelected(value);
+  }
+
+  void clearAge(value) async {
+    disSelected = "총판";
+
+    ageList.clear();
+    ageSelected = "총판을 선택해주세요.";
+    ageList.add('총판을 선택해주세요.');
+
+    notifyListeners();
   }
 
 

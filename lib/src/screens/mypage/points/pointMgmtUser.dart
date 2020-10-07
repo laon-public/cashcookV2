@@ -10,18 +10,18 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-class pointMgmt extends StatefulWidget {
+class pointMgmtUser extends StatefulWidget {
   @override
-  _pointMgmtState createState() => _pointMgmtState();
+  _pointMgmtUserState createState() => _pointMgmtUserState();
 }
 
-class _pointMgmtState extends State<pointMgmt> {
+class _pointMgmtUserState extends State<pointMgmtUser> {
   ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await Provider.of<PointMgmtProvider>(context, listen: false).fetchFranMgmt();
+      await Provider.of<PointMgmtProvider>(context, listen: false).fetchUserMgmt();
     });
 
     return
@@ -57,51 +57,24 @@ class _pointMgmtState extends State<pointMgmt> {
                         Column (
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            (Provider.of<UserProvider>(context, listen: false).loginUser.userGrade == "NORMAL") ?
-                            Row(
-                              children: [
-                                Text("${pm.disMap['username']}   ",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w600
-                                    )),
-                                Text("${pm.disMap['phone']}"),
-                              ],
-                            )
-                                : whiteSpaceH(1),
+                            whiteSpaceH(1),
                             whiteSpaceH(5),
-                            (Provider.of<UserProvider>(context, listen: false).loginUser.userGrade == "NORMAL") ?
-                            Row(
-                              children: [
-                                Text("${pm.ageMap['username']}   ",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w600
-                                    )),
-                                Text("${pm.ageMap['phone']}"),
-                              ],
-                            )
-                              : whiteSpaceH(1),
+                            whiteSpaceH(1),
                             whiteSpaceH(10),
                             Row(
                               children: [
-                                Text("${Provider.of<UserProvider>(context, listen:false).storeModel.store.name}   ",
+                                Text("${Provider.of<UserProvider>(context, listen:false).loginUser.username}   ",
                                     style: TextStyle(
                                         fontSize: 25,
                                         fontWeight: FontWeight.w600
                                     )),
-                                Text("${Provider.of<UserProvider>(context, listen:false).storeModel.store.tel}"),
+                                Text("${Provider.of<UserProvider>(context, listen:false).loginUser.phone}"),
                               ],
                             ),
                           ],
                         ),
                         Spacer(),
-                        CachedNetworkImage(
-                          imageUrl: "${Provider.of<UserProvider>(context, listen: false).storeModel.store.shop_img1}",
-                          fit: BoxFit.contain,
-                          width: 70,
-                          height: 70,
-                        ),
+                        Image.asset("assets/icon/recommend.png", height: 42, fit: BoxFit.contain,),
                       ],
                     ),
                   ),
@@ -126,29 +99,6 @@ class _pointMgmtState extends State<pointMgmt> {
                         child:
                         Row(
                             children: [
-                              Expanded(
-                                flex: 1,
-                                child:
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 30.0, left: 12.0, right: 12.0, bottom: 30.0),
-                                  child:Column(
-                                    children: [
-                                      Text("광고주 포인트",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xff888888),
-                                          )),
-                                      whiteSpaceH(5),
-                                      Text("${numberFormat.format(pm.adp)} ADP",
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xffD4145A),
-                                              fontWeight: FontWeight.w600
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                              ),
                               Expanded(
                                 flex: 1,
                                 child:
@@ -213,18 +163,18 @@ class _pointMgmtState extends State<pointMgmt> {
     return Consumer<PointMgmtProvider>(
       builder: (context, pm, _) {
         print("여기임");
-        print(pm.pfmList);
+        print(pm.pumList);
         return Container(
             transform: Matrix4.translationValues(0.0, -20.0, 0.0),
           child:
           ListView.builder(
             controller: _scrollController,
             itemBuilder: (context, idx) {
-              if(idx < pm.pfmList.length){
-                return historyItem(pm.pfmList[idx]);
+              if(idx < pm.pumList.length){
+                return historyItem(pm.pumList[idx]);
 
               }
-              if(pm.pfmList.length == 0) {
+              if(pm.pumList.length == 0) {
                 return SizedBox();
               }
               return Center(
@@ -235,7 +185,7 @@ class _pointMgmtState extends State<pointMgmt> {
               );
             },
             physics: AlwaysScrollableScrollPhysics(),
-            itemCount: pm.pfmList.length + 1,
+            itemCount: pm.pumList.length + 1,
           )
         );
       },
@@ -276,15 +226,28 @@ class _pointMgmtState extends State<pointMgmt> {
                             flex: 4,
                             child:Container(
                                 child:
-                                Text(
-                                    "    ${e['title']}  ",
-                                    style: TextStyle(
-                                        fontFamily: 'noto',
-                                        fontSize: 23,
-                                        fontWeight: FontWeight.w600,
-                                        color: (e['title'].toString().contains("BZA")) ? Color(0xffBE1833)
-                                            : Color(0xFFFF6622))
-                                )
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                            "${e['description']}",
+                                            style: TextStyle(
+                                                fontFamily: 'noto',
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                                color: Color(0xff888888))
+                                        ),
+                                        Text(
+                                            "${e['title']}",
+                                            style: TextStyle(
+                                                fontFamily: 'noto',
+                                                fontSize: 23,
+                                                fontWeight: FontWeight.w600,
+                                                color: (e['title'].toString().contains("BZA")) ? Color(0xffBE1833)
+                                                    : Color(0xFFFF6622))
+                                        ),
+                                      ]
+                                    )
                             ),
                           ),
                           Expanded(

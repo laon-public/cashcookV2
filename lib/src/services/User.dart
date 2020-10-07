@@ -112,8 +112,8 @@ class UserService {
     return utf8.decode(response.bodyBytes);
   }
 
-  Future<String> selectAge() async {
-    final response = await client.get(cookURL+"/users/age",headers: {
+  Future<String> selectAge(String username) async {
+    final response = await client.get(cookURL+"/users/age?username=$username",headers: {
       "Authorization": "BEARER ${dataStorage.token}"
     });
     print(response.body);

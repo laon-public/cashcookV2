@@ -24,4 +24,11 @@ class RecoService{
     return utf8.decode(response.bodyBytes);
   }
 
+  Future<String> fetchGradeReco() async {
+    final response = await client.get(cookURL + "/reco/grade", headers: {
+      "Authorization": "BEARER ${dataStorage.token}"
+    });
+    return utf8.decode(response.bodyBytes);
+  }
+
 }
