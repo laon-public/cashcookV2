@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cashcook/src/model/point.dart';
 import 'package:cashcook/src/provider/PointMgmtProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/utils/colors.dart';
@@ -18,10 +19,11 @@ class pointMgmtUser extends StatefulWidget {
 class _pointMgmtUserState extends State<pointMgmtUser> {
   ScrollController _scrollController = ScrollController();
 
+  String viewType = "day";
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await Provider.of<PointMgmtProvider>(context, listen: false).fetchUserMgmt();
+      await Provider.of<PointMgmtProvider>(context, listen: false).fetchUserMgmt(viewType);
     });
 
     return
@@ -35,15 +37,7 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
       body:
         Consumer<PointMgmtProvider>(
           builder: (context, pm, _){
-            return (pm.isLoading) ?
-                Center(
-                    child:
-                    CircularProgressIndicator(
-                      backgroundColor: Color(0xffffdd00),
-                      valueColor: new AlwaysStoppedAnimation<Color>(mainColor),
-                    )
-                )
-                :
+            return
             Column(
                 children: [
                   Container(
@@ -60,7 +54,7 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                             whiteSpaceH(1),
                             whiteSpaceH(5),
                             whiteSpaceH(1),
-                            whiteSpaceH(10),
+                            whiteSpaceH(20),
                             Row(
                               children: [
                                 Text("${Provider.of<UserProvider>(context, listen:false).loginUser.username}   ",
@@ -149,8 +143,88 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                         )
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 32.0, right: 32.0),
+                    child:
+                      Container(
+                        transform: Matrix4.translationValues(0.0, -20.0, 0.0),
+                        width: MediaQuery.of(context).size.width,
+                        child:
+                          Row(
+                            children: [
+                              RaisedButton(
+                                onPressed: (viewType == "day") ? null : () {
+                                    setState(() {
+                                      viewType = "day";
+                                    });
+                                },
+                                color: white,
+                                disabledColor: Colors.cyan,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  side: BorderSide(color: Colors.cyan)
+                                  ),
+                                child:
+                                Text(
+                                  "일간",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: (viewType == "day") ? Colors.white : Colors.black
+                                  ),
+                                ),
+                              ),
+                              whiteSpaceW(10),
+                              RaisedButton(
+                                onPressed: (viewType == "month") ? null : () {
+                                  setState(() {
+                                    viewType = "month";
+                                  });
+                                },
+                                color: white,
+                                disabledColor: Colors.cyan,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    side: BorderSide(color: Colors.cyan)
+                                ),
+                                child:
+                                Text(
+                                  "월간",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: (viewType == "month") ? Colors.white : Colors.black
+                                  ),
+                                ),
+                              ),
+                              whiteSpaceW(10),
+                              RaisedButton(
+                                onPressed: (viewType == "year") ? null : () {
+                                  setState(() {
+                                    viewType = "year";
+                                  });
+                                },
+                                color: white,
+                                disabledColor: Colors.cyan,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    side: BorderSide(color: Colors.cyan)
+                                ),
+                                child:
+                                Text(
+                                  "연간",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: (viewType == "year") ? Colors.white : Colors.black
+                                  ),
+                                ),
+                              ),
+                            ]
+                          )
+                      )
+                  ),
                   Flexible(
-                      child: historyList()
+                      child: (viewType == "day") ? historyList()
+                          : (viewType == "month") ? ReportList()
+                          : ReportList()
                   ),
                 ]
             );
@@ -159,13 +233,129 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
     );
   }
 
+  Widget ReportList() {
+    return Consumer<PointMgmtProvider>(
+      builder: (context, pm, _) {
+        return (pm.isLoading) ?
+        Center(
+            child:
+            CircularProgressIndicator(
+              backgroundColor: Color(0xffffdd00),
+              valueColor: new AlwaysStoppedAnimation<Color>(mainColor),
+            )
+        )
+            :
+        Container(
+            child:
+            ListView.builder(
+              controller: _scrollController,
+              itemBuilder: (context, idx) {
+                if(idx < pm.pumList_my.length){
+                  return ReportItem(pm.pumList_my[idx]);
+                }
+                if(pm.pumList_my.length == 0) {
+                  return SizedBox();
+                }
+                return Center(
+                  child: Opacity(
+                    opacity: pm.isLoading ? 1.0 : 0.0,
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              },
+              physics: AlwaysScrollableScrollPhysics(),
+              itemCount: pm.pumList_my.length,
+            )
+        );
+      },
+    );
+  }
+
+  Widget ReportItem(PointReportModel data) {
+    print("hi");
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 5.0, right: 12.0, left: 12.0),
+          child: Text("${data.base_mday} ${(viewType == "month") ? "월" : "년"}",
+              style: TextStyle(
+                  fontFamily: 'noto',
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff888888))),
+        ),
+                Container(
+                  padding: const EdgeInsets.only(right:12.0, left:12.0, bottom: 10.0),
+                  child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child:Text("현금",
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontFamily: 'noto',
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                  color:Color(0xff626262)))
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child:Container(
+                              child:
+                              Text("  ${numberFormat.format(double.parse(data.base_amount))} 원",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontFamily: 'noto',
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
+                                      color:mainColor))
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child:Text("BZA",
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontFamily: 'noto',
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                  color:Color(0xff626262)))
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child:Container(
+                              child:
+                              Text("  ${numberFormat.format(double.parse(data.sub_amount))} BZA",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontFamily: 'noto',
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xffBE1833)))
+                          ),
+                        ),
+                      ]
+                  ),
+                )
+      ],
+    );
+  }
+
   Widget historyList() {
     return Consumer<PointMgmtProvider>(
       builder: (context, pm, _) {
-        print("여기임");
-        print(pm.pumList);
-        return Container(
-            transform: Matrix4.translationValues(0.0, -20.0, 0.0),
+        return (pm.isLoading) ?
+        Center(
+            child:
+            CircularProgressIndicator(
+              backgroundColor: Color(0xffffdd00),
+              valueColor: new AlwaysStoppedAnimation<Color>(mainColor),
+            )
+        )
+          :
+          Container(
           child:
           ListView.builder(
             controller: _scrollController,
@@ -220,7 +410,6 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                             flex: 1,
                             child:Image.asset(
                               "${e['point_img']}", width: 40, fit: BoxFit.contain,),
-
                           ),
                           Expanded(
                             flex: 4,
@@ -230,37 +419,41 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                            "${e['description']}",
+                                            "    ${e['description']}  ",
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                                 fontFamily: 'noto',
-                                                fontSize: 12,
+                                                fontSize: 15,
                                                 fontWeight: FontWeight.w600,
-                                                color: Color(0xff888888))
+                                                color: Colors.black)
                                         ),
                                         Text(
-                                            "${e['title']}",
+                                            "      ${e['time']}  ",
                                             style: TextStyle(
                                                 fontFamily: 'noto',
-                                                fontSize: 23,
-                                                fontWeight: FontWeight.w600,
-                                                color: (e['title'].toString().contains("BZA")) ? Color(0xffBE1833)
-                                                    : Color(0xFFFF6622))
+                                                fontSize: 10,
+                                                color: Color(0xFF888888))
                                         ),
                                       ]
                                     )
                             ),
                           ),
                           Expanded(
-                            flex:2,
+                            flex:3,
                             child:Container(
                                 alignment: Alignment.centerRight,
-                                padding: EdgeInsets.only(top: 15.0, right: 13.0),
+                                padding: EdgeInsets.only(right: 13.0),
                                 child:Text(
-                                    "${e['time']}\n",
+                                    "${e['title']}",
                                     style: TextStyle(
-                                        fontSize: 12,
-                                        fontFamily: 'noto',
-                                        color: Color(0xff888888))
+                                      fontSize: 15,
+                                      fontFamily: 'noto',
+                                      fontWeight: FontWeight.w600,
+                                      color:
+                                      (e['title'].toString().contains("BZA") || (e['title'].toString().contains("ADP")) ? Color(0xffBE1833)
+                                          : (e['title'].toString().contains("RP")) ? mainColor
+                                          :  Colors.black),
+                                    )
                                 )
                             )
                           )

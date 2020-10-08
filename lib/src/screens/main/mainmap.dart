@@ -29,7 +29,7 @@ import 'package:provider/provider.dart';
 import 'package:cashcook/src/model/place.dart';
 import 'dart:async';
 import 'package:cashcook/src/widgets/numberFormat.dart';
-import 'package:slide_popup_dialog/slide_popup_dialog.dart' as slideDialog;
+import 'package:cashcook/src/utils/customSlidePop.dart' as slideDialog;
 
 class MainMap extends StatefulWidget {
   @override
@@ -83,242 +83,257 @@ class _MainMap extends State<MainMap> {
       barrierColor: Colors.white.withOpacity(0.7),
       pillColor: Color(0xFF888888),
       backgroundColor: Colors.white,
-      child:
-        Container(
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child:
-            Column(
-              children: <Widget>[
-                InkWell(
-                  child:
-                  Row(
-                    children: <Widget>[
-                      CachedNetworkImage(
-                        imageUrl: detailImage,
-                        fit: BoxFit.fill,
-                        width: 74,
-                        height: 84,
-                      ),
-                      whiteSpaceW(10),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment:
-                          CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                                children: <Widget>[
-                                  Text(
-                                    detailName,
+      child: Flexible(
+        child: Container(
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child:
+                SingleChildScrollView(
+                child:Column(
+                  children: <Widget>[
+                    InkWell(
+                      child:
+                      Row(
+                        children: <Widget>[
+                          CachedNetworkImage(
+                            imageUrl: detailImage,
+                            fit: BoxFit.fill,
+                            width: 74,
+                            height: 84,
+                          ),
+                          whiteSpaceW(10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                    children: <Widget>[
+                                      Text(
+                                        detailName,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 14,
+                                            color: black,
+                                            fontFamily: 'noto'),
+                                      ),
+                                      whiteSpaceW(15),
+                                      Text(
+                                        "$detailCategoryName / $detailCategorySubName",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w100,
+                                            fontSize: 13,
+                                            color: Colors.deepOrangeAccent,
+                                            fontFamily: 'noto'),
+                                      )
+                                    ]
+                                ),
+                                whiteSpaceH(10),
+                                Row(
+                                  children: <Widget>[
+                                    Text(
+                                      detailDescription,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w100,
+                                          fontSize: 11,
+                                          color: black,
+                                          fontFamily: 'noto'),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                          whiteSpaceW(6),
+                          1 == 1?
+                          SizedBox(
+                              width: 65,
+                              child:
+                              RaisedButton(
+                                color: Colors.cyan,
+                                onPressed: () {
+                                  Navigator.of(context).pushNamed("/store/modify/store");
+                                },
+                                elevation: 0.0,
+                                child: Center(
+                                  child: Text(
+                                    "수정",
                                     style: TextStyle(
-                                        fontWeight: FontWeight.w600,
                                         fontSize: 14,
-                                        color: black,
+                                        color: white,
                                         fontFamily: 'noto'),
                                   ),
-                                  whiteSpaceW(15),
-                                  Text(
-                                    "$detailCategoryName / $detailCategorySubName",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w100,
-                                        fontSize: 13,
-                                        color: Colors.deepOrangeAccent,
-                                        fontFamily: 'noto'),
-                                  )
-                                ]
-                            ),
-                            whiteSpaceH(10),
-                            Row(
-                              children: <Widget>[
-                                Text(
-                                  detailDescription,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      fontSize: 11,
-                                      color: black,
-                                      fontFamily: 'noto'),
                                 ),
-                              ],
-                            )
+                              )
+                          )
+                              : InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (context) => Qr(),
+                                    settings: RouteSettings(
+                                        arguments: detailId
+                                    )),);
+                            },
+                            child: Image.asset(
+                              "assets/resource/map/qr.png",
+                              width: 24,
+                              height: 24,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                        margin: const EdgeInsets.only(top: 20),
+                        child:
+                        Row(
+                          children: [
+                            Expanded(
+                              child:CachedNetworkImage(
+                                imageUrl: detailImage,
+                                fit: BoxFit.fill,
+                                width: MediaQuery.of(context).size.width/3.5,
+                                height: 130,
+                              ),
+                            ),
+                            whiteSpaceW(5),
+                            Expanded(
+                              child:CachedNetworkImage(
+                                imageUrl: detailImage2,
+                                fit: BoxFit.fill,
+                                width: MediaQuery.of(context).size.width/3.5,
+                                height: 130,
+                              ),
+                            ),
+                            whiteSpaceW(5),
+                            Expanded(
+                              child:CachedNetworkImage(
+                                imageUrl: detailImage3,
+                                fit: BoxFit.fill,
+                                width: MediaQuery.of(context).size.width/3.5,
+                                height: 130,
+                              ),
+                            ),
                           ],
                         ),
-                    ),
-                    whiteSpaceW(6),
-                     1 == 1?
-                     SizedBox(
-                       width: 65,
-                       child:
-                         RaisedButton(
-                           color: Colors.cyan,
-                           onPressed: () {
-                             Navigator.of(context).pushNamed("/store/modify/store");
-                           },
-                           elevation: 0.0,
-                           child: Center(
-                             child: Text(
-                               "수정",
-                               style: TextStyle(
-                                   fontSize: 14,
-                                   color: white,
-                                   fontFamily: 'noto'),
-                             ),
-                           ),
-                         )
-                        )
-                     : InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => Qr(),
-                              settings: RouteSettings(
-                                  arguments: detailId
-                              )),);
-                      },
-                      child: Image.asset(
-                        "assets/resource/map/qr.png",
-                        width: 24,
-                        height: 24,
-                        fit: BoxFit.contain,
                       ),
-                    ),
+                            Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children:[
+                                  Row(
+                                    children: <Widget>[
+                                      whiteSpaceH(50),
+                                      Text(
+                                        detailDescription,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w100,
+                                            fontSize: 12,
+                                            color: black,
+                                            fontFamily: 'noto'),
+                                      ),
+                                    ],
+                                  ),
+                                  whiteSpaceH(5),
+                                  Row(
+                                    children: <Widget>[
+                                      whiteSpaceH(20),
+                                      Text(
+                                        "연락처",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w100,
+                                            fontSize: 11,
+                                            color: black,
+                                            fontFamily: 'noto'),
+                                      ),
+                                      whiteSpaceW(45),
+                                      Text(
+                                        detailPhone,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w200,
+                                            fontSize: 11,
+                                            color: black,
+                                            fontFamily: 'noto'),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      whiteSpaceH(20),
+                                      Text(
+                                        "영업시간",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w100,
+                                            fontSize: 11,
+                                            color: black,
+                                            fontFamily: 'noto'),
+                                      ),
+                                      whiteSpaceW(35),
+                                      Text(
+                                        detailNegotiableTime,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w200,
+                                            fontSize: 11,
+                                            color: black,
+                                            fontFamily: 'noto'),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      whiteSpaceH(20),
+                                      Text(
+                                        "주소",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w100,
+                                            fontSize: 11,
+                                            color: black,
+                                            fontFamily: 'noto'),
+                                      ),
+                                      whiteSpaceW(58),
+                                      Text(
+                                        "$detailAddress $detailAddressDetail",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w200,
+                                            fontSize: 11,
+                                            color: black,
+                                            fontFamily: 'noto'),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      whiteSpaceH(20),
+                                      Text(
+                                        "BZA 결제한도",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w100,
+                                            fontSize: 11,
+                                            color: black,
+                                            fontFamily: 'noto'),
+                                      ),
+                                      whiteSpaceW(10),
+                                      Text(
+                                        detailLimitDL == "1"?
+                                        "$detailFromDL BZA  ~  $detailToDL BZA" : "결제한도가 없습니다.",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w200,
+                                            fontSize: 11,
+                                            color: black,
+                                            fontFamily: 'noto'),
+                                      ),
+                                    ],
+                                  ),
+                                ]
+                            )
                   ],
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 20),
-                child:
-                  Row(
-                    children: <Widget>[
-                      CachedNetworkImage(
-                        imageUrl: detailImage,
-                        fit: BoxFit.fill,
-                        width: MediaQuery.of(context).size.width/3.5,
-                        height: 130,
-                      ),
-                      whiteSpaceW(10),
-                      CachedNetworkImage(
-                        imageUrl: detailImage2,
-                        fit: BoxFit.fill,
-                        width: MediaQuery.of(context).size.width/3.5,
-                        height: 130,
-                      ),
-                      whiteSpaceW(10),
-                      CachedNetworkImage(
-                        imageUrl: detailImage3,
-                        fit: BoxFit.fill,
-                        width: MediaQuery.of(context).size.width/3.5,
-                        height: 130,
-                      ),
-                    ],
-                  ),
-              ),
-                Row(
-                  children: <Widget>[
-                    whiteSpaceH(50),
-                    Text(
-                      detailDescription,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w100,
-                          fontSize: 12,
-                          color: black,
-                          fontFamily: 'noto'),
-                    ),
-                  ],
-                ),
-                whiteSpaceH(5),
-                Row(
-                  children: <Widget>[
-                    whiteSpaceH(20),
-                    Text(
-                      "연락처",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w100,
-                          fontSize: 11,
-                          color: black,
-                          fontFamily: 'noto'),
-                    ),
-                    whiteSpaceW(45),
-                    Text(
-                      detailPhone,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w200,
-                          fontSize: 11,
-                          color: black,
-                          fontFamily: 'noto'),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: <Widget>[
-                    whiteSpaceH(20),
-                    Text(
-                      "영업시간",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w100,
-                          fontSize: 11,
-                          color: black,
-                          fontFamily: 'noto'),
-                    ),
-                    whiteSpaceW(35),
-                    Text(
-                      detailNegotiableTime,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w200,
-                          fontSize: 11,
-                          color: black,
-                          fontFamily: 'noto'),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: <Widget>[
-                    whiteSpaceH(20),
-                    Text(
-                      "주소",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w100,
-                          fontSize: 11,
-                          color: black,
-                          fontFamily: 'noto'),
-                    ),
-                    whiteSpaceW(58),
-                    Text(
-                      "$detailAddress $detailAddressDetail",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w200,
-                          fontSize: 11,
-                          color: black,
-                          fontFamily: 'noto'),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: <Widget>[
-                    whiteSpaceH(20),
-                    Text(
-                      "BZA 결제한도",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w100,
-                          fontSize: 11,
-                          color: black,
-                          fontFamily: 'noto'),
-                    ),
-                    whiteSpaceW(10),
-                    Text(
-                      detailLimitDL == "1"?
-                      "$detailFromDL BZA  ~  $detailToDL BZA" : "결제한도가 없습니다.",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w200,
-                          fontSize: 11,
-                          color: black,
-                          fontFamily: 'noto'),
-                    ),
-                  ],
-                ),
-            ],
-        ),
-      ),
-    ),
+            ),
+        )
+        )
     );
   }
 
@@ -431,8 +446,8 @@ class _MainMap extends State<MainMap> {
         Provider.of<StoreProvider>(context, listen: false).store;
     List<AccountModel> accounts =
         Provider.of<UserProvider>(context, listen: false).account;
-    List<UserProvider> users =
-        Provider.of<UserProvider>(context, listen: false).userSync() as List<UserProvider>;
+    Map<String, int> pointMap =
+        Provider.of<UserProvider>(context, listen: false).pointMap;
     print(stores);
     setState(() {
       markers.add(Marker(
@@ -458,8 +473,9 @@ class _MainMap extends State<MainMap> {
               detailLimitDL = stores[num].store.limitDL;
               detailFromDL = stores[num].store.fromDL;
               detailToDL = stores[num].store.toDL;
-              detailAdp = demicalFormat.format(double.parse(accounts[3].quantity));
-              detailDl = demicalFormat.format(double.parse(accounts[0].quantity));
+              detailAdp = pointMap['ADP'] == null ? demicalFormat.format(0)
+                  : demicalFormat.format(pointMap['ADP']);
+              detailDl = demicalFormat.format(pointMap['DL']);
               detailCategoryName = stores[num].store.category_name;
               detailCategorySubName = stores[num].store.category_sub_name;
               distanceLocation(num);
@@ -889,42 +905,46 @@ class _MainMap extends State<MainMap> {
                         width: MediaQuery.of(context).size.width,
                         height: 80,
                         color: white,
-                        padding: EdgeInsets.only(left: 50, right: 50, bottom: 30),
+                        padding: EdgeInsets.only(left: 20, right: 20, bottom: 30),
                         child:
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            RaisedButton(
-                              color: Colors.cyan,
-                              onPressed: () {
-                                _showDialog();
-                              },
-                              elevation: 0.0,
-                              child: Center(
-                                child: Text(
-                                  "매장정보/수정",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: white,
-                                      fontFamily: 'noto'),
+                            Expanded(
+                              child: RaisedButton(
+                                color: Colors.cyan,
+                                onPressed: () {
+                                  _showDialog();
+                                },
+                                elevation: 0.0,
+                                child: Center(
+                                  child: Text(
+                                    "매장정보/수정",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: white,
+                                        fontFamily: 'noto'),
+                                  ),
                                 ),
                               ),
                             ),
-                            whiteSpaceW(50),
-                            RaisedButton(
-                              color: Colors.cyan,
-                              onPressed: () {
+                            whiteSpaceW(5),
+                            Expanded(
+                              child: RaisedButton(
+                                color: Colors.cyan,
+                                onPressed: () {
 
-                              },
-                              elevation: 0.0,
-                              child: Center(
-                                child: Text(
-                                  "이용내역",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: white,
-                                      fontFamily: 'noto'),
+                                },
+                                elevation: 0.0,
+                                child: Center(
+                                  child: Text(
+                                    "이용내역",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: white,
+                                        fontFamily: 'noto'),
+                                  ),
                                 ),
                               ),
                             ),

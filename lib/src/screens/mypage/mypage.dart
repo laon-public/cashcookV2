@@ -1,13 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cashcook/src/model/account.dart';
+import 'package:cashcook/src/model/point.dart';
 import 'package:cashcook/src/model/usercheck.dart';
+import 'package:cashcook/src/provider/PointMgmtProvider.dart';
 import 'package:cashcook/src/provider/RecoProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
+import 'package:cashcook/src/screens/mypage/points/integratedPoint.dart';
 import 'package:cashcook/src/screens/mypage/points/pointMgmt.dart';
 import 'package:cashcook/src/screens/mypage/points/pointMgmtUser.dart';
 import 'package:cashcook/src/screens/qr/qrcreate.dart';
 import 'package:cashcook/src/screens/referrermanagement/referrermanagement.dart';
-import 'package:cashcook/src/screens/storemanagement/storemanagement.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/dialog.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
@@ -22,12 +23,15 @@ class MyPage extends StatefulWidget {
 }
 
 class _MyPageState extends State<MyPage> {
+  ScrollController _scrollController = ScrollController();
 
   bool isCheck = false;
 
   String view = "My";
 
   String ageView = "History";
+  String selectUser = "";
+  String viewType = "day";
 
   @override
   void initState() {
@@ -345,7 +349,7 @@ class _MyPageState extends State<MyPage> {
                                       color: Color(0xff888888),
                                     )),
                                 whiteSpaceH(5),
-                                Text("${numberFormat.format(100000)} ADP",
+                                Text("${numberFormat.format(reco.adp)} ADP",
                                     style: TextStyle(
                                         fontSize: 12,
                                         color: Color(0xffD4145A),
@@ -368,7 +372,7 @@ class _MyPageState extends State<MyPage> {
                                       color: Color(0xff888888),
                                     )),
                                 whiteSpaceH(5),
-                                Text("${numberFormat.format(322000)}원",
+                                Text("${numberFormat.format(reco.pay)}원",
                                     style: TextStyle(
                                         fontSize: 12,
                                         color: Color(0xffFF6622),
@@ -385,7 +389,7 @@ class _MyPageState extends State<MyPage> {
                             padding: const EdgeInsets.only(top: 15.0, left: 12.0, right: 12.0, bottom: 15.0),
                             child:Column(
                               children: [
-                                Text("대리점수",
+                                Text("대리점 수",
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xff888888),
@@ -467,6 +471,7 @@ class _MyPageState extends State<MyPage> {
                           onTap:() {
                             setState(() {
                               ageView = "Reward";
+                              viewType = "month";
                             });
                           },
                           child: (ageView == "Reward") ?
@@ -587,16 +592,29 @@ class _MyPageState extends State<MyPage> {
         Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Text(
-              data.date,
-              style: TextStyle(
-                  fontSize: 12, fontFamily: 'noto', color: Color(0xFF888888)),
+            InkWell(
+              onTap: () async {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => IntegratedPoint(),
+                      settings: RouteSettings(
+                          arguments : {
+                            "username" : data.name,
+                            "phone": data.phone,
+                          }
+                      )),);
+              },
+              child:Text(
+                "활동현황",
+                style: TextStyle(
+                    fontSize: 12, fontFamily: 'noto', color: mainColor, decoration: TextDecoration.underline),
+              )
             ),
             data.type == 1
                 ? Text(
               "By " + data.byName,
               style: TextStyle(
-                  fontFamily: 'noto', fontSize: 12, color: mainColor),
+                  fontFamily: 'noto', fontSize: 12, color: Colors.grey),
               textAlign: TextAlign.end,
             )
                 : Container()
@@ -608,7 +626,170 @@ class _MyPageState extends State<MyPage> {
   }
 
   Widget RewardForm() {
-    return Text("리워드 폼 입니다.");
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await Provider.of<PointMgmtProvider>(context, listen: false).fetchBizMgmt(viewType);
+    });
+    return Column(
+      children: [
+        Padding(
+            padding: const EdgeInsets.only(left: 32.0, right: 32.0),
+            child:
+            Container(
+                transform: Matrix4.translationValues(0.0, -20.0, 0.0),
+                width: MediaQuery.of(context).size.width,
+                child:
+                Row(
+                    children: [
+                      RaisedButton(
+                        onPressed: (viewType == "month") ? null : () {
+                          setState(() {
+                            viewType = "month";
+                          });
+                        },
+                        color: white,
+                        disabledColor: Colors.cyan,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                            side: BorderSide(color: Colors.cyan)
+                        ),
+                        child:
+                        Text(
+                          "월간",
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: (viewType == "month") ? Colors.white : Colors.black
+                          ),
+                        ),
+                      ),
+                      whiteSpaceW(10),
+                      RaisedButton(
+                        onPressed: (viewType == "year") ? null : () {
+                          setState(() {
+                            viewType = "year";
+                          });
+                        },
+                        color: white,
+                        disabledColor: Colors.cyan,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                            side: BorderSide(color: Colors.cyan)
+                        ),
+                        child:
+                        Text(
+                          "연간",
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: (viewType == "year") ? Colors.white : Colors.black
+                          ),
+                        ),
+                      ),
+                    ]
+                )
+            )
+        ),
+        ReportList()
+      ]
+    );
+  }
+
+  Widget ReportList() {
+    return Consumer<PointMgmtProvider>(
+      builder: (context, pm, _) {
+        return
+              Container(
+                  height: 300,
+                  child:
+                  ListView.builder(
+                    itemBuilder: (context, idx) {
+                      if (idx < pm.pbmList.length) {
+                        return ReportItem(pm.pbmList[idx]);
+                      }
+                      return Center(
+                        child: Opacity(
+                          opacity: pm.isLoading ? 1.0 : 0.0,
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    },
+                    itemCount: pm.pbmList.length,
+                    shrinkWrap: true,
+                    physics: AlwaysScrollableScrollPhysics(),
+                  )
+              );
+          },
+        );
+      }
+
+
+  Widget ReportItem(PointReportModel data) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 5.0, right: 12.0, left: 12.0),
+          child: Text("${data.base_mday} ${(viewType == "month") ? "월" : "년"}",
+              style: TextStyle(
+                  fontFamily: 'noto',
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff888888))),
+        ),
+        Container(
+          padding: const EdgeInsets.only(right:12.0, left:12.0,bottom: 10.0),
+          child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                    flex: 2,
+                    child:Text("ADP",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontFamily: 'noto',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color:Color(0xff626262)))
+                ),
+                Expanded(
+                  flex: 4,
+                  child:Container(
+                      child:
+                      Text(" ${numberFormat.format(double.parse(data.base_amount))} ADP",
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontFamily: 'noto',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xffBE1833)))
+                  ),
+                ),
+                Expanded(
+                    flex: 2,
+                    child:Text("현금",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontFamily: 'noto',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color:Color(0xff626262)))
+                ),
+                Expanded(
+                  flex: 4,
+                  child:Container(
+                      child:
+                      Text(" ${numberFormat.format(double.parse(data.sub_amount))} 원",
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontFamily: 'noto',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff626262)))
+                  ),
+                ),
+              ]
+          ),
+        )
+      ],
+    );
   }
   
   Widget storeForm(){

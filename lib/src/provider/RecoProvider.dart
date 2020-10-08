@@ -23,6 +23,8 @@ class RecoProvider with ChangeNotifier {
 
   int ageAmount = 0;
   int franAmount = 0;
+  int pay = 0;
+  int adp = 0;
 
   Pageing pageing = null;
   bool isLoading = false;
@@ -110,6 +112,7 @@ class RecoProvider with ChangeNotifier {
     if(isResponse(recoJson)){
       ageAmount = recoJson['data']['ageCount'];
       franAmount = recoJson['data']['franCount'];
+      pay = recoJson['data']['PAY'];
       for (var recoList in recoJson['data']['list']) {
         RecoModel tmp;
         tmp = RecoModel.fromJson(recoList);

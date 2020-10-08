@@ -52,7 +52,6 @@ class _Qr extends State<Qr> {
   Widget build(BuildContext context) {
     final int detailId = ModalRoute.of(context).settings.arguments;
 
-    print("번호 떠라 ㅠㅠㅠㅠ ${detailId}");
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
