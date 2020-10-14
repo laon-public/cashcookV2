@@ -34,7 +34,7 @@ class StoreApplyFirstStep extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("제휴매장 등록하기 1/2"),
+        title: Text("사업자 정보"),
         centerTitle: true,
         elevation: 0.0,
       ),
@@ -193,6 +193,9 @@ class StoreApplyFirstStep extends StatelessWidget {
           } else {
             Navigator.of(context).pushNamed("/store/apply2", arguments: args);
           }
+
+          Navigator.of(context).pushNamed("/store/apply2", arguments: args);
+
         },
         child: Text("다음"),
         textColor: Colors.white,

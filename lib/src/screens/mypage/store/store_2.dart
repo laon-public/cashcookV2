@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:cashcook/src/model/franchisee/franchisee.dart';
+import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
@@ -17,12 +19,12 @@ import 'package:provider/provider.dart';
 
 
 
-class StoreApplyLastStep extends StatefulWidget {
+class StoreApplySecondStep extends StatefulWidget {
   @override
-  _StoreApplyLastStepState createState() => _StoreApplyLastStepState();
+  _StoreApplySecondStepState createState() => _StoreApplySecondStepState();
 }
 
-class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
+class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
   TextEditingController nameCtrl = TextEditingController();
   TextEditingController descCtrl = TextEditingController();
 
@@ -33,6 +35,9 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
   TextEditingController negotiableTimeCtrl = TextEditingController();
   TextEditingController addressCtrl = TextEditingController();
   TextEditingController detailCtrl = TextEditingController();
+
+//  List<String> category;
+
    String company_name;
 
    String license_number;
@@ -56,6 +61,10 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
   String shop3_uri;
 
   bool isDl = true;
+
+  String category_code;
+
+  String category_sub_code;
 
   double lat;
   double lon;
@@ -81,6 +90,11 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
   @override
   Widget build(BuildContext context) {
     var args = ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<StoreProvider>(context, listen: false).getCategory();
+    });
+
     company_name = args['company_name'];
     license_number = args['license_number'];
     representative = args['representative'];
@@ -92,7 +106,7 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("제휴매장 등록하기 2/2"),
+        title: Text("매장 정보 1/3"),
         centerTitle: true,
         elevation: 0.0,
       ),
@@ -101,65 +115,150 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
   }
 
   Widget body(context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            textField("매장명", "사업자등록증의 상호명을 입력해주세요.", nameCtrl,TextInputType.text),
-            textField("매장설명", "100자 내외로 입력해주세요.", descCtrl,TextInputType.text),
-            //textField("매장 연락처", "연락가능한 연락처를 입력하여주세요.", timeCtrl,TextInputType.phone),
-            Column(
+    return
+      Consumer<StoreProvider>(
+        builder: (context,store, _) {
+          return (store.isLoading) ?
+              Center(
+                child: CircularProgressIndicator()
+              )
+              :
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Align(child: Text("매장 연락처",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
                   Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text("업종", style: TextStyle(color: Colors.black45, fontSize: 13)),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width/2.5,
+                        child:
+                        DropdownButton<String>(
+                          items: store.categoryList.map((value) {
+                            return DropdownMenuItem<String>(
+                              value: value.code_name,
+                              child: Text(
+                                value.code_name,
+                                style: TextStyle(
+                                    color: black,
+                                    fontSize: 16,
+                                    fontFamily: 'noto'),
+                              ),
+                            );
+                          }).toList(),
+                          value: store.catSelected.code_name,
+                          onChanged: (value) {
+                            for(var i = 0; i < store.categoryList.length; i++){
+                              if(value == store.categoryList[i].code_name){
+                                category_code = store.categoryList[i].code;
+                                break;
+                              }
+                            }
+                            print("선택된 카테고리코드 확인");
+                            print(category_code);
+                            print(value);
+                            store.setCatSelected(value);
+                          },
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width/2.5,
+                        child:
+                        DropdownButton<String>(
+                          items: store.subCategoryList.map((value) {
+                            return DropdownMenuItem<String>(
+                              value: value.code_name,
+                              child: Text(
+                                value.code_name,
+                                style: TextStyle(
+                                    color: black,
+                                    fontSize: 16,
+                                    fontFamily: 'noto'),
+                              ),
+                            );
+                          }).toList(),
+                          value: store.subCatSelected.code_name,
+                          onChanged: (value) {
+                            for(var i = 0; i < store.subCategoryList.length; i++){
+                              if(value == store.subCategoryList[i].code_name){
+                                category_sub_code = store.subCategoryList[i].code;
+                                break;
+                              }
+                            }
+
+                            print("선택된 카테고리서브코드 확인");
+                            print(category_sub_code);
+                            print(value);
+                            category_sub_code = value;
+                            store.setCatSubSelected(value);
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                  textField("매장명", "고객에게 보여질 매장명을 입력해주세요.", nameCtrl,TextInputType.text),
+                  textField("매장설명", "100자 내외로 입력해주세요.", descCtrl,TextInputType.text),
+                  //textField("매장 연락처", "연락가능한 연락처를 입력하여주세요.", timeCtrl,TextInputType.phone),
+                  Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(width: 90,  child: textFieldss( timeCtrl1,TextInputType.phone)),
-                        Text("-",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
-                        SizedBox(width: 125, child: textFields( timeCtrl2,TextInputType.phone)),
-                        Text("-",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
-                        SizedBox(width: 125, child: textFields( timeCtrl3,TextInputType.phone)),
+                        Align(child: Text("매장 연락처",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(width: 90,  child: textFieldss( timeCtrl1,TextInputType.phone)),
+                              Text("-",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
+                              SizedBox(width: 125, child: textFields( timeCtrl2,TextInputType.phone)),
+                              Text("-",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
+                              SizedBox(width: 125, child: textFields( timeCtrl3,TextInputType.phone)),
+                            ]
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top:5.0),
+                          child: Align(child: Text("연락가능한 연락처를 입력하여주세요",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerRight,),
+                        ),
+
                       ]
                   ),
+                  textField("흥정시간", "실시간 흥정 가능시간.", negotiableTimeCtrl,TextInputType.text),
+                  addressInfo(context),
                   Padding(
-                    padding: const EdgeInsets.only(top:5.0),
-                    child: Align(child: Text("연락가능한 연락처를 입력하여주세요",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerRight,),
+                    padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
+                    child: Align(
+                      child: Text(
+                        "매장사진",
+                        style: TextStyle(fontSize: 12, color: Color(0xff888888)),
+                      ),
+                      alignment: Alignment.centerLeft,
+                    ),
                   ),
-
-                ]
-            ),
-            textField("흥정시간", "실시간 흥정 가능시간.", negotiableTimeCtrl,TextInputType.text),
-            addressInfo(context),
-            Padding(
-              padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
-              child: Align(
-                child: Text(
-                  "매장사진",
-                  style: TextStyle(fontSize: 12, color: Color(0xff888888)),
-                ),
-                alignment: Alignment.centerLeft,
+                  Pictures(setShop1Uri),
+                  Pictures(setShop2Uri),
+                  Pictures(setShop3Uri),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom:40),
+                    child: nextBtn(context),
+                  ),
+//            whiteSpaceH(MediaQuery.of(context).padding.bottom)
+                ],
               ),
             ),
-            Pictures(setShop1Uri),
-            Pictures(setShop2Uri),
-            Pictures(setShop3Uri),
-            Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom:40),
-              child: nextBtn(context),
-            ),
-//            whiteSpaceH(MediaQuery.of(context).padding.bottom)
-          ],
-        ),
-      ),
-    );
+          );
+        },
+      );
+
   }
 
   TextStyle _decorationStyleOf(BuildContext context) {
@@ -291,6 +390,8 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
             "useDL": isDl.toString(),
             "latitude": lat.toString(),
             "longitude": lon.toString(),
+            "category_code": category_code,
+            "category_sub_code": category_sub_code
           };
           print("----------------");
           print("$tel");
@@ -317,22 +418,29 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
               shop3_uri == '' || shop3_uri == null ){
             Fluttertoast.showToast(msg: "3개의 매장 사진을 첨부해 주세요");
           } else {
-          if(Provider.of<UserProvider>(context, listen: false).loginUser.userGrade == "NORMAL"){
-            await Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => FranBizSelect()));
+              if(Provider.of<UserProvider>(context, listen: false).loginUser.userGrade == "NORMAL"){
+                await Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => FranBizSelect()));
 
-                Fluttertoast.showToast(msg: "제휴매장 등록 진행 중 입니다.");
-          }
-            
-          bool isReturn = await Provider.of<StoreProvider>(context, listen: false).postStore(data, blUri, shop1_uri, shop2_uri, shop3_uri);
+                    Fluttertoast.showToast(msg: "제휴매장 등록 진행 중 입니다.");
+              }
 
-          if(isReturn){
-            Fluttertoast.showToast(msg: "제휴매장 등록이 성공하였습니다.");
-          }else {
-            Fluttertoast.showToast(msg: "제휴매장 등록이 실패하였습니다.");
+
+
+//          bool isReturn = await Provider.of<StoreProvider>(context, listen: false).postStore(data, blUri, shop1_uri, shop2_uri, shop3_uri);
+//
+//          if(isReturn){
+//            Fluttertoast.showToast(msg: "제휴매장 등록이 성공하였습니다.");
+//          }else {
+//            Fluttertoast.showToast(msg: "제휴매장 등록이 실패하였습니다.");
+//          }
+//          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
+
+
           }
-          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
-          }
+
+          Navigator.of(context).pushNamed("/store/apply3", arguments: data);
+
         },
         child: Text("다음"),
         textColor: Colors.white,
