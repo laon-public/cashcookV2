@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cashcook/src/utils/datastorage.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'API.dart';
 import 'package:http/http.dart';
@@ -38,4 +39,15 @@ class CenterService{
  ));
  return response.toString();
  }
+
+ Future<String> putInquiry(inquiry_id) async {
+   final response = await client.get(cookURL+"/inquiries/me/update?inquiry_id=$inquiry_id",
+       headers: {
+         "Content-Type": "application/json",
+         "Authorization": "BEARER ${dataStorage.token}"
+       });
+   return utf8.decode(response.bodyBytes);
+ }
 }
+
+final centerService = CenterService();

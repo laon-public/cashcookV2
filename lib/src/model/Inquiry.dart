@@ -4,9 +4,11 @@ class InquiryModel {
   final String title;
   final String contents;
   final String answer;
-  final String status;
+//  final String status;
+  String status;
   final String created_at;
   final String updated_at;
+  bool isOpen;
 
   InquiryModel(
       {this.id,
@@ -26,5 +28,6 @@ class InquiryModel {
         answer = json['answer'],
         status = json['status'],
         created_at = json['created_at'],
-        updated_at = json['updated_at'];
+        updated_at = json['updated_at'],
+        isOpen = false;
 }

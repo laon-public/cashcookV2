@@ -87,5 +87,20 @@ class CenterProvider with ChangeNotifier{
     notifyListeners();
   }
 
+  void updateInquiry(inquiry_id) async {
+    final response = await service.putInquiry(inquiry_id);
+
+    if(isResponse(jsonDecode(response))){
+      Fluttertoast.showToast(msg: "문의 완료되었습니다.",backgroundColor: mainColor);
+    }
+    notifyListeners();
+  }
+
+  void setOpen(int idx,bool open){
+    inquiry[idx].isOpen = open;
+
+    notifyListeners();
+  }
+
 
 }
