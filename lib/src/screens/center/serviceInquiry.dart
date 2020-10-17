@@ -1,13 +1,21 @@
 import 'package:cashcook/src/model/Inquiry.dart';
 import 'package:cashcook/src/provider/CenterProvider.dart';
+import 'package:cashcook/src/services/Center.dart';
 import 'package:cashcook/src/utils/colors.dart';
+import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Inquiry extends StatelessWidget {
+class Inquiry extends StatefulWidget {
+  @override
+  _Inquiry createState() => _Inquiry();
+}
+
+class _Inquiry extends State<Inquiry> {
   ScrollController _scrollController = ScrollController();
   int currentPage = 0;
+  bool isOpen = false;
 
   loadMore(context) async {
     CenterProvider center = Provider.of<CenterProvider>(context,listen: false);
@@ -19,18 +27,14 @@ class Inquiry extends StatelessWidget {
       center.startLoading();
       center.fetchInquiry(currentPage);
     }
-    print("값확인");
-    print(center);
   }
 
   @override
   Widget build(BuildContext context) {
-    print("시작");
     Provider.of<CenterProvider>(context,listen: false).fetchInquiry(currentPage);
     _scrollController.addListener(() {
       if(_scrollController.offset == _scrollController.position.maxScrollExtent)
-        print("loadMore");
-        loadMore(context);
+      loadMore(context);
     });
     return Scaffold(
       backgroundColor: white,
@@ -44,7 +48,9 @@ class Inquiry extends StatelessWidget {
               padding: const EdgeInsets.only(right: 16.0),
               child: InkWell(
                 onTap: (){
-                  Navigator.of(context).pushNamed("/inquiry/write");
+                  Navigator.of(context).pushNamed("/inquiry/write").then((value){
+//                    setState(() {});
+                  });
                 },
                 child: Text("작성하기",style: TextStyle(fontSize: 14, color: mainColor,decoration: TextDecoration.underline),),
               ),
@@ -61,15 +67,14 @@ class Inquiry extends StatelessWidget {
   }
 
   Widget InquiryList() {
+
     return Consumer<CenterProvider>(
       builder: (context, center, _){
-        print("builder");
         return ListView.builder(
           itemBuilder: (context, idx) {
             if(idx < center.inquiry.length){
-              print(center.inquiry[idx].status);
-              print(center.inquiry[idx].title);
-              return InquiryItem(center.inquiry[idx]);
+//              return InquiryItem(center.inquiry[idx]);
+              return InquiryItem(idx, center.inquiry[idx]);
             }
             return Center(
                 child: CircularProgressIndicator(
@@ -77,7 +82,7 @@ class Inquiry extends StatelessWidget {
                     valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
                 )
             );
-        },
+          },
           physics: AlwaysScrollableScrollPhysics(),
           controller: _scrollController,
           itemCount: center.inquiry.length + 1,
@@ -85,41 +90,44 @@ class Inquiry extends StatelessWidget {
       },
     );
   }
-}
 
-class InquiryItem extends StatefulWidget {
-  final InquiryModel inquiryModel;
+  Widget InquiryItem(idx, inquiry){
+    InquiryModel inquiryModel = inquiry;
 
-  InquiryItem(this.inquiryModel);
-
-  @override
-  _InquiryItemState createState() => _InquiryItemState();
-}
-
-class _InquiryItemState extends State<InquiryItem> {
-
-  bool isOpen = false;
-  
-  @override
-  Widget build(BuildContext context) {
     return Container(
       child: Column(
         children: [
           InkWell(
             onTap: () {
-              setState(() {
-                isOpen = !isOpen;
-              });
+//              isOpen = !isOpen;
+              print("터치확인");
+              print(isOpen);
+              print(inquiryModel.status);
+              if(inquiryModel.status == "ANSWER"){
+                print("답변이 달린 상태에서 여기에 오면 status의 변수의 값을 DONE으로 변경");
+                changeStatus(context, inquiryModel.id);
+                inquiryModel.status = "DONE";
+              }
+//              setState(() {
+//                isOpen = true;
+//              });
+                Provider.of<CenterProvider>(context,listen: false).setOpen(idx, !inquiry.isOpen);
             },
-            child: title(),
+            child: title(inquiryModel),
           ),
-          isOpen ? detail() : SizedBox(),
+          inquiry.isOpen ? detail(inquiryModel) : SizedBox(),
         ],
       ),
     );
   }
 
-  Widget title() {
+  changeStatus(context, idx) async {
+    await centerService.putInquiry(idx).then((value) {
+      showToast("읽음");
+    });
+  }
+
+  Widget title(inquiryModel) {
     return Container(
       width: double.infinity,
       height: 64,
@@ -136,14 +144,15 @@ class _InquiryItemState extends State<InquiryItem> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      "서비스 이용 문의",
+                      inquiryModel.title,
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: Color(0xff444444),
                       ),
                     ),
-                    Provider.of<CenterProvider>(context).inquiry[0].status == "ANSWER"?
+//                    Provider.of<CenterProvider>(context).inquiry[0].status == "ANSWER"?
+                    inquiryModel.status == "ANSWER"?
                     Image.asset(
                       "assets/icon/n.png",
                       width: 24,
@@ -152,7 +161,17 @@ class _InquiryItemState extends State<InquiryItem> {
                   ],
                 ),
                 Text(
-                  widget.inquiryModel.created_at.split("T").first,
+                  inquiryModel.status == "NOT_ANSWER"? "관리자 확인 전입니다." :
+                  inquiryModel.status == "ANSWER"? "답변이 달렸습니다." :
+                  inquiryModel.status == "DONE"? "읽은 글입니다." : "알수없음",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff444444),
+                  ),
+                ),
+                Text(
+                  inquiryModel.created_at.split("T").first,
                   style: TextStyle(
                     fontSize: 12,
                     color: Color(0xff888888),
@@ -166,13 +185,13 @@ class _InquiryItemState extends State<InquiryItem> {
     );
   }
 
-  Widget detail() {
+  Widget detail(inquiryModel) {
     return Container(
       width: double.infinity,
       color: Color(0xfff7f7f7),
       child: Padding(
         padding:
-            const EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 24),
+        const EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 24),
         child: Column(
           children: [
             Row(
@@ -185,7 +204,7 @@ class _InquiryItemState extends State<InquiryItem> {
                 ),
                 whiteSpaceW(12),
                 Text(
-                  widget.inquiryModel.title,
+                  inquiryModel.title,
                   style: TextStyle(
                     fontSize: 12,
                     color: Color(0xff444444),
@@ -205,7 +224,7 @@ class _InquiryItemState extends State<InquiryItem> {
                   ),
                   whiteSpaceW(12),
                   Text(
-                    widget.inquiryModel.answer == null? "아직 답이 달리지 않았습니다.": widget.inquiryModel.answer,
+                    inquiryModel.answer == null? "아직 답이 달리지 않았습니다.": inquiryModel.answer,
                     style: TextStyle(
                       fontSize: 12,
                       color: Color(0xff444444),
@@ -219,4 +238,5 @@ class _InquiryItemState extends State<InquiryItem> {
       ),
     );
   }
+
 }

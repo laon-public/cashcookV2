@@ -267,12 +267,5 @@ class StoreProvider with ChangeNotifier{
     print(response);
 
     dynamic _bigMenuList = json.decode(response)['data']['list'];
-
-    for(var _bigMenu in _bigMenuList){
-      menuList.add(
-          BigMenuEditModel.fromJson(_bigMenu));
-    }
-
-    notifyListeners();
   }
 }

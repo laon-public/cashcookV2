@@ -50,7 +50,9 @@ class StoreModel {
             limitDL: json['store']['limitDL'],
             fromDL: json['store']['fromDL'],
             toDL: json['store']['toDL'],
+            category_code: json['store']['category_code'],
             category_name: json['store']['category_name'],
+            category_sub_code: json['store']['category_sub_code'],
             category_sub_name: json['store']['category_sub_name'],
             shop_img1: json['store']['shop_img1'],
             shop_img2: json['store']['shop_img2'],
@@ -74,7 +76,9 @@ class Store {
   final String limitDL;
   final String fromDL;
   final String toDL;
+  final String category_code;
   final String category_name;
+  final String category_sub_code;
   final String category_sub_name;
   final String shop_img1;
   final String shop_img2;
@@ -92,7 +96,9 @@ class Store {
       this.limitDL,
       this.fromDL,
       this.toDL,
+      this.category_code,
       this.category_name,
+      this.category_sub_code,
       this.category_sub_name,
       this.shop_img1,
       this.shop_img2,
