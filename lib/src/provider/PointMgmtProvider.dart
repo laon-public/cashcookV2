@@ -153,6 +153,8 @@ class PointMgmtProvider with ChangeNotifier {
             obj["history"].add({
               "title": pfmModel.type == "DILLING" ? numberFormat.format(double.parse(pfmModel.amount)) + " BZA"
                   : numberFormat.format(double.parse(pfmModel.amount)) + " 원",
+              "type": pfmModel.type == "DILLING" ? " BZA"
+                  : "PAY",
               "time": pfmModel.created_at.split("T").last.split(".").first,
               "price": demicalFormat.format(double.parse(pfmModel.amount)),
               "point_img": pfmModel.point_img,
@@ -163,6 +165,8 @@ class PointMgmtProvider with ChangeNotifier {
             obj["history"].add({
               "title": pfmModel.type == "DILLING" ? numberFormat.format(double.parse(pfmModel.amount)) + " BZA"
                   : numberFormat.format(double.parse(pfmModel.amount)) + " 원",
+              "type": pfmModel.type == "DILLING" ? " BZA"
+                  : "PAY",
               "time": pfmModel.created_at.split("T").last.split(".").first,
               "price": numberFormat.format(double.parse(pfmModel.amount)),
               "point_img": pfmModel.point_img,

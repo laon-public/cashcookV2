@@ -8,6 +8,8 @@ import 'package:cashcook/src/screens/mypage/points/RP/rpExchange.dart';
 import 'package:cashcook/src/screens/mypage/points/chargePoint.dart';
 import 'package:cashcook/src/screens/mypage/points/pointHistory.dart';
 import 'package:cashcook/src/screens/mypage/store/address.dart';
+import 'package:cashcook/src/screens/mypage/store/store_3.dart';
+import 'package:cashcook/src/screens/mypage/store/store_4.dart';
 import 'package:cashcook/src/screens/splash.dart';
 import 'package:cashcook/src/screens/mypage/store/store.dart';
 import 'package:cashcook/src/screens/mypage/store/store_2.dart';
@@ -19,7 +21,9 @@ import 'package:cashcook/src/screens/mypage/logout.dart';
 final routes = {
   '/Splash': (context) => Splash(),
   "/store/apply1":(context) => StoreApplyFirstStep(),
-  "/store/apply2":(context) => StoreApplyLastStep(),
+  "/store/apply2":(context) => StoreApplySecondStep(),
+  "/store/apply3":(context) => StoreApplyThirdStep(),
+  "/store/apply4":(context) => StoreApplyLastStep(),
   "/point/history": (context) => History(),
   "/point/charge": (context) => ChargePoint(),
   "/point/dl":(context) => DLSend(),

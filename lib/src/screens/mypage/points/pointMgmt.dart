@@ -33,7 +33,7 @@ class _pointMgmtState extends State<pointMgmt> {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Color(0xffffdd00),
+        backgroundColor: mainColor,
       ),
       body:
         Consumer<PointMgmtProvider>(
@@ -45,7 +45,7 @@ class _pointMgmtState extends State<pointMgmt> {
                     width: MediaQuery.of(context).size.width,
                     padding: const EdgeInsets.only(top: 30.0, left: 12.0, right: 12.0, bottom: 50.0),
                     decoration: BoxDecoration(
-                      color: Color(0xffffdd00),
+                      color: mainColor,
                     ),
                     child: Row(
                       children: [
@@ -58,9 +58,15 @@ class _pointMgmtState extends State<pointMgmt> {
                                 Text("${pm.disMap['username']}   ",
                                     style: TextStyle(
                                         fontSize: 15,
-                                        fontWeight: FontWeight.w600
+                                        fontWeight: FontWeight.w600,
+                                      color: white,
                                     )),
-                                Text("${pm.disMap['phone']}"),
+                                Text("${pm.disMap['phone']}",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                      color: white,
+                                    )),
                               ],
                             )
                                 : whiteSpaceH(1),
@@ -71,9 +77,15 @@ class _pointMgmtState extends State<pointMgmt> {
                                 Text("${pm.ageMap['username']}   ",
                                     style: TextStyle(
                                         fontSize: 15,
-                                        fontWeight: FontWeight.w600
+                                        fontWeight: FontWeight.w600,
+                                      color: white,
                                     )),
-                                Text("${pm.ageMap['phone']}"),
+                                Text("${pm.ageMap['phone']}",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                      color: white,
+                                    )),
                               ],
                             )
                               : whiteSpaceH(1),
@@ -83,9 +95,15 @@ class _pointMgmtState extends State<pointMgmt> {
                                 Text("${Provider.of<UserProvider>(context, listen:false).storeModel.store.name}   ",
                                     style: TextStyle(
                                         fontSize: 25,
-                                        fontWeight: FontWeight.w600
+                                        fontWeight: FontWeight.w600,
+                                      color: white,
                                     )),
-                                Text("${Provider.of<UserProvider>(context, listen:false).storeModel.store.tel}"),
+                                Text("${Provider.of<UserProvider>(context, listen:false).storeModel.store.tel}",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                      color: white,
+                                    )),
                               ],
                             ),
                           ],
@@ -289,10 +307,9 @@ class _pointMgmtState extends State<pointMgmt> {
       builder: (context, pm, _) {
         return (pm.isLoading) ?
         Center(
-            child:
-            CircularProgressIndicator(
-              backgroundColor: Color(0xffffdd00),
-              valueColor: new AlwaysStoppedAnimation<Color>(mainColor),
+            child: CircularProgressIndicator(
+                backgroundColor: mainColor,
+                valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
             )
         )
             :
@@ -308,10 +325,10 @@ class _pointMgmtState extends State<pointMgmt> {
                   return SizedBox();
                 }
                 return Center(
-                  child: Opacity(
-                    opacity: pm.isLoading ? 1.0 : 0.0,
-                    child: CircularProgressIndicator(),
-                  ),
+                    child: CircularProgressIndicator(
+                        backgroundColor: mainColor,
+                        valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                    )
                 );
               },
               physics: AlwaysScrollableScrollPhysics(),
@@ -343,13 +360,8 @@ class _pointMgmtState extends State<pointMgmt> {
               children: [
                 Expanded(
                     flex: 2,
-                    child:Text("현금",
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            fontFamily: 'noto',
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            color:Color(0xff626262)))
+                    child:Image.asset(
+                      "assets/resource/public/krw-coin.png", width: 30, fit: BoxFit.contain,)
                 ),
                 Expanded(
                   flex: 5,
@@ -361,18 +373,13 @@ class _pointMgmtState extends State<pointMgmt> {
                               fontFamily: 'noto',
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
-                              color:mainColor))
+                              color:Color(0xFFFF6622)))
                   ),
                 ),
                 Expanded(
                     flex: 2,
-                    child:Text("BZA",
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            fontFamily: 'noto',
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            color:Color(0xff626262)))
+                    child:Image.asset(
+                      "assets/icon/bza.png", width: 30, fit: BoxFit.contain,)
                 ),
                 Expanded(
                   flex: 5,
@@ -398,13 +405,12 @@ class _pointMgmtState extends State<pointMgmt> {
     return Consumer<PointMgmtProvider>(
       builder: (context, pm, _) {
         return (pm.isLoading) ?
-          Center(
-              child:
-              CircularProgressIndicator(
-                backgroundColor: Color(0xffffdd00),
-                valueColor: new AlwaysStoppedAnimation<Color>(mainColor),
-              )
-          )
+        Center(
+            child: CircularProgressIndicator(
+                backgroundColor: mainColor,
+                valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+            )
+        )
           :
           Container(
           child:
@@ -417,13 +423,7 @@ class _pointMgmtState extends State<pointMgmt> {
               }
               if(pm.pfmList.length == 0) {
                 return SizedBox();
-              }
-              return Center(
-                child: Opacity(
-                  opacity: pm.isLoading ? 1.0 : 0.0,
-                  child: CircularProgressIndicator(),
-                ),
-              );
+              };
             },
             physics: AlwaysScrollableScrollPhysics(),
             itemCount: pm.pfmList.length + 1,

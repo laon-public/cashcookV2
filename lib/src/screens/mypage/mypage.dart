@@ -74,9 +74,9 @@ class _MyPageState extends State<MyPage> {
                                 }
                               },
                               child: (view == "My") ?
-                              Text("마이", style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),)
+                              Text("마이", style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600, color: white),)
                                   :
-                              Text("마이", style: TextStyle(fontSize: 16),),
+                              Text("마이", style: TextStyle(fontSize: 16, color: white),),
                             ),
                             whiteSpaceW(20.0),
                             InkWell(
@@ -92,9 +92,9 @@ class _MyPageState extends State<MyPage> {
                                 }
                               },
                               child: (view == "Store") ?
-                              Text("매장", style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),)
+                              Text("매장", style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600, color: white),)
                                   :
-                              Text("매장", style: TextStyle(fontSize: 16),),
+                              Text("매장", style: TextStyle(fontSize: 16, color: white),),
                             ),
                             whiteSpaceW(20.0),
                             (userCheck.userGrade == "DISTRIBUTOR") ? InkWell(
@@ -106,14 +106,14 @@ class _MyPageState extends State<MyPage> {
                                 }
                               },
                               child: (view == "Agecy") ?
-                              Text("대리점", style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),)
+                              Text("대리점", style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600, color: white),)
                                   :
-                              Text("대리점", style: TextStyle(fontSize: 16),),
+                              Text("대리점", style: TextStyle(fontSize: 16, color: white),),
                             ) : SizedBox()
                           ]
                       ),
                     decoration: BoxDecoration(
-                        color: Color(0xffffdd00)
+                        color: mainColor
                     ),
                   ),
                   (view == "My") ? myPageForm()
@@ -142,10 +142,9 @@ class _MyPageState extends State<MyPage> {
             color: Colors.white,
           ),
           child: Center(
-              child:
-              CircularProgressIndicator(
-                backgroundColor: Color(0xffffdd00),
-                valueColor: new AlwaysStoppedAnimation<Color>(mainColor),
+              child: CircularProgressIndicator(
+                  backgroundColor: mainColor,
+                  valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
               )
           ),
         )
@@ -155,7 +154,7 @@ class _MyPageState extends State<MyPage> {
               Container(
                   padding: const EdgeInsets.only(top: 30.0, left: 12.0, right: 12.0, bottom: 10),
                   decoration: BoxDecoration(
-                    color: Color(0xffffdd00),
+                    color: mainColor,
                   ),
                   child: InkWell(
                     onTap: () async{
@@ -169,16 +168,16 @@ class _MyPageState extends State<MyPage> {
                               children: [
                                 RichText(
                                   text: TextSpan(
-                                      style: TextStyle(fontSize:16, fontWeight: FontWeight.w600, color: Colors.black),
+                                      style: TextStyle(fontSize:16, fontWeight: FontWeight.w600, color: white),
                                       children: [
-                                        TextSpan(text:"${user.loginUser.name}", style: TextStyle(fontSize: 25, color: Color(0xff444444))),
+                                        TextSpan(text:"${user.loginUser.name}", style: TextStyle(fontSize: 25, color: white)),
                                         TextSpan(text:" 님\n"),
                                         TextSpan(text:"반갑습니다.")
                                       ]
                                   ),
                                 ),
                                 Spacer(),
-                                Icon(Icons.arrow_forward_ios, size: 24,color: Colors.black,),
+                                Icon(Icons.arrow_forward_ios, size: 24,color: white,),
                               ]
                           ),
                           whiteSpaceH(40),
@@ -198,8 +197,8 @@ class _MyPageState extends State<MyPage> {
                                     children: [
                                       Image.asset("assets/icon/rp-coin.png",height: 24, fit: BoxFit.contain,),
                                       whiteSpaceW(5),
-                                      Text("${demicalFormat.format(user.pointMap['RP'])} RP",style: TextStyle(fontSize: 12, color: Color(0xff444444)),),
-                                      Icon(Icons.arrow_forward_ios, color: Colors.black, size: 12,),
+                                      Text("${demicalFormat.format(user.pointMap['RP'])} RP",style: TextStyle(fontSize: 12, color: white),),
+                                      Icon(Icons.arrow_forward_ios, color: white, size: 12,),
                                     ],
                                   ),
                                 ),
@@ -218,8 +217,8 @@ class _MyPageState extends State<MyPage> {
                                     children: [
                                       Image.asset("assets/icon/bza.png",height: 24, fit: BoxFit.contain,),
                                       whiteSpaceW(5),
-                                      Text("${demicalFormat.format(user.pointMap['DL'])} BZA",style: TextStyle(fontSize: 12, color: Color(0xff444444)),),
-                                      Icon(Icons.arrow_forward_ios, color: Colors.black, size: 12,),
+                                      Text("${demicalFormat.format(user.pointMap['DL'])} BZA",style: TextStyle(fontSize: 12, color: white),),
+                                      Icon(Icons.arrow_forward_ios, color: white, size: 12,),
                                     ],
                                   ),
                                 ),
@@ -268,7 +267,7 @@ class _MyPageState extends State<MyPage> {
             width: MediaQuery.of(context).size.width,
             padding: const EdgeInsets.only(top: 30.0, left: 12.0, right: 12.0, bottom: 50.0),
             decoration: BoxDecoration(
-              color: Color(0xffffdd00),
+              color: mainColor,
             ),
             child: Row(
               children: [
@@ -280,9 +279,15 @@ class _MyPageState extends State<MyPage> {
                         Text("총판명  ",
                             style: TextStyle(
                                 fontSize: 15,
-                                fontWeight: FontWeight.w600
+                                fontWeight: FontWeight.w600,
+                              color: white,
                             )),
-                        Text("010-0000-0000"),
+                        Text("010-0000-0000",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: white,
+                            )),
                       ],
                     ),
                     whiteSpaceH(5),
@@ -291,9 +296,15 @@ class _MyPageState extends State<MyPage> {
                         Text("직전대리점명   ",
                             style: TextStyle(
                                 fontSize: 15,
-                                fontWeight: FontWeight.w600
+                                fontWeight: FontWeight.w600,
+                              color: white,
                             )),
-                        Text("010-0000-0000"),
+                        Text("010-0000-0000",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: white,
+                            )),
                       ],
                     ),
                     whiteSpaceH(10),
@@ -302,9 +313,15 @@ class _MyPageState extends State<MyPage> {
                         Text("스토어명   ",
                             style: TextStyle(
                                 fontSize: 25,
-                                fontWeight: FontWeight.w600
+                                fontWeight: FontWeight.w600,
+                              color: white,
                             )),
-                        Text("010-0000-0000"),
+                        Text("010-0000-0000",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: white,
+                            )),
                       ],
                     ),
                   ],
@@ -338,9 +355,8 @@ class _MyPageState extends State<MyPage> {
                         Expanded(
                           flex: 4,
                           child:
-
                           Padding(
-                            padding: const EdgeInsets.only(top: 5.0, left: 10.0, right: 10.0, bottom: 5.0),
+                            padding: const EdgeInsets.only(top: 15.0, left: 12.0, right: 12.0, bottom: 15.0),
                             child:Column(
                               children: [
                                 Text("ADP 리워드",
@@ -352,7 +368,7 @@ class _MyPageState extends State<MyPage> {
                                 Text("${numberFormat.format(reco.adp)} ADP",
                                     style: TextStyle(
                                         fontSize: 12,
-                                        color: Color(0xffD4145A),
+                                        color: mainColor,
                                         fontWeight: FontWeight.w600
                                     )),
                               ],
@@ -363,7 +379,7 @@ class _MyPageState extends State<MyPage> {
                           flex: 4,
                           child:
                           Padding(
-                            padding: const EdgeInsets.only(top: 5.0, left: 10.0, right: 10.0, bottom: 5.0),
+                            padding: const EdgeInsets.only(top: 15.0, left: 12.0, right: 12.0, bottom: 15.0),
                             child:Column(
                               children: [
                                 Text("현금리워드",
@@ -375,7 +391,7 @@ class _MyPageState extends State<MyPage> {
                                 Text("${numberFormat.format(reco.pay)}원",
                                     style: TextStyle(
                                         fontSize: 12,
-                                        color: Color(0xffFF6622),
+                                        color: subYellow,
                                         fontWeight: FontWeight.w600
                                     )),
                               ],
@@ -398,7 +414,7 @@ class _MyPageState extends State<MyPage> {
                                 Text("${numberFormat.format(reco.ageAmount)} 개",
                                     style: TextStyle(
                                         fontSize: 12,
-                                        color: Color(0xffD4145A),
+                                        color: mainColor,
                                         fontWeight: FontWeight.w600
                                     )),
                               ],
@@ -421,7 +437,7 @@ class _MyPageState extends State<MyPage> {
                                 Text("${numberFormat.format(reco.franAmount)}개",
                                     style: TextStyle(
                                         fontSize: 12,
-                                        color: Color(0xffFF6622),
+                                        color: subYellow,
                                         fontWeight: FontWeight.w600
                                     )),
                               ],
@@ -526,10 +542,10 @@ class _MyPageState extends State<MyPage> {
                   return RecoItem(reco.gradeReferrer[idx]);
                 }
                 return Center(
-                  child: Opacity(
-                    opacity: reco.isLoading ? 1.0 : 0.0,
-                    child: CircularProgressIndicator(),
-                  ),
+                    child: CircularProgressIndicator(
+                        backgroundColor: mainColor,
+                        valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                    )
                 );
               },
               itemCount: reco.gradeReferrer.length,
@@ -705,10 +721,10 @@ class _MyPageState extends State<MyPage> {
                         return ReportItem(pm.pbmList[idx]);
                       }
                       return Center(
-                        child: Opacity(
-                          opacity: pm.isLoading ? 1.0 : 0.0,
-                          child: CircularProgressIndicator(),
-                        ),
+                          child: CircularProgressIndicator(
+                              backgroundColor: mainColor,
+                              valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                          )
                       );
                     },
                     itemCount: pm.pbmList.length,
@@ -731,11 +747,10 @@ class _MyPageState extends State<MyPage> {
               style: TextStyle(
                   fontFamily: 'noto',
                   fontSize: 12,
-                  fontWeight: FontWeight.w600,
                   color: Color(0xff888888))),
         ),
         Container(
-          padding: const EdgeInsets.only(right:12.0, left:12.0,bottom: 10.0),
+          padding: const EdgeInsets.only(right:16.0, left:16.0,bottom: 10.0),
           child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -745,7 +760,7 @@ class _MyPageState extends State<MyPage> {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             fontFamily: 'noto',
-                            fontSize: 16,
+                            fontSize: 18,
                             fontWeight: FontWeight.w600,
                             color:Color(0xff626262)))
                 ),
@@ -757,9 +772,9 @@ class _MyPageState extends State<MyPage> {
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               fontFamily: 'noto',
-                              fontSize: 16,
+                              fontSize: 18,
                               fontWeight: FontWeight.w600,
-                              color: Color(0xffBE1833)))
+                              color: mainColor))
                   ),
                 ),
                 Expanded(
@@ -768,7 +783,7 @@ class _MyPageState extends State<MyPage> {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             fontFamily: 'noto',
-                            fontSize: 16,
+                            fontSize: 18,
                             fontWeight: FontWeight.w600,
                             color:Color(0xff626262)))
                 ),
@@ -780,9 +795,9 @@ class _MyPageState extends State<MyPage> {
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               fontFamily: 'noto',
-                              fontSize: 16,
+                              fontSize: 18,
                               fontWeight: FontWeight.w600,
-                              color: Color(0xff626262)))
+                              color: subYellow))
                   ),
                 ),
               ]
@@ -806,10 +821,9 @@ class _MyPageState extends State<MyPage> {
               color: Colors.white,
             ),
             child: Center(
-                child:
-                CircularProgressIndicator(
-                  backgroundColor: Color(0xffffdd00),
-                  valueColor: new AlwaysStoppedAnimation<Color>(mainColor),
+                child: CircularProgressIndicator(
+                    backgroundColor: mainColor,
+                    valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
                 )
             ),
           )
@@ -819,7 +833,7 @@ class _MyPageState extends State<MyPage> {
                 Container(
                     padding: const EdgeInsets.only(top: 30.0, left: 15.0, right: 15.0, bottom: 10),
                     decoration: BoxDecoration(
-                      color: Color(0xffffdd00),
+                      color: mainColor,
                     ),
                     child: InkWell(
                       onTap: () async{
@@ -841,13 +855,13 @@ class _MyPageState extends State<MyPage> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Center(
-                                            child: Text("${user.storeModel.store.name}\n", style: TextStyle(fontSize: 25, color: Color(0xff444444), fontWeight: FontWeight.w600))
+                                            child: Text("${user.storeModel.store.name}\n", style: TextStyle(fontSize: 25, color: white, fontWeight: FontWeight.w600))
                                           ),
                                           whiteSpaceW(10),
-                                          Icon(Icons.arrow_forward_ios, size: 24,color: Colors.black,),
+                                          Icon(Icons.arrow_forward_ios, size: 24,color: white,),
                                         ]
                                       ),
-                                      Text("${user.storeModel.store.tel}\n", style: TextStyle(fontSize: 20, color: Color(0xff444444), fontWeight: FontWeight.w600)),
+                                      Text("${user.storeModel.store.tel}\n", style: TextStyle(fontSize: 20, color: white, fontWeight: FontWeight.w600)),
                                     ]
                                   ),
                                   Spacer(),
@@ -877,8 +891,8 @@ class _MyPageState extends State<MyPage> {
                                       children: [
                                         Image.asset("assets/icon/adp.png",height: 24, fit: BoxFit.contain,),
                                         whiteSpaceW(5),
-                                        Text("${demicalFormat.format(user.pointMap['ADP'])} ADP",style: TextStyle(fontSize: 12, color: Color(0xff444444)),),
-                                        Icon(Icons.arrow_forward_ios, color: Colors.black, size: 12,),
+                                        Text("${demicalFormat.format(user.pointMap['ADP'])} ADP",style: TextStyle(fontSize: 12, color: white),),
+                                        Icon(Icons.arrow_forward_ios, color: white, size: 12,),
                                       ],
                                     ),
                                   ),
@@ -901,6 +915,7 @@ class _MyPageState extends State<MyPage> {
                                 sellDlCard(),
                                 whiteSpaceH(16.0),
                                 Tabs(name: "사업자정보 수정", routesName: "/store/modify/business",),
+                                Tabs(name: "매장정보 수정", routesName: "/store/modify/store",),
                                 CustomerCenter(),
                               ]
                           )
@@ -938,7 +953,6 @@ class _MyPageState extends State<MyPage> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-//              Image.asset("assets/icon/friends-wt.png", height: 32, fit: BoxFit.contain,),
               Image.asset("assets/icon/recommend.png", height: 42, fit: BoxFit.contain,),
               SizedBox(width: 12,),
               Text("이용내역",style: TextStyle(fontSize: 16,color: Color(0xff444444))),
@@ -1096,7 +1110,9 @@ class _MyPageState extends State<MyPage> {
             height: 48,
             child: Row(
               children: [
-                Text("고객센터",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600, color: Color(0xff444444)),),
+                Text("문의하기",style: TextStyle(fontSize: 14, color: Color(0xff444444)),),
+                Spacer(),
+                Text("HOJOGroup",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600, color: Color(0xff444444)),),
                 SizedBox(width: 12,),
                 Text("1500-1500",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600, color: Color(0xffffcc00)),)
               ],

@@ -1,10 +1,9 @@
 import 'package:cashcook/src/model/usercheck.dart';
+import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/bargain/bargain.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/colors.dart';
-import 'package:cashcook/src/widgets/dialog.dart';
-import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:provider/provider.dart' as P;
 import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +17,8 @@ class Buy extends StatefulWidget {
 
   final String name;
   final int pay;
-   String id;
-   int quantity;
+  String id;
+  int quantity;
   String paymentType;
 
   Buy({this.name, this.pay, this.id, this.quantity,
@@ -88,8 +87,11 @@ class _Buy extends State<Buy> {
             appBar.preferredSize.height,
         child: Center(
           child: ispOn
-              ? CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(mainColor),
+              ? Center(
+                    child: CircularProgressIndicator(
+                        backgroundColor: mainColor,
+                        valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                    )
                 )
               : Container(),
         ),
@@ -98,7 +100,7 @@ class _Buy extends State<Buy> {
       data: PaymentData.fromJson({
         'pg': 'inicis',
         'payMethod': 'card',
-        'name': 'ADP 카드 충전',
+        'name': (widget.paymentType.contains("ORDER")) ? '캐시쿡 결제' : 'ADP 카드 충전',
         'merchantUid': 'mid_${DateTime.now().millisecondsSinceEpoch}',
         'amount': widget.pay,
         'buyerName': buyerName,
@@ -116,26 +118,29 @@ class _Buy extends State<Buy> {
           print(widget.id);
           print(widget.quantity);
           print(widget.paymentType);
-          bool response =
-          await Provider.of<UserProvider>(context, listen: false)
-              .postCharge(
-              widget.id, widget.quantity, widget.paymentType);
-          if (!response) {
-            Fluttertoast.showToast(msg: "에러");
+
+          if(widget.paymentType.contains("ORDER")) {
+            bool response =
+            await Provider.of<StoreServiceProvider>(context, listen: false).orderMenu(int.parse(widget.id), widget.pay, widget.paymentType);
+
+            if (!response) {
+              Fluttertoast.showToast(msg: "에러");
+            } else {
+              Fluttertoast.showToast(msg: "결제가 완료되었습니다.");
+            }
           } else {
-            Fluttertoast.showToast(msg: "충전이 완료되었습니다.");
+            bool response =
+            await Provider.of<UserProvider>(context, listen: false)
+                .postCharge(
+                widget.id, widget.quantity, widget.paymentType);
+            if (!response) {
+              Fluttertoast.showToast(msg: "에러");
+            } else {
+              Fluttertoast.showToast(msg: "충전이 완료되었습니다.");
+            }
           }
+
           Navigator.of(context).pop();
-//          dialog(
-//              title: "결제안내",
-//              context: context,
-//              content: "라온치킨에서\n${numberFormat.format(10000)}원을 결제하셨습니다.",
-//              sub: "실시간 흥정하기로 가시겠습니까?",
-//              selectOneText: "취소",
-//              selectOneVoid: () => dialogPop(),
-//              selectTwoText: "결제",
-//              selectTwoVoid: () => bargainMove()
-//          );
 
         } else {
           showToast("결제를 실패하였습니다.");

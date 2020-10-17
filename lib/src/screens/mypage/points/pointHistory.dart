@@ -51,7 +51,12 @@ class History extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("$point 적립 / 사용 내역"),
+        title: Text("${point == "DL" ? "BZA" : point} 적립 / 사용 내역",
+          style: TextStyle(
+            fontSize: 14,
+            fontFamily: 'noto',
+            fontWeight: FontWeight.w600
+          )),
         centerTitle: true,
         elevation: 1,
       ),
@@ -84,7 +89,7 @@ class History extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
-            child: Text("현재 보유 $point",
+            child: Text("현재 보유 ${point == "DL" ? "BZA" : point}",
               style: TextStyle(fontSize: 14, color: mainColor),),
           ),
           Row(
@@ -101,7 +106,7 @@ class History extends StatelessWidget {
                             fontWeight: FontWeight.w600),
                         children: [
                           TextSpan(text: "${demicalFormat.format(user.nowPoint)}"),
-                          TextSpan(text: "$point", style: TextStyle(fontSize: 14))
+                          TextSpan(text: "${point == "DL" ? "BZA" : point}", style: TextStyle(fontSize: 14))
                         ]
                     ),
                   );
@@ -146,7 +151,7 @@ class History extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           RaisedButton(
-            onPressed: () {
+            onPressed: () async {
               Map<String, dynamic> args = {
                 'point': point,
                 "pointImg": pointImg,
@@ -154,7 +159,9 @@ class History extends StatelessWidget {
               };
               String path = "rp";
 
-              Navigator.of(context).pushNamed("/point/$path", arguments: args);
+              await Navigator.of(context).pushNamed("/point/$path", arguments: args);
+
+
             },
             child: Text("환전하기", style: TextStyle(fontSize: 14),),
             padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
@@ -198,10 +205,13 @@ class History extends StatelessWidget {
               return SizedBox();
             }
             return Center(
-              child: Opacity(
-                opacity: users.isLoading ? 1.0 : 0.0,
-                child: CircularProgressIndicator(),
-              ),
+                child: Opacity(
+                  opacity: users.isLoading ? 1.0 : 0.0,
+                  child:CircularProgressIndicator(
+                      backgroundColor: mainColor,
+                      valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                  )
+                )
             );
 
           },
@@ -247,7 +257,7 @@ class History extends StatelessWidget {
                     ),
                   ),
                   Spacer(),
-                  Text("${e['price']} $point", style: TextStyle(fontSize: 18,
+                  Text("${e['price']} ${point == "DL" ? "BZA" : point}", style: TextStyle(fontSize: 18,
                       fontWeight: FontWeight.w600,
                       color: e['type'] == "충전" ? mainColor : Color(
                           0xff888888)),),

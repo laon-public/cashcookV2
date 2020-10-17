@@ -4,6 +4,7 @@ import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class IntegratedPoint extends StatefulWidget {
@@ -32,16 +33,20 @@ class _IntegratedPoint extends State<IntegratedPoint> {
     username = args['username'];
     phone = args['phone'];
 
-
-
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: Text("$username 활동현황"),
+        title: Text("$username 활동현황",
+        style: TextStyle(
+          color: white,
+          fontSize: 14,
+          fontFamily: 'noto',
+
+        )),
         centerTitle: true,
         elevation: 0.0,
-        backgroundColor: Color(0xffffdd00),
+        backgroundColor: mainColor,
       ),
       body: Column(
           children: [
@@ -49,7 +54,7 @@ class _IntegratedPoint extends State<IntegratedPoint> {
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.only(top: 30.0, left: 12.0, right: 12.0, bottom: 50.0),
       decoration: BoxDecoration(
-        color: Color(0xffffdd00),
+        color: mainColor,
       ),
       child: Row(
         children: [
@@ -61,9 +66,13 @@ class _IntegratedPoint extends State<IntegratedPoint> {
                   Text("$username   ",
                       style: TextStyle(
                           fontSize: 25,
-                          fontWeight: FontWeight.w600
+                          fontWeight: FontWeight.w600,
+                          color: white,
                       )),
-                  Text("$phone"),
+                  Text("$phone",style: TextStyle(
+                    fontSize: 20,
+                    color: white,
+                  )),
                 ],
               ),
 
@@ -77,6 +86,7 @@ class _IntegratedPoint extends State<IntegratedPoint> {
                 return Padding(
                   padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                   child: Container(
+                    padding: EdgeInsets.only(bottom: 5.0, top: 5.0),
                       transform: Matrix4.translationValues(0.0, -30.0, 0.0),
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
@@ -134,7 +144,7 @@ class _IntegratedPoint extends State<IntegratedPoint> {
                                     Text("${numberFormat.format(pm.rp)} RP",
                                         style: TextStyle(
                                             fontSize: 12,
-                                            color: Color(0xffFF6622),
+                                            color: subYellow,
                                             fontWeight: FontWeight.w600
                                         )),
                                   ],
@@ -209,10 +219,9 @@ class _IntegratedPoint extends State<IntegratedPoint> {
       builder: (context, pm, _){
         return (pm.isLoading) ?
         Center(
-            child:
-            CircularProgressIndicator(
-              backgroundColor: Color(0xffffdd00),
-              valueColor: new AlwaysStoppedAnimation<Color>(mainColor),
+            child: CircularProgressIndicator(
+                backgroundColor: mainColor,
+                valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
             )
         )
             :
@@ -297,7 +306,7 @@ class _IntegratedPoint extends State<IntegratedPoint> {
                                       fontWeight: FontWeight.w600,
                                       color:
                                       (e['title'].toString().contains("BZA") || (e['title'].toString().contains("ADP")) ? Color(0xffBE1833)
-                                          : (e['title'].toString().contains("RP")) ? mainColor
+                                          : (e['title'].toString().contains("RP")) ? subYellow
                                           :  Colors.black),
                                 )
                             )

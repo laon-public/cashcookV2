@@ -32,7 +32,7 @@ class AccountListModel {
 
   AccountListModel.fromJson(Map<String, dynamic> json)
       : idx = json['idx'],
-        amount = json['amount'],
+        amount = json['amount'].split(".").first,
         purpose = json['description'],
         created_at = json['created_at'],
         updated_at = json['updated_at'];

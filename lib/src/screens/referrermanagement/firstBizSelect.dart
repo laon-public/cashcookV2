@@ -38,10 +38,10 @@ class _FirstBizSelect extends State<FirstBizSelect> {
     });
     
     return Scaffold(
-      backgroundColor: Colors.amberAccent,
+      backgroundColor: white,
       resizeToAvoidBottomInset: true,
       appBar: appBar = AppBar(
-        backgroundColor: Colors.amberAccent,
+        backgroundColor: white,
         elevation: 0.5,
         centerTitle: true,
         title: Text(
@@ -49,7 +49,7 @@ class _FirstBizSelect extends State<FirstBizSelect> {
           style: TextStyle(
               color: black,
               fontFamily: 'noto',
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.w600),
         ),
         automaticallyImplyLeading: false,
@@ -59,10 +59,12 @@ class _FirstBizSelect extends State<FirstBizSelect> {
       Consumer<UserProvider>(
         builder: (context, user, _) {
           return (user.isLoading) ?
-              Center (
-                child:
-                  CircularProgressIndicator()
+          Center(
+              child: CircularProgressIndicator(
+                  backgroundColor: mainColor,
+                  valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
               )
+          )
               :
           SingleChildScrollView(
             child: Container(
@@ -75,11 +77,32 @@ class _FirstBizSelect extends State<FirstBizSelect> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     whiteSpaceH(24),
-                    Text('총판회원',
-                      style: TextStyle(
-                          fontFamily: 'noto', fontSize: 14, color: Colors.red),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 72,
+                      padding: EdgeInsets.only(top: 12, bottom: 12),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "상위 총판을 선택해 주세요.",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                fontFamily: 'noto', fontSize: 16, color: Color(0xFF222222)),
+                          ),
+                          whiteSpaceW(12),
+                          Container(
+                            child: Image.asset(
+                              "assets/resource/public/payment.png",
+                              width: 48,
+                              height: 48,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                    whiteSpaceH(4),
+                    whiteSpaceH(10),
                     SizedBox(
                       child: DropdownButton(
                         isExpanded: true,
@@ -88,7 +111,7 @@ class _FirstBizSelect extends State<FirstBizSelect> {
                         elevation: 16,
                         underline: Container(
                             height: 2,
-                            color: Colors.red
+                            color: mainColor
                         ),
                         value: user.disSelected ,
                         items: user.disList.map(
@@ -107,47 +130,19 @@ class _FirstBizSelect extends State<FirstBizSelect> {
                     whiteSpaceH(8),
                     Container(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
                             '상위 총판을 선택해주세요.',
-                            textAlign: TextAlign.end,
+                            textAlign: TextAlign.start,
                             style: TextStyle(
-                                fontFamily: 'noto', fontSize: 14, color: black),
+                                fontFamily: 'noto', fontSize: 12, color: Color(0xFF888888)),
                           ),
                           whiteSpaceW(12),
                         ],
                       ),
                     ),
-
-
-                    Expanded(
-                      child: Container(),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 72,
-                      padding: EdgeInsets.only(top: 12, bottom: 12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            "상위 총판을 선택해 주세요.",
-                            textAlign: TextAlign.end,
-                            style: TextStyle(
-                                fontFamily: 'noto', fontSize: 14, color: black),
-                          ),
-                          whiteSpaceW(12),
-                          Container(
-                            child: Image.asset(
-                              "assets/resource/public/payment.png",
-                              width: 48,
-                              height: 48,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
+                    Spacer(),
                     whiteSpaceH(24),
                     Container(
                       width: MediaQuery.of(context).size.width,
@@ -178,8 +173,7 @@ class _FirstBizSelect extends State<FirstBizSelect> {
                             style: TextStyle(
                                 color: white,
                                 fontSize: 14,
-                                fontFamily: 'noto',
-                                fontWeight: FontWeight.w600),
+                                fontFamily: 'noto',),
                           ),
                         ),
                       ),

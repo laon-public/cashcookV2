@@ -1,8 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cashcook/src/model/usercheck.dart';
+import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/dialog.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class QrCheck extends StatefulWidget {
@@ -36,6 +40,7 @@ class _QrCheck extends State<QrCheck> {
 
   @override
   Widget build(BuildContext context) {
+    UserProvider user = Provider.of<UserProvider>(context, listen: false);
     // TODO: implement build
     return WillPopScope(
       onWillPop: () {
@@ -46,7 +51,7 @@ class _QrCheck extends State<QrCheck> {
         backgroundColor: white,
         appBar: appBar = AppBar(
           backgroundColor: white,
-          elevation: 0.5,
+          elevation: 0,
           title: Text(
             "QR 확인",
             style: TextStyle(
@@ -70,11 +75,48 @@ class _QrCheck extends State<QrCheck> {
           padding: EdgeInsets.only(left: 16, right: 16),
           child: Column(
             children: [
-              whiteSpaceH(80),
-              QrImage(
-                data: widget.uuid,
-                version: QrVersions.auto,
-                size: 240.0,
+              Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height / 1.5,
+                child:
+                  Stack(
+                    children: [
+                      Positioned(
+                        top: 50,
+                        child: Container(
+                          padding: EdgeInsets.all(70),
+                          child: QrImage(
+                            data: widget.uuid,
+                            version: QrVersions.auto,
+                            size: 160.0,
+                          ),
+                          decoration: BoxDecoration(
+                              color: white,
+                              border: Border.all(color: mainColor, width: 10),
+                              shape: BoxShape.circle
+                          ),
+                        )
+                      ),
+                      Positioned(
+                          bottom: 80,
+                          right: 20,
+                          child: CachedNetworkImage(
+                            imageUrl: user.storeModel.store.shop_img1,
+                            imageBuilder: (context, img) => Container(
+                              width: 64,
+                              height: 64,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image: img, fit: BoxFit.fill
+                                )
+                              )
+                            ),
+                          )
+                      )
+                    ]
+                  )
+
               ),
               Expanded(
                 child: Container(),

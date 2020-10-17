@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cashcook/src/provider/StoreProvider.dart';
+import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/screens/referrermanagement/franBizSelect.dart';
@@ -17,20 +18,21 @@ import 'package:provider/provider.dart';
 
 
 
-class StoreApplyLastStep extends StatefulWidget {
+class StoreApplySecondStep extends StatefulWidget {
   @override
-  _StoreApplyLastStepState createState() => _StoreApplyLastStepState();
+  _StoreApplySecondStepState createState() => _StoreApplySecondStepState();
 }
 
-class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
+class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
   TextEditingController nameCtrl = TextEditingController();
   TextEditingController descCtrl = TextEditingController();
+  TextEditingController descSrtCtrl = TextEditingController();
 
   TextEditingController timeCtrl1 = TextEditingController();
   TextEditingController timeCtrl2 = TextEditingController();
   TextEditingController timeCtrl3 = TextEditingController();
 
-  TextEditingController negotiableTimeCtrl = TextEditingController();
+  TextEditingController storeTimeCtrl = TextEditingController();
   TextEditingController addressCtrl = TextEditingController();
   TextEditingController detailCtrl = TextEditingController();
    String company_name;
@@ -59,6 +61,9 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
 
   double lat;
   double lon;
+
+  String category = "음식점";
+  String sub_category = "한식";
 
    setShop1Uri(String uri){
      shop1_uri = uri;
@@ -89,12 +94,18 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
     bank = args['bank'];
     account = args['account'];
     blUri = args['bl'];
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("제휴매장 등록하기 2/2"),
+        title: Text("매장 정보 1/2", style:
+          TextStyle(
+            color: black,
+            fontSize: 14,
+            fontFamily: 'noto'
+          )),
         centerTitle: true,
-        elevation: 0.0,
+        elevation: 0.5,
       ),
       body: SafeArea(top:false ,child: body(context)),
     );
@@ -107,11 +118,108 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
           children: [
+            Padding(
+              padding: const EdgeInsets.only(top:5.0),
+              child: Align(child: Text("업종",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+            ),
+            Consumer<StoreServiceProvider>(
+              builder: (context, ssp, _) {
+                return Container(
+                  width: MediaQuery.of(context).size.width,
+                  child:Row(
+                      children:[
+                        Expanded(
+                            flex: 1,
+                            child:DropdownButton(
+                              isExpanded: true,
+                              icon: Icon(Icons.arrow_drop_down, color: mainColor,),
+                              iconSize: 24,
+                              elevation: 16,
+                              underline: Container(
+                                height: 2,
+                                color: Color(0xFFDDDDDD),
+                              ),
+                              value: ssp.selectCat ,
+                              items: ssp.catList.map((value) {
+                                return DropdownMenuItem(
+                                  value: value.code_name,
+                                  child: Text(value.code_name),
+                                );
+                              }
+                              ).toList(),
+                              onChanged: (value){
+                                ssp.fetchNewCategory(value);
+                              },
+                            )
+                        ),
+                        whiteSpaceW(5),
+                        Expanded(
+                          flex: 1,
+                          child: DropdownButton(
+                            isExpanded: true,
+                            icon: Icon(Icons.arrow_drop_down, color: mainColor,),
+                            iconSize: 24,
+                            elevation: 16,
+                            underline: Container(
+                              height: 2,
+                              color: Color(0xFFDDDDDD),
+                            ),
+                            value: ssp.selectSubCat,
+                            items: ssp.subCatList.map((value) {
+                              return DropdownMenuItem(
+                                value: value.code_name,
+                                child: Text(value.code_name),
+                              );
+                            }
+                            ).toList(),
+                            onChanged: (value){
+                              ssp.setSubCat(value);
+                            },
+                          ),
+                        )
+                      ]
+                  ),
+                );
+              }
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top:5.0),
+              child: Align(child: Text("고객에게 보여질 업종을 선택해주세요.",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerRight,),
+            ),
             textField("매장명", "사업자등록증의 상호명을 입력해주세요.", nameCtrl,TextInputType.text),
-            textField("매장설명", "100자 내외로 입력해주세요.", descCtrl,TextInputType.text),
-            //textField("매장 연락처", "연락가능한 연락처를 입력하여주세요.", timeCtrl,TextInputType.phone),
+            textField("매장요약", "20자 내외로 입력해주세요.", descSrtCtrl,TextInputType.text),
+            Padding(
+              padding: const EdgeInsets.only(top:5.0),
+              child: Align(child: Text("매장설명",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+            ),
+            whiteSpaceH(5),
+            TextFormField(
+              autofocus: false,
+              maxLines: 4,
+              controller: descCtrl,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                fontFamily: 'noto',
+              ),
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Color(0xff888888)
+                      )
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color:mainColor
+                      )
+                  )
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top:5.0),
+              child: Align(child: Text("100자 내외로 입력해주세요.",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerRight,),
+            ),
             Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -119,11 +227,17 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
                   Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(width: 90,  child: textFieldss( timeCtrl1,TextInputType.phone)),
+                        Expanded(
+                            child: textFieldss( timeCtrl1,TextInputType.phone)
+                        ),
                         Text("-",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
-                        SizedBox(width: 125, child: textFields( timeCtrl2,TextInputType.phone)),
+                        Expanded(
+                            child: textFields( timeCtrl2,TextInputType.phone)
+                        ),
                         Text("-",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
-                        SizedBox(width: 125, child: textFields( timeCtrl3,TextInputType.phone)),
+                        Expanded(
+                            child: textFields( timeCtrl3,TextInputType.phone)
+                        ),
                       ]
                   ),
                   Padding(
@@ -133,7 +247,7 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
 
                 ]
             ),
-            textField("흥정시간", "실시간 흥정 가능시간.", negotiableTimeCtrl,TextInputType.text),
+            textField("매장 영업시간", "매장 영업시간을 입력해주세요.", storeTimeCtrl,TextInputType.text),
             addressInfo(context),
             Padding(
               padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
@@ -283,14 +397,17 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
             "bank": bank,
             "account": account,
             "shop_name": nameCtrl.text,
+            "shop_srt_description" : descSrtCtrl.text,
             "shop_description": descCtrl.text,
             "shop_tel": timeCtrl1.text+timeCtrl2.text+timeCtrl3.text,
-            "negotiable_time": negotiableTimeCtrl.text,
+            "store_time": storeTimeCtrl.text,
             "address": addressCtrl.text,
             "address_detail": detailCtrl.text,
             "useDL": isDl.toString(),
             "latitude": lat.toString(),
             "longitude": lon.toString(),
+            "category_code": Provider.of<StoreServiceProvider>(context, listen: false).selectCat_code,
+            "category_sub_code": Provider.of<StoreServiceProvider>(context, listen: false).selectSubCat_code,
           };
           print("----------------");
           print("$tel");
@@ -298,7 +415,7 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
 
           if(nameCtrl.text == '' || nameCtrl.text == null ) {
             Fluttertoast.showToast(msg: "매장명을 입력해 주세요");
-          } else if(descCtrl.text  == '' || descCtrl.text == null){
+          } else if(descSrtCtrl.text  == '' || descSrtCtrl.text == null){
             Fluttertoast.showToast(msg: "매장설명을 입력해 주세요");
           } else if(timeCtrl1.text == '' || timeCtrl1.text == null ||
               timeCtrl2.text == '' || timeCtrl2.text == null ||
@@ -306,8 +423,8 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
             Fluttertoast.showToast(msg: "매장 연락처를 입력해 주세요");
           } else if(timeCtrl1.text.length < 3 || timeCtrl2.text.length < 4 || timeCtrl3.text.length < 4){
             Fluttertoast.showToast(msg: "전화 번호의 자릿수가 부족 합니다.");
-          } else if(negotiableTimeCtrl.text == '' || negotiableTimeCtrl.text == null ){
-            Fluttertoast.showToast(msg: "흥정시간을 입력해 주세요");
+          } else if(storeTimeCtrl.text == '' || storeTimeCtrl.text == null ){
+            Fluttertoast.showToast(msg: "영업시간을 입력해 주세요");
           } else if(addressCtrl.text == '' || addressCtrl.text == null ){
             Fluttertoast.showToast(msg: "매장 주소를 입력해 주세요");
           } else if(detailCtrl.text == '' || detailCtrl.text == null ){
@@ -317,21 +434,8 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
               shop3_uri == '' || shop3_uri == null ){
             Fluttertoast.showToast(msg: "3개의 매장 사진을 첨부해 주세요");
           } else {
-          if(Provider.of<UserProvider>(context, listen: false).loginUser.userGrade == "NORMAL"){
-            await Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => FranBizSelect()));
-
-                Fluttertoast.showToast(msg: "제휴매장 등록 진행 중 입니다.");
-          }
-            
-          bool isReturn = await Provider.of<StoreProvider>(context, listen: false).postStore(data, blUri, shop1_uri, shop2_uri, shop3_uri);
-
-          if(isReturn){
-            Fluttertoast.showToast(msg: "제휴매장 등록이 성공하였습니다.");
-          }else {
-            Fluttertoast.showToast(msg: "제휴매장 등록이 실패하였습니다.");
-          }
-          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
+            await Provider.of<StoreProvider>(context, listen: false).bak_store2(data, blUri, shop1_uri, shop2_uri, shop3_uri);
+            Navigator.of(context).pushNamed("/store/apply3");
           }
         },
         child: Text("다음"),
@@ -379,22 +483,10 @@ class _PicturesState extends State<Pictures> {
                 BoxDecoration(border: Border.all(color: Color(0xffdddddd))),
             child: Row(
               children: [
-                InkWell(
-                  child: Container(
-                    width: 80,
-                    color: Colors.white,
-                    child: Center(
-                      child: Text("파일첨부"),
-                    ),
-                  ),
-                  onTap: () {
-                    getImage();
-                  },
-                ),
                 Flexible(
                   child: Container(
                     height: 40,
-                    color: Color(0xffeeeeee),
+                    color: Color(0xffDDDDDD),
                     child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
@@ -402,6 +494,21 @@ class _PicturesState extends State<Pictures> {
                           overflow: TextOverflow.ellipsis,
                         )),
                   ),
+                ),
+                InkWell(
+                  child: Container(
+                    width: 90,
+                    color: mainColor,
+                    child: Center(child: Text("파일첨부", style:
+                    TextStyle(
+                        color: white,
+                        fontSize: 12,
+                        fontFamily: 'noto'
+                    )),),
+                  ),
+                  onTap: () {
+                    getImage();
+                  },
                 ),
               ],
             ),

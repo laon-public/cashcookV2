@@ -231,7 +231,7 @@ class _QrCreate extends State<QrCreate> {
                   children: [
                     Text(
                       widget.type == 0
-                          ? "일반결제의 경우, 반드시\n결제를 완료한 이후 진행 바랍니다."
+                          ? "현장결제의 경우, 반드시\n결제를 완료한 이후 진행 바랍니다."
                           : "DL결제의 경우, 반드시\n결제하기 이전에 진행 바랍니다.",
                       textAlign: TextAlign.end,
                       style: TextStyle(
@@ -239,9 +239,11 @@ class _QrCreate extends State<QrCreate> {
                     ),
                     whiteSpaceW(12),
                     Container(
-                      width: 48,
-                      height: 48,
-                      color: Color(0xFFDDDDDD),
+                      child: Image.asset(
+                        "assets/resource/public/payment.png",
+                        width: 48,
+                        height: 48,
+                      ),
                     )
                   ],
                 ),

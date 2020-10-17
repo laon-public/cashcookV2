@@ -12,6 +12,7 @@ import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:intl/intl.dart';
 import 'package:share/share.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:contacts_service/contacts_service.dart';
@@ -39,11 +40,12 @@ class _InvitationList extends State<InvitationList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.amber,
+        centerTitle: true,
+        backgroundColor: mainColor,
         title: Text(
           "추천회원 초대하기",
           style: TextStyle(
-              color: black,
+              color: white,
               fontSize: 14,
               fontFamily: 'noto',
               fontWeight: FontWeight.w600),
@@ -65,17 +67,15 @@ class _InvitationList extends State<InvitationList> {
           builder: (context, phoneProvider, _){
               return (phoneProvider.isLoading) ?
                 Center(
-                    child: Column(
-                      children: <Widget>[
-                        new Image.asset("assets/resource/public/loading.gif"),
-                        new Text("연락처를 불러오는중입니다."),
-                      ],
+                    child: CircularProgressIndicator(
+                      backgroundColor: mainColor,
+                      valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
                     )
                 )
                   :
               Container(
                   height: MediaQuery.of(context).size.height,
-                  color: Colors.amber,
+                  color: mainColor,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
@@ -91,7 +91,7 @@ class _InvitationList extends State<InvitationList> {
                                     fontWeight: FontWeight.w600,
                                     fontFamily: 'noto',
                                     fontSize: 20,
-                                    color: mainColor),
+                                    color: white),
                               ),
                               Text(
                                 "명 선택됨",
@@ -99,7 +99,7 @@ class _InvitationList extends State<InvitationList> {
                                     fontWeight: FontWeight.w600,
                                     fontFamily: 'noto',
                                     fontSize: 20,
-                                    color: black),
+                                    color: white),
                               ),
                               whiteSpaceH(15),
                             ],
@@ -111,10 +111,17 @@ class _InvitationList extends State<InvitationList> {
                         child: Row(
                           children: <Widget>[
                             // 전체선택
-                            Checkbox(value: phoneProvider.allCheck,
-                              onChanged: (value) {
+                            Theme(
+                              data: ThemeData(unselectedWidgetColor: Colors.white,),
+                              child:
+                              Checkbox(
+                                activeColor: white,
+                                checkColor: white,
+                                value: phoneProvider.allCheck,
+                                onChanged: (value) {
                                   phoneProvider.setAllCheck(value);
-                              },
+                                },
+                              ),
                             ),
                             Text(
                               "전체선택",
@@ -122,7 +129,7 @@ class _InvitationList extends State<InvitationList> {
                                   fontWeight: FontWeight.w600,
                                   fontFamily: 'noto',
                                   fontSize: 18,
-                                  color: black),
+                                  color: white),
                             ),
                           ],
                         ),
@@ -136,17 +143,14 @@ class _InvitationList extends State<InvitationList> {
                         width: MediaQuery.of(context).size.width,
                         height: 50,
                         child: RaisedButton(
+                          disabledColor: subBlue,
                           onPressed: phoneProvider.checkCnt != 0? () async {
-                            if(phoneProvider.checkCnt == 0){
-                              showToast("연락처를 체크해주세요.");
-                            } else {
                               phoneProvider.postReco();
                               showToast("초대하기를 성공하셨습니다.");
                               Navigator.of(context).pop(true);
-                            }
                           } : null,
                           elevation: 0.0,
-                          color: mainColor,
+                          color: subYellow,
                           child: Center(
                             child: Text(
                               "초대하기",
@@ -154,7 +158,7 @@ class _InvitationList extends State<InvitationList> {
                                   fontWeight: FontWeight.w600,
                                   fontFamily: 'noto',
                                   fontSize: 14,
-                                  color: white),
+                                  color: phoneProvider.checkCnt != 0 ? black : subBlue),
                             ),
                           ),
                         ),
@@ -197,51 +201,64 @@ class _InvitationItemListState extends State<InvitationItemList> {
           itemCount: phoneList.length,
           itemBuilder: (BuildContext context, int index) {
             return Container(
+              padding: EdgeInsets.only(right: 15.0),
               child: Center(
-                child: new Row(
+                child: Row(
                   children: [
-                    Container(
-                      // 개별선택
-                      child: Checkbox(
-                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        activeColor: mainColor,
-                        checkColor: mainColor,
-                        value: phoneList[index].isCheck,
-                        onChanged: (value) {
-                          phoneProvider.setCheck(index, value);
-                        },
+                    Expanded(
+                      flex:1,
+                      child:Container(
+                        // 개별선택
+                        child:
+                        Theme(
+                          data: ThemeData(unselectedWidgetColor: Colors.white,),
+                          child:
+                          Checkbox(
+                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            activeColor: white,
+                            checkColor: white,
+                            value: phoneList[index].isCheck,
+                            onChanged: (value) {
+                              phoneProvider.setCheck(index, value);
+                            },
+                          ),
+                        ),
                       ),
                     ),
-                    whiteSpaceW(10),
-                    Text('${index + 1}',
-                      style: TextStyle(
-                        color: black,
-                        fontSize: 10,
-                        fontFamily: 'noto',
+                    Expanded(
+                      flex: 1,
+                      child: Text('${NumberFormat("000").format(index + 1)}',
+                        style: TextStyle(
+                          color: white,
+                          fontSize: 12,
+                          fontFamily: 'noto',
+                        ),
                       ),
                     ),
-                    whiteSpaceW(10),
-                    Text('${phoneList[index].name}',
-                      maxLines: 1,
-                      softWrap: false,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: black,
-                        fontSize: 12,
-                        fontFamily: 'noto',
+                    Expanded(
+                      flex: 3,
+                      child: Text('${phoneList[index].name}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: white,
+                          fontSize: 12,
+                          fontFamily: 'noto',
+                        ),
                       ),
                     ),
-                    whiteSpaceW(30),
-                    Text('${phoneList[index].phone}',
-                      maxLines: 1,
-                      softWrap: false,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: black,
-                        fontSize: 12,
-                        fontFamily: 'noto',
+                    Expanded(
+                      flex: 3,
+                      child: Text('${phoneList[index].phone}',
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: white,
+                          fontSize: 12,
+                          fontFamily: 'noto',
+                        ),
+                        textAlign: TextAlign.end,
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),

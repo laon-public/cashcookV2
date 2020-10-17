@@ -5,11 +5,9 @@ import 'package:cashcook/src/model/phone.dart';
 import 'package:cashcook/src/model/reco.dart';
 import 'package:cashcook/src/model/referrer/referrer.dart';
 import 'package:cashcook/src/model/usercheck.dart';
-import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/services/Reco.dart';
 import 'package:cashcook/src/utils/responseCheck.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class RecoProvider with ChangeNotifier {
   final service = RecoService();
@@ -109,6 +107,8 @@ class RecoProvider with ChangeNotifier {
     gradeReferrer.clear();
     final response = await service.fetchGradeReco();
     Map<String, dynamic> recoJson = jsonDecode(response);
+    print("아바자로");
+    print(recoJson);
     if(isResponse(recoJson)){
       ageAmount = recoJson['data']['ageCount'];
       franAmount = recoJson['data']['franCount'];

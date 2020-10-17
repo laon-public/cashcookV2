@@ -16,20 +16,7 @@ class StoreService {
     return response.toString();
   }
 
-  Future<bool> postStore(Map<String, String> data, String bn_path,
-      String shop1_path, String shop2_path, String shop3_path) async {
-    FormData formData = new FormData.fromMap({
-      "business_license": await MultipartFile.fromFile(bn_path),
-    });
-    formData.files.addAll([
-      MapEntry("shop_images", MultipartFile.fromFileSync(shop1_path)),
-      MapEntry("shop_images", MultipartFile.fromFileSync(shop2_path)),
-      MapEntry("shop_images", MultipartFile.fromFileSync(shop3_path)),
-    ]);
-
-    formData.fields.addAll(data.entries);
-    print(formData.fields);
-    print(formData.files);
+  Future<bool> postStore(FormData formData) async {
     try {
       Response response = await Dio().post(cookURL + "/franchises",
           data: formData,
