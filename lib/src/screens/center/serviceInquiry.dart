@@ -17,6 +17,14 @@ class _Inquiry extends State<Inquiry> {
   int currentPage = 0;
   bool isOpen = false;
 
+  inquiryInit() async {
+    await centerService.getInquiry(0).then((value) {
+      setState(() {
+        print("inquiryInit");
+      });
+  });
+}
+
   loadMore(context) async {
     CenterProvider center = Provider.of<CenterProvider>(context,listen: false);
     if(!center.isLoading){
@@ -49,7 +57,8 @@ class _Inquiry extends State<Inquiry> {
               child: InkWell(
                 onTap: (){
                   Navigator.of(context).pushNamed("/inquiry/write").then((value){
-//                    setState(() {});
+                    isOpen = false;
+                    inquiryInit();
                   });
                 },
                 child: Text("작성하기",style: TextStyle(fontSize: 14, color: mainColor,decoration: TextDecoration.underline),),
