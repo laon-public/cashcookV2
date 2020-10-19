@@ -14,15 +14,16 @@ class _Invitation extends State {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.amber,
+        backgroundColor: mainColor,
         title: Text(
           "추천회원 초대하기",
           style: TextStyle(
-              color: black,
+              color: white,
               fontSize: 14,
               fontFamily: 'noto',
               fontWeight: FontWeight.w600),
         ),
+        centerTitle: true,
         elevation: 2.0,
         leading: IconButton(
           onPressed: () {
@@ -36,35 +37,32 @@ class _Invitation extends State {
         ),
       ),
       body: Container(
+        padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 20.0),
         height: MediaQuery.of(context).size.height,
-        color: Colors.amber,
+        color: mainColor,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             whiteSpaceH(24),
             Image.asset(
               "assets/resource/public/payment.png",
-              width: 200,
-              height: 200,
+              width: 80,
+              height: 80,
+              fit: BoxFit.fill,
             ),
-            Padding(
-              padding: EdgeInsets.only(top: 24, left: 20, right: 20),
-              child: Container(
+            whiteSpaceH(20),
+            Text("휴대폰에 저장된 연락처를 가입자와 대조하여\n자동으로 나의 직접추천회원으로 등록해드립니다.",
+                style: TextStyle(
+                    color: white,
+                    fontSize: 12,
+                    fontFamily: 'noto',)),
+          Spacer(),
+          Container(
                 width: MediaQuery.of(context).size.width,
-                color: white,
-                padding: EdgeInsets.all(16),
+                color: mainColor,
+                padding: EdgeInsets.only(bottom: 20.0),
                 child: Column(
                   children: [
-                    Text("휴대폰에 저장된 연락처를 가입자와 대조하여\n자동으로 나의 직접추천회원으로 등록해드립니다.",
-                        style: TextStyle(
-                            color: black,
-                            fontSize: 12,
-                            fontFamily: 'noto',
-                            fontWeight: FontWeight.w600)),
-                    whiteSpaceH(4),
-                    whiteSpaceH(4),
-                    whiteSpaceH(40),
-                    whiteSpaceH(20),
                     Container(
                       width: MediaQuery.of(context).size.width,
                       height: 40,
@@ -78,15 +76,15 @@ class _Invitation extends State {
                           }
                         },
                         elevation: 0.0,
-                        color: mainColor,
+                        color: subYellow,
                         child: Center(
                           child: Text(
                             "연락처 불러오기",
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontFamily: 'noto',
-                                fontSize: 14,
-                                color: white),
+                                fontSize: 12,
+                                color: black),
                           ),
                         ),
                       ),
@@ -94,7 +92,6 @@ class _Invitation extends State {
                   ],
                 ),
               ),
-            ),
           ],
         ),
       ),

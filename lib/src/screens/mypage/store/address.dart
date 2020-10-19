@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:cashcook/src/utils/FromAsset.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/utils/geocoder.dart';
 import 'package:flutter/foundation.dart';
@@ -37,7 +38,7 @@ class _FindAddressState extends State<FindAddress> {
         zoom: 14);
 
     final icon = await getBitmapDescriptorFromAssetBytes(
-        "assets/resource/map/marker.png", 128);
+        "assets/icon/my_mk.png", 48);
 
     markers.add(Marker(
       markerId: MarkerId("1"),
@@ -62,7 +63,7 @@ class _FindAddressState extends State<FindAddress> {
   moveMarker(LatLng latLng) async{
 
     final icon = await getBitmapDescriptorFromAssetBytes(
-        "assets/resource/map/marker.png", 128);
+        "assets/icon/my_mk.png", 48);
 
     Marker marker = Marker(
       markerId: MarkerId("1"),
@@ -98,11 +99,6 @@ class _FindAddressState extends State<FindAddress> {
         .asUint8List();
   }
 
-  Future<BitmapDescriptor> getBitmapDescriptorFromAssetBytes(
-      String path, int width) async {
-    final  Uint8List imageData = await getBytesFromAsset(path, width);
-    return BitmapDescriptor.fromBytes(imageData);
-  }
   var args;
   @override
   void initState() {
@@ -115,9 +111,13 @@ class _FindAddressState extends State<FindAddress> {
     args = ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     return Scaffold(
       appBar: AppBar(
-        title: Text("주소찾기"),
+        title: Text("주소찾기", style: TextStyle(
+          color: black,
+          fontSize: 14,
+          fontFamily: 'noto',
+        )),
         centerTitle: true,
-        elevation: 1.0,
+        elevation: 0.5,
       ),
       body: body(),
     );

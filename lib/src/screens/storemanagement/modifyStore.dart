@@ -1,13 +1,16 @@
 import 'dart:io';
 
 import 'package:cashcook/src/model/store.dart';
+import 'package:cashcook/src/model/store/menuedit.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
+import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/TextFieldWidget.dart';
 import 'package:cashcook/src/widgets/TextFieldsWidget.dart';
 import 'package:cashcook/src/widgets/TextFieldssWidget.dart';
+import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -37,6 +40,8 @@ class _ModifyStoreState extends State<ModifyStore> {
 
   TextEditingController detailCtrl = TextEditingController();
 
+  TextEditingController commentCtrl = TextEditingController();
+
   @override
   void initState() {
     StoreModel store = Provider.of<UserProvider>(context,listen: false).storeModel;
@@ -48,7 +53,9 @@ class _ModifyStoreState extends State<ModifyStore> {
     telCtrl2.text = store.store.tel.substring(3,7);
     telCtrl3.text = store.store.tel.substring(7,11);
 
-    negotiableTimeCtrl.text = store.store.negotiable_time;
+    commentCtrl.text = store.store.comment;
+
+    negotiableTimeCtrl.text = store.store.store_time;
     addressCtrl.text = store.address.address;
     detailCtrl.text = store.address.detail;
   }
@@ -75,6 +82,9 @@ class _ModifyStoreState extends State<ModifyStore> {
 
   double lon;
 
+  // view Controll variable
+  int view = 0;
+
   @override
   Widget build(BuildContext context) {
     print(lat);
@@ -82,7 +92,13 @@ class _ModifyStoreState extends State<ModifyStore> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("가맹정보 수정"),
+        title: Text("매장정보 수정",
+          style: TextStyle(
+            color: Color(0xFF444444),
+            fontSize: 14,
+            fontFamily: 'noto'
+          )
+        ),
         centerTitle: true,
         elevation: 0.0,
       ),
@@ -92,69 +108,401 @@ class _ModifyStoreState extends State<ModifyStore> {
 
   Widget body(context) {
     return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            textField("매장명", "사업자등록증의 상호명을 입력해주세요.", nameCtrl,TextInputType.text),
-            textField("매장설명", "100자 내외로 입력해주세요.", descCtrl,TextInputType.text),
-
-            Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Align(child: Text("매장 연락처",
-                    style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
-                    alignment: Alignment.centerLeft,),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(width: 90,
-                            child: textFieldss(telCtrl1, TextInputType.phone)),
-                        Text("-", style: TextStyle(
-                            fontSize: 12, color: Color(0xff888888)),),
-                        SizedBox(width: 125,
-                            child: textFields(telCtrl2, TextInputType.phone)),
-                        Text("-", style: TextStyle(
-                            fontSize: 12, color: Color(0xff888888)),),
-                        SizedBox(width: 125,
-                            child: textFields(telCtrl3, TextInputType.phone)),
-                      ]
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5.0),
-                    child: Align(child: Text("연락가능한 연락처를 입력하여주세요",
-                      style: TextStyle(
-                          fontSize: 12, color: Color(0xff888888)),),
-                      alignment: Alignment.centerRight,),
-                  ),
-
-                ]
-            ),
-            textField("흥정시간", "실시간 흥정 가능시간.", negotiableTimeCtrl,TextInputType.text),
-            addressInfo(context),
             Padding(
-              padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
-              child: Align(
-                child: Text(
-                  "매장사진",
-                  style: TextStyle(fontSize: 12, color: Color(0xff888888)),
-                ),
-                alignment: Alignment.centerLeft,
+              padding: EdgeInsets.only(top:12.0, left: 12.0, right: 12.0),
+              child:Row(
+                children: [
+                  InkWell(
+                      onTap: () {
+                        if(view != 0){
+                          setState(() {
+                            view = 0;
+                          });
+                        }
+                      },
+                      child: Container(
+                        padding: EdgeInsets.only(bottom: 12.0),
+                          child: Text("매장정보",
+                              style: TextStyle(
+                                  color: view == 0 ? mainColor : Color(0xFF444444),
+                                  fontSize: 14,
+                                  fontFamily: 'noto'
+                              )
+                          ),
+                        decoration: view == 0 ? BoxDecoration(
+                          border: Border(bottom: BorderSide(color: mainColor, width: 4.0))
+                        ) : BoxDecoration(),
+                      )
+                  ),
+                  whiteSpaceW(20),
+                  InkWell(
+                      onTap: () {
+                        if(view != 1){
+                          setState(() {
+                            view = 1;
+                          });
+                        }
+                      },
+                      child: Container(
+                          padding: EdgeInsets.only(bottom: 12.0),
+                          child: Text("메뉴정보",
+                              style: TextStyle(
+                                  color: view == 1 ? mainColor : Color(0xFF444444),
+                                  fontSize: 14,
+                                  fontFamily: 'noto'
+                              )),
+                        decoration: view == 1 ? BoxDecoration(
+                            border: Border(bottom: BorderSide(color: mainColor, width: 4.0))
+                        ) : BoxDecoration(),
+                      )
+                  ),
+                  whiteSpaceW(20),
+                  InkWell(
+                      onTap: () {
+                        if(view != 2){
+                          setState(() {
+                            view = 2;
+                          });
+                        }
+                      },
+                      child: Container(
+                          padding: EdgeInsets.only(bottom: 12.0),
+                          child: Text("기타정보",
+                              style: TextStyle(
+                                  color: view == 2 ? mainColor : Color(0xFF444444),
+                                  fontSize: 14,
+                                  fontFamily: 'noto'
+                              )),
+                        decoration: view == 2 ? BoxDecoration(
+                            border: Border(bottom: BorderSide(color: mainColor, width: 4.0))
+                        ) : BoxDecoration(),
+                      )
+                  )
+                ],
               ),
             ),
-            Pictures(setShop1Uri),
-            Pictures(setShop2Uri),
-            Pictures(setShop3Uri),
+            Container(
+                width: MediaQuery.of(context).size.width,
+                height:1,
+                color: Color(0xFFEEEEEE)
+            ),
             Padding(
-              padding: const EdgeInsets.only(top:40.0),
-              child: nextBtn(context),
+                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
+              child:
+              (view == 0) ?
+                infoForm()
+                  :
+              (view == 1) ?
+                  menuForm()
+                  :
+                  commentForm()
             )
+
           ],
         ),
       ),
+    );
+  }
+  
+  Widget infoForm() {
+    return Column(
+      children: [
+        textField("매장명", "사업자등록증의 상호명을 입력해주세요.", nameCtrl,TextInputType.text),
+        textField("매장설명", "100자 내외로 입력해주세요.", descCtrl,TextInputType.text),
+        Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Align(child: Text("매장 연락처",
+                style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
+                alignment: Alignment.centerLeft,),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                        child: textFieldss(telCtrl1, TextInputType.phone)),
+                    Text("-", style: TextStyle(
+                        fontSize: 12, color: Color(0xff888888)),),
+                    Expanded(
+                        child: textFields(telCtrl2, TextInputType.phone)),
+                    Text("-", style: TextStyle(
+                        fontSize: 12, color: Color(0xff888888)),),
+                    Expanded(
+                        child: textFields(telCtrl3, TextInputType.phone)),
+                  ]
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5.0),
+                child: Align(child: Text("연락가능한 연락처를 입력하여주세요",
+                  style: TextStyle(
+                      fontSize: 12, color: Color(0xff888888)),),
+                  alignment: Alignment.centerRight,),
+              ),
+
+            ]
+        ),
+        textField("흥정시간", "실시간 흥정 가능시간.", negotiableTimeCtrl,TextInputType.text),
+        addressInfo(context),
+        Padding(
+          padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
+          child: Align(
+            child: Text(
+              "매장사진",
+              style: TextStyle(fontSize: 12, color: Color(0xff888888)),
+            ),
+            alignment: Alignment.centerLeft,
+          ),
+        ),
+        Pictures(setShop1Uri),
+        Pictures(setShop2Uri),
+        Pictures(setShop3Uri),
+        Padding(
+          padding: const EdgeInsets.only(top:40.0),
+          child: nextBtn(context),
+        )
+      ],
+    );
+  }
+
+  Widget menuForm() {
+    int bigIdx = 0;
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await Provider.of<StoreProvider>(context, listen: false).fetchEditMenu(
+        Provider.of<UserProvider>(context, listen: false).storeModel.id
+      );
+    });
+
+    return  Consumer<StoreProvider>(
+        builder: (context, sp, _) {
+          int bigIdx = 0;
+          return
+            Column(
+                children:[
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children:
+                      sp.menuList.map((bm) {
+                        return bigMenuItem(bigIdx++,bm);
+                      }
+                      ).toList()
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 40,
+                    child:RaisedButton(
+                      color: mainColor,
+                      onPressed: () {
+                        Provider.of<StoreProvider>(context, listen: false).appendBigMenu();
+                      },
+                      child: Text(
+                          "대분류 추가",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'noto',
+                            color: white,
+                          )
+                      ),
+                    ),
+                  ),
+                ]
+            )
+          ;
+        }
+    );
+  }
+
+  Widget bigMenuItem(int bigIdx,BigMenuEditModel bme) {
+    int idx = 0;
+    return Container(
+        padding: EdgeInsets.only(top: 30.0, bottom: 5.0),
+        child:
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("메뉴분류",
+                style: TextStyle(
+                    fontSize: 12,
+                    fontFamily: 'noto',
+                    color: Color(0xFF888888)
+                )),
+            TextFormField(
+              autofocus: false,
+              controller: bme.nameCtrl,
+              style: TextStyle(
+                  fontSize: 16,
+                  fontFamily: 'noto',
+                  color: black
+              ),
+              decoration: InputDecoration(
+                hintText: '메뉴 대분류를 작성해주세요.',
+                suffixIcon: InkWell(
+                    onTap: () {
+                      Provider.of<StoreProvider>(context, listen: false).removeBigMenu(bigIdx);
+                    },
+                    child: Image.asset(
+                      "assets/icon/delete.png",
+                      width: 24,
+                      height: 24,
+                    )
+                ),
+                border: UnderlineInputBorder(
+                  borderSide:
+                  BorderSide(color: Color(0xffdddddd), width: 1.0),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide:
+                  BorderSide(color: mainColor, width: 3.0),
+                ),
+              ),
+            ),
+            Column(
+                children: bme.menuEditList.map((m){
+                  return MenuItem(bigIdx,idx++,m);
+                }).toList()
+            ),
+            Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+                    decoration: BoxDecoration(
+                      color: Color(0xFFF1F1F1),
+                      shape: BoxShape.circle,
+                    ),
+                    child:InkWell(
+                        onTap: () {
+                          Provider.of<StoreProvider>(context, listen: false).appendMenu(bigIdx);
+                        },
+                        child: Image.asset(
+                          "assets/icon/plus.png",
+                          width: 24,
+                          height: 24,
+                        )
+                    ),
+                  ),
+                  whiteSpaceW(10),
+                  Text(
+                      "메뉴추가",
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'noto',
+                          color: Color(0xFF444444)
+                      )
+                  )
+                ]
+            ),
+          ],
+        )
+    );
+  }
+
+  Widget MenuItem(int bigIdx,int idx,MenuEditModel me) {
+    return Container(
+        child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.only(top: 18.0, bottom: 7.0),
+              height: 40,
+              alignment: Alignment.centerLeft,
+              child: TextFormField(
+                autofocus: false,
+                controller: me.nameCtrl,
+                style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: 'noto',
+                    color: black
+                ),
+                decoration: InputDecoration(
+                  suffixIcon: InkWell(
+                      onTap: () {
+                        Provider.of<StoreProvider>(context, listen: false).removeMenu(bigIdx, idx);
+                      },
+                      child: Image.asset(
+                        "assets/icon/delete.png",
+                        width: 24,
+                        height: 24,
+                      )
+                  ),
+                  hintText: "메뉴명을 입력해주세요.",
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xffdddddd), width: 2.0),
+                  ),
+                  focusedBorder:
+                  OutlineInputBorder(
+                    borderSide: BorderSide(color: mainColor, width: 2.0),
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 7.0, bottom: 7.0),
+              height: 40,
+              child:TextFormField(
+                autofocus: false,
+                controller: me.priceCtrl,
+                keyboardType: TextInputType.number,
+                style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: 'noto',
+                    color: black
+                ),
+                decoration: InputDecoration(
+                  hintText: "가격",
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xffdddddd), width: 2.0),
+                  ),
+                  focusedBorder:
+                  OutlineInputBorder(
+                    borderSide: BorderSide(color: mainColor, width: 2.0),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        )
+    );
+  }
+
+  Widget commentForm(){
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+        Text("기타정보",
+        style: TextStyle(
+          fontSize: 12,
+          color: Color(0xFF888888),
+          fontFamily: 'noto',
+        )
+    ),
+    whiteSpaceH(10),
+    TextFormField(
+    autofocus: false,
+    maxLines: 6,
+    controller: commentCtrl,
+    style: TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    fontFamily: 'noto',
+    ),
+    decoration: InputDecoration(
+    hintText: '기타 정보를 입력하여주세요.(원산지 표시 등)',
+    border: OutlineInputBorder(
+    borderSide: BorderSide(
+    color:Colors.black
+    )
+    ),
+    focusedBorder: OutlineInputBorder(
+    borderSide: BorderSide(
+    color:mainColor
+    )
+    )
+    ),
+    ),
+    ]
     );
   }
 
@@ -175,7 +523,7 @@ class _ModifyStoreState extends State<ModifyStore> {
 
           if(store.store.name != nameCtrl.text) data["shop_name"] = nameCtrl.text;
           if(store.store.description != descCtrl.text) data["shop_description"] = descCtrl.text;
-          if(store.store.negotiable_time != negotiableTimeCtrl.text) data["negotiable_time"] = negotiableTimeCtrl.text;
+          if(store.store.store_time != negotiableTimeCtrl.text) data["store_time"] = negotiableTimeCtrl.text;
           if(store.store.tel != telCtrl1.text + telCtrl2.text + telCtrl3.text) data["shop_tel"] = telCtrl1.text + telCtrl2.text + telCtrl3.text;
           if(store.address.address != addressCtrl.text) {
             data["address"] = addressCtrl.text;

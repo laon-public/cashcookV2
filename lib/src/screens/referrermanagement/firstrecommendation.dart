@@ -46,31 +46,21 @@ class _FirstRecommendation extends State<FirstRecommendation> {
     UserProvider userProvider = Provider.of<UserProvider>(context,listen: false);
 
     return Scaffold(
-      backgroundColor: Colors.amberAccent,
+      backgroundColor: white,
       resizeToAvoidBottomInset: true,
       appBar: appBar = AppBar(
-        backgroundColor: Colors.amberAccent,
+        backgroundColor: white,
         elevation: 0.5,
         centerTitle: true,
         title: Text(
-          "추천인 등록하기",
+          "추천회원 입력",
           style: TextStyle(
               color: black,
               fontFamily: 'noto',
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.w600),
         ),
         automaticallyImplyLeading: false, // 뒤로가기 기능 x
-        // leading: IconButton(
-        //   onPressed: () {
-        //     Navigator.of(context).pop();
-        //   },
-        //   icon: Image.asset(
-        //     "assets/resource/public/prev.png",
-        //     width: 24,
-        //     height: 24,
-        //   ),
-        // ),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -82,10 +72,34 @@ class _FirstRecommendation extends State<FirstRecommendation> {
               Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 72,
+                  padding: EdgeInsets.only(top: 12, bottom: 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "캐시쿡을 추천해준\n친구를 선택해주세요.",
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontFamily: 'noto', fontSize: 16, color: Color(0xFF222222), fontWeight: FontWeight.w600),
+                      ),
+                      whiteSpaceW(12),
+                      Container(
+                        child: Image.asset(
+                          "assets/resource/public/payment.png",
+                          width: 48,
+                          height: 48,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
                 whiteSpaceH(24),
                 Text('추천회원',
                   style: TextStyle(
-                      fontFamily: 'noto', fontSize: 14, color: Colors.red),
+                      fontFamily: 'noto', fontSize: 12, color: mainColor),
                 ),
                 whiteSpaceH(4),
                 Consumer<UserProvider>(
@@ -103,7 +117,7 @@ class _FirstRecommendation extends State<FirstRecommendation> {
                         elevation: 16,
                         underline: Container(
                             height: 2,
-                            color: Colors.red
+                            color: mainColor
                         ),
                         value: (user.recomemberList.length < 2) ? _unSelectedValue : _selectedValue ,
                         items: user.recomemberList.map(
@@ -137,13 +151,13 @@ class _FirstRecommendation extends State<FirstRecommendation> {
                 whiteSpaceH(8),
                 Container(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
                         '$memb',
-                        textAlign: TextAlign.end,
+                        textAlign: TextAlign.start,
                         style: TextStyle(
-                            fontFamily: 'noto', fontSize: 14, color: black),
+                            fontFamily: 'noto', fontSize: 12, color: Color(0xFF888888)),
                       ),
                       whiteSpaceW(12),
                     ],
@@ -153,30 +167,6 @@ class _FirstRecommendation extends State<FirstRecommendation> {
 
                 Expanded(
                   child: Container(),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 72,
-                  padding: EdgeInsets.only(top: 12, bottom: 12),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        "캐시쿡을 추천해준\n친구를 선택해주세요.",
-                        textAlign: TextAlign.end,
-                        style: TextStyle(
-                            fontFamily: 'noto', fontSize: 14, color: black),
-                      ),
-                      whiteSpaceW(12),
-                      Container(
-                        child: Image.asset(
-                          "assets/resource/public/payment.png",
-                          width: 48,
-                          height: 48,
-                        ),
-                      )
-                    ],
-                  ),
                 ),
                 whiteSpaceH(24),
                 Container(

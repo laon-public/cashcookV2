@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cashcook/src/model/usercheck.dart';
 import 'package:cashcook/src/provider/RecoProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
+import 'package:cashcook/src/screens/mypage/store/storeApply.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
@@ -36,18 +37,18 @@ class _FranBizSelect extends State<FranBizSelect> {
     });
     
     return Scaffold(
-      backgroundColor: Colors.amberAccent,
+      backgroundColor: white,
       resizeToAvoidBottomInset: true,
       appBar: appBar = AppBar(
-        backgroundColor: Colors.amberAccent,
+        backgroundColor: white,
         elevation: 0.5,
         centerTitle: true,
         title: Text(
-          "총판 / 대리점 입력",
+          "총판 입력",
           style: TextStyle(
               color: black,
               fontFamily: 'noto',
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.w600),
         ),
         automaticallyImplyLeading: false,
@@ -57,10 +58,12 @@ class _FranBizSelect extends State<FranBizSelect> {
       Consumer<UserProvider>(
         builder: (context, user, _) {
           return (user.isLoading) ?
-              Center (
-                child:
-                  CircularProgressIndicator()
+          Center(
+              child: CircularProgressIndicator(
+                  backgroundColor: mainColor,
+                  valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
               )
+          )
               :
           SingleChildScrollView(
             child: Container(
@@ -72,12 +75,30 @@ class _FranBizSelect extends State<FranBizSelect> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    whiteSpaceH(24),
-                    Text('총판회원',
-                      style: TextStyle(
-                          fontFamily: 'noto', fontSize: 14, color: Colors.red),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.only(top: 30, bottom: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "현재 매장의\n상위총판을 선택해주세요.",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                fontFamily: 'noto', fontSize: 16, color: black),
+                          ),
+                          whiteSpaceW(12),
+                          Container(
+                            child: Image.asset(
+                              "assets/resource/public/payment.png",
+                              width: 48,
+                              height: 48,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                    whiteSpaceH(4),
+                    whiteSpaceH(24),
                     SizedBox(
                       child: DropdownButton(
                         isExpanded: true,
@@ -86,7 +107,7 @@ class _FranBizSelect extends State<FranBizSelect> {
                         elevation: 16,
                         underline: Container(
                             height: 2,
-                            color: Colors.red
+                            color: mainColor
                         ),
                         value: user.disSelected ,
                         items: user.disList.map(
@@ -106,10 +127,6 @@ class _FranBizSelect extends State<FranBizSelect> {
                         },
                       ),
                     ),
-                    Text('대리점회원',
-                      style: TextStyle(
-                          fontFamily: 'noto', fontSize: 14, color: Colors.red),
-                    ),
                     whiteSpaceH(4),
                     SizedBox(
                       child: DropdownButton(
@@ -119,7 +136,7 @@ class _FranBizSelect extends State<FranBizSelect> {
                         elevation: 16,
                         underline: Container(
                             height: 2,
-                            color: Colors.red
+                            color: mainColor
                         ),
                         value: user.ageSelected ,
                         items: user.ageList.map(
@@ -138,46 +155,19 @@ class _FranBizSelect extends State<FranBizSelect> {
                     whiteSpaceH(8),
                     Container(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
                             '상위 총판 / 대리점을 선택해주세요.',
-                            textAlign: TextAlign.end,
+                            textAlign: TextAlign.start,
                             style: TextStyle(
-                                fontFamily: 'noto', fontSize: 14, color: black),
+                                fontFamily: 'noto', fontSize: 12, color: Color(0xFF888888)),
                           ),
                           whiteSpaceW(12),
                         ],
                       ),
                     ),
-                    Expanded(
-                      child: Container(),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 72,
-                      padding: EdgeInsets.only(top: 12, bottom: 12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            "상위 총판을 선택해 주세요.",
-                            textAlign: TextAlign.end,
-                            style: TextStyle(
-                                fontFamily: 'noto', fontSize: 14, color: black),
-                          ),
-                          whiteSpaceW(12),
-                          Container(
-                            child: Image.asset(
-                              "assets/resource/public/payment.png",
-                              width: 48,
-                              height: 48,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    whiteSpaceH(24),
+                   Spacer(),
                     Container(
                       width: MediaQuery.of(context).size.width,
                       height: 40,
@@ -185,7 +175,9 @@ class _FranBizSelect extends State<FranBizSelect> {
                         onPressed: () async {
                           await Provider.of<UserProvider>(context, listen: false).insertDisAge();
 
-                          Navigator.of(context).pop();
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => StoreApplyState()
+                          ));
                         },
                         elevation: 0.0,
                         color: mainColor,

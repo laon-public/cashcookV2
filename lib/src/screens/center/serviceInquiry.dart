@@ -86,10 +86,10 @@ class _Inquiry extends State<Inquiry> {
               return InquiryItem(idx, center.inquiry[idx]);
             }
             return Center(
-              child: Opacity(
-                opacity: center.isLoading ? 1.0 : 0.0,
-                child: CircularProgressIndicator(),
-              ),
+                child: CircularProgressIndicator(
+                    backgroundColor: mainColor,
+                    valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                )
             );
           },
           physics: AlwaysScrollableScrollPhysics(),

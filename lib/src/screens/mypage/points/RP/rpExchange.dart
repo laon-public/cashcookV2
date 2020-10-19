@@ -32,7 +32,12 @@ class _RPExchangeState extends State<RPExchange> {
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("RP 환전하기"),
+        title: Text("RP 환전하기",
+          style: TextStyle(
+            fontSize: 14,
+            fontFamily: 'noto',
+            fontWeight: FontWeight.w600
+          )),
         centerTitle: true,
         elevation: 1.0,
       ),
@@ -221,7 +226,9 @@ class _RPExchangeState extends State<RPExchange> {
             'point': "RP",
             "pointImg":"assets/icon/rp-coin.png"
           };
-          Navigator.of(context).pop(); // pop으로 하면 리턴 값을 받을 수 있다.
+
+          await Provider.of<UserProvider>(context, listen:false).getAccountsHistory("RP", 0);
+          Navigator.of(context).pop();
         },
       ),
     );

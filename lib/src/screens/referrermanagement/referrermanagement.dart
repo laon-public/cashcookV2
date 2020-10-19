@@ -68,7 +68,7 @@ class _ReferrerManagement extends State {
           },
         ),
         centerTitle: true,
-        elevation: 0.5,
+        elevation: 1,
         title: Text(
           "추천인 관리",
           style: TextStyle(
@@ -111,9 +111,7 @@ class _ReferrerManagement extends State {
                           fontFamily: 'noto',
                           fontWeight: FontWeight.w600),
                     ),
-                    Expanded(
-                      child: Container(),
-                    ),
+                    Spacer(),
                     Container(
                       width: 72,
                       height: 24,
@@ -169,7 +167,7 @@ class _ReferrerManagement extends State {
                                   "${numberFormat.format(reco.dirAmount)} RP",
                                   style: TextStyle(
                                       fontFamily: 'noto',
-                                      color: Colors.orange,
+                                      color: mainColor,
                                       fontSize: 15
                                   ),
                                 )
@@ -191,7 +189,7 @@ class _ReferrerManagement extends State {
                                   "${numberFormat.format(reco.inDirAmount)} RP",
                                   style: TextStyle(
                                       fontFamily: 'noto',
-                                      color: Colors.orange,
+                                      color: mainColor,
                                       fontSize: 15
                                   ),
                                 )
@@ -229,7 +227,7 @@ class _ReferrerManagement extends State {
                                     reco.referrer.length.toString(),
                                     style: TextStyle(
                                       fontFamily: 'noto',
-                                      color: Colors.orange,
+                                      color: mainColor,
                                       fontSize: 15,
                                       fontWeight: FontWeight.w600,
                                     )
@@ -245,7 +243,7 @@ class _ReferrerManagement extends State {
                                 ),
                               ]
                           ),
-                          whiteSpaceW(110),
+                          Spacer(),
                           Container(
                             width: 120,
                             padding: EdgeInsets.zero,
@@ -308,12 +306,7 @@ class _ReferrerManagement extends State {
                       if (idx < reco.referrer.length) {
                         return Item(reco.referrer[idx]);
                       }
-                      return Center(
-                        child: Opacity(
-                          opacity: reco.isLoading ? 1.0 : 0.0,
-                          child: CircularProgressIndicator(),
-                        ),
-                      );
+
                     },
                     itemCount: reco.referrer.length + 1,
                     shrinkWrap: true,
@@ -329,61 +322,69 @@ class _ReferrerManagement extends State {
   }
 
   Widget Item(data) {
-    return Row(
-      children: [
-        whiteSpaceW(16),
-        Image.asset(
-          data.type == 0
-              ? "assets/resource/public/directly.png"
-              : data.type == 1
-              ? "assets/resource/public/indirect.png"
-              : "assets/resource/public/friend-none.png",
+    return
+      Container(
+          width: MediaQuery.of(context).size.width,
+        child:Row(
+          children: [
+            Expanded(
+              flex: 1,
+              child: Image.asset(
+                data.type == 0
+                    ? "assets/resource/public/directly.png"
+                    : data.type == 1
+                    ? "assets/resource/public/indirect.png"
+                    : "assets/resource/public/friend-none.png",
 
-          width: 32,
-          height: 60,
-        ),
-        whiteSpaceW(12),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              data.name,
-              style: TextStyle(
-                  fontFamily: 'noto',
-                  fontSize: 14,
-                  color: black,
-                  fontWeight: FontWeight.w600),
+                width: 32,
+                height: 60,
+              ),
             ),
-            Text(
-              data.phone,
-              style: TextStyle(
-                  color: Color(0xFF888888), fontSize: 12, fontFamily: 'noto'),
-            )
-          ],
-        ),
-        Expanded(
-          child: Container(),
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Text(
-              data.date,
-              style: TextStyle(
-                  fontSize: 12, fontFamily: 'noto', color: Color(0xFF888888)),
+            Expanded(
+              flex: 4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    data.name,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontFamily: 'noto',
+                        fontSize: 14,
+                        color: black,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  Text(
+                    data.phone,
+                    style: TextStyle(
+                        color: Color(0xFF888888), fontSize: 12, fontFamily: 'noto'),
+                  )
+                ],
+              ),
             ),
-            type != "recognition" && data.type == 1
-                ? Text(
+            Expanded(
+              flex: 2,
+              child:Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    data.date,
+                    style: TextStyle(
+                        fontSize: 12, fontFamily: 'noto', color: Color(0xFF888888)),
+                  ),
+                  type != "recognition" && data.type == 1
+                      ? Text(
                     "By " + data.byName,
                     style: TextStyle(
                         fontFamily: 'noto', fontSize: 12, color: mainColor),
                     textAlign: TextAlign.end,
                   )
-                : Container()
+                      : Container()
+                ],
+              ),
+            )
           ],
-        ),
-        whiteSpaceW(16)
-      ],
-    );
+        )
+      );
   }
 }

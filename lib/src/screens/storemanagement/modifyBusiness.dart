@@ -33,7 +33,7 @@ class _ModifyBusiness extends State<ModifyBusiness> {
   TextEditingController telCtrl3 = TextEditingController(); //연락처
 
   TextEditingController emailCtrl = TextEditingController(); //이메일주소
-  TextEditingController bankCtrl = TextEditingController(); //은행명
+  String bank = ""; //은행명
   TextEditingController accountCtrl = TextEditingController(); //계좌번호
   String blUri = "";
 
@@ -67,15 +67,20 @@ class _ModifyBusiness extends State<ModifyBusiness> {
 
 
     emailCtrl.text = store.store.email;
-    bankCtrl.text = store.bank.bank;
+    bank = store.bank.bank;
     accountCtrl.text = store.bank.number;
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("사업자정보 수정"),
+        title: Text("사업자정보 수정",
+          style: TextStyle(
+            color: Color(0xFF444444),
+            fontSize: 14,
+            fontFamily: 'noto'
+          )),
         centerTitle: true,
-        elevation: 0.0,
+        elevation: 0.5,
       ),
       body: SafeArea(top: false, child: body(context)),
     );
@@ -84,7 +89,7 @@ class _ModifyBusiness extends State<ModifyBusiness> {
   Widget body(context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,7 +98,7 @@ class _ModifyBusiness extends State<ModifyBusiness> {
             nameWidget(),
             BusinessNumber(onSetUri: setBlUri,),
             Padding(
-              padding: const EdgeInsets.only(top:5.0),
+              padding: const EdgeInsets.only(top:18.0),
               child: Align(child: Text("사업자번호",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
             ),
             TextFormField(
@@ -112,7 +117,7 @@ class _ModifyBusiness extends State<ModifyBusiness> {
             ),
 //            textField("사업자번호", "사업자등록증의 내용으로 입력해주세요.", bnCtrl,TextInputType.text),
             Padding(
-              padding: const EdgeInsets.only(top:5.0),
+              padding: const EdgeInsets.only(top:18.0),
               child: Align(child: Text("대표자명",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
             ),
             TextFormField(
@@ -129,19 +134,17 @@ class _ModifyBusiness extends State<ModifyBusiness> {
                 ),
               ),
             ),
-//            textField("대표자명", "사업자등록증의 내용으로 입력해주세요.", ownerCtrl,TextInputType.text),
-
-            //textField("연락처", "연락가능한 연락처를 입력하여주세요.", telCtrl,TextInputType.phone),
             Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Align(child: Text("연락처",
-                    style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
-                    alignment: Alignment.centerLeft,),
+                  Padding(
+                    padding: const EdgeInsets.only(top:18.0),
+                    child: Align(child: Text("연락처",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+                  ),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(width: 90,
+                        Expanded(
                             child:
                             TextFormField(
                               controller: telCtrl1,
@@ -160,7 +163,7 @@ class _ModifyBusiness extends State<ModifyBusiness> {
                             )),
                         Text("-", style: TextStyle(
                             fontSize: 12, color: Color(0xff888888)),),
-                        SizedBox(width: 125,
+                        Expanded(
                             child:
                             TextFormField(
                               controller: telCtrl2,
@@ -179,7 +182,7 @@ class _ModifyBusiness extends State<ModifyBusiness> {
                             )),
                         Text("-", style: TextStyle(
                             fontSize: 12, color: Color(0xff888888)),),
-                        SizedBox(width: 125,
+                        Expanded(
                             child:
                             TextFormField(
                               controller: telCtrl3,
@@ -210,7 +213,7 @@ class _ModifyBusiness extends State<ModifyBusiness> {
             ),
 
             Padding(
-              padding: const EdgeInsets.only(top:5.0),
+              padding: const EdgeInsets.only(top:18.0),
               child: Align(child: Text("이메일 주소",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
             ),
             TextFormField(
@@ -228,7 +231,7 @@ class _ModifyBusiness extends State<ModifyBusiness> {
                 ),
               ),
             ),
-            BackInfo(),
+            bankInfo(),
             Padding(
               padding: const EdgeInsets.only(top:40.0),
               child: nextBtn(context),
@@ -244,7 +247,7 @@ class _ModifyBusiness extends State<ModifyBusiness> {
       child: Column(
           children: [
               Padding(
-                padding: const EdgeInsets.only(top:5.0),
+                padding: const EdgeInsets.only(top:18.0),
                 child: Align(child: Text("상호명",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
               ),
               TextFormField(
@@ -273,11 +276,11 @@ class _ModifyBusiness extends State<ModifyBusiness> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top:5.0),
+            padding: const EdgeInsets.only(top:18.0),
             child: Align(child: Text("계좌정보",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
           ),
           TextFormField(
-            controller: bankCtrl,
+            // controller: bankCtrl,
             cursorColor: Color(0xff000000),
             decoration: InputDecoration(
               hintText: "은행명",
@@ -336,7 +339,7 @@ class _ModifyBusiness extends State<ModifyBusiness> {
               Fluttertoast.showToast(msg: "이메일주소를 입력해주세요.");
               return;
             }
-            if(bankCtrl.text.length < 1) {
+            if(bank.length < 1) {
               Fluttertoast.showToast(msg: "은행명을 입력해주세요.");
               return;
             }
@@ -352,7 +355,7 @@ class _ModifyBusiness extends State<ModifyBusiness> {
             if(store.owner != ownerCtrl.text) data["owner"] = ownerCtrl.text;
             if(store.tel != telCtrl1.text+telCtrl2.text+telCtrl3.text) data["tel"] = telCtrl1.text+telCtrl2.text+telCtrl3.text;
             if(store.store.email != emailCtrl.text) data["email"] = emailCtrl.text;
-            if(store.bank.bank != bankCtrl.text) data["bank"] = bankCtrl.text;
+            if(store.bank.bank != bank) data["bank"] = bank;
             if(store.bank.number != accountCtrl.text) data["account"] = accountCtrl.text;
 
 
@@ -373,6 +376,66 @@ class _ModifyBusiness extends State<ModifyBusiness> {
         child: Text("수정"),
         textColor: Colors.white,
         color: mainColor,
+      ),
+    );
+  }
+
+  Widget bankInfo() {
+    return Container(
+      width: double.infinity,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 18.0),
+            child: Align(child: Text("계좌정보",
+              style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
+              alignment: Alignment.centerLeft,),
+          ),
+          DropdownButton(
+            isExpanded: true,
+            icon: Icon(Icons.arrow_drop_down, color: mainColor,),
+            iconSize: 24,
+            elevation: 16,
+            underline: Container(
+              height: 2,
+              color: Color(0xFFDDDDDD),
+            ),
+            value: bank ,
+            items: ["은행명","우리은행", "SC제일은행", "하나은행", "신한은행", "국민은행"].map((value) {
+              return DropdownMenuItem(
+                value: value,
+                child: Text(value),
+              );
+            }
+            ).toList(),
+            onChanged: (value){
+              setState(() {
+                bank = value;
+              });
+            },
+          ),
+          SizedBox(height: 24,),
+          TextFormField(
+            controller: accountCtrl,
+            cursorColor: Color(0xff000000),
+            decoration: InputDecoration(
+              hintText: "계좌번호",
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              border: UnderlineInputBorder(
+                borderSide: BorderSide(color: Color(0xffdddddd), width: 2.0),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: mainColor, width: 2.0),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 5.0),
+            child: Align(child: Text("본인 명의의 계좌를 입력해주세요.",
+              style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
+              alignment: Alignment.centerRight,),
+          )
+        ],
       ),
     );
   }
@@ -410,7 +473,7 @@ class _BusinessNumberState extends State<BusinessNumber> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top:5.0),
+            padding: const EdgeInsets.only(top:18.0,bottom: 5.0),
             child: Align(child: Text("사업자등록증",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
           ),
           Container(
@@ -420,22 +483,31 @@ class _BusinessNumberState extends State<BusinessNumber> {
             ),
             child: Row(
               children: [
-                InkWell(
-                  child: Container(
-                    width: 80,
-                    color: Colors.white,
-                    child: Center(child: Text("파일첨부"),),
-                  ),
-                  onTap: (){
-                    getImage();
-                  },
-                ),
                 Flexible(
                   child: Container(
                     height: 40,
                     color: Color(0xffeeeeee),
                     child: Align(alignment: Alignment.centerLeft,child: Text(filePath,overflow: TextOverflow.ellipsis,)),
                   ),
+                ),
+                InkWell(
+                  child: Container(
+                    width: 80,
+                    color: mainColor,
+                    child: Center(child:
+                      Text("파일첨부",
+                        style: TextStyle(
+                          color: white,
+                          fontSize: 14,
+                          fontFamily: 'noto'
+                        ),
+                      ),
+
+                    ),
+                  ),
+                  onTap: (){
+                    getImage();
+                  },
                 ),
               ],
             ),

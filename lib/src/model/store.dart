@@ -41,10 +41,11 @@ class StoreModel {
         status = json['status'],
         store = Store(
             name: json['store']['name'],
+            short_description: json['store']['short_description'],
             description: json['store']['description'],
             tel: json['store']['tel'],
             email: json['store']['email'],
-            negotiable_time: json['store']['negotiable_time'],
+            store_time: json['store']['store_time'],
             useDL: json['store']['useDL'],
             limitDL: json['store']['limitDL'],
             fromDL: json['store']['fromDL'],
@@ -55,7 +56,8 @@ class StoreModel {
             category_sub_name: json['store']['category_sub_name'],
             shop_img1: json['store']['shop_img1'],
             shop_img2: json['store']['shop_img2'],
-            shop_img3: json['store']['shop_img3'],),
+            shop_img3: json['store']['shop_img3'],
+            comment: json['store']['comment']),
         address = Address(
             address: json['address']['address'],
             detail: json['address']['detail'],
@@ -65,10 +67,11 @@ class StoreModel {
 
 class Store {
   final String name;
+  final String short_description;
   final String description;
   final String tel;
   final String email;
-  final String negotiable_time;
+  final String store_time;
   final bool useDL;
   final String limitDL;
   final String fromDL;
@@ -80,13 +83,15 @@ class Store {
   final String shop_img1;
   final String shop_img2;
   final String shop_img3;
+  final String comment;
 
   Store(
       {this.name,
+        this.short_description,
       this.description,
       this.tel,
       this.email,
-      this.negotiable_time,
+      this.store_time,
       this.useDL,
       this.limitDL,
       this.fromDL,
@@ -97,7 +102,8 @@ class Store {
       this.category_sub_name,
       this.shop_img1,
       this.shop_img2,
-      this.shop_img3
+      this.shop_img3,
+        this.comment,
       });
 }
 

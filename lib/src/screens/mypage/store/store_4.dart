@@ -1,7 +1,11 @@
-
+import 'package:cashcook/src/provider/StoreProvider.dart';
+import 'package:cashcook/src/provider/UserProvider.dart';
+import 'package:cashcook/src/screens/mypage/store/storeApply.dart';
+import 'package:cashcook/src/screens/referrermanagement/franBizSelect.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class StoreApplyLastStep extends StatefulWidget {
   @override
@@ -9,141 +13,101 @@ class StoreApplyLastStep extends StatefulWidget {
 }
 
 class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
-  TextEditingController etcCtrl = TextEditingController();
-
-  List<Map<String, int>> menu;
-
-  String company_name;
-  String license_number;
-  String representative;
-  String tel;
-  String email;
-  String bank;
-  String account;
-  String blUri;
-  String shop1_uri;
-  String shop2_uri;
-  String shop3_uri;
-  bool isDl = true;
-  String category_code;
-  String category_sub_code;
-
-  String shop_name;
-  String shop_description;
-  String shop_tel;
-  String negotiable_time;
-  String address;
-  String address_detail;
-  String useDL;
-  String latitude;
-  String longitude;
-
-  String menu_name;
-  String menu_price;
+  TextEditingController commentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    var args = ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-
-    company_name = args['company_name'];
-    license_number = args['license_number'];
-    representative = args['representative'];
-    tel = args['tel'];
-    email = args['email'];
-    bank = args['bank'];
-    account = args['account'];
-    blUri = args['bl'];
-
-    category_code = args['category_code'];
-    category_code = args['category_sub_code'];
-
-    shop_name = args['shop_name'];
-    shop_description = args['shop_description'];
-    shop_tel = args['shop_tel'];
-    negotiable_time = args['negotiable_time'];
-    address = args['address'];
-    address_detail = args['address_detail'];
-    useDL = args['useDL'];
-    latitude = args['latitude'];
-    longitude = args['longitude'];
-
-    menu_name = args[menu]['menu_name'];
-    menu_price = args[menu]['menu_price'];
-
     return Scaffold(
       backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text("매장 정보 3/3"),
+        title: Text("매장 정보 3/3", style:
+        TextStyle(
+            color: black,
+            fontSize: 14,
+            fontFamily: 'noto'
+        )),
         centerTitle: true,
-        elevation: 0.0,
+        elevation: 0.5,
       ),
-      body: SafeArea(top:false ,child: body(context)),
+      body: SafeArea(top: false, child: body(context)),
     );
   }
+
 
   Widget body(context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-              Text("기타정보", style: TextStyle(color: Colors.black45),),
-            whiteSpaceH(10),
-              Container(
-                child:
+    return
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            padding: EdgeInsets.only(top: 50.0, bottom: 20.0, left: 20.0, right: 20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("기타정보",
+                  style: TextStyle(
+                      fontSize: 12,
+                      color: Color(0xFF888888),
+                      fontFamily: 'noto',
+                    )
+                ),
+                whiteSpaceH(10),
                 TextFormField(
-                  decoration: InputDecoration(border: OutlineInputBorder(),
-                      hintText: "기타정보를 입력하여주세요. (원산지 표시 등)"),
-                  maxLines: 10,
-                  maxLength: 300,),
-              ),
-            whiteSpaceH(15),
-            Padding(
-              padding: const EdgeInsets.only(top: 40.0, bottom: 40),
-              child: nextBtn(context),
+                  autofocus: false,
+                  maxLines: 6,
+                  controller: commentController,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: 'noto',
+                  ),
+                  decoration: InputDecoration(
+                      hintText: '기타 정보를 입력하여주세요.(원산지 표시 등)',
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color:Colors.black
+                          )
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color:mainColor
+                          )
+                      )
+                  ),
+                ),
+                Spacer(),
+                Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 40,
+                  child:RaisedButton(
+                    color: mainColor,
+                    onPressed: () async {
+                        await Provider.of<StoreProvider>(context, listen: false).bak_comment(commentController.text);
+
+                        await Provider.of<StoreProvider>(context, listen: false).clearSuccess();
+
+                        if(Provider.of<UserProvider>(context, listen: false).loginUser.userGrade == "NORMAL") {
+                          Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) => FranBizSelect()));
+                        } else {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => StoreApplyState()
+                          ));
+                        }
+
+                    },
+                    child: Text("완료",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: 'noto',
+                        color: white,
+                      ))
+                  )
+                )
+
+              ]
             )
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget nextBtn(context) {
-    return Container(
-      width: double.infinity,
-      height: 40,
-      child: RaisedButton(
-        onPressed: () async {
-          Map<String, String> data = {
-            "company_name": company_name,
-            "business_number": license_number,
-            "owner": representative,
-            "tel": tel,
-            "email": email,
-            "bank": bank,
-            "account": account,
-            "shop_name": shop_name,
-            "shop_description": shop_description,
-            "shop_tel": shop_tel,
-            "negotiable_time": negotiable_time,
-            "address": address,
-            "address_detail": address_detail,
-            "useDL": useDL,
-            "latitude": latitude,
-            "longitude": longitude,
-            "category_code": category_code,
-            "category_sub_code": category_sub_code,
-            "etc_info": etcCtrl.text
-          };
-        },
-
-        child: Text("완료"),
-        textColor: Colors.white,
-        color: mainColor,
-      ),
-    );
+          );
   }
 }
+

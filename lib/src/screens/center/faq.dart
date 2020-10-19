@@ -51,10 +51,10 @@ class Faq extends StatelessWidget {
               return FaqItem(centers.faq[idx]);
             }
             return Center(
-              child: Opacity(
-                opacity: centers.isLoading ? 1.0 : 0.0,
-                child: CircularProgressIndicator(),
-              ),
+                child: CircularProgressIndicator(
+                    backgroundColor: mainColor,
+                    valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                )
             );
           },
           physics: AlwaysScrollableScrollPhysics(),

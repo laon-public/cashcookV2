@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/TextFieldWidget.dart';
 import 'package:cashcook/src/widgets/TextFieldsWidget.dart';
@@ -8,8 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
-class StoreApplyFirstStep extends StatelessWidget {
+class StoreApplyFirstStep extends StatefulWidget {
+  @override
+  _StoreApplyFirstStep createState() => _StoreApplyFirstStep();
+}
+class _StoreApplyFirstStep extends State<StoreApplyFirstStep> {
   TextEditingController nameCtrl = TextEditingController(); //상호명
   TextEditingController bnCtrl = TextEditingController(); //사업자번호
   TextEditingController ownerCtrl = TextEditingController(); //대표자명
@@ -19,7 +25,7 @@ class StoreApplyFirstStep extends StatelessWidget {
   TextEditingController telCtrl3 = TextEditingController(); //연락처3
 
   TextEditingController emailCtrl = TextEditingController(); //이메일주소
-  TextEditingController bankCtrl = TextEditingController(); //은행명
+  String bank = "은행명"; //은행명
   TextEditingController accountCtrl = TextEditingController(); //계좌번호
   String blUri;
 
@@ -34,7 +40,12 @@ class StoreApplyFirstStep extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("사업자 정보"),
+        title: Text("사업자 정보",
+          style: TextStyle(
+            fontSize: 14,
+            fontFamily: 'noto',
+            color: black,
+          )),
         centerTitle: true,
         elevation: 0.0,
       ),
@@ -67,15 +78,15 @@ class StoreApplyFirstStep extends StatelessWidget {
                   Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(width: 90,
+                        Expanded(
                             child: textFieldss(telCtrl1, TextInputType.phone)),
                         Text("-", style: TextStyle(
                             fontSize: 12, color: Color(0xff888888)),),
-                        SizedBox(width: 125,
+                        Expanded(
                             child: textFields(telCtrl2, TextInputType.phone)),
                         Text("-", style: TextStyle(
                             fontSize: 12, color: Color(0xff888888)),),
-                        SizedBox(width: 125,
+                        Expanded(
                             child: textFields(telCtrl3, TextInputType.phone)),
                       ]
                   ),
@@ -114,19 +125,28 @@ class StoreApplyFirstStep extends StatelessWidget {
               style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
               alignment: Alignment.centerLeft,),
           ),
-          TextFormField(
-            controller: bankCtrl,
-            cursorColor: Color(0xff000000),
-            decoration: InputDecoration(
-              hintText: "은행명",
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-              border: UnderlineInputBorder(
-                borderSide: BorderSide(color: Color(0xffdddddd), width: 2.0),
+          DropdownButton(
+              isExpanded: true,
+              icon: Icon(Icons.arrow_drop_down, color: mainColor,),
+              iconSize: 24,
+              elevation: 16,
+              underline: Container(
+              height: 2,
+              color: Color(0xFFDDDDDD),
               ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: mainColor, width: 2.0),
-              ),
-            ),
+              value: bank ,
+              items: ["은행명","우리은행", "SC제일은행", "하나은행", "신한은행", "국민은행"].map((value) {
+                  return DropdownMenuItem(
+                  value: value,
+                  child: Text(value),
+                );
+                }
+              ).toList(),
+              onChanged: (value){
+                setState(() {
+                  bank = value;
+                });
+              },
           ),
           SizedBox(height: 24,),
           TextFormField(
@@ -159,14 +179,14 @@ class StoreApplyFirstStep extends StatelessWidget {
       width: double.infinity,
       height: 40,
       child: RaisedButton(
-        onPressed: () {
+        onPressed: () async {
           Map<String, dynamic> args = {
             "company_name": nameCtrl.text,
             "license_number": bnCtrl.text,
             "representative": ownerCtrl.text,
             "tel": telCtrl1.text + telCtrl2.text + telCtrl3.text,
             "email": emailCtrl.text,
-            "bank": bankCtrl.text,
+            "bank": bank,
             "account": accountCtrl.text,
             "bl": blUri
           };
@@ -186,16 +206,14 @@ class StoreApplyFirstStep extends StatelessWidget {
             Fluttertoast.showToast(msg: "전화 번호의 자릿수가 부족 합니다.");
           } else if (emailCtrl.text == '' || emailCtrl.text == null) {
             Fluttertoast.showToast(msg: "이메일주소를 입력해 주세요");
-          } else if (bankCtrl.text == '' || bankCtrl.text == null) {
-            Fluttertoast.showToast(msg: "은행명을 입력해 주세요");
+          } else if (bank == '은행명') {
+            Fluttertoast.showToast(msg: "은행명을 선택해 주세요");
           } else if (accountCtrl.text == '' || accountCtrl.text == null) {
             Fluttertoast.showToast(msg: "계좌번호를 입력해 주세요");
           } else {
+            await Provider.of<StoreServiceProvider>(context, listen: false).fetchCategory("01");
             Navigator.of(context).pushNamed("/store/apply2", arguments: args);
           }
-
-          Navigator.of(context).pushNamed("/store/apply2", arguments: args);
-
         },
         child: Text("다음"),
         textColor: Colors.white,
@@ -240,7 +258,7 @@ class _BusinessNumberState extends State<BusinessNumber> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top:5.0),
+            padding: const EdgeInsets.only(top:5.0,bottom: 5.0),
             child: Align(child: Text("사업자등록증",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
           ),
           Container(
@@ -249,23 +267,29 @@ class _BusinessNumberState extends State<BusinessNumber> {
                 border: Border.all(color: Color(0xffdddddd))
             ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                InkWell(
-                  child: Container(
-                    width: 80,
-                    color: Colors.white,
-                    child: Center(child: Text("파일첨부"),),
-                  ),
-                  onTap: (){
-                    getImage();
-                  },
-                ),
                 Flexible(
                   child: Container(
                     height: 40,
                     color: Color(0xffeeeeee),
                     child: Align(alignment: Alignment.centerLeft,child: Text(filePath,overflow: TextOverflow.ellipsis,)),
                   ),
+                ),
+                InkWell(
+                  child: Container(
+                    width: 90,
+                    color: mainColor,
+                    child: Center(child: Text("파일첨부", style:
+                      TextStyle(
+                        color: white,
+                        fontSize: 12,
+                        fontFamily: 'noto'
+                      )),),
+                  ),
+                  onTap: (){
+                    getImage();
+                  },
                 ),
               ],
             ),

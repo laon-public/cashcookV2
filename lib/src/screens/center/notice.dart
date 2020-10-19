@@ -51,10 +51,10 @@ class Notice extends StatelessWidget {
             return NoticeItem(center.notice[idx]);
           }
           return Center(
-            child: Opacity(
-              opacity: center.isLoading ? 1.0 : 0.0,
-              child: CircularProgressIndicator(),
-            ),
+              child: CircularProgressIndicator(
+                  backgroundColor: mainColor,
+                  valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+              )
           );
         },
           physics: AlwaysScrollableScrollPhysics(),

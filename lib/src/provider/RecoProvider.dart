@@ -5,11 +5,9 @@ import 'package:cashcook/src/model/phone.dart';
 import 'package:cashcook/src/model/reco.dart';
 import 'package:cashcook/src/model/referrer/referrer.dart';
 import 'package:cashcook/src/model/usercheck.dart';
-import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/services/Reco.dart';
 import 'package:cashcook/src/utils/responseCheck.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class RecoProvider with ChangeNotifier {
   final service = RecoService();
@@ -23,6 +21,8 @@ class RecoProvider with ChangeNotifier {
 
   int ageAmount = 0;
   int franAmount = 0;
+  int pay = 0;
+  int adp = 0;
 
   Pageing pageing = null;
   bool isLoading = false;
@@ -112,6 +112,7 @@ class RecoProvider with ChangeNotifier {
     if(isResponse(recoJson)){
       ageAmount = recoJson['data']['ageCount'];
       franAmount = recoJson['data']['franCount'];
+      pay = recoJson['data']['PAY'];
       for (var recoList in recoJson['data']['list']) {
         RecoModel tmp;
         tmp = RecoModel.fromJson(recoList);
