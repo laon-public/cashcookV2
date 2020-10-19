@@ -98,7 +98,7 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("매장 정보 1/2", style:
+        title: Text("매장 정보 1/3", style:
           TextStyle(
             color: black,
             fontSize: 14,
@@ -382,67 +382,72 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
   }
 
   Widget nextBtn(context) {
-    return Container(
-      width: double.infinity,
-      height: 40,
-      child: RaisedButton(
-        onPressed: () async {
+    return
+      Consumer<StoreServiceProvider>(
+        builder: (context, sp, _) {
+          return Container(
+            width: double.infinity,
+            height: 40,
+            child: RaisedButton(
+              onPressed: () async {
 //          List<double> latlon =await AddressToCoordinates(addressCtrl.text);
-          Map<String, String> data = {
-            "company_name": company_name,
-            "business_number": license_number,
-            "owner": representative,
-            "tel": tel,
-            "email": email,
-            "bank": bank,
-            "account": account,
-            "shop_name": nameCtrl.text,
-            "shop_srt_description" : descSrtCtrl.text,
-            "shop_description": descCtrl.text,
-            "shop_tel": timeCtrl1.text+timeCtrl2.text+timeCtrl3.text,
-            "store_time": storeTimeCtrl.text,
-            "address": addressCtrl.text,
-            "address_detail": detailCtrl.text,
-            "useDL": isDl.toString(),
-            "latitude": lat.toString(),
-            "longitude": lon.toString(),
-            "category_code": Provider.of<StoreServiceProvider>(context, listen: false).selectCat_code,
-            "category_sub_code": Provider.of<StoreServiceProvider>(context, listen: false).selectSubCat_code,
-          };
-          print("----------------");
-          print("$tel");
-          print("----------------");
+                Map<String, String> data = {
+                  "company_name": company_name,
+                  "business_number": license_number,
+                  "owner": representative,
+                  "tel": tel,
+                  "email": email,
+                  "bank": bank,
+                  "account": account,
+                  "shop_name": nameCtrl.text,
+                  "shop_srt_description" : descSrtCtrl.text,
+                  "shop_description": descCtrl.text,
+                  "shop_tel": timeCtrl1.text+timeCtrl2.text+timeCtrl3.text,
+                  "store_time": storeTimeCtrl.text,
+                  "address": addressCtrl.text,
+                  "address_detail": detailCtrl.text,
+                  "useDL": isDl.toString(),
+                  "latitude": lat.toString(),
+                  "longitude": lon.toString(),
+                  "category_code": sp.selectCat_code,
+                  "category_sub_code": sp.selectSubCat_code,
+                };
+                print("----------------");
+                print("$tel");
+                print("----------------");
 
-          if(nameCtrl.text == '' || nameCtrl.text == null ) {
-            Fluttertoast.showToast(msg: "매장명을 입력해 주세요");
-          } else if(descSrtCtrl.text  == '' || descSrtCtrl.text == null){
-            Fluttertoast.showToast(msg: "매장설명을 입력해 주세요");
-          } else if(timeCtrl1.text == '' || timeCtrl1.text == null ||
-              timeCtrl2.text == '' || timeCtrl2.text == null ||
-              timeCtrl3.text == '' || timeCtrl3.text == null ){
-            Fluttertoast.showToast(msg: "매장 연락처를 입력해 주세요");
-          } else if(timeCtrl1.text.length < 3 || timeCtrl2.text.length < 4 || timeCtrl3.text.length < 4){
-            Fluttertoast.showToast(msg: "전화 번호의 자릿수가 부족 합니다.");
-          } else if(storeTimeCtrl.text == '' || storeTimeCtrl.text == null ){
-            Fluttertoast.showToast(msg: "영업시간을 입력해 주세요");
-          } else if(addressCtrl.text == '' || addressCtrl.text == null ){
-            Fluttertoast.showToast(msg: "매장 주소를 입력해 주세요");
-          } else if(detailCtrl.text == '' || detailCtrl.text == null ){
-            Fluttertoast.showToast(msg: "매장 상세주소를 입력해 주세요");
-          } else if(shop1_uri == '' || shop1_uri == null ||
-              shop2_uri == '' || shop2_uri == null ||
-              shop3_uri == '' || shop3_uri == null ){
-            Fluttertoast.showToast(msg: "3개의 매장 사진을 첨부해 주세요");
-          } else {
-            await Provider.of<StoreProvider>(context, listen: false).bak_store2(data, blUri, shop1_uri, shop2_uri, shop3_uri);
-            Navigator.of(context).pushNamed("/store/apply3");
-          }
+                if(nameCtrl.text == '' || nameCtrl.text == null ) {
+                  Fluttertoast.showToast(msg: "매장명을 입력해 주세요");
+                } else if(descSrtCtrl.text  == '' || descSrtCtrl.text == null){
+                  Fluttertoast.showToast(msg: "매장설명을 입력해 주세요");
+                } else if(timeCtrl1.text == '' || timeCtrl1.text == null ||
+                    timeCtrl2.text == '' || timeCtrl2.text == null ||
+                    timeCtrl3.text == '' || timeCtrl3.text == null ){
+                  Fluttertoast.showToast(msg: "매장 연락처를 입력해 주세요");
+                } else if(timeCtrl1.text.length < 3 || timeCtrl2.text.length < 4 || timeCtrl3.text.length < 4){
+                  Fluttertoast.showToast(msg: "전화 번호의 자릿수가 부족 합니다.");
+                } else if(storeTimeCtrl.text == '' || storeTimeCtrl.text == null ){
+                  Fluttertoast.showToast(msg: "영업시간을 입력해 주세요");
+                } else if(addressCtrl.text == '' || addressCtrl.text == null ){
+                  Fluttertoast.showToast(msg: "매장 주소를 입력해 주세요");
+                } else if(detailCtrl.text == '' || detailCtrl.text == null ){
+                  Fluttertoast.showToast(msg: "매장 상세주소를 입력해 주세요");
+                } else if(shop1_uri == '' || shop1_uri == null ||
+                    shop2_uri == '' || shop2_uri == null ||
+                    shop3_uri == '' || shop3_uri == null ){
+                  Fluttertoast.showToast(msg: "3개의 매장 사진을 첨부해 주세요");
+                } else {
+                  await Provider.of<StoreProvider>(context, listen: false).bak_store2(data, blUri, shop1_uri, shop2_uri, shop3_uri);
+                  Navigator.of(context).pushNamed("/store/apply3");
+                }
+              },
+              child: Text("다음"),
+              textColor: Colors.white,
+              color: mainColor,
+            ),
+          );
         },
-        child: Text("다음"),
-        textColor: Colors.white,
-        color: mainColor,
-      ),
-    );
+      );
   }
 }
 

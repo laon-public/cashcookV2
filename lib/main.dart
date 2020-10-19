@@ -1,5 +1,6 @@
 import 'package:cashcook/src/provider/CenterProvider.dart';
 import 'package:cashcook/src/provider/PhoneProvider.dart';
+import 'package:cashcook/src/provider/PlaceProvider.dart';
 import 'package:cashcook/src/provider/PointMgmtProvider.dart';
 import 'package:cashcook/src/provider/QRProvider.dart';
 import 'package:cashcook/src/provider/RecoProvider.dart';
@@ -43,6 +44,9 @@ class CashCook extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => StoreServiceProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => PlaceProvider(),
         )
       ],
       child: MaterialApp(

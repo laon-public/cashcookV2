@@ -89,6 +89,31 @@ class StoreService{
     return utf8.decode(response.bodyBytes);
   }
 
+  patchMenu(List<Map<String, dynamic>> menuData) async {
+    final response = await client.patch(cookURL+"/franchises/menu", body: json.encode(menuData), headers: {
+      "Content-Type": "application/json",
+      "Authorization": "BEARER ${dataStorage.token}"
+    });
 
+    return utf8.decode(response.bodyBytes);
+  }
 
+  doScrap(String store_id) async {
+    final response = await client.post(cookURL+"/franchises/scrap", body: json.encode({
+      "store_id" : store_id
+    }), headers: {
+      "Content-Type": "application/json",
+      "Authorization": "BEARER ${dataStorage.token}"
+    });
+
+    return utf8.decode(response.bodyBytes);
+  }
+
+  readScrap() async {
+    final response = await client.get(cookURL+"/franchises/scrap", headers: {
+      "Authorization": "BEARER ${dataStorage.token}"
+    });
+
+    return utf8.decode(response.bodyBytes);
+  }
 }

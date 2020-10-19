@@ -30,14 +30,11 @@ class AppInfomation extends StatelessWidget {
         loadMore(context);
     });
     return Scaffold(
-      backgroundColor: Colors.amberAccent,
+      backgroundColor: white,
       appBar: AppBar(
-        title: Text("앱정보"),
         centerTitle: true,
-        elevation: 1.0,
-        backgroundColor: Colors.amberAccent,
-        //leading: Icon(Icons.close), // 앱의 뒤로가기 버튼의 모양 변경 기능 왠지 작동이 안됨
-        //뒤로가기 버튼은 이미지를 활용하여 x로만듬
+        elevation: 0.0,
+        backgroundColor: white,
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -56,7 +53,12 @@ class AppInfomation extends StatelessWidget {
                 onTap: (){
                   onKakaoShare();
                 },
-                child: Text("공유",style: TextStyle(fontSize: 14,decoration: TextDecoration.underline),), //오른쪽 상단에 텍스트 출력
+                child: Text("공유",style:
+                  TextStyle(
+                      fontSize: 14,
+                      color: mainColor,
+                      fontFamily: 'noto',
+                      decoration: TextDecoration.underline),), //오른쪽 상단에 텍스트 출력
               ),
             ),
           ),
@@ -69,20 +71,31 @@ class AppInfomation extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(top: 150),
                 ),
-                ClipRRect( // 사각형 이미지를 둥글게하는 함수
-                  borderRadius: BorderRadius.circular(15),
+                Container(
+                  padding: EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(color: Color(0xFFDDDDDD))
+                  ),
                   child:
                   SizedBox(
-                    width: 100,
-                    height: 100,
+                    width: 64,
+                    height: 64,
                     child: Image.asset('assets/icon/mini_logo.png', fit: BoxFit.cover,),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 20),
-                ),
-                Text('현재버전 : v1.1.1(TESTING)', style: TextStyle(fontSize: 15)),
-                Text('최신버전을 사용 중입니다.', style: TextStyle(fontSize: 15)),
+                whiteSpaceH(10.0),
+                Text('현재버전 : v1.1.1(TESTING)',
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: 'noto',
+
+                    )),
+                Text('최신버전을 사용 중입니다.',
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: 'noto'
+                    )),
               ],
             )
         ));

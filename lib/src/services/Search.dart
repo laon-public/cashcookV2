@@ -2,11 +2,12 @@ import 'dart:convert';
 
 import 'package:cashcook/src/model/place.dart';
 import 'package:cashcook/src/services/API.dart';
+import 'package:cashcook/src/utils/datastorage.dart';
 import 'package:http/http.dart' as http;
 class SearchService{
   http.Client client = new http.Client();
 
-  Future<List> getSearchList(String query) async {
+  Future<String> getGoogleSearch(String query) async {
     final String baseUrl =
         'https://maps.googleapis.com/maps/api/place/autocomplete/json';
     String type = 'establishment';
@@ -15,17 +16,14 @@ class SearchService{
     // 구글 지도 api 키 서버용은 따로 라온에서 발급받아서 key= 값에 넣을것
 
     final http.Response response = await http.get(url);
-    final responseData = json.decode(response.body);
-    final predictions = responseData['predictions'];
+    return response.body;
+  }
 
-    List<Place> suggestions = [];
-
-    for (int i = 0; i < predictions.length; i++) {
-      final place = Place.fromJson(predictions[i]);
-      suggestions.add(place);
-    }
-
-    return suggestions;
+  Future<String> getStoreSearch(String query) async {
+    final response = await client.get(cookURL+"/franchises/store?query=$query", headers: {
+      "Authorization": "BEARER ${dataStorage.token}"
+    });
+    return utf8.decode(response.bodyBytes);
   }
 
   Future<PlaceDetail> getPlaceDetail(String placeId) async {
@@ -38,7 +36,7 @@ class SearchService{
     final responseData = json.decode(response.body);
     final result = responseData['result'];
 
-    final PlaceDetail placeDetail = PlaceDetail.fromJson(result);
+    final PlaceDetail placeDetail = PlaceDetail.fromGoogleJson(result);
     print(placeDetail.toMap());
 
     return placeDetail;

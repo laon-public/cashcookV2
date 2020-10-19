@@ -16,6 +16,7 @@ import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:cashcook/src/screens/mypage/info/scrap.dart';
 
 class MyPage extends StatefulWidget {
   @override
@@ -238,6 +239,7 @@ class _MyPageState extends State<MyPage> {
                             children: [
                               HistoryCard(),
                               RecoCard(),
+                              scrapCard(),
                               SizedBox(height: 16,),
                               Tabs(name: "공지사항", routesName: "/notice",),
                               CustomerCenter(),
@@ -261,6 +263,7 @@ class _MyPageState extends State<MyPage> {
   }
 
   Widget agencyForm() {
+    UserCheck user = Provider.of<UserProvider>(context, listen: false).loginUser;
     return Column(
         children: [
           Container(
@@ -274,49 +277,16 @@ class _MyPageState extends State<MyPage> {
                 Column (
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Text("총판명  ",
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                              color: white,
-                            )),
-                        Text("010-0000-0000",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
-                              color: white,
-                            )),
-                      ],
-                    ),
-                    whiteSpaceH(5),
-                    Row(
-                      children: [
-                        Text("직전대리점명   ",
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                              color: white,
-                            )),
-                        Text("010-0000-0000",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
-                              color: white,
-                            )),
-                      ],
-                    ),
                     whiteSpaceH(10),
                     Row(
                       children: [
-                        Text("스토어명   ",
+                        Text("${user.username}  ",
                             style: TextStyle(
                                 fontSize: 25,
                                 fontWeight: FontWeight.w600,
                               color: white,
                             )),
-                        Text("010-0000-0000",
+                        Text("${user.phone}",
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w600,
@@ -1062,6 +1032,38 @@ class _MyPageState extends State<MyPage> {
               Image.asset("assets/icon/recommend.png", height: 42, fit: BoxFit.contain,),
               SizedBox(width: 12,),
               Text("추천인 관리",style: TextStyle(fontSize: 16,color: Color(0xff444444))),
+              Spacer(),
+              Icon(Icons.arrow_forward_ios, color: Colors.black, size: 24,),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  //추천인 관리
+  Widget scrapCard(){
+    return InkWell(
+      onTap: (){
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => Scrap()
+        ));
+      },
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Color(0xffffff),
+          border: Border.all(),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+//              Image.asset("assets/icon/friends-wt.png", height: 32, fit: BoxFit.contain,),
+              Image.asset("assets/icon/recommend.png", height: 42, fit: BoxFit.contain,),
+              SizedBox(width: 12,),
+              Text("찜한 매장",style: TextStyle(fontSize: 16,color: Color(0xff444444))),
               Spacer(),
               Icon(Icons.arrow_forward_ios, color: Colors.black, size: 24,),
             ],

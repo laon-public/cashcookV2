@@ -3,8 +3,8 @@ class ReviewModel {
   final String username;
   final String scope;
   final String contents;
-  final int like;
-  final int hate;
+  int like;
+  int hate;
   final String date;
   int isLike;
   int isHate;

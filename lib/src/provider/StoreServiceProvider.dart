@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:cashcook/src/model/category.dart';
 import 'package:cashcook/src/model/store/menu.dart';
 import 'package:cashcook/src/model/store/review.dart';
-import 'package:cashcook/src/provider/StoreProvider.dart';
+import 'package:cashcook/src/model/scrap.dart';
 import 'package:cashcook/src/services/StoreService.dart';
 import 'package:cashcook/src/utils/responseCheck.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
@@ -31,6 +31,9 @@ class StoreServiceProvider with ChangeNotifier {
   // reviewService
   List<ReviewModel> reviewList = [];
   double reviewAvg = 0.0;
+
+  // scrapService
+  List<ScrapModel> scrapList = [];
 
   void setOrderMenu(List<BigMenuModel> setMenus, int orderPay) {
     orderList.clear();
@@ -175,15 +178,23 @@ class StoreServiceProvider with ChangeNotifier {
       showToast(json.decode(response)['data']['msg']);
 
       if(type == "like"){
-        if(subtype == "inc")
+        if(subtype == "inc") {
           reviewList[idx].isLike = 1;
-        else
+          reviewList[idx].like += 1;
+        }
+        else {
           reviewList[idx].isLike = 0;
+          reviewList[idx].like -= 1;
+        }
       } else {
-        if(subtype == "inc")
+        if(subtype == "inc") {
           reviewList[idx].isHate = 1;
-        else
+          reviewList[idx].hate += 1;
+        }
+        else {
           reviewList[idx].isHate = 0;
+          reviewList[idx].hate -= 1;
+        }
       }
 
       notifyListeners();
@@ -257,6 +268,65 @@ class StoreServiceProvider with ChangeNotifier {
     selectSubCat = subCatList[0].code_name;
 
     notifyListeners();
+  }
+
+  void fetchEditCategory(String code, String subCode) async {
+    catList.clear();
+    subCatList.clear();
+
+    var response = await service.fetchCategory();
+
+    print(response);
+
+    dynamic _catList = json.decode(response)['data']['list'];
+
+    for(var _cat in _catList) {
+      catList.add(CatModel.fromJson(_cat));
+    }
+
+
+    selectCat = (catList.where((cat) => cat.code == code).toList())[0].code_name;
+    response = await service.fetchSubCategory(code);
+
+    print(response);
+
+    dynamic _subCatList = json.decode(response)['data']['list'];
+    for(var _subCat in _subCatList) {
+      subCatList.add(SubCatModel.fromJson(_subCat));
+    }
+
+    selectSubCat = (subCatList.where((sCat) => sCat.code == subCode).toList())[0].code_name;
+
+    notifyListeners();
+  }
+
+  void patchMenu(List<Map<String, dynamic>> menuData) async {
+    var response = await service.patchMenu(menuData);
+
+    print(response);
+  }
+
+  void doScrap(String store_id) async {
+    var response = await service.doScrap(store_id);
+
+    print(response);
+  }
+
+  void readScrap() async {
+    scrapList.clear();
+
+    startLoading();
+
+    var response = await service.readScrap();
+
+    print(response);
+
+    dynamic _scrapList = json.decode(response)['data']['list'];
+
+    for(var scrap in _scrapList)
+      scrapList.add(ScrapModel.fromJson(scrap));
+
+    stopLoading();
   }
 
 }

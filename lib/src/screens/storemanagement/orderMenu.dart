@@ -44,7 +44,14 @@ class _OrderMenu extends State<OrderMenu> {
         elevation: 1,
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: Text("주문서")
+        title: Text("주문서",
+          style: TextStyle(
+            fontSize: 14,
+            fontFamily: 'noto',
+            color: Color(0xFF444444),
+            fontWeight: FontWeight.w600,
+          )
+        )
       ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -56,7 +63,7 @@ class _OrderMenu extends State<OrderMenu> {
               whiteSpaceH(8),
               Text("주문내역",
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 14,
                   fontFamily: 'noto',
                   color: Colors.black,
                   fontWeight: FontWeight.w600
@@ -80,7 +87,7 @@ class _OrderMenu extends State<OrderMenu> {
                       children: [
                         Expanded(
                             child: Text(
-                              "결제 총 금액",
+                              "총 주문 금액",
                               style: TextStyle(
                                   fontFamily: 'noto',
                                   fontSize: 16,
@@ -107,7 +114,142 @@ class _OrderMenu extends State<OrderMenu> {
                 }
               ),
               whiteSpaceH(50),
-
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  whiteSpaceH(8),
+                  Text("BZA 결제",
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'noto',
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600
+                      )),
+                  whiteSpaceH(16),
+                  Consumer<StoreServiceProvider>(
+                    builder: (context, ssp, _){
+                      return
+                        Padding(
+                          padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                    flex: 4,
+                                    child: Row(
+                                        children: [
+                                          Expanded(
+                                            child:Text(
+                                                "총 주문 금액",
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontFamily: 'noto',
+                                                    color: Color(0xFF444444)
+                                                )
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child:Text(
+                                              "${numberFormat.format(ssp.orderPay)}원",
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontFamily: 'noto',
+                                                  color: Color(0xFF444444)
+                                              ),
+                                              textAlign: TextAlign.end,
+                                            ),
+                                          ),
+                                        ]
+                                    )
+                                ),
+                              ]
+                          ),
+                        );
+                    },
+                  ),
+                  Consumer<StoreServiceProvider>(
+                    builder: (context, ssp, _){
+                      return
+                        Padding(
+                          padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                    flex: 4,
+                                    child: Row(
+                                        children: [
+                                          Expanded(
+                                            child:Text(
+                                                "BZA 결제 수량",
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontFamily: 'noto',
+                                                    color: Color(0xFF444444)
+                                                )
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child:Text(
+                                              "${numberFormat.format(ssp.orderPay)}원",
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontFamily: 'noto',
+                                                  color: Color(0xFF444444)
+                                              ),
+                                              textAlign: TextAlign.end,
+                                            ),
+                                          ),
+                                        ]
+                                    )
+                                ),
+                              ]
+                          ),
+                        );
+                    },
+                  ),
+                  whiteSpaceH(16),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 1,
+                    color: Color(0xFFDDDDDD),
+                  ),
+                  whiteSpaceH(8),
+                  Consumer<StoreServiceProvider>(
+                      builder: (context, ss, _){
+                        return Row(
+                            children: [
+                              Expanded(
+                                  child: Text(
+                                    "남은 결제 금액",
+                                    style: TextStyle(
+                                        fontFamily: 'noto',
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w600
+                                    ),
+                                    textAlign: TextAlign.start,
+                                  )
+                              ),
+                              Expanded(
+                                  child: Text(
+                                    "${numberFormat.format(ss.orderPay)}원",
+                                    style: TextStyle(
+                                        fontFamily: 'noto',
+                                        fontSize: 18,
+                                        color: mainColor,
+                                        fontWeight: FontWeight.w600
+                                    ),
+                                    textAlign: TextAlign.end,
+                                  )
+                              )
+                            ]
+                        );
+                      }
+                  ),
+                ]
+              ),
+              whiteSpaceH(50),
               // 결제 방식 위젯
               Row(
                   children: [
@@ -116,7 +258,7 @@ class _OrderMenu extends State<OrderMenu> {
                           "결제 방식",
                           style: TextStyle(
                               fontFamily: 'noto',
-                              fontSize: 16,
+                              fontSize: 14,
                               color: Colors.black,
                               fontWeight: FontWeight.w600
                           ),
@@ -209,7 +351,7 @@ class _OrderMenu extends State<OrderMenu> {
                       )
                   );
                 }
-              )
+              ),
             ],
           ),
         )

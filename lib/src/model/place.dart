@@ -1,12 +1,20 @@
 class Place {
   final String description;
-  final String placeId;
+  String placeId;
+  PlaceDetail pd;
+  String type;
 
   Place({this.description, this.placeId});
 
-  Place.fromJson(Map<String, dynamic> json)
+  Place.fromStoreJson(Map<String, dynamic> json)
       : this.description = json['description'],
-        this.placeId = json['place_id'];
+        this.pd = PlaceDetail.fromStoreJson(json),
+        this.type = "store";
+
+  Place.fromGoogleJson(Map<String, dynamic> json)
+      : this.description = json['description'].toString().split("대한민국")[1],
+        this.placeId = json['place_id'],
+        this.type = "google";
 
   Map<String, dynamic> toMap() {
     return {
@@ -17,7 +25,7 @@ class Place {
 }
 
 class PlaceDetail {
-  final String placeId;
+  String placeId;
   final double lat;
   final double lng;
 
@@ -27,10 +35,14 @@ class PlaceDetail {
     this.lng,
   });
 
-  PlaceDetail.fromJson(Map<String, dynamic> json)
+  PlaceDetail.fromGoogleJson(Map<String, dynamic> json)
       : this.placeId = json['place_id'],
         this.lat = json['geometry']['location']['lat'],
         this.lng = json['geometry']['location']['lng'];
+
+  PlaceDetail.fromStoreJson(Map<String, dynamic> json)
+      : this.lat = double.parse(json['latitude'].toString()),
+        this.lng = double.parse(json['longitude'].toString());
 
   Map<String, dynamic> toMap() {
     return {

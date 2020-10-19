@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cashcook/src/model/account.dart';
 import 'package:cashcook/src/model/place.dart';
@@ -12,6 +13,7 @@ import 'package:cashcook/src/model/usercheck.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
+import 'package:cashcook/src/screens/main/search.dart';
 import 'package:cashcook/src/screens/qr/qr.dart';
 import 'package:cashcook/src/screens/mypage/mypage.dart';
 import 'package:cashcook/src/screens/storemanagement/orderMenu.dart';
@@ -337,8 +339,21 @@ class _MainMap extends State<MainMap> {
       Expanded(
       child: RaisedButton(
       color: Colors.cyan,
-      onPressed: () {
-        Navigator.of(context).pushNamed("/store/modify/store");
+      onPressed: () async {
+        await Navigator.of(context).pushNamed("/store/modify/store");
+          googleMapController
+              .getVisibleRegion()
+              .then((value) async {
+          String start = value.northeast.latitude.toString() +
+              "," +
+              value.northeast.longitude.toString();
+          String end = value.southwest.latitude.toString() +
+              "," +
+              value.southwest.longitude.toString();
+
+          print("끝나서 다시 불러주세용");
+          await sp.getStore(start, end);
+        });
       },
       elevation: 0.0,
       child: Center(
@@ -554,8 +569,21 @@ class _MainMap extends State<MainMap> {
                                               child:
                                               RaisedButton(
                                                 color: Colors.cyan,
-                                                onPressed: () {
-                                                  Navigator.of(context).pushNamed("/store/modify/store");
+                                                onPressed: () async {
+                                                  await Navigator.of(context).pushNamed("/store/modify/store");
+                                                  googleMapController
+                                                      .getVisibleRegion()
+                                                      .then((value) async {
+                                                    String start = value.northeast.latitude.toString() +
+                                                        "," +
+                                                        value.northeast.longitude.toString();
+                                                    String end = value.southwest.latitude.toString() +
+                                                        "," +
+                                                        value.southwest.longitude.toString();
+
+                                                    print("끝나서 다시 불러주세용");
+                                                    await sp.getStore(start, end);
+                                                  });
                                                 },
                                                 elevation: 0.0,
                                                 child: Center(
@@ -594,6 +622,37 @@ class _MainMap extends State<MainMap> {
                                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                                         children:[
                                           whiteSpaceH(15),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: RaisedButton(
+                                                  onPressed: () async {
+                                                    await ss.doScrap(
+                                                      Provider.of<StoreProvider>(context, listen: false).selStore.id.toString()
+                                                    );
+                                                    showToast("찜하기가 등록되었습니다.");
+                                                  },
+                                                  color: white,
+                                                  disabledColor: white,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(20.0),
+                                                      side: BorderSide(color: mainColor)
+                                                  ),
+                                                  child:
+                                                  Text(
+                                                    "찜하기",
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: mainColor,
+                                                        fontFamily: 'noto',
+                                                        fontWeight: FontWeight.w400
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          whiteSpaceH(10),
                                           Row(
                                               children: [
                                                 Expanded(
@@ -1325,6 +1384,7 @@ class _MainMap extends State<MainMap> {
                 });
               },
               onMapCreated: (GoogleMapController controller) {
+                print("여긴데");
                 controller
                     .getVisibleRegion()
                     .then((value) async {
@@ -1356,52 +1416,37 @@ class _MainMap extends State<MainMap> {
             child: Container(
             width: MediaQuery.of(context).size.width,
             height: 40,
-            decoration: BoxDecoration(
-            color: white,
-            borderRadius: BorderRadius.circular(6),
-            boxShadow: [
-            BoxShadow(
-            color: Color.fromRGBO(0, 0, 0, 0.15), blurRadius: 8)
-            ],
-            ),
-            child: SingleChildScrollView(
-            child: Column (
-            children: [
-            TypeAheadField(
-            textFieldConfiguration: TextFieldConfiguration(
-            controller: searchCtrl,
-            textAlign: TextAlign.center,
-            decoration: InputDecoration(
-            alignLabelWithHint: true,
-            hintText: "검색",
-            hintStyle: TextStyle(
-            fontFamily: 'noto',
-            color: black,
-            fontSize: 16,
-            fontWeight: FontWeight.w600),
-            contentPadding: EdgeInsets.symmetric(
-            vertical: 12, horizontal: 16),
-            ),
-            ),
-            suggestionsCallback: (pattern) async{
-            return await searchService.getSearchList(pattern);
-            },
-            itemBuilder: (context, suggestion) {
-            return ListTile(
-            title: Text(suggestion.description),
-            );
-            },
-            onSuggestionSelected: (suggestion) async{
-            placeDetail = await searchService.getPlaceDetail(
-            suggestion.placeId
-            );
-            moveCamera();
-            },
-            hideOnEmpty: true,
-            ),
-            ],
+            child: RaisedButton(
+              onPressed: () async {
+                final result = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchPage()));
+
+                if(result != null)
+                  moveCamera(result['lat'], result['lng']);
+              },
+              color: white,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  "assets/resource/main/search_blue.png",
+                  width: 24,
+                  height: 24,
+                ),
+                Text("검색",
+                    style: TextStyle(
+                        color: Color(0xFF444444),
+                        fontSize: 16,
+                        fontFamily: 'noto',
+                        fontWeight: FontWeight.w600
+                    ))
+              ]
+              ),
+              elevation: 5.0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+                side: BorderSide(color: mainColor, width: 1.0)
+              ),
             )
-            ),
             ),
             ),
             ),
@@ -1450,10 +1495,10 @@ class _MainMap extends State<MainMap> {
     }
   }
 
-  moveCamera() async {
+  moveCamera(lat, lng) async {
     googleMapController.animateCamera(
       CameraUpdate.newLatLng(
-        LatLng(placeDetail.lat, placeDetail.lng),
+        LatLng(lat, lng),
       ),
     );
   }

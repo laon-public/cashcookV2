@@ -12,6 +12,7 @@ import 'package:cashcook/src/services/Store.dart';
 import 'package:cashcook/src/services/StoreService.dart' as ss;
 import 'package:cashcook/src/utils/FromAsset.dart';
 import 'package:cashcook/src/utils/responseCheck.dart';
+import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -40,6 +41,12 @@ class StoreProvider with ChangeNotifier{
   List<BigMenuEditModel> menuEditList = [];
   FormData formData;
   List<Map<String, dynamic>> menuData = [];
+
+  void clearMap(){
+    store.clear();
+    markers.clear();
+    isCurrentPage = 0;
+  }
 
   void setPage(int page){
     isCurrentPage = page;
@@ -130,7 +137,7 @@ class StoreProvider with ChangeNotifier{
     print("bak_menu Okay");
   }
 
-  Future<List> getStore(String start, String end) async {
+  void getStore(String start, String end) async {
       newStore.clear();
       print("getStore");
       print(start);
@@ -151,11 +158,11 @@ class StoreProvider with ChangeNotifier{
     }
 
       if(newStore.length != 0){
+        print("추가됨");
         markerAdds(newStore);
       }
 
       notifyListeners();
-    return store;
   }
 
   markerAdds(List<StoreModel> newStore) {
@@ -163,9 +170,11 @@ class StoreProvider with ChangeNotifier{
       final MarkerId markerId = MarkerId(store.id.toString());
       addMarker(store, markerId);
     }
+
+    notifyListeners();
   }
 
-  addMarker(store, markerId) async {
+  addMarker(StoreModel store, markerId) async {
     final icon = await getBitmapDescriptorFromAssetBytes(
         "assets/icon/other_mk.png", 96);
     final my_icon = await getBitmapDescriptorFromAssetBytes(
@@ -178,7 +187,7 @@ class StoreProvider with ChangeNotifier{
           position: LatLng(
               double.parse(store.address.coords.split(",").first),
               double.parse(store.address.coords.split(",").last)),
-          icon: /*(userProvider.storeModel.id == newStore[num].id) ? my_icon : */icon,
+          icon: /*(userProvider.loginUser.id.toString() == store.user_id) ? my_icon :*/ icon,
           onTap: () async {
             // await ssp.setServiceNum(0, store.id);
             currentLocation = await location.getLocation();
@@ -190,6 +199,8 @@ class StoreProvider with ChangeNotifier{
                 double.parse(store.address.coords.split(",").last));
             showDetailView(store);
           }));
+
+      notifyListeners();
   }
 
   double calculateDistance(lat1, lon1, lat2, lon2) {
@@ -267,5 +278,21 @@ class StoreProvider with ChangeNotifier{
     print(response);
 
     dynamic _bigMenuList = json.decode(response)['data']['list'];
+
+    for(var _bigMenu in _bigMenuList) {
+      menuList.add(BigMenuEditModel.fromJson(
+          _bigMenu
+      ));
+    }
+
+    notifyListeners();
+  }
+
+  void patchMenu() async {
+    await bak_menu();
+
+    await ssp.patchMenu(menuData);
+
+    showToast("메뉴 수정에 성공했습니다.");
   }
 }

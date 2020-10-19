@@ -8,6 +8,7 @@ import 'package:cashcook/src/provider/provider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/screens/referrermanagement/firstbiz.dart';
 import 'package:cashcook/src/screens/referrermanagement/firstrecommendation.dart';
+import 'package:cashcook/src/screens/splash.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/utils/datastorage.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
@@ -34,9 +35,6 @@ class _Login extends State<Login> {
 
   String url = baseUrl + "oauth/authorize?client_id=cashcook&redirect_uri=" + loginSuccessUrl + "&response_type=code";
 
-//  String logoutUrl = "http://auth.cashlink.kr/auth_api/users/logout";
-//    String logoutUrl = "http://192.168.100.226/auth_api/users/logout";
-
   bool clearCache = false;
 
   bool userCheck = false;
@@ -46,13 +44,16 @@ class _Login extends State<Login> {
     print("initState123");
     // TODO: implement initState
     super.initState();
-//    mainMapMove();
     flutterWebviewPlugin.onUrlChanged.listen((String url) async {
       print("url : " + url);
       if (url == baseUrl) {
         print("로그인실패123");
+
         webViewController.clearCache();
         webViewController.loadUrl(baseUrl + "oauth/authorize?client_id=cashcook&redirect_uri=" + loginSuccessUrl + "&response_type=code");
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => Splash())
+        , (route) => false);
         print(widget.authCheck);
         if (widget.authCheck != 1) {
           showToast("로그인에 실패하였습니다.");
@@ -71,7 +72,6 @@ class _Login extends State<Login> {
           dynamic authToken = json.decode(value);
           print("authToken : ${authToken['access_token']}");
           dataStorage.token = authToken['access_token'];
-          // 유저 정보 가져오고 회원정보 있는지 확인 후 홈으로 보낼 지 기본 회원 정보 받는 곳으로 이동할 지 결정
 
           if (authToken['access_token'] != null) {
             print("access_token123");
@@ -128,20 +128,10 @@ class _Login extends State<Login> {
                 P.Provider.of<UserProvider>(context,listen: false).setLoginUser(userCheck);
                 dynamic franchise = json.decode(value)['data']['franchise'];
 
-                 if(franchise != null){
-                   P.Provider.of<UserProvider>(context,listen: false).setStoreModel(StoreModel.fromJson(franchise));
+                 if(franchise != null) {
+                   P.Provider.of<UserProvider>(context, listen: false)
+                       .setStoreModel(StoreModel.fromJson(franchise));
                  }
-
-
-//              await P.Provider.of<UserProvider>(context, listen: false).userSync();
-//                            if(userCheck.isFirstLogin) {
-////                              P.Provider.of<UserProvider>(context,listen: false).postReco();
-//                              Navigator.of(context)
-//                                  .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => RecoFrst()), (route) => false);
-//                            }else {
-//                 P.Provider.of<UserProvider>(context, listen: false).setStoreModel(null);
-
-
 
                 //최초 로그인 인지 판단하는 곳
                 if (userCheck.isFirstLogin != true) {

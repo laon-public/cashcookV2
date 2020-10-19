@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kakao_flutter_sdk/all.dart';
 import 'package:provider/provider.dart';
 
 
@@ -27,6 +28,7 @@ class ModifyStore extends StatefulWidget {
 class _ModifyStoreState extends State<ModifyStore> {
   TextEditingController nameCtrl = TextEditingController();
 
+  TextEditingController descSrtCtrl = TextEditingController();
   TextEditingController descCtrl = TextEditingController();
 
   TextEditingController telCtrl = TextEditingController();
@@ -34,7 +36,7 @@ class _ModifyStoreState extends State<ModifyStore> {
   TextEditingController telCtrl2 = TextEditingController();
   TextEditingController telCtrl3 = TextEditingController();
 
-  TextEditingController negotiableTimeCtrl = TextEditingController();
+  TextEditingController storeTimeCtrl = TextEditingController();
 
   TextEditingController addressCtrl = TextEditingController();
 
@@ -44,8 +46,10 @@ class _ModifyStoreState extends State<ModifyStore> {
 
   @override
   void initState() {
+
     StoreModel store = Provider.of<UserProvider>(context,listen: false).storeModel;
     nameCtrl.text = store.store.name;
+    descSrtCtrl.text = store.store.short_description;
     descCtrl.text = store.store.description;
 
     telCtrl.text = store.store.tel;
@@ -55,9 +59,18 @@ class _ModifyStoreState extends State<ModifyStore> {
 
     commentCtrl.text = store.store.comment;
 
-    negotiableTimeCtrl.text = store.store.store_time;
+    storeTimeCtrl.text = store.store.store_time;
     addressCtrl.text = store.address.address;
     detailCtrl.text = store.address.detail;
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await Provider.of<StoreProvider>(context, listen: false).fetchEditMenu(
+          Provider.of<UserProvider>(context, listen: false).storeModel.id
+      );
+
+      print(store.store.category_code);
+      await Provider.of<StoreServiceProvider>(context, listen: false).fetchEditCategory(store.store.category_code, store.store.category_sub_code);
+    });
   }
 
   String shop1_uri = "";
@@ -102,7 +115,36 @@ class _ModifyStoreState extends State<ModifyStore> {
         centerTitle: true,
         elevation: 0.0,
       ),
-      body: SafeArea(top: false, child: body(context)),
+      body: Stack(
+          children:[
+            body(context),
+            (view == 1) ?
+            Positioned(
+                bottom: 0,
+                right: 0,
+                child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 40,
+                    child:
+                    RaisedButton(
+                      color: mainColor,
+                      onPressed: () async {
+                        await Provider.of<StoreProvider>(context, listen: false).patchMenu();
+                      },
+                      child: Text(
+                          "메뉴 수정",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'noto',
+                            color: white,
+                          )
+                      ),
+                    )
+                )
+            )
+                :
+                Container()
+          ]),
     );
   }
 
@@ -213,8 +255,103 @@ class _ModifyStoreState extends State<ModifyStore> {
   Widget infoForm() {
     return Column(
       children: [
+        Padding(
+          padding: const EdgeInsets.only(top:5.0),
+          child: Align(child: Text("업종",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+        ),
+        Consumer<StoreServiceProvider>(
+            builder: (context, ssp, _) {
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                child:Row(
+                    children:[
+                      Expanded(
+                          flex: 1,
+                          child:DropdownButton(
+                            isExpanded: true,
+                            icon: Icon(Icons.arrow_drop_down, color: mainColor,),
+                            iconSize: 24,
+                            elevation: 16,
+                            underline: Container(
+                              height: 2,
+                              color: Color(0xFFDDDDDD),
+                            ),
+                            value: ssp.selectCat ,
+                            items: ssp.catList.map((value) {
+                              return DropdownMenuItem(
+                                value: value.code_name,
+                                child: Text(value.code_name),
+                              );
+                            }
+                            ).toList(),
+                            onChanged: (value){
+                              ssp.fetchNewCategory(value);
+                            },
+                          )
+                      ),
+                      whiteSpaceW(5),
+                      Expanded(
+                        flex: 1,
+                        child: DropdownButton(
+                          isExpanded: true,
+                          icon: Icon(Icons.arrow_drop_down, color: mainColor,),
+                          iconSize: 24,
+                          elevation: 16,
+                          underline: Container(
+                            height: 2,
+                            color: Color(0xFFDDDDDD),
+                          ),
+                          value: ssp.selectSubCat,
+                          items: ssp.subCatList.map((value) {
+                            return DropdownMenuItem(
+                              value: value.code_name,
+                              child: Text(value.code_name),
+                            );
+                          }
+                          ).toList(),
+                          onChanged: (value){
+                            ssp.setSubCat(value);
+                          },
+                        ),
+                      )
+                    ]
+                ),
+              );
+            }
+        ),
         textField("매장명", "사업자등록증의 상호명을 입력해주세요.", nameCtrl,TextInputType.text),
-        textField("매장설명", "100자 내외로 입력해주세요.", descCtrl,TextInputType.text),
+        textField("매장요약", "20자 내외로 입력해주세요.", descSrtCtrl,TextInputType.text),
+        Padding(
+          padding: const EdgeInsets.only(top:5.0),
+          child: Align(child: Text("매장설명",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+        ),
+        whiteSpaceH(5),
+        TextFormField(
+          autofocus: false,
+          maxLines: 4,
+          controller: descCtrl,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+            fontFamily: 'noto',
+          ),
+          decoration: InputDecoration(
+              border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Color(0xff888888)
+                  )
+              ),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color:mainColor
+                  )
+              )
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top:5.0),
+          child: Align(child: Text("100자 내외로 입력해주세요.",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerRight,),
+        ),
         Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -246,7 +383,7 @@ class _ModifyStoreState extends State<ModifyStore> {
 
             ]
         ),
-        textField("흥정시간", "실시간 흥정 가능시간.", negotiableTimeCtrl,TextInputType.text),
+        textField("매장 영업시간", "매장 영업시간을 입력해주세요.", storeTimeCtrl,TextInputType.text),
         addressInfo(context),
         Padding(
           padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
@@ -271,17 +408,14 @@ class _ModifyStoreState extends State<ModifyStore> {
 
   Widget menuForm() {
     int bigIdx = 0;
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await Provider.of<StoreProvider>(context, listen: false).fetchEditMenu(
-        Provider.of<UserProvider>(context, listen: false).storeModel.id
-      );
-    });
 
     return  Consumer<StoreProvider>(
         builder: (context, sp, _) {
           int bigIdx = 0;
           return
-            Column(
+          Padding(
+            padding: EdgeInsets.only(bottom: 50),
+            child:Column(
                 children:[
                   Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -311,7 +445,7 @@ class _ModifyStoreState extends State<ModifyStore> {
                   ),
                 ]
             )
-          ;
+          );
         }
     );
   }
@@ -502,6 +636,10 @@ class _ModifyStoreState extends State<ModifyStore> {
     )
     ),
     ),
+          Padding(
+            padding: const EdgeInsets.only(top:40.0),
+            child: nextBtn(context),
+          )
     ]
     );
   }
@@ -517,13 +655,14 @@ class _ModifyStoreState extends State<ModifyStore> {
           Map<String, String> data = {};
           if(nameCtrl.text.length < 1) Fluttertoast.showToast(msg: "매장명을 입력해주세요.");
           if(descCtrl.text.length < 1) Fluttertoast.showToast(msg: "매장설명을 입력해주세요.");
-          if(negotiableTimeCtrl.text.length < 1) Fluttertoast.showToast(msg: "흥정시간을 입력해주세요.");
+          if(storeTimeCtrl.text.length < 1) Fluttertoast.showToast(msg: "매장영업시간을 입력해주세요.");
           if(addressCtrl.text.length < 1) Fluttertoast.showToast(msg: "매장주소를 입력해주세요.");
           if(detailCtrl.text.length < 1) Fluttertoast.showToast(msg: "매장상세주소를 입력해주세요.");
 
           if(store.store.name != nameCtrl.text) data["shop_name"] = nameCtrl.text;
+          if(store.store.short_description != descSrtCtrl.text) data["shop_srt_description"] = descSrtCtrl.text;
           if(store.store.description != descCtrl.text) data["shop_description"] = descCtrl.text;
-          if(store.store.store_time != negotiableTimeCtrl.text) data["store_time"] = negotiableTimeCtrl.text;
+          if(store.store.store_time != storeTimeCtrl.text) data["store_time"] = storeTimeCtrl.text;
           if(store.store.tel != telCtrl1.text + telCtrl2.text + telCtrl3.text) data["shop_tel"] = telCtrl1.text + telCtrl2.text + telCtrl3.text;
           if(store.address.address != addressCtrl.text) {
             data["address"] = addressCtrl.text;
@@ -532,6 +671,17 @@ class _ModifyStoreState extends State<ModifyStore> {
           }
           if(store.address.detail != detailCtrl.text) data["address_detail"] = detailCtrl.text;
 
+          if(store.store.comment != commentCtrl.text) data["comment"] = commentCtrl.text;
+          if(
+            store.store.category_code !=
+              Provider.of<StoreServiceProvider>(context, listen: false).selectCat_code
+          )
+            data["category_code"] = Provider.of<StoreServiceProvider>(context, listen: false).selectCat_code;
+          if(
+            store.store.category_sub_code !=
+                Provider.of<StoreServiceProvider>(context, listen: false).selectSubCat_code
+          )
+            data["category_sub_code"] = Provider.of<StoreServiceProvider>(context, listen: false).selectSubCat_code;
 
           if( telCtrl1.text.length < 3 || telCtrl2.text.length < 4 ||  telCtrl3.text.length < 4 ){
             Fluttertoast.showToast(msg: "전화 번호의 자릿수가 부족 합니다.");
@@ -542,13 +692,16 @@ class _ModifyStoreState extends State<ModifyStore> {
             if(isReturn){
               Fluttertoast.showToast(msg: "가맹점 수정이 성공하였습니다.");
               DefaultCacheManager cacheManager = new DefaultCacheManager();
+              await Provider.of<StoreProvider>(context, listen: false).clearMap();
+              await Provider.of<StoreProvider>(context, listen: false).hideDetailView();
+              await Provider.of<UserProvider>(context, listen: false).fetchMyInfo(context);
               cacheManager.emptyCache();
             }else {
               Fluttertoast.showToast(msg: "가맹점 수정이 실패하였습니다.");
             }
 
-            //Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => StoreManagement()), (route) => false);
-            Navigator.of(context).pop();
+
+            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
           }
 
         },
@@ -705,18 +858,6 @@ class _PicturesState extends State<Pictures> {
             BoxDecoration(border: Border.all(color: Color(0xffdddddd))),
             child: Row(
               children: [
-                InkWell(
-                  child: Container(
-                    width: 80,
-                    color: Colors.white,
-                    child: Center(
-                      child: Text("파일첨부"),
-                    ),
-                  ),
-                  onTap: () {
-                    getImage();
-                  },
-                ),
                 Flexible(
                   child: Container(
                     height: 40,
@@ -728,6 +869,24 @@ class _PicturesState extends State<Pictures> {
                           overflow: TextOverflow.ellipsis,
                         )),
                   ),
+                ),
+                InkWell(
+                  child: Container(
+                    width: 80,
+                    color: mainColor,
+                    child: Center(
+                      child: Text("파일첨부", style:
+                      TextStyle(
+                          color: white,
+                          fontSize: 12,
+                          fontFamily: 'noto'
+                        ),
+                      ),
+                    ),
+                  ),
+                  onTap: () {
+                    getImage();
+                  },
                 ),
               ],
             ),
