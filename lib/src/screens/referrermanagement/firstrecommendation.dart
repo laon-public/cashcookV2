@@ -67,7 +67,7 @@ class _FirstRecommendation extends State<FirstRecommendation> {
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom - appBar.preferredSize.height,
           child: Padding(
-            padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
+            padding: EdgeInsets.only(top: 30,left: 16, right: 16, bottom: 16),
             child:
               Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,12 +83,12 @@ class _FirstRecommendation extends State<FirstRecommendation> {
                         "캐시쿡을 추천해준\n친구를 선택해주세요.",
                         textAlign: TextAlign.start,
                         style: TextStyle(
-                            fontFamily: 'noto', fontSize: 16, color: Color(0xFF222222), fontWeight: FontWeight.w600),
+                            fontFamily: 'noto', fontSize: 16, color: Color(0xFF222222)),
                       ),
                       whiteSpaceW(12),
                       Container(
                         child: Image.asset(
-                          "assets/resource/public/payment.png",
+                          "assets/icon/left_payment.png",
                           width: 48,
                           height: 48,
                         ),
@@ -234,6 +234,9 @@ class _FirstRecommendation extends State<FirstRecommendation> {
     if (userProviders.recomemberList.length > 2 && _selectedValue == '선택해주세요.') {
       Fluttertoast.showToast(msg: "추천회원을 선택해 주세요.");
     } else {
+      if(widget.type != null && widget.type == "AGENCY"){
+        await Provider.of<UserProvider>(context, listen: false).insertDis();
+      }
       String response = await Provider.of<UserProvider>(context, listen: false).recomemberinsert(selectedmember, widget.type); // 나를 추천한 사람을 선택 후 저장
 
       if(response == "true"){

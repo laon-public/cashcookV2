@@ -95,7 +95,7 @@ class _RPExchangeState extends State<RPExchange> {
             height: 64,
             color: Colors.white,
               child: Image.asset(
-                pointImg,
+                "assets/icon/study_payment.png",
                 fit: BoxFit.contain,
                 width: 24,
               )
@@ -122,7 +122,7 @@ class _RPExchangeState extends State<RPExchange> {
           Row(
             children: [
               Image.asset(
-                pointImg,
+                "assets/icon/bza.png",
                 fit: BoxFit.contain,
                 width: 40,
               ),
@@ -132,7 +132,7 @@ class _RPExchangeState extends State<RPExchange> {
                   cursorColor: Color(0xff000000),
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    suffixText: "${point}",
+                    suffixText: "BZA",
                     suffixStyle: TextStyle(fontSize: 16, color: Color(0xff444444)),
                     border: UnderlineInputBorder(
                       borderSide:
@@ -156,7 +156,7 @@ class _RPExchangeState extends State<RPExchange> {
             padding: const EdgeInsets.only(top: 5.0),
             child: Align(
               child: Text(
-                "${ctrl.text.length < 4 ? "1000RP = 1BZA" : "= ${(int.parse(ctrl.text) / 1000).toInt()} BZA"}",
+                "${(ctrl.text == "") ? 0 : numberFormat.format(int.parse(ctrl.text) * 1000)} RP",
                 style: TextStyle(fontSize: 12, color: Color(0xff888888)),
               ),
               alignment: Alignment.centerRight,
@@ -211,12 +211,13 @@ class _RPExchangeState extends State<RPExchange> {
             return;
           }
 
-          if(int.parse(ctrl.text) < 1000){
-            showToast("1000RP 이상 환전 가능합니다.");
+          if(ctrl.text == "" || ctrl.text == "0"){
+            showToast("수량을 입력해주세요.");
             return;
           }
+
           Map<String, String> data = {
-            "quantity":ctrl.text.toString()
+            "quantity": (int.parse(ctrl.text) * 1000).toString()
           };
           await Provider.of<UserProvider>(context, listen: false).exchangeRp(data);
 
@@ -228,6 +229,7 @@ class _RPExchangeState extends State<RPExchange> {
           };
 
           await Provider.of<UserProvider>(context, listen:false).getAccountsHistory("RP", 0);
+          await Provider.of<UserProvider>(context, listen: false).fetchAccounts();
           Navigator.of(context).pop();
         },
       ),

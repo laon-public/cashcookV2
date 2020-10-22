@@ -187,7 +187,7 @@ class _IntegratedPoint extends State<IntegratedPoint> {
                                           color: Color(0xff888888),
                                         )),
                                     whiteSpaceH(5),
-                                    Text("${numberFormat.format(pm.dl)} 개",
+                                    Text("${numberFormat.format(pm.franAmount)} 개",
                                         style: TextStyle(
                                             fontSize: 12,
                                             color: mainColor,

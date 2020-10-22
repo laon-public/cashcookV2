@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cashcook/src/model/usercheck.dart';
+import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/colors.dart';
@@ -19,7 +20,8 @@ class QrCheck extends StatefulWidget {
 }
 
 class _QrCheck extends State<QrCheck> {
-  firstView() {
+  firstView() async {
+    await Provider.of<StoreProvider>(context, listen: false).clearMap();
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
   }
@@ -72,51 +74,51 @@ class _QrCheck extends State<QrCheck> {
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom - appBar.preferredSize.height,
           color: white,
-          padding: EdgeInsets.only(left: 16, right: 16),
+          padding: EdgeInsets.only(top: 50,left: 16, right: 16),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height / 1.5,
-                child:
-                  Stack(
-                    children: [
-                      Positioned(
-                        top: 50,
-                        child: Container(
-                          padding: EdgeInsets.all(70),
-                          child: QrImage(
-                            data: widget.uuid,
-                            version: QrVersions.auto,
-                            size: 160.0,
-                          ),
-                          decoration: BoxDecoration(
-                              color: white,
-                              border: Border.all(color: mainColor, width: 10),
-                              shape: BoxShape.circle
-                          ),
-                        )
-                      ),
-                      Positioned(
-                          bottom: 80,
-                          right: 20,
-                          child: CachedNetworkImage(
-                            imageUrl: user.storeModel.store.shop_img1,
-                            imageBuilder: (context, img) => Container(
-                              width: 64,
-                              height: 64,
+                  width: 315,
+                  height: 315,
+                  child:
+                    Stack(
+                      children: [
+                        Positioned.fill(
+                            child: Container(
+                              padding: EdgeInsets.all(60),
+                              child: QrImage(
+                                data: widget.uuid,
+                                version: QrVersions.auto,
+                                size: 160.0,
+                              ),
                               decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  image: img, fit: BoxFit.fill
+                                  color: white,
+                                  border: Border.all(color: mainColor, width: 10),
+                                  shape: BoxShape.circle
+                              ),
+                            )
+                        ),
+                        Positioned(
+                            bottom: 0,
+                            right: 30,
+                            child: CachedNetworkImage(
+                              imageUrl: user.storeModel.store.shop_img1,
+                              imageBuilder: (context, img) => Container(
+                                width: 64,
+                                height: 64,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    image: img, fit: BoxFit.fill
+                                  )
                                 )
-                              )
-                            ),
-                          )
-                      )
-                    ]
-                  )
-
+                              ),
+                            )
+                        )
+                      ]
+                    )
               ),
               Expanded(
                 child: Container(),

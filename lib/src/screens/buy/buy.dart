@@ -20,9 +20,10 @@ class Buy extends StatefulWidget {
   String id;
   int quantity;
   String paymentType;
+  int dl;
 
   Buy({this.name, this.pay, this.id, this.quantity,
-      this.paymentType}); //  Buy({this.name, this.pay});
+      this.paymentType, this.dl}); //  Buy({this.name, this.pay});
 
 
   @override
@@ -121,7 +122,7 @@ class _Buy extends State<Buy> {
 
           if(widget.paymentType.contains("ORDER")) {
             bool response =
-            await Provider.of<StoreServiceProvider>(context, listen: false).orderMenu(int.parse(widget.id), widget.pay, widget.paymentType);
+            await Provider.of<StoreServiceProvider>(context, listen: false).orderMenu(int.parse(widget.id), widget.pay, widget.paymentType, widget.dl);
 
             if (!response) {
               Fluttertoast.showToast(msg: "에러");

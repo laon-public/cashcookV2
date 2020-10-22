@@ -48,6 +48,14 @@ class CenterService{
        });
    return utf8.decode(response.bodyBytes);
  }
+
+ Future<String> getAppInfo() async {
+   final response = await client.get(cookURL+"/policy/appinfo",
+       headers: {
+         "Authorization": "BEARER ${dataStorage.token}"
+       });
+   return utf8.decode(response.bodyBytes);
+ }
 }
 
 final centerService = CenterService();

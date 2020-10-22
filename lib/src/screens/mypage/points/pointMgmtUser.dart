@@ -360,12 +360,6 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
               if(pm.pumList.length == 0) {
                 return SizedBox();
               }
-              return Center(
-                  child: CircularProgressIndicator(
-                      backgroundColor: mainColor,
-                      valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
-                  )
-              );
             },
             physics: AlwaysScrollableScrollPhysics(),
             itemCount: pm.pumList.length + 1,

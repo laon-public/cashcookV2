@@ -37,7 +37,8 @@ class _StoreApplyThirdStepState extends State<StoreApplyThirdStep> {
         TextStyle(
             color: black,
             fontSize: 14,
-            fontFamily: 'noto'
+            fontFamily: 'noto',
+            fontWeight: FontWeight.w600,
         )),
         centerTitle: true,
         elevation: 0.5,
@@ -108,10 +109,12 @@ class _StoreApplyThirdStepState extends State<StoreApplyThirdStep> {
               child:
               RaisedButton(
                 color: mainColor,
-                onPressed: () {
-                  Provider.of<StoreProvider>(context, listen: false).bak_menu();
+                onPressed: () async {
+                  bool result = await Provider.of<StoreProvider>(context, listen: false).bak_menu();
 
-                  Navigator.of(context).pushNamed("/store/apply4");
+                  if(result) {
+                    Navigator.of(context).pushNamed("/store/apply4");
+                  }
                 },
                 child: Text(
                     "다음",

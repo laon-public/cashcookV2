@@ -115,6 +115,7 @@ class _FindAddressState extends State<FindAddress> {
           color: black,
           fontSize: 14,
           fontFamily: 'noto',
+          fontWeight: FontWeight.w600
         )),
         centerTitle: true,
         elevation: 0.5,

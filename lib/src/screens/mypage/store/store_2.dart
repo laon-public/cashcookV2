@@ -102,7 +102,8 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
           TextStyle(
             color: black,
             fontSize: 14,
-            fontFamily: 'noto'
+            fontFamily: 'noto',
+            fontWeight: FontWeight.w600,
           )),
         centerTitle: true,
         elevation: 0.5,
@@ -390,7 +391,6 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
             height: 40,
             child: RaisedButton(
               onPressed: () async {
-//          List<double> latlon =await AddressToCoordinates(addressCtrl.text);
                 Map<String, String> data = {
                   "company_name": company_name,
                   "business_number": license_number,

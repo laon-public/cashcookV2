@@ -24,6 +24,7 @@ class PointMgmtProvider with ChangeNotifier {
   int pay = 0;
   int dl = 0;
   int rp = 0;
+  int franAmount = 0;
 
 
   void startLoading() {
@@ -244,6 +245,7 @@ class PointMgmtProvider with ChangeNotifier {
     adp = 0;
     rp = 0;
     dl = 0;
+    franAmount = 0;
     startLoading();
 
     print("fetchMgmtOther");
@@ -255,6 +257,7 @@ class PointMgmtProvider with ChangeNotifier {
     adp = json['data']['ADP'];
     rp = json['data']['RP'];
     dl = json['data']['DL'];
+    franAmount = json['data']['franAmount'];
 
     String date = "";
     Map<String, dynamic> obj = {};

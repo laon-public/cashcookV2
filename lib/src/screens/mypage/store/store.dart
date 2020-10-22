@@ -45,6 +45,7 @@ class _StoreApplyFirstStep extends State<StoreApplyFirstStep> {
             fontSize: 14,
             fontFamily: 'noto',
             color: black,
+            fontWeight: FontWeight.w600,
           )),
         centerTitle: true,
         elevation: 0.0,

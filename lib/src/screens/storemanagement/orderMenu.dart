@@ -1,5 +1,6 @@
 import 'package:cashcook/src/model/store/menu.dart';
 import 'package:cashcook/src/model/usercheck.dart';
+import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/buy/buy.dart';
@@ -38,6 +39,7 @@ class _OrderMenu extends State<OrderMenu> {
   }
   @override
   Widget build(BuildContext context) {
+    Map<String, dynamic> pointMap =  Provider.of<UserProvider>(context, listen: false).pointMap;
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
@@ -118,13 +120,25 @@ class _OrderMenu extends State<OrderMenu> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   whiteSpaceH(8),
-                  Text("BZA 결제",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'noto',
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600
-                      )),
+                  Row(
+                    children: [
+                      Text("BZA 결제",
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'noto',
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600
+                          )),
+                      whiteSpaceW(10),
+                      Text("${demicalFormat.format(pointMap['DL'])} BZA 보유",
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontFamily: 'noto',
+                              color: mainColor,
+                              fontWeight: FontWeight.w600
+                          )),
+                    ],
+                  ),
                   whiteSpaceH(16),
                   Consumer<StoreServiceProvider>(
                     builder: (context, ssp, _){
@@ -180,25 +194,70 @@ class _OrderMenu extends State<OrderMenu> {
                                     child: Row(
                                         children: [
                                           Expanded(
-                                            child:Text(
-                                                "BZA 결제 수량",
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontFamily: 'noto',
-                                                    color: Color(0xFF444444)
-                                                )
-                                            ),
+                                            flex: 3,
+                                            child:
+                                            Row(
+                                                  children: [
+                                                    Text(
+                                                        "BZA 결제 수량",
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            fontFamily: 'noto',
+                                                            color: Color(0xFF444444)
+                                                        )
+                                                    ),
+                                                    whiteSpaceW(5.0),
+                                                    RaisedButton(
+                                                      color: white,
+                                                      onPressed: () {
+                                                        showBZADialog();
+                                                      },
+                                                      child: Text(
+                                                        "BZA 사용",
+                                                        style: TextStyle(
+                                                          color: Color(0xFF444444),
+                                                          fontSize: 12,
+                                                          fontFamily: 'noto',
+                                                        ),
+                                                      ),
+                                                      elevation: 0.0,
+                                                      shape: Border.all(
+                                                        color: Color(0xFFDDDDDD)
+                                                      ),
+                                                    )
+                                                  ]
+                                              ),
                                           ),
                                           Expanded(
-                                            child:Text(
-                                              "${numberFormat.format(ssp.orderPay)}원",
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontFamily: 'noto',
-                                                  color: Color(0xFF444444)
-                                              ),
-                                              textAlign: TextAlign.end,
-                                            ),
+                                            flex: 2,
+                                            child:
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                      "${numberFormat.format(int.parse(ssp.bzaCtrl.text))}BZA",
+                                                      style: TextStyle(
+                                                          color: mainColor,
+                                                          fontSize: 12,
+                                                          fontFamily: 'noto',
+                                                          fontWeight: FontWeight.w600
+                                                      ),
+
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Text(
+                                                    "-${numberFormat.format(int.parse(ssp.bzaCtrl.text) * 100)}원",
+                                                    style: TextStyle(
+                                                        fontSize: 12,
+                                                        fontFamily: 'noto',
+                                                        color: Color(0xFF444444)
+                                                    ),
+                                                    textAlign: TextAlign.end,
+                                                  ),
+                                                ),
+                                              ],
+                                            )
                                           ),
                                         ]
                                     )
@@ -233,7 +292,7 @@ class _OrderMenu extends State<OrderMenu> {
                               ),
                               Expanded(
                                   child: Text(
-                                    "${numberFormat.format(ss.orderPay)}원",
+                                    "${numberFormat.format(ss.orderPay - (int.parse(ss.bzaCtrl.text) * 100))}원",
                                     style: TextStyle(
                                         fontFamily: 'noto',
                                         fontSize: 18,
@@ -251,46 +310,77 @@ class _OrderMenu extends State<OrderMenu> {
               ),
               whiteSpaceH(50),
               // 결제 방식 위젯
-              Row(
-                  children: [
-                    Expanded(
-                        child: Text(
-                          "결제 방식",
-                          style: TextStyle(
-                              fontFamily: 'noto',
-                              fontSize: 14,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600
-                          ),
-                          textAlign: TextAlign.start,
-                        )
-                    ),
-                  ]
+              Consumer<StoreServiceProvider>(
+                builder: (context, ssp, _) {
+                  return Row(
+                      children: [
+                        Expanded(
+                            child: Text(
+                              (ssp.orderPay > (int.parse(ssp.bzaCtrl.text) * 100)) ? "결제 방식"
+                              :
+                              "BZA 결제가 진행됩니다.",
+                              style: TextStyle(
+                                  fontFamily: 'noto',
+                                  fontSize: (ssp.orderPay > (int.parse(ssp.bzaCtrl.text) * 100)) ? 14 : 16,
+                                  color: (ssp.orderPay > (int.parse(ssp.bzaCtrl.text) * 100)) ? Colors.black : mainColor,
+                                  fontWeight: FontWeight.w600
+                              ),
+                              textAlign: (ssp.orderPay > (int.parse(ssp.bzaCtrl.text) * 100)) ? TextAlign.start : TextAlign.center,
+                            )
+                        ),
+                      ]
+                  );
+                },
               ),
               whiteSpaceH(20),
-              Row(
-                children: [
-                  Expanded(
-                    child: method("신용카드", 0),
-                  ),
-                  Expanded(
-                    child: method("무통장입금", 1),
-                  ),
-                  Expanded(
-                    child: method("BZA결제", 2),
-                  ),
-                ],
-              ),
-              whiteSpaceH(25),
-              (currentMethod == 2) ?
-                  Column(
+              Consumer<StoreServiceProvider>(
+                builder: (context, ssp, _){
+                  return (ssp.orderPay > (int.parse(ssp.bzaCtrl.text) * 100)) ?
+                  Row(
                     children: [
-                      accountDL(),
-                      whiteSpaceH(50),
-                    ]
+                      Expanded(
+                        child: method("신용카드", 0),
+                      ),
+                      Expanded(
+                        child: method("무통장입금", 1),
+                      ),
+                    ],
                   )
                   :
-                  whiteSpaceH(50),
+                  Container();
+                },
+              ),
+              currentMethod == 1 ?
+              Column(
+                children: [
+                  whiteSpaceH(15),
+                  DropdownButton(
+                    isExpanded: true,
+                    icon: Icon(Icons.arrow_drop_down, color: mainColor,),
+                    iconSize: 24,
+                    elevation: 16,
+                    underline: Container(
+                      height: 2,
+                      color: Color(0xFFDDDDDD),
+                    ),
+                    value: "${Provider.of<StoreProvider>(context, listen: false).selStore.bank.bank} / "
+                        + "${Provider.of<StoreProvider>(context, listen: false).selStore.store.name} / "
+                        + "${Provider.of<StoreProvider>(context, listen: false).selStore.bank.number}" ,
+                    items: ["${Provider.of<StoreProvider>(context, listen: false).selStore.bank.bank} / "
+                        + "${Provider.of<StoreProvider>(context, listen: false).selStore.store.name} / "
+                        + "${Provider.of<StoreProvider>(context, listen: false).selStore.bank.number}"].map((value) {
+                      return DropdownMenuItem(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }
+                    ).toList(),
+                    onChanged: (value){
+                    },
+                  ),
+                ],
+              ) : Container(),
+              whiteSpaceH(75),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -322,21 +412,26 @@ class _OrderMenu extends State<OrderMenu> {
                           color: mainColor,
                           onPressed: () async {
                             if(isAgreeCheck){
-                              if(currentMethod == 0){
+                              if((int.parse(ss.bzaCtrl.text) * 100) == ss.orderPay || currentMethod == 1){
+                                await ss.orderMenu(
+                                    int.parse(widget.store_id),
+                                    ss.orderPay - (int.parse(ss.bzaCtrl.text) * 100),
+                                    paymentType[currentMethod],
+                                    (int.parse(ss.bzaCtrl.text))
+                                );
+                              } else {
                                 await Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) =>
                                         Buy(
-                                          name: widget.name,
-                                          pay: ss.orderPay,
-                                          id: widget.store_id,
-                                          paymentType: paymentType[currentMethod],
+                                            name: widget.name,
+                                            pay: ss.orderPay - (int.parse(ss.bzaCtrl.text) * 100),
+                                            id: widget.store_id,
+                                            paymentType: paymentType[currentMethod],
+                                            dl: (int.parse(ss.bzaCtrl.text))
                                         )));
-                              } else if( currentMethod == 1){
-                                await ss.orderMenu(int.parse(widget.store_id), ss.orderPay, paymentType[currentMethod]);
-                              } else if( currentMethod == 2){
-                                await ss.orderMenu(int.parse(widget.store_id), (ss.orderPay / 100).round(), paymentType[currentMethod]);
                               }
 
+                              showToast("결제에 성공하셨습니다.");
                               Navigator.of(context).pop();
                             } else {
                               showToast("개인정보 이용동의를 해주셔야 합니다.");
@@ -612,5 +707,158 @@ class _OrderMenu extends State<OrderMenu> {
         ),
       ),
     );
+  }
+
+  showBZADialog() {
+    Map<String, dynamic> pointMap =  Provider.of<UserProvider>(context, listen: false).pointMap;
+
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20)),
+            title: Text("BZA 사용",
+              style: TextStyle(
+                color: Color(0xFF444444),
+                fontSize: 14,
+                fontFamily: 'noto',
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            content:
+              Container(
+                width: 240,
+                height: 180,
+                child: Column(
+                  children: [
+                    Text(
+                        "캐시푸드 주문 금액 29,000 중\n"
+                            + "BZA로 결제할 수량을 입력하세요.",
+                      style: TextStyle(
+                        color: Color(0xFF444444),
+                        fontSize: 12,
+                        fontFamily: 'noto'
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    Consumer<StoreServiceProvider>(
+                      builder: (context, ssp, _) {
+                        return Container(
+                          margin: EdgeInsets.only(top: 25.0, bottom: 20.0),
+                          width: 192,
+                          height: 32,
+                          child:
+                          TextFormField(
+                            cursorColor: Color(0xff000000),
+                            controller: ssp.bzaCtrl,
+                            keyboardType: TextInputType.number,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Color(0xFF444444),
+                                fontSize: 14,
+                                fontFamily: 'noto'
+                            ),
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.zero,
+                              floatingLabelBehavior: FloatingLabelBehavior.always,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(0.0)),
+                                  borderSide: BorderSide(
+                                      color: Color(0xFFDDDDDD)
+                                  )
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(0.0)),
+                                  borderSide: BorderSide(
+                                      color: mainColor
+                                  )
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    Consumer<StoreServiceProvider>(
+                      builder: (context, ssp, _) {
+                        return Center(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ClipOval(
+                                  child:Container(
+                                    width: 64,
+                                    height: 64,
+                                    decoration: BoxDecoration(
+                                      color:Color(0xFF888888),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                        child: Material(
+                                          color: Colors.transparent,
+                                          child: InkWell(
+                                            onTap: () {
+                                              ssp.clearBzaCtrl();
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text("취소",
+                                                style:TextStyle(
+                                                    color: Color(0xFFFFFFFF),
+                                                    fontSize: 12,
+                                                    fontFamily: 'noto'
+                                                )
+                                            ),
+                                          ),
+                                        )
+                                    ),
+                                  )
+                              ),
+                              whiteSpaceW(20.0),
+
+                              ClipOval(
+                                  child:Container(
+                                    width: 64,
+                                    height: 64,
+                                    decoration: BoxDecoration(
+                                      color:mainColor,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                        child: Material(
+                                          color: Colors.transparent,
+                                          child: InkWell(
+                                            onTap: () {
+                                              if(pointMap['DL'] < int.parse(ssp.bzaCtrl.text)){
+                                                showToast("보유 BZA보다 많습니다.");
+                                              } else if((int.parse(ssp.bzaCtrl.text) * 100) > ssp.orderPay) {
+                                                showToast("결제금액 보다 많습니다.");
+                                              } else {
+                                                Navigator.pop(context);
+                                              }
+                                            },
+                                            child: Text("확인",
+                                                style:TextStyle(
+                                                    color: Color(0xFFFFFFFF),
+                                                    fontSize: 12,
+                                                    fontFamily: 'noto'
+                                                )
+                                            ),
+                                          ),
+                                        )
+                                    ),
+                                  )
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    )
+                  ],
+                ),
+              ),
+          );
+        });
   }
 }

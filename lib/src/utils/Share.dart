@@ -11,3 +11,30 @@ void onKakaoShare() async {
     print(e.toString());
   }
 }
+
+void onKakaoStoreShare(String title, String imageUrl, String description) async {
+  KakaoContext.clientId = "9ff1d1f9d55b10b172ed6c2ec06f63bd";
+  List<Button> buttonList = [Button("캐시쿡에서 확인해보세요!", Link(
+    mobileWebUrl: Uri.parse("https://play.google.com/store/apps/details?id=com.hozo.cashcook.cashcook"),
+    webUrl: Uri.parse("https://play.google.com/store/apps/details?id=com.hozo.cashcook.cashcook")
+  ))];
+  try{
+    var temp = FeedTemplate(
+        Content(
+            "$title\n" +
+            "$description",
+            Uri.parse(imageUrl),
+            Link(
+              mobileWebUrl: Uri.parse("https://play.google.com/store/apps/details?id=com.hozo.cashcook.cashcook"),
+              webUrl: Uri.parse("https://play.google.com/store/apps/details?id=com.hozo.cashcook.cashcook")
+            )
+        ),
+        buttons: buttonList
+    );
+
+    var uri = await LinkClient.instance.defaultWithWeb(temp);
+    await launchBrowserTab(uri);
+  } catch(e) {
+    print(e.toString());
+  }
+}

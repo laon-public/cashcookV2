@@ -70,7 +70,7 @@ class _FranBizSelect extends State<FranBizSelect> {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom - appBar.preferredSize.height,
               child: Padding(
-                padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                padding: EdgeInsets.only(top: 10.0,left: 16, right: 16, bottom: 16),
                 child:
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,7 +90,7 @@ class _FranBizSelect extends State<FranBizSelect> {
                           whiteSpaceW(12),
                           Container(
                             child: Image.asset(
-                              "assets/resource/public/payment.png",
+                              "assets/icon/left_payment.png",
                               width: 48,
                               height: 48,
                             ),
@@ -173,6 +173,16 @@ class _FranBizSelect extends State<FranBizSelect> {
                       height: 40,
                       child: RaisedButton(
                         onPressed: () async {
+                          if(user.disSelected == "총판"){
+                            showToast("총판을 선택해주세요.");
+                            return;
+                          }
+
+                          if(user.ageSelected == "대리점"){
+                            showToast("대리점을 선택해주세요.");
+                            return;
+                          }
+
                           await Provider.of<UserProvider>(context, listen: false).insertDisAge();
 
                           Navigator.of(context).push(MaterialPageRoute(

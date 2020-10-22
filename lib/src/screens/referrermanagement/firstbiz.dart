@@ -58,6 +58,7 @@ class _FirstBiz extends State<FirstBiz> {
                           fontSize: 16,
                           fontWeight: FontWeight.w300),
                     )
+
                 ),
               ),
 

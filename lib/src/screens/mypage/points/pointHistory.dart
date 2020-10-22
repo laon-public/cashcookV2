@@ -163,7 +163,7 @@ class History extends StatelessWidget {
 
 
             },
-            child: Text("환전하기", style: TextStyle(fontSize: 14),),
+            child: Text("BZA 구매", style: TextStyle(fontSize: 14),),
             padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -229,7 +229,13 @@ class History extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.only(bottom: 12.0),
-          child: Text(data['date']),
+          child: Text(data['date'],
+            style: TextStyle(
+              color: Color(0xFF888888),
+              fontSize: 12,
+              fontFamily: 'noto'
+            )
+          ),
         ),
         Column(
           children: histories.map((e) {
@@ -237,30 +243,60 @@ class History extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 17.0),
               child: Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 13.0),
-                    child: Image.asset(
-                      pointImg, width: 48, fit: BoxFit.contain,),
-                  ),
-                  RichText(
-                    text: TextSpan(
-                        style: TextStyle(fontSize: 12, color: Color(
-                            0xff888888)),
-                        children: [
-                          TextSpan(text: "${e['title']}  ",
-                              style: TextStyle(fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xff444444))),
-                          TextSpan(text: "${e['time']}\n"),
-                          TextSpan(text: e['type']),
-                        ]
+                  Expanded(
+                    flex: 1,
+                    child : Padding(
+                      padding: const EdgeInsets.only(right: 13.0),
+                      child: Image.asset(
+                        pointImg, width: 48, fit: BoxFit.contain,),
                     ),
                   ),
-                  Spacer(),
-                  Text("${e['price']} ${point == "DL" ? "BZA" : point}", style: TextStyle(fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: e['type'] == "충전" ? mainColor : Color(
-                          0xff888888)),),
+                  Expanded(
+                    flex: 3,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex:2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("${e['title']}  ",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xff444444))),
+                              Text(e['type'],
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(fontSize: 12,
+                                      color: Color(0xff888888))),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                           crossAxisAlignment: CrossAxisAlignment.start,
+                           children: [
+                             Text("${e['time']}\n",
+                               overflow: TextOverflow.ellipsis,
+                               style: TextStyle(fontSize: 12,
+                                   color: Color(0xff888888)),
+                               textAlign: TextAlign.start,),
+                           ],
+                          )
+                        )
+                      ]
+                    )
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Text("${e['price']} ${point == "DL" ? "BZA" : point}", style: TextStyle(fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: e['type'] == "충전" ? mainColor : Color(
+                            0xff888888)),
+                        textAlign: TextAlign.end,),
+                  )
                 ],
               ),
             );

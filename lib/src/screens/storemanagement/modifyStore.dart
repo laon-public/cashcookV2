@@ -130,6 +130,11 @@ class _ModifyStoreState extends State<ModifyStore> {
                       color: mainColor,
                       onPressed: () async {
                         await Provider.of<StoreProvider>(context, listen: false).patchMenu();
+
+                        await Provider.of<StoreProvider>(context, listen: false).clearMap();
+
+
+                        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
                       },
                       child: Text(
                           "메뉴 수정",
@@ -648,66 +653,74 @@ class _ModifyStoreState extends State<ModifyStore> {
     return Container(
       width: double.infinity,
       height: 40,
-      child: RaisedButton(
-        onPressed: () async {
-          StoreModel store = Provider.of<UserProvider>(context,listen: false).storeModel;
+      child:
+      Consumer<StoreServiceProvider>(
+        builder: (context, ssp, _) {
+          return RaisedButton(
+            onPressed: () async {
+              StoreModel store = Provider.of<UserProvider>(context,listen: false).storeModel;
 
-          Map<String, String> data = {};
-          if(nameCtrl.text.length < 1) Fluttertoast.showToast(msg: "매장명을 입력해주세요.");
-          if(descCtrl.text.length < 1) Fluttertoast.showToast(msg: "매장설명을 입력해주세요.");
-          if(storeTimeCtrl.text.length < 1) Fluttertoast.showToast(msg: "매장영업시간을 입력해주세요.");
-          if(addressCtrl.text.length < 1) Fluttertoast.showToast(msg: "매장주소를 입력해주세요.");
-          if(detailCtrl.text.length < 1) Fluttertoast.showToast(msg: "매장상세주소를 입력해주세요.");
+              Map<String, String> data = {};
+              if(nameCtrl.text.length < 1) Fluttertoast.showToast(msg: "매장명을 입력해주세요.");
+              if(descCtrl.text.length < 1) Fluttertoast.showToast(msg: "매장설명을 입력해주세요.");
+              if(storeTimeCtrl.text.length < 1) Fluttertoast.showToast(msg: "매장영업시간을 입력해주세요.");
+              if(addressCtrl.text.length < 1) Fluttertoast.showToast(msg: "매장주소를 입력해주세요.");
+              if(detailCtrl.text.length < 1) Fluttertoast.showToast(msg: "매장상세주소를 입력해주세요.");
 
-          if(store.store.name != nameCtrl.text) data["shop_name"] = nameCtrl.text;
-          if(store.store.short_description != descSrtCtrl.text) data["shop_srt_description"] = descSrtCtrl.text;
-          if(store.store.description != descCtrl.text) data["shop_description"] = descCtrl.text;
-          if(store.store.store_time != storeTimeCtrl.text) data["store_time"] = storeTimeCtrl.text;
-          if(store.store.tel != telCtrl1.text + telCtrl2.text + telCtrl3.text) data["shop_tel"] = telCtrl1.text + telCtrl2.text + telCtrl3.text;
-          if(store.address.address != addressCtrl.text) {
-            data["address"] = addressCtrl.text;
-            data["latitude"] = lat.toString();
-            data["longitude"] = lon.toString();
-          }
-          if(store.address.detail != detailCtrl.text) data["address_detail"] = detailCtrl.text;
+              if(store.store.name != nameCtrl.text) data["shop_name"] = nameCtrl.text;
+              if(store.store.short_description != descSrtCtrl.text) data["shop_srt_description"] = descSrtCtrl.text;
+              if(store.store.description != descCtrl.text) data["shop_description"] = descCtrl.text;
+              if(store.store.store_time != storeTimeCtrl.text) data["store_time"] = storeTimeCtrl.text;
+              if(store.store.tel != telCtrl1.text + telCtrl2.text + telCtrl3.text) data["shop_tel"] = telCtrl1.text + telCtrl2.text + telCtrl3.text;
+              if(store.address.address != addressCtrl.text) {
+                data["address"] = addressCtrl.text;
+                data["latitude"] = lat.toString();
+                data["longitude"] = lon.toString();
+              }
+              if(store.address.detail != detailCtrl.text) data["address_detail"] = detailCtrl.text;
 
-          if(store.store.comment != commentCtrl.text) data["comment"] = commentCtrl.text;
-          if(
-            store.store.category_code !=
-              Provider.of<StoreServiceProvider>(context, listen: false).selectCat_code
-          )
-            data["category_code"] = Provider.of<StoreServiceProvider>(context, listen: false).selectCat_code;
-          if(
-            store.store.category_sub_code !=
-                Provider.of<StoreServiceProvider>(context, listen: false).selectSubCat_code
-          )
-            data["category_sub_code"] = Provider.of<StoreServiceProvider>(context, listen: false).selectSubCat_code;
+              if(store.store.comment != commentCtrl.text) data["comment"] = commentCtrl.text;
+              if(
+              ssp.selectCat_code != null &&
+              store.store.category_code !=
+                  ssp.selectCat_code
+              )
+                data["category_code"] = ssp.selectCat_code;
+              if(
+              ssp.selectSubCat_code != null &&
+              store.store.category_sub_code !=
+                  ssp.selectSubCat_code
+              )
+                data["category_sub_code"] = ssp.selectSubCat_code;
 
-          if( telCtrl1.text.length < 3 || telCtrl2.text.length < 4 ||  telCtrl3.text.length < 4 ){
-            Fluttertoast.showToast(msg: "전화 번호의 자릿수가 부족 합니다.");
-          }else{
+              if( telCtrl1.text.length < 3 || telCtrl2.text.length < 4 ||  telCtrl3.text.length < 4 ){
+                Fluttertoast.showToast(msg: "전화 번호의 자릿수가 부족 합니다.");
+              }else{
 
-            bool isReturn = await Provider.of<StoreProvider>(context,listen: false).patchStore(data, "", shop1_uri, shop2_uri, shop3_uri);
+                bool isReturn = await Provider.of<StoreProvider>(context,listen: false).patchStore(data, "", shop1_uri, shop2_uri, shop3_uri);
 
-            if(isReturn){
-              Fluttertoast.showToast(msg: "가맹점 수정이 성공하였습니다.");
-              DefaultCacheManager cacheManager = new DefaultCacheManager();
-              await Provider.of<StoreProvider>(context, listen: false).clearMap();
-              await Provider.of<StoreProvider>(context, listen: false).hideDetailView();
-              await Provider.of<UserProvider>(context, listen: false).fetchMyInfo(context);
-              cacheManager.emptyCache();
-            }else {
-              Fluttertoast.showToast(msg: "가맹점 수정이 실패하였습니다.");
-            }
+                if(isReturn){
+                  Fluttertoast.showToast(msg: "가맹점 수정이 성공하였습니다.");
+                  DefaultCacheManager cacheManager = new DefaultCacheManager();
+                  cacheManager.emptyCache();
+                }else {
+                  Fluttertoast.showToast(msg: "가맹점 수정이 실패하였습니다.");
 
+                }
 
-            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
-          }
+                await Provider.of<StoreProvider>(context, listen: false).clearMap();
+                await Provider.of<StoreProvider>(context, listen: false).hideDetailView();
+                await Provider.of<UserProvider>(context, listen: false).fetchMyInfo(context);
 
+                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
+              }
+
+            },
+            child: Text("수정"),
+            textColor: Colors.white,
+            color: mainColor,
+          );
         },
-        child: Text("수정"),
-        textColor: Colors.white,
-        color: mainColor,
       ),
     );
   }

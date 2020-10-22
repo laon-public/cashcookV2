@@ -47,86 +47,100 @@ class _MyPageState extends State<MyPage> {
   Widget body(){
     UserCheck userCheck = Provider.of<UserProvider>(context,listen: false).loginUser;
 
-    return SingleChildScrollView(
-      child:Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                    height: 50,
-                      child: Row (
-                        mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                if(view != "My") {
-                                  setState(() {
-                                    view = "My";
-                                  });
-                                }
-                              },
-                              child: (view == "My") ?
-                              Text("마이", style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600, color: white),)
-                                  :
-                              Text("마이", style: TextStyle(fontSize: 16, color: white),),
-                            ),
-                            whiteSpaceW(20.0),
-                            InkWell(
-                              onTap: () {
-                                if(!userCheck.isFran)
-                                      _showDialog();
-                                else {
-                                  if(view != "Store"){
-                                    setState(() {
-                                      view = "Store";
-                                    });
-                                  }
-                                }
-                              },
-                              child: (view == "Store") ?
-                              Text("매장", style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600, color: white),)
-                                  :
-                              Text("매장", style: TextStyle(fontSize: 16, color: white),),
-                            ),
-                            whiteSpaceW(20.0),
-                            (userCheck.userGrade == "DISTRIBUTOR") ? InkWell(
-                              onTap: () {
-                                if(view != "Agecy"){
-                                  setState(() {
-                                    view = "Agecy";
-                                  });
-                                }
-                              },
-                              child: (view == "Agecy") ?
-                              Text("대리점", style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600, color: white),)
-                                  :
-                              Text("대리점", style: TextStyle(fontSize: 16, color: white),),
-                            ) : SizedBox()
-                          ]
-                      ),
-                    decoration: BoxDecoration(
-                        color: mainColor
-                    ),
-                  ),
-                  (view == "My") ? myPageForm()
-                    : (view == "Store") ? storeForm()
-                    : agencyForm(),
-                ],
-              ),
+    return
+      Scaffold(
+        appBar: AppBar(
+          backgroundColor: mainColor,
+          elevation: 0.0,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Image.asset(
+              "assets/resource/public/close.png",
+              width: 24,
+              height: 24,
             ),
-
+          ),
+          actions: [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+              child: Row(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      if(view != "My") {
+                        setState(() {
+                          view = "My";
+                        });
+                      }
+                    },
+                    child: (view == "My") ?
+                    Text("마이", style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600, color: white),)
+                        :
+                    Text("마이", style: TextStyle(fontSize: 16, color: white),),
+                  ),
+                  whiteSpaceW(20.0),
+                  InkWell(
+                    onTap: () {
+                      if(!userCheck.isFran)
+                        _showDialog();
+                      else {
+                        if(view != "Store"){
+                          setState(() {
+                            view = "Store";
+                          });
+                        }
+                      }
+                    },
+                    child: (view == "Store") ?
+                    Text("매장", style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600, color: white),)
+                        :
+                    Text("매장", style: TextStyle(fontSize: 16, color: white),),
+                  ),
+                  whiteSpaceW(20.0),
+                  (userCheck.userGrade == "DISTRIBUTOR" || userCheck.userGrade == "AGENCY") ? InkWell(
+                    onTap: () {
+                      if(view != "Agecy"){
+                        setState(() {
+                          view = "Agecy";
+                        });
+                      }
+                    },
+                    child: (view == "Agecy") ?
+                    Text("대리점", style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600, color: white),)
+                        :
+                    Text("대리점", style: TextStyle(fontSize: 16, color: white),),
+                  ) : SizedBox()
+                ],
+              )
+            )
           ],
         ),
-    );
+        body: SingleChildScrollView(
+          child:Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    (view == "My") ? myPageForm()
+                        : (view == "Store") ? storeForm()
+                        : agencyForm(),
+                  ],
+                ),
+              ),
+
+            ],
+          ),
+        ),
+      );
   }
 
   Widget myPageForm() {
@@ -381,7 +395,7 @@ class _MyPageState extends State<MyPage> {
                                       color: Color(0xff888888),
                                     )),
                                 whiteSpaceH(5),
-                                Text("${numberFormat.format(reco.ageAmount)} 개",
+                                Text("${user.userGrade == "DISTRIBUTOR" ? numberFormat.format(reco.ageAmount) : 0} 개",
                                     style: TextStyle(
                                         fontSize: 12,
                                         color: mainColor,
@@ -404,7 +418,7 @@ class _MyPageState extends State<MyPage> {
                                       color: Color(0xff888888),
                                     )),
                                 whiteSpaceH(5),
-                                Text("${numberFormat.format(reco.franAmount)}개",
+                                Text("${user.userGrade == "DISTRIBUTOR" ? numberFormat.format(reco.franAmount) : numberFormat.format(reco.ageAmount)}개",
                                     style: TextStyle(
                                         fontSize: 12,
                                         color: subYellow,
@@ -690,12 +704,6 @@ class _MyPageState extends State<MyPage> {
                       if (idx < pm.pbmList.length) {
                         return ReportItem(pm.pbmList[idx]);
                       }
-                      return Center(
-                          child: CircularProgressIndicator(
-                              backgroundColor: mainColor,
-                              valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
-                          )
-                      );
                     },
                     itemCount: pm.pbmList.length,
                     shrinkWrap: true,
@@ -952,8 +960,8 @@ class _MyPageState extends State<MyPage> {
             content: "고객의 결제방식을\n확인해주세요.",
             sub: "",
             context: context,
-            selectOneText: "일반결제",
-            selectTwoText: "DL결제",
+            selectOneText: "현장결제",
+            selectTwoText: "BZA결제",
             selectOneVoid: () => qrCreate(0),
             selectTwoVoid: () => qrCreate(1)
         );

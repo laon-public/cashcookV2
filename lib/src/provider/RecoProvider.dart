@@ -116,6 +116,7 @@ class RecoProvider with ChangeNotifier {
       for (var recoList in recoJson['data']['list']) {
         RecoModel tmp;
         tmp = RecoModel.fromJson(recoList);
+        if(loginUser.userGrade == "DISTRIBUTOR"){
           if (loginUser.username == tmp.parent.username) {
             gradeReferrer.add(Referrer(
                 name: tmp.child.username,
@@ -135,6 +136,17 @@ class RecoProvider with ChangeNotifier {
                     .split("T")
                     .first));
           }
+        } else {
+          gradeReferrer.add(Referrer(
+              name: tmp.child.username,
+              phone: tmp.child.phone,
+              type: 1,
+              byName: "me",
+              date: tmp.created_at
+                  .split("T")
+                  .first));
+        }
+
       }
       print(gradeReferrer);
     }

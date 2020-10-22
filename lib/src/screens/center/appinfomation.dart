@@ -1,33 +1,18 @@
-import 'package:cashcook/src/model/faq.dart';
 import 'package:cashcook/src/provider/CenterProvider.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:package_info/package_info.dart';
 import 'package:cashcook/src/utils/Share.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AppInfomation extends StatelessWidget {
-  ScrollController _scrollController = ScrollController();
-  int currentPage = 0;
-
-  loadMore(context) async {
-    CenterProvider center = Provider.of<CenterProvider>(context,listen: false);
-    if(!center.isLoading){
-      currentPage++;
-      if(center.pageing.offset >= center.pageing.count){
-        return;
-      }
-      center.startLoading();
-      center.fetchFaqData(currentPage);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<CenterProvider>(context,listen: false).fetchFaqData(currentPage);
-    _scrollController.addListener(() {
-      if(_scrollController.offset == _scrollController.position.maxScrollExtent)
-        loadMore(context);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      Provider.of<CenterProvider>(context, listen: false).getAppInfo();
     });
     return Scaffold(
       backgroundColor: white,
@@ -65,38 +50,81 @@ class AppInfomation extends StatelessWidget {
         ],
       ),
         body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,  //center,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(top: 150),
-                ),
-                Container(
-                  padding: EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(color: Color(0xFFDDDDDD))
-                  ),
-                  child:
-                  SizedBox(
-                    width: 64,
-                    height: 64,
-                    child: Image.asset('assets/icon/mini_logo.png', fit: BoxFit.cover,),
-                  ),
-                ),
-                whiteSpaceH(10.0),
-                Text('현재버전 : v1.1.1(TESTING)',
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: 'noto',
-
-                    )),
-                Text('최신버전을 사용 중입니다.',
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: 'noto'
-                    )),
-              ],
+            child:
+            Consumer<CenterProvider>(
+              builder: (context, cp, _){
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,  //center,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 150),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(10.0),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(color: Color(0xFFDDDDDD))
+                      ),
+                      child:
+                      SizedBox(
+                        width: 64,
+                        height: 64,
+                        child: Image.asset('assets/icon/mini_logo.png', fit: BoxFit.cover,),
+                      ),
+                    ),
+                    whiteSpaceH(20.0),
+                    Text('현재버전 : V.${cp.phoneVersion}',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'noto',
+                          color: Color(0xFF444444),
+                          fontWeight: FontWeight.w600,
+                        )),
+                    (cp.phoneVersion == cp.appVersion) ?
+                        Text("최신버전을 사용 중 입니다.",
+                          style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'noto'
+                          ))
+                        :
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('최신버전 : ',
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: 'noto',
+                                  color: Color(0xFF444444),
+                                  fontWeight: FontWeight.w600,
+                                )),
+                            Text("V.${cp.appVersion}",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'noto',
+                                color: mainColor,
+                                fontWeight: FontWeight.w600,
+                              ),)
+                          ],
+                        ),
+                    whiteSpaceH(20.0),
+                    (cp.phoneVersion != cp.appVersion) ?
+                          InkWell(
+                          onTap: (){
+                            launch(
+                                "https://play.google.com/store/apps/details?id=com.hozo.cashcook.cashcook"
+                            );
+                          },
+                          child: Text("업데이트",style:
+                          TextStyle(
+                          fontSize: 14,
+                          color: mainColor,
+                          fontFamily: 'noto',
+                          decoration: TextDecoration.underline),))
+                    :
+                      Container()
+                  ],
+                );
+              },
             )
         ));
   }

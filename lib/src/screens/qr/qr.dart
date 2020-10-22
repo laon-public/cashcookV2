@@ -77,6 +77,7 @@ class _Qr extends State<Qr> {
                   width: 280,
                   height: 280,
                   child: QRBarScannerCamera(
+
                     onError: (context, error) {
                       print(error.toString());
                       return Container();

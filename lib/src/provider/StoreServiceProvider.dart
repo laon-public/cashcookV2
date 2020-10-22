@@ -11,7 +11,7 @@ import 'package:flutter/cupertino.dart';
 
 class StoreServiceProvider with ChangeNotifier {
   int serviceNum = 0;
-  bool isLoading = true;
+  bool isLoading = false;
   bool isView = false;
 
   // categoryService
@@ -27,6 +27,8 @@ class StoreServiceProvider with ChangeNotifier {
   List<BigMenuModel> menuList = [];
   List<BigMenuModel> orderList = [];
   int orderPay = 0;
+  TextEditingController bzaCtrl = TextEditingController();
+  int pay = 0;
 
   // reviewService
   List<ReviewModel> reviewList = [];
@@ -35,11 +37,18 @@ class StoreServiceProvider with ChangeNotifier {
   // scrapService
   List<ScrapModel> scrapList = [];
 
+  void clearBzaCtrl() {
+    bzaCtrl.text = "0";
+    notifyListeners();
+  }
+
   void setOrderMenu(List<BigMenuModel> setMenus, int orderPay) {
     orderList.clear();
 
     orderList = setMenus;
     this.orderPay = orderPay;
+    this.pay = orderPay;
+    bzaCtrl.text = "0";
 
     notifyListeners();
   }
@@ -148,13 +157,13 @@ class StoreServiceProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> orderMenu(int store_user, int pay, String type) async {
+  Future<bool> orderMenu(int store_user, int pay, String type, int dl) async {
     print('=============');
     print(store_user);
     print(pay);
     print('=============');
     print(123);
-    final response = await service.orderPayment(pay, store_user, type);
+    final response = await service.orderPayment(pay, store_user, type, dl);
     print(response);
     if (isResponse(jsonDecode(response))) {
       return true;
@@ -221,6 +230,7 @@ class StoreServiceProvider with ChangeNotifier {
 
     selectCat = selCat[0].code_name;
     selectCat_code = selCat[0].code;
+    selectSubCat_code = subCatList[0].code;
     selectSubCat = subCatList[0].code_name;
 
     notifyListeners();
@@ -255,6 +265,7 @@ class StoreServiceProvider with ChangeNotifier {
       catList.add(CatModel.fromJson(_cat));
     }
 
+    selectCat_code = catList[0].code;
     selectCat = catList[0].code_name;
     response = await service.fetchSubCategory(code);
 
@@ -265,6 +276,7 @@ class StoreServiceProvider with ChangeNotifier {
       subCatList.add(SubCatModel.fromJson(_subCat));
     }
 
+    selectSubCat_code = subCatList[0].code;
     selectSubCat = subCatList[0].code_name;
 
     notifyListeners();
@@ -310,6 +322,8 @@ class StoreServiceProvider with ChangeNotifier {
     var response = await service.doScrap(store_id);
 
     print(response);
+
+    showToast(json.decode(response)['data']['msg']);
   }
 
   void readScrap() async {

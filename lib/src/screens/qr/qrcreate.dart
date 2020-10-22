@@ -44,7 +44,7 @@ class _QrCreate extends State<QrCreate> {
           ),
         ),
         title: Text(
-          widget.type == 0 ? "일반 결제" : "DL 결제",
+          widget.type == 0 ? "현장 결제" : "BZA 결제",
           style: TextStyle(
               fontFamily: 'noto',
               fontSize: 14,
@@ -67,6 +67,31 @@ class _QrCreate extends State<QrCreate> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               whiteSpaceH(40),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.only(top: 6, bottom: 30),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.type == 0
+                          ? "현장결제의 경우, 반드시\n결제를 완료한 이후 진행 바랍니다."
+                          : "DL결제의 경우, 반드시\n결제하기 이전에 진행 바랍니다.",
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                          fontFamily: 'noto', fontSize: 14, color: Color(0xFF222222)),
+                    ),
+                    whiteSpaceW(12),
+                    Container(
+                      child: Image.asset(
+                        "assets/resource/public/payment.png",
+                        width: 48,
+                        height: 48,
+                      ),
+                    )
+                  ],
+                ),
+              ),
               Text(
                 "결제금액",
                 style: TextStyle(
@@ -102,6 +127,7 @@ class _QrCreate extends State<QrCreate> {
                           }
                         },
                         cursorColor: mainColor,
+                        textAlign: TextAlign.end,
                         decoration: InputDecoration(
                             hintText: widget.type == 0 ? "결제 금액은 1000원 단위로 해주세요." : "결제 금액은 100원 단위로 해주세요.",
                             filled: true,
@@ -221,32 +247,6 @@ class _QrCreate extends State<QrCreate> {
                   : Container(),
               Expanded(
                 child: Container(),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 72,
-                padding: EdgeInsets.only(top: 12, bottom: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      widget.type == 0
-                          ? "현장결제의 경우, 반드시\n결제를 완료한 이후 진행 바랍니다."
-                          : "DL결제의 경우, 반드시\n결제하기 이전에 진행 바랍니다.",
-                      textAlign: TextAlign.end,
-                      style: TextStyle(
-                          fontFamily: 'noto', fontSize: 14, color: black),
-                    ),
-                    whiteSpaceW(12),
-                    Container(
-                      child: Image.asset(
-                        "assets/resource/public/payment.png",
-                        width: 48,
-                        height: 48,
-                      ),
-                    )
-                  ],
-                ),
               ),
               whiteSpaceH(24),
               Container(

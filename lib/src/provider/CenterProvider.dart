@@ -8,12 +8,15 @@ import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 import 'package:cashcook/src/services/Center.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:package_info/package_info.dart';
 
 class CenterProvider with ChangeNotifier{
   CenterService service = CenterService();
   List<FaqModel> faq = [];
   List<NoticeModel> notice = [];
   List<InquiryModel> inquiry = [];
+  String phoneVersion = "";
+  String appVersion = "";
   Pageing pageing = null;
 
   bool isLoading = false;
@@ -102,5 +105,17 @@ class CenterProvider with ChangeNotifier{
     notifyListeners();
   }
 
+  void getAppInfo() async {
+    final response = await service.getAppInfo();
+    print(response);
 
+    appVersion = json.decode(response)['data']['policy']['value'];
+
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+    phoneVersion = packageInfo.version;
+    print(phoneVersion);
+
+    notifyListeners();
+  }
 }

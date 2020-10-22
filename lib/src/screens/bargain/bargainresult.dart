@@ -1,4 +1,5 @@
 import 'package:cashcook/src/provider/QRProvider.dart';
+import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
@@ -160,7 +161,8 @@ class _BargainResult extends State<BargainResult> {
                   width: MediaQuery.of(context).size.width,
                   height: 40,
                   child: RaisedButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      await Provider.of<StoreProvider>(context,listen: false).hideDetailView();
                       Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(builder: (context) => MainMap()),
                               (route) => false);

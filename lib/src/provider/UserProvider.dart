@@ -214,7 +214,8 @@ class UserProvider with ChangeNotifier {
             obj["history"].add({
               "title": accountListModel.purpose,
               "type": (double.parse(accountListModel.amount) < 0) ? "차감" : "충전",
-              "time": accountListModel.created_at.split("T").last,
+              "time": accountListModel.created_at.split("T").last.split(":").first + ":"
+                + accountListModel.created_at.split("T").last.split(":")[1],
               "price": demicalFormat.format(double.parse(accountListModel.amount)),
             });
             print(obj);
@@ -223,7 +224,8 @@ class UserProvider with ChangeNotifier {
             obj["history"].add({
               "title": accountListModel.purpose,
               "type": accountListModel.amount.contains("-") ? "차감" : "충전",
-              "time": accountListModel.created_at.split("T").last,
+              "time": accountListModel.created_at.split("T").last.split(":").first + ":"
+                  + accountListModel.created_at.split("T").last.split(":")[1],
               "price": demicalFormat.format(double.parse(accountListModel.amount)),
             });
           }

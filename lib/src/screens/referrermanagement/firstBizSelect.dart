@@ -71,7 +71,7 @@ class _FirstBizSelect extends State<FirstBizSelect> {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom - appBar.preferredSize.height,
               child: Padding(
-                padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                padding: EdgeInsets.only(top: 10,left: 16, right: 16, bottom: 16),
                 child:
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,7 +86,7 @@ class _FirstBizSelect extends State<FirstBizSelect> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            "상위 총판을 선택해 주세요.",
+                            "현재 매장의\n상위총판을 선택해주세요.",
                             textAlign: TextAlign.start,
                             style: TextStyle(
                                 fontFamily: 'noto', fontSize: 16, color: Color(0xFF222222)),
@@ -94,7 +94,7 @@ class _FirstBizSelect extends State<FirstBizSelect> {
                           whiteSpaceW(12),
                           Container(
                             child: Image.asset(
-                              "assets/resource/public/payment.png",
+                              "assets/icon/left_payment.png",
                               width: 48,
                               height: 48,
                             ),
@@ -149,21 +149,35 @@ class _FirstBizSelect extends State<FirstBizSelect> {
                       height: 40,
                       child: RaisedButton(
                         onPressed: () async {
-                          await Provider.of<UserProvider>(context, listen: false).insertDis();
-                          await Provider.of<UserProvider>(context,listen: false).recognitionSelect().then((value) async =>
-                          {
-                            if(value == 0){
-                              showToast("추천자가 없습니다."),
-                              await Provider.of<UserProvider>(context, listen: false).withoutRecoAge(),
+                          if(user.disSelected == "총판") {
+                            showToast("총판을 선택해주세요.");
+                            return;
+                          } else {
+                            await Provider.of<UserProvider>(
+                                context, listen: false)
+                                .recognitionSelect()
+                                .then((value) async =>
+                            {
+                              if(value == 0){
+                                await Provider.of<UserProvider>(context, listen: false).insertDis(),
+                                showToast("추천자가 없습니다."),
+                                await Provider.of<UserProvider>(
+                                    context, listen: false).withoutRecoAge(),
 
-                              Navigator.of(context)
-                                  .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false),
-                            } else {
-                              Navigator.of(context)
-                                  .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => FirstRecommendation(type: "AGENCY")), (route) => false),
+                                Navigator.of(context)
+                                    .pushAndRemoveUntil(MaterialPageRoute(
+                                    builder: (context) => MainMap()), (
+                                    route) => false),
+                              } else
+                                {
+                                  Navigator.of(context)
+                                      .pushAndRemoveUntil(MaterialPageRoute(
+                                      builder: (context) => FirstRecommendation(
+                                          type: "AGENCY")), (route) => false),
+                                }
                             }
+                            );
                           }
-                          );
                         },
                         elevation: 0.0,
                         color: mainColor,

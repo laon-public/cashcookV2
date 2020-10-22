@@ -6,11 +6,12 @@ import 'package:http/http.dart' as http;
 class StoreService{
   http.Client client = new http.Client();
 
-  orderPayment(int pay, int store_user, String type)async{
+  orderPayment(int pay, int store_user, String type, int dl)async{
     Map<String, dynamic> data = {
       "pay":pay,
       "store_user": store_user,
       "type": type,
+      "dl" : dl
     };
     final response = await client.post(cookURL+"/payment/orderPay", body: json.encode(data), headers: {
       "Content-Type": "application/json",

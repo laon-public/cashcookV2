@@ -8,6 +8,7 @@ import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:kakao_flutter_sdk/all.dart';
 import 'package:provider/provider.dart';
 
 class ChargePoint extends StatefulWidget {
@@ -46,7 +47,14 @@ class _ChargePointState extends State<ChargePoint> {
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("포인트 충전"),
+        title: Text("포인트 충전",
+          style: TextStyle(
+            color: Color(0xFF444444),
+            fontSize: 14,
+            fontFamily: 'noto',
+            fontWeight: FontWeight.w600
+          )
+        ),
         centerTitle: true,
         elevation: 1.0,
       ),
@@ -109,7 +117,7 @@ class _ChargePointState extends State<ChargePoint> {
             height: 64,
             color: Colors.white,
               child :Image.asset(
-                pointImg,
+                "assets/icon/study_payment.png",
                 fit: BoxFit.contain,
                 width: 24,
               )
@@ -162,11 +170,7 @@ class _ChargePointState extends State<ChargePoint> {
                       setState(() {
                         pay = int.parse(value);
                         quantity = int.parse(value);
-                        if(pay >= 10000) {
-                          dlCtrl.text = (pay / 100).toInt().toString();
-                        } else {
-                          dlCtrl.text = "";
-                        }
+                        dlCtrl.text = (pay / 100).toInt().toString();
                       });
                   },
                 ),
@@ -177,7 +181,7 @@ class _ChargePointState extends State<ChargePoint> {
             padding: const EdgeInsets.only(top: 5.0),
             child: Align(
               child: Text(
-                (pay >= 10000) ? "= ${pay} 원": "500000ADP 이상 충전 가능합니다",
+                "= $pay 원",
                 style: TextStyle(fontSize: 12, color: Color(0xff888888)),
               ),
               alignment: Alignment.centerRight,
@@ -235,9 +239,33 @@ class _PaymentMethodState extends State<PaymentMethod> {
           ),
         ),
         payment_method(),
-        whiteSpaceH(16),
+        whiteSpaceH(20),
         methodView(dlCtrl,dlAccount),
-        whiteSpaceH(120),
+        whiteSpaceH(20),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("* 최소 충전금액은 500,000원 입니다.",
+              style: TextStyle(
+                color: Color(0xFF666666),
+                fontSize: 14,
+                fontFamily: 'noto'
+              ),
+              textAlign: TextAlign.start,
+            ),
+            currentMethod == 2 ?
+                Container() :
+            Text("* 현금/카드 결제 시 20%ADP가 추가지급됩니다.",
+              style: TextStyle(
+                color: Color(0xFF666666),
+                fontSize: 14,
+                fontFamily: 'noto'
+              ),
+              textAlign: TextAlign.start,
+            )
+            ],
+        ),
+        whiteSpaceH(60),
         agreePolicy(),
         whiteSpaceH(24),
         paymentBtn(),
@@ -262,11 +290,9 @@ class _PaymentMethodState extends State<PaymentMethod> {
         Expanded(
           child: method("무통장입금", 1),
         ),
-        widget.type == "RP"
-            ? SizedBox()
-            : Expanded(
-                child: method("DL결제", 2),
-              ),
+        Expanded(
+          child: method("BZA 결제", 2),
+        ),
       ],
     );
   }
@@ -348,12 +374,12 @@ class _PaymentMethodState extends State<PaymentMethod> {
         Row(
           children: [
             Text(
-              "보유 DL",
+              "보유 BZA",
               style: textstyle,
             ),
             whiteSpaceW(49),
             Text(
-              "${demicalFormat.format(dlAccount)} DL",
+              "${demicalFormat.format(dlAccount)} BZA",
               style: textstyle,
             )
           ],
@@ -362,12 +388,12 @@ class _PaymentMethodState extends State<PaymentMethod> {
         Row(
           children: [
             Text(
-              "차감 DL",
+              "차감 BZA",
               style: textstyle,
             ),
             whiteSpaceW(49),
             Text(
-              "${(dlCtrl.text != "") ? "-${dlCtrl.text} DL" : "500000ADP 이상 가능합니다."}",
+              "-${dlCtrl.text} BZA",
               style: textstyle,
             )
           ],
@@ -429,9 +455,12 @@ class _PaymentMethodState extends State<PaymentMethod> {
                 .name;
             buyMove(name, widget.pay, widget.id, widget.quantity,
                 paymentType[currentMethod]);
-          } else {
-            if (widget.pay < 10000) {
-              showToast("500000ADP 이상 충전 가능합니다.`");
+          }
+          else {
+            if (widget.pay < 500000) {
+              showToast("500000ADP 이상 충전 가능합니다.");
+            } else if (paymentType[currentMethod] == "DILLING" && dlAccount < widget.pay / 100) {
+              showToast("BZA가 부족합니다.");
             } else {
               bool response =
               await Provider.of<UserProvider>(context, listen: false)
@@ -440,9 +469,9 @@ class _PaymentMethodState extends State<PaymentMethod> {
               if (!response) {
                 Fluttertoast.showToast(msg: "에러");
               } else {
+                await Provider.of<UserProvider>(context, listen: false).getAccountsHistory('ADP', 0);
                 Fluttertoast.showToast(msg: "충전이 완료되었습니다.");
               }
-             // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
               Navigator.of(context).pop();
             }
           }
@@ -453,7 +482,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
 
   buyMove(name, pay, id, q, payType) {
     print("결제");
-    if(q < 10000){
+    if(q < 500000){
       showToast("500000ADP 이상 충전 가능합니다.`");
     } else {
       Navigator.of(context).push(MaterialPageRoute(

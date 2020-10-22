@@ -172,7 +172,11 @@ class _StoreApplyState extends State<StoreApplyState>{
                           fit: BoxFit.fill,
                         ),
                         RaisedButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            await Provider.of<StoreProvider>(context, listen: false).clearMap();
+                            await Provider.of<StoreProvider>(context, listen: false).hideDetailView();
+                            await Provider.of<UserProvider>(context, listen: false).fetchMyInfo(context);
+
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(builder: (context) => MainMap()),
                                     (route) => false);

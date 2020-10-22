@@ -1,5 +1,6 @@
 library slide_popup_dialog;
 
+import 'package:cashcook/src/utils/smallSlideDialog.dart';
 import 'package:flutter/material.dart';
 
 import 'customSlideDialog.dart';
@@ -23,6 +24,7 @@ Future<T> showSlideDialog<T>({
   Duration transitionDuration = const Duration(milliseconds: 300),
   Color pillColor,
   Color backgroundColor,
+  String type,
 }) {
   assert(context != null);
   assert(child != null);
@@ -40,7 +42,13 @@ Future<T> showSlideDialog<T>({
         transform: Matrix4.translationValues(0.0, curvedValue * -300, 0.0),
         child: Opacity(
           opacity: animation1.value,
-          child: CustomSlideDialog(
+          child: type == "big" ? CustomSlideDialog(
+            child: child,
+            pillColor: pillColor ?? Colors.blueGrey[200],
+            backgroundColor: backgroundColor ?? Theme.of(context).canvasColor,
+          )
+          :
+          SmallSlideDialog(
             child: child,
             pillColor: pillColor ?? Colors.blueGrey[200],
             backgroundColor: backgroundColor ?? Theme.of(context).canvasColor,

@@ -31,6 +31,7 @@ class StoreProvider with ChangeNotifier{
   bool isMenuSuccess = false;
   int isCurrentPage = 0; // 0: 지도, 1: 배달서비스, 2: 마이페이지
   bool detailView = false;
+  double position = 0;
   double distance = 0.0;
   StoreModel selStore;
   var currentLocation;
@@ -42,7 +43,26 @@ class StoreProvider with ChangeNotifier{
   FormData formData;
   List<Map<String, dynamic>> menuData = [];
 
+  void decreasePosition() {
+    position -= 2.5;
+
+    notifyListeners();
+  }
+
+  void increasePosition() {
+    position += 2.0;
+
+    notifyListeners();
+  }
+
+  void backPosition() {
+    position = 0;
+
+    notifyListeners();
+  }
+
   void clearMap(){
+    detailView = false;
     store.clear();
     markers.clear();
     isCurrentPage = 0;
@@ -66,6 +86,7 @@ class StoreProvider with ChangeNotifier{
   }
 
   void hideDetailView() {
+    position = 0;
     detailView = false;
 
     notifyListeners();
@@ -92,14 +113,28 @@ class StoreProvider with ChangeNotifier{
     formData.fields.addAll({"comment" : comment}.entries);
   }
 
-  void bak_menu() {
+  bool bak_menu() {
     menuData.clear();
     List<BigMenuModel> _bigMenuList = [];
 
     for(BigMenuEditModel bigMenu in menuList) {
       List<MenuModel> _menuList = [];
 
+      if(bigMenu.menuEditList.length == 0) {
+        showToast("대분류당 메뉴가 하나는 있어야 합니다.");
+        return false;
+      }
+
+      if(bigMenu.nameCtrl.text == ""){
+        showToast("빈 칸이 있으시면 안됩니다.");
+        return false;
+      }
+
       for(MenuEditModel menu in bigMenu.menuEditList) {
+        if(menu.nameCtrl.text == "" || menu.priceCtrl.text == ""){
+          showToast("빈 칸이 있으시면 안됩니다.");
+          return false;
+        }
         _menuList.add(
           MenuModel(
             name: menu.nameCtrl.text,
@@ -120,6 +155,7 @@ class StoreProvider with ChangeNotifier{
 
     _bigMenuList.forEach((bm) {
       List<Map<String, String>> menuMapList = [];
+
       bm.menuList.forEach((m) {
         menuMapList.add({
           "menu_name": m.name,
@@ -135,9 +171,11 @@ class StoreProvider with ChangeNotifier{
 
     print(menuData.toString());
     print("bak_menu Okay");
+
+    return true;
   }
 
-  void getStore(String start, String end) async {
+  void getStore(String start, String end, int myId) async {
       newStore.clear();
       print("getStore");
       print(start);
@@ -159,35 +197,34 @@ class StoreProvider with ChangeNotifier{
 
       if(newStore.length != 0){
         print("추가됨");
-        markerAdds(newStore);
+        markerAdds(newStore, myId);
       }
 
       notifyListeners();
   }
 
-  markerAdds(List<StoreModel> newStore) {
+  markerAdds(List<StoreModel> newStore, int myId) {
     for (StoreModel store in newStore) {
       final MarkerId markerId = MarkerId(store.id.toString());
-      addMarker(store, markerId);
+      addMarker(store, markerId, myId);
     }
 
     notifyListeners();
   }
 
-  addMarker(StoreModel store, markerId) async {
+  addMarker(StoreModel store, markerId, int myId) async {
     final icon = await getBitmapDescriptorFromAssetBytes(
         "assets/icon/other_mk.png", 96);
     final my_icon = await getBitmapDescriptorFromAssetBytes(
         "assets/icon/my_mk.png", 72);
-    UserProvider userProvider = UserProvider();
-    StoreServiceProvider ssp = StoreServiceProvider();
+
 
       markers.add(Marker(
           markerId: markerId,
           position: LatLng(
               double.parse(store.address.coords.split(",").first),
               double.parse(store.address.coords.split(",").last)),
-          icon: /*(userProvider.loginUser.id.toString() == store.user_id) ? my_icon :*/ icon,
+          icon: (myId.toString() == store.user_id) ? my_icon : icon,
           onTap: () async {
             // await ssp.setServiceNum(0, store.id);
             currentLocation = await location.getLocation();
@@ -289,8 +326,11 @@ class StoreProvider with ChangeNotifier{
   }
 
   void patchMenu() async {
-    await bak_menu();
+    bool result = await bak_menu();
 
+    if(!result){
+      return;
+    }
     await ssp.patchMenu(menuData);
 
     showToast("메뉴 수정에 성공했습니다.");
