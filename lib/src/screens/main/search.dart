@@ -238,7 +238,7 @@ class _SearchPage extends State<SearchPage> {
                 Padding(
                   padding: EdgeInsets.only(left: 8.0, right: 8.0),
                   child:Image.asset(
-                    "assets/resource/public/rect.png",
+                    "assets/icon/grey_mk.png",
                     height: 24,
                     width: 24,
                     fit: BoxFit.contain,

@@ -33,7 +33,42 @@ class UserProvider with ChangeNotifier {
   String ageSelected = '총판을 선택해주세요.';
   int nowPoint = 0;
 
+  // Charge ADP Variable
+  TextEditingController adpQuantityCtrl = TextEditingController();
+  TextEditingController dlQuantityCtrl = TextEditingController();
+  int dlPay = 0;
+  int chargePay = 0;
+
   List<String> recomemberList = [];
+
+  void clearAdpQuantity() {
+    adpQuantityCtrl.text = "";
+    dlQuantityCtrl.text = "";
+    dlPay = 0;
+    chargePay = 0;
+
+    notifyListeners();
+  }
+
+  void setChargePay(){
+    if(adpQuantityCtrl.text == "") {
+      chargePay = 0;
+    } else {
+      chargePay = int.parse(adpQuantityCtrl.text);
+    }
+
+    notifyListeners();
+  }
+
+  void setDlPay(){
+    if(dlQuantityCtrl.text == "") {
+      dlPay = 0;
+    } else {
+      dlPay = int.parse(dlQuantityCtrl.text);
+    }
+
+    notifyListeners();
+  }
 
   void startLoading() {
     isLoading = true;
@@ -411,5 +446,18 @@ class UserProvider with ChangeNotifier {
     print(isResponse(json));
 
     return json['data']['cnt'];
+  }
+
+  void changeLimitDL(bool switchType, String store_id, String limitDL) async {
+    print("SwitchType : $switchType");
+    final response = await service.changeLimitDL({
+      "switch" : switchType ? 'on' : 'off',
+      "store_id" : store_id,
+      "limitDL" : limitDL
+    });
+
+    Map<String, dynamic> json = jsonDecode(response);
+
+    showToast(json['resultMsg']);
   }
 }

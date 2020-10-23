@@ -134,34 +134,34 @@ class _InvitationList extends State<InvitationList> {
                           ),
                         ),
                       ),
-                      // Padding(
-                      //   padding: EdgeInsets.only(top: 10, left: 0, right: 20),
-                      //   child: Row(
-                      //     children: <Widget>[
-                      //       // 전체선택
-                      //       Theme(
-                      //         data: ThemeData(unselectedWidgetColor: black,),
-                      //         child:
-                      //         Checkbox(
-                      //           activeColor: black,
-                      //           checkColor: black,
-                      //           value: phoneProvider.allCheck,
-                      //           onChanged: (value) {
-                      //             phoneProvider.setAllCheck(value);
-                      //           },
-                      //         ),
-                      //       ),
-                      //       Text(
-                      //         "전체선택",
-                      //         style: TextStyle(
-                      //             fontWeight: FontWeight.w600,
-                      //             fontFamily: 'noto',
-                      //             fontSize: 18,
-                      //             color: black),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10, left: 0, right: 20),
+                        child: Row(
+                          children: <Widget>[
+                            // 전체선택
+                            Theme(
+                              data: ThemeData(unselectedWidgetColor: black,),
+                              child:
+                              Checkbox(
+                                activeColor: black,
+                                checkColor: black,
+                                value: phoneProvider.allCheck,
+                                onChanged: (value) {
+                                  phoneProvider.setAllCheck(value);
+                                },
+                              ),
+                            ),
+                            Text(
+                              "전체선택",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: 'noto',
+                                  fontSize: 18,
+                                  color: black),
+                            ),
+                          ],
+                        ),
+                      ),
                       Expanded(
                           child: Container(
                             child: InvitationItemList(phoneProvider.phoneList),

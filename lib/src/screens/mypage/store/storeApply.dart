@@ -1,20 +1,10 @@
-import 'dart:io';
-
-import 'package:cashcook/src/model/store/menuedit.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
-import 'package:cashcook/src/screens/referrermanagement/franBizSelect.dart';
 import 'package:cashcook/src/utils/colors.dart';
-import 'package:cashcook/src/utils/geocoder.dart';
-import 'package:cashcook/src/widgets/TextFieldWidget.dart';
-import 'package:cashcook/src/widgets/TextFieldssWidget.dart';
-import 'package:cashcook/src/widgets/TextFieldsWidget.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class StoreApplyState extends StatefulWidget {
@@ -34,24 +24,32 @@ class _StoreApplyState extends State<StoreApplyState>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: mainColor,
+      backgroundColor: white,
       resizeToAvoidBottomInset: false,
-      body: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          padding: EdgeInsets.only(top: 50.0, bottom: 20.0, left: 20.0, right: 20.0),
-          child:
-              Consumer<StoreProvider>(
+      body:
+      WillPopScope(
+        onWillPop: () async {
+          showToast("결과를 확인 후 버튼을 통해 이동해주세요!");
+
+          return Future.value(false);
+        },
+        child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            padding: EdgeInsets.only(top: 50.0, bottom: 20.0, left: 20.0, right: 20.0),
+            child:
+            Consumer<StoreProvider>(
                 builder: (context, sp, _){
                   return (!sp.isStoreSuccess)?
-                      storeLoading()
+                  storeLoading()
                       :
                   (!sp.isMenuSuccess) ?
-                      menuLoading()
+                  menuLoading()
                       :
-                      successBtn();
+                  successBtn();
                 }
-              )
+            )
+        ),
       )
     );
   }
@@ -84,7 +82,7 @@ class _StoreApplyState extends State<StoreApplyState>{
                         ),
                         Text("매장 등록을 진행 중 입니다.",
                             style: TextStyle(
-                              color: white,
+                              color: mainColor,
                               fontSize: 20,
                               fontFamily: 'noto',
                             )),
@@ -118,13 +116,13 @@ class _StoreApplyState extends State<StoreApplyState>{
                       children: [
                         Text("거의 완료 되었습니다!",
                             style: TextStyle(
-                              color: subBlue,
+                              color: mainColor,
                               fontSize: 20,
                               fontFamily: 'noto',
                             )),
                         Text("조금만 더 기다려주세요!",
                             style: TextStyle(
-                              color: subBlue,
+                              color: mainColor,
                               fontSize: 20,
                               fontFamily: 'noto',
                             )),
@@ -136,7 +134,7 @@ class _StoreApplyState extends State<StoreApplyState>{
                         ),
                         Text("메뉴 등록을 진행 중 입니다.",
                             style: TextStyle(
-                              color: white,
+                              color: mainColor,
                               fontSize: 20,
                               fontFamily: 'noto',
                             )),
@@ -160,7 +158,7 @@ class _StoreApplyState extends State<StoreApplyState>{
                       children: [
                         Text("매장 등록에 성공 했습니다!",
                             style: TextStyle(
-                              color: white,
+                              color: mainColor,
                               fontSize: 20,
                               fontFamily: 'noto',
                             )),
@@ -171,6 +169,7 @@ class _StoreApplyState extends State<StoreApplyState>{
                           height: 150,
                           fit: BoxFit.fill,
                         ),
+                        whiteSpaceH(10.0),
                         RaisedButton(
                           onPressed: () async {
                             await Provider.of<StoreProvider>(context, listen: false).clearMap();
@@ -181,12 +180,12 @@ class _StoreApplyState extends State<StoreApplyState>{
                                 MaterialPageRoute(builder: (context) => MainMap()),
                                     (route) => false);
                           },
-                          color: subBlue,
+                          color: mainColor,
                           child: Text(
                             "메인으로 돌아가기",
                             style: TextStyle(
                               color: white,
-                              fontSize: 16,
+                              fontSize: 12,
                               fontFamily: 'noto'
                             )
                           )

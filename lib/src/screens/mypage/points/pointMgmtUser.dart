@@ -30,8 +30,8 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
-        elevation: 0,
-        backgroundColor: mainColor,
+        elevation: 1.5,
+        backgroundColor: white,
       ),
       body:
         Consumer<PointMgmtProvider>(
@@ -43,16 +43,13 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                     width: MediaQuery.of(context).size.width,
                     padding: const EdgeInsets.only(top: 30.0, left: 12.0, right: 12.0, bottom: 50.0),
                     decoration: BoxDecoration(
-                      color: mainColor,
+                      color: white,
                     ),
                     child: Row(
                       children: [
                         Column (
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            whiteSpaceH(1),
-                            whiteSpaceH(5),
-                            whiteSpaceH(1),
                             whiteSpaceH(20),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.end,
@@ -61,13 +58,13 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                                     style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w600,
-                                        color: white
+                                        color: Color(0xFF333333)
                                     )),
                                 Text("${Provider.of<UserProvider>(context, listen:false).loginUser.phone}",
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
-                                      color: white
+                                      color: Color(0xFF333333)
                                   ))
                               ],
                             ),
@@ -81,10 +78,10 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                   Padding(
                     padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                     child: Container(
-                        transform: Matrix4.translationValues(0.0, -40.0, 0.0),
+                        transform: Matrix4.translationValues(0.0, -30.0, 0.0),
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: mainColor,
                           borderRadius: BorderRadius.all(
                             Radius.circular(16),
                           ),
@@ -109,13 +106,13 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                                       Text("총 현장결제",
                                           style: TextStyle(
                                             fontSize: 12,
-                                            color: Color(0xff888888),
+                                            color: white,
                                           )),
                                       whiteSpaceH(5),
                                       Text("${numberFormat.format(pm.pay)}원",
                                           style: TextStyle(
                                               fontSize: 12,
-                                              color: Color(0xffFF6622),
+                                              color: white,
                                               fontWeight: FontWeight.w600
                                           )),
                                     ],
@@ -132,13 +129,15 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                                       Text("총 BZA 결제",
                                           style: TextStyle(
                                             fontSize: 12,
-                                            color: Color(0xff888888),
+                                            fontFamily: 'noto',
+                                            color: white,
                                           )),
                                       whiteSpaceH(5),
                                       Text("${numberFormat.format(pm.dl)} BZA",
                                           style: TextStyle(
                                               fontSize: 12,
-                                              color: Color(0xffD4145A),
+                                              fontFamily: 'noto',
+                                              color: white,
                                               fontWeight: FontWeight.w600
                                           )),
                                     ],
@@ -165,10 +164,10 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                                     });
                                 },
                                 color: white,
-                                disabledColor: Colors.cyan,
+                                disabledColor: mainColor,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20.0),
-                                  side: BorderSide(color: Colors.cyan)
+                                  side: BorderSide(color: mainColor)
                                   ),
                                 child:
                                 Text(
@@ -187,10 +186,10 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                                   });
                                 },
                                 color: white,
-                                disabledColor: Colors.cyan,
+                                disabledColor: mainColor,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20.0),
-                                    side: BorderSide(color: Colors.cyan)
+                                    side: BorderSide(color: mainColor)
                                 ),
                                 child:
                                 Text(
@@ -209,10 +208,10 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                                   });
                                 },
                                 color: white,
-                                disabledColor: Colors.cyan,
+                                disabledColor: mainColor,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20.0),
-                                    side: BorderSide(color: Colors.cyan)
+                                    side: BorderSide(color: mainColor)
                                 ),
                                 child:
                                 Text(

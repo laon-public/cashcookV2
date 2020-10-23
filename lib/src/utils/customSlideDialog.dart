@@ -80,7 +80,7 @@ class _CustomSlideDialogState extends State<CustomSlideDialog> {
                                   height: 50,
                                   child:
                                   RaisedButton(
-                                      color: Colors.cyan,
+                                      color: mainColor,
                                       onPressed: () {
                                         List<BigMenuModel> bigMenus = [];
                                         int orderPay = 0;

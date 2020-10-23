@@ -1,7 +1,11 @@
+import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/provider/QRProvider.dart';
+import 'package:cashcook/src/provider/StoreProvider.dart';
+import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/qr/qrcheck.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/TextFieldWidget.dart';
+import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +29,7 @@ class _QrCreate extends State<QrCreate> {
   FocusNode payMove = FocusNode ();
   @override
   Widget build(BuildContext context) {
+    StoreModel myStore = Provider.of<UserProvider>(context, listen: false).storeModel;
     // TODO: implement build
     return Scaffold(
       backgroundColor: white,
@@ -76,7 +81,7 @@ class _QrCreate extends State<QrCreate> {
                     Text(
                       widget.type == 0
                           ? "현장결제의 경우, 반드시\n결제를 완료한 이후 진행 바랍니다."
-                          : "DL결제의 경우, 반드시\n결제하기 이전에 진행 바랍니다.",
+                          : "BZA결제의 경우, 반드시\n결제하기 이전에 진행 바랍니다.",
                       textAlign: TextAlign.start,
                       style: TextStyle(
                           fontFamily: 'noto', fontSize: 14, color: Color(0xFF222222)),
@@ -113,17 +118,16 @@ class _QrCreate extends State<QrCreate> {
                         keyboardType: TextInputType.number,
                         controller: payController,
                         style: TextStyle(
-                            fontFamily: 'noto', color: black, fontSize: 16),
+                            fontFamily: 'noto', color: Color(0xFF333333), fontSize: 14),
                         inputFormatters: <TextInputFormatter>[
                           WhitelistingTextInputFormatter.digitsOnly
                         ],
                         onChanged: (value) {
-                          dlController.text =
-                              (double.parse(value) / 100).toString();
-                          if (value.length == 0) {
-                            setState(() {
-                              dlController.text = "";
-                            });
+                          if(int.parse(value) >= 100){
+                            dlController.text =
+                                (int.parse(value) / 100).toString().split(".").first;
+                          } else {
+                            dlController.text = "";
                           }
                         },
                         cursorColor: mainColor,
@@ -133,7 +137,7 @@ class _QrCreate extends State<QrCreate> {
                             filled: true,
                             suffixText: "KRW",
                             suffixStyle: TextStyle(
-                                fontFamily: 'noto', color: black, fontSize: 16),
+                                fontFamily: 'noto', color: Color(0xFF333333), fontSize: 14),
                             fillColor: white,
                             enabledBorder: UnderlineInputBorder(
                                 borderRadius: BorderRadius.circular(0),
@@ -147,7 +151,7 @@ class _QrCreate extends State<QrCreate> {
                             focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: mainColor),
                                 borderRadius: BorderRadius.circular(0)),
-                            contentPadding: EdgeInsets.only(left: 0, right: 0)),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 8.0)),
                       ),
                     ),
                   )
@@ -159,27 +163,41 @@ class _QrCreate extends State<QrCreate> {
                 child: Text(
                   "고객이 결제한 금액을 입력해주세요.",
                   style: TextStyle(
-                      color: Color(0xFF888888),
+                      color: Color(0xFF999999),
                       fontSize: 12,
                       fontFamily: 'noto'),
                   textAlign: TextAlign.end,
                 ),
               ),
+              whiteSpaceH(30.0),
               widget.type == 1
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "결제DL",
-                          style: TextStyle(
-                              color: Color(0xFF888888),
-                              fontSize: 12,
-                              fontFamily: 'noto'),
+                        Row(
+                          children: [
+                            Text(
+                              "결제BZA",
+                              style: TextStyle(
+                                  color: Color(0xFF888888),
+                                  fontSize: 12,
+                                  fontFamily: 'noto'),
+                            ),
+                            whiteSpaceW(10),
+                            Text(
+                              myStore.store.limitDL == null ? "결제한도가 없습니다." :
+                              "결제한도 ${myStore.store.limitDL} BZA",
+                              style: TextStyle(
+                                  color: mainColor,
+                                  fontSize: 12,
+                                  fontFamily: 'noto'),
+                            ),
+                          ],
                         ),
                         whiteSpaceH(4),
                         Row(
                           children: [
-                            Image.asset("assets/resource/public/dl_icon.png",
+                            Image.asset("assets/icon/bza.png",
                                 width: 40, height: 40),
                             whiteSpaceW(8),
                             Expanded(
@@ -190,10 +208,11 @@ class _QrCreate extends State<QrCreate> {
                                   textInputAction: TextInputAction.done,
                                   keyboardType: TextInputType.number,
                                   controller: dlController,
+                                  textAlign: TextAlign.end,
                                   style: TextStyle(
                                       fontFamily: 'noto',
-                                      color: black,
-                                      fontSize: 16),
+                                      color: Color(0xFF333333),
+                                      fontSize: 14),
                                   inputFormatters: <TextInputFormatter>[
                                     WhitelistingTextInputFormatter.digitsOnly
                                   ],
@@ -201,11 +220,11 @@ class _QrCreate extends State<QrCreate> {
                                   readOnly: true,
                                   decoration: InputDecoration(
                                       filled: true,
-                                      suffixText: "DL",
+                                      suffixText: "BZA",
                                       suffixStyle: TextStyle(
                                           fontFamily: 'noto',
                                           color: black,
-                                          fontSize: 16),
+                                          fontSize: 14),
                                       fillColor: white,
                                       enabledBorder: UnderlineInputBorder(
                                           borderRadius:
@@ -224,7 +243,7 @@ class _QrCreate extends State<QrCreate> {
                                           borderRadius:
                                               BorderRadius.circular(0)),
                                       contentPadding:
-                                          EdgeInsets.only(left: 0, right: 0)),
+                                          EdgeInsets.symmetric(horizontal: 8.0)),
                                 ),
                               ),
                             )
@@ -234,9 +253,9 @@ class _QrCreate extends State<QrCreate> {
                         Container(
                           width: MediaQuery.of(context).size.width,
                           child: Text(
-                            "100 원 = 1 DL",
+                            "100 원 = 1 BZA",
                             style: TextStyle(
-                                color: Color(0xFF888888),
+                                color: Color(0xFF999999),
                                 fontSize: 12,
                                 fontFamily: 'noto'),
                             textAlign: TextAlign.end,
@@ -254,7 +273,8 @@ class _QrCreate extends State<QrCreate> {
                 height: 40,
                 child: RaisedButton(
                   onPressed: (widget.type == 0 && payController.text.isNotEmpty && int.parse(payController.text) >= 1000) ||
-                      (widget.type == 1 && payController.text.isNotEmpty && int.parse(payController.text) >= 100) ? () async{
+                      (widget.type == 1 && payController.text.isNotEmpty && int.parse(payController.text) >= 100) ? () async {
+
                     print(1112);
                     int price = int.parse(payController.text == "" ? 0: payController.text);
                     int dilling = widget.type == 0 ? 0 : int.parse(dlController.text == "" ? 0: dlController.text.split(".").first);
@@ -262,6 +282,12 @@ class _QrCreate extends State<QrCreate> {
                     print(price);
                     print(dilling);
                     print("현재 상태 : ${ payment } ");
+                    if( myStore.store.limitDL != null ) {
+                      if( int.parse(myStore.store.limitDL) < int.parse(dlController.text) ){
+                        showToast("결제한도 보다 많습니다.");
+                        return;
+                      }
+                    }
                     String uuid = await Provider.of<QRProvider>(context,listen: false).postCreateQR(price, dilling, payment);
                     print(uuid);
                     if(uuid == ""){
@@ -323,14 +349,21 @@ class _QrCreate extends State<QrCreate> {
         return AlertDialog(
           title: new Text("${ widget.type == 0 ? "결제 금액은 1000원 단위로 해주세요." : "결제 금액은 100원 단위로 해주세요." }",
             style: TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.w600,
-            color: Color(0xff444444),
+            fontSize: 14,
+            color: Color(0xff333333),
+              fontFamily: 'noto'
           ),),
 
           actions: <Widget>[
-            new FlatButton(
-              child: new Text("Close"),
+            FlatButton(
+              color: mainColor,
+              child: new Text("Close",
+                style: TextStyle(
+                  color: white,
+                  fontSize: 12,
+                  fontFamily: 'noto'
+                ),
+              ),
               onPressed: () {
                 payController.text = '';
                 Navigator.pop(context);

@@ -86,7 +86,7 @@ class _UserState extends State<UserState> {
                 RaisedButton(
                   child: Text("로그아웃", style: TextStyle(fontSize: 12),),
                     onPressed:(){
-                      Navigator.of(context).pushNamed("/logout");
+                      Navigator.of(context).pushNamedAndRemoveUntil("/logout", (route) => false);
                     }
                 ),
 //                Tabs(name: "로그아웃", routesName: "/users/logout",),

@@ -15,37 +15,40 @@ class StoreApplyLastStep extends StatefulWidget {
 class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
   TextEditingController commentController = TextEditingController();
 
+  AppBar appBarWidget = AppBar(
+    title: Text("매장 정보 3/3", style:
+    TextStyle(
+      color: black,
+      fontSize: 14,
+      fontFamily: 'noto',
+      fontWeight: FontWeight.w600,
+    )),
+    centerTitle: true,
+    elevation: 0.5,
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: Text("매장 정보 3/3", style:
-        TextStyle(
-            color: black,
-            fontSize: 14,
-            fontFamily: 'noto'
-        )),
-        centerTitle: true,
-        elevation: 0.5,
-      ),
+      resizeToAvoidBottomInset: true,
+      appBar: appBarWidget,
       body: SafeArea(top: false, child: body(context)),
     );
   }
 
 
   Widget body(context) {
-    return
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            padding: EdgeInsets.only(top: 50.0, bottom: 20.0, left: 20.0, right: 20.0),
-            child: Column(
+    return SingleChildScrollView(
+      child: Container(
+          padding: EdgeInsets.only(top: 46.0, left: 16.0, right: 16.0, bottom: 16.0),
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height - appBarWidget.preferredSize.height - MediaQuery.of(context).padding.top,
+          child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("기타정보",
-                  style: TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
                       color: Color(0xFF888888),
                       fontFamily: 'noto',
@@ -79,35 +82,35 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
                 Container(
                     width: MediaQuery.of(context).size.width,
                     height: 40,
-                  child:RaisedButton(
-                    color: mainColor,
-                    onPressed: () async {
-                        await Provider.of<StoreProvider>(context, listen: false).bak_comment(commentController.text);
+                    child:RaisedButton(
+                        color: mainColor,
+                        onPressed: () async {
+                          await Provider.of<StoreProvider>(context, listen: false).bak_comment(commentController.text);
 
-                        await Provider.of<StoreProvider>(context, listen: false).clearSuccess();
+                          await Provider.of<StoreProvider>(context, listen: false).clearSuccess();
 
-                        if(Provider.of<UserProvider>(context, listen: false).loginUser.userGrade == "NORMAL") {
-                          Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => FranBizSelect()));
-                        } else {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => StoreApplyState()
-                          ));
-                        }
+                          if(Provider.of<UserProvider>(context, listen: false).loginUser.userGrade == "NORMAL") {
+                            Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => FranBizSelect()));
+                          } else {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(builder: (context) => StoreApplyState()), (route) => false);
+                          }
 
-                    },
-                    child: Text("완료",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: 'noto',
-                        color: white,
-                      ))
-                  )
+                        },
+                        child: Text("완료",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'noto',
+                              color: white,
+                            ))
+                    )
                 )
 
               ]
-            )
-          );
+          )
+      ),
+    );
   }
 }
 

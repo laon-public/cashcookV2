@@ -39,11 +39,16 @@ class _Login extends State<Login> {
 
   bool userCheck = false;
 
+  // Pop Scope Controll
+  String loadCompleteUrl;
+  DateTime currentBackPressTime;
+
   @override
   void initState() {
     print("initState123");
     // TODO: implement initState
     super.initState();
+
     flutterWebviewPlugin.onUrlChanged.listen((String url) async {
       print("url : " + url);
       if (url == baseUrl) {
@@ -164,18 +169,20 @@ class _Login extends State<Login> {
     print("buildUrl : " + url);
     print("아래 widget.authCheck");
     return Scaffold(
-      backgroundColor: white,
-      resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height -
-              MediaQuery.of(context).padding.top -
-              MediaQuery.of(context).padding.bottom,
-          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top,bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: Stack(
-            children: [
-              WebviewScaffold(
+          backgroundColor: white,
+          resizeToAvoidBottomInset: false,
+          body: SingleChildScrollView(
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height -
+                  MediaQuery.of(context).padding.top -
+                  MediaQuery.of(context).padding.bottom,
+              padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top,bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: Stack(
+                children: [
+                  WillPopScope(
+                    onWillPop: onWillPop,
+                    child: WebviewScaffold(
 //                gestureRecognizers: [
 //                  Factory(() => PlatformViewVerticalGestureRecognizer()),
 //                ].toSet(),
@@ -183,7 +190,7 @@ class _Login extends State<Login> {
 //                javascriptMode: JavascriptMode.unrestricted,
 //                url: widget.authCheck == 1 ? logoutUrl : url,
 //                 url: widget.authCheck == 1 ? logoutUrl : url,
-                url: widget.authCheck == 1 ? baseUrl + "users/logout" : url,
+                      url: widget.authCheck == 1 ? baseUrl + "users/logout" : url,
 //                onWebViewCreated: (webViewController) {
 //                  if (!clearCache) {
 //                    webViewController.clearCache();
@@ -311,24 +318,41 @@ class _Login extends State<Login> {
 //                    });
 //                  }
 //                },
-              ),
-              userCheck
-                  ? Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                color: white,
-                child: Center(
-                  child: SpinKitFadingCircle(
-                    color: mainColor,
-                    size: 80.0,
+                    ),
                   ),
-                ),
-              )
-                  : Container()
-            ],
+                  userCheck
+                      ? Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    color: white,
+                    child: Center(
+                      child: SpinKitFadingCircle(
+                        color: mainColor,
+                        size: 80.0,
+                      ),
+                    ),
+                  )
+                      : Container()
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
-    );
+      );
+  }
+
+  // 누르면 종료 팝업
+  Future<bool> onWillPop() {
+    if(loadCompleteUrl == null){
+      DateTime now = DateTime.now();
+      if(currentBackPressTime == null ||
+          now.difference(currentBackPressTime) > Duration(seconds: 2)){
+        currentBackPressTime = now;
+        showToast("한번 더 누르면 캐시쿡이 종료됩니다.");
+
+
+        return Future.value(false);
+      }
+      return Future.value(true);
+    }
   }
 }

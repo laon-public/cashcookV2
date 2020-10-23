@@ -14,6 +14,7 @@ import 'package:cashcook/src/widgets/dialog.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cashcook/src/screens/mypage/info/scrap.dart';
@@ -50,8 +51,8 @@ class _MyPageState extends State<MyPage> {
     return
       Scaffold(
         appBar: AppBar(
-          backgroundColor: mainColor,
-          elevation: 0.0,
+          backgroundColor: white,
+          elevation: 2.0,
           leading: IconButton(
             onPressed: () {
               Navigator.of(context).pop();
@@ -76,9 +77,9 @@ class _MyPageState extends State<MyPage> {
                       }
                     },
                     child: (view == "My") ?
-                    Text("마이", style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600, color: white),)
+                    Text("마이", style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600, color: Color(0xFF333333)),)
                         :
-                    Text("마이", style: TextStyle(fontSize: 16, color: white),),
+                    Text("마이", style: TextStyle(fontSize: 14, color: Color(0xFF333333)),),
                   ),
                   whiteSpaceW(20.0),
                   InkWell(
@@ -94,9 +95,9 @@ class _MyPageState extends State<MyPage> {
                       }
                     },
                     child: (view == "Store") ?
-                    Text("매장", style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600, color: white),)
+                    Text("매장", style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600, color: Color(0xFF333333)),)
                         :
-                    Text("매장", style: TextStyle(fontSize: 16, color: white),),
+                    Text("매장", style: TextStyle(fontSize: 14, color: Color(0xFF333333)),),
                   ),
                   whiteSpaceW(20.0),
                   (userCheck.userGrade == "DISTRIBUTOR" || userCheck.userGrade == "AGENCY") ? InkWell(
@@ -108,9 +109,9 @@ class _MyPageState extends State<MyPage> {
                       }
                     },
                     child: (view == "Agecy") ?
-                    Text("대리점", style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600, color: white),)
+                    Text("대리점", style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600, color: Color(0xFF333333)),)
                         :
-                    Text("대리점", style: TextStyle(fontSize: 16, color: white),),
+                    Text("대리점", style: TextStyle(fontSize: 14, color: Color(0xFF333333)),),
                   ) : SizedBox()
                 ],
               )
@@ -125,16 +126,19 @@ class _MyPageState extends State<MyPage> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    (view == "My") ? myPageForm()
-                        : (view == "Store") ? storeForm()
-                        : agencyForm(),
-                  ],
-                ),
+                child: Container(
+                  color: white,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      (view == "My") ? myPageForm()
+                          : (view == "Store") ? storeForm()
+                          : agencyForm(),
+                    ],
+                  ),
+                )
               ),
 
             ],
@@ -169,7 +173,7 @@ class _MyPageState extends State<MyPage> {
               Container(
                   padding: const EdgeInsets.only(top: 30.0, left: 12.0, right: 12.0, bottom: 10),
                   decoration: BoxDecoration(
-                    color: mainColor,
+                    color: white,
                   ),
                   child: InkWell(
                     onTap: () async{
@@ -183,16 +187,16 @@ class _MyPageState extends State<MyPage> {
                               children: [
                                 RichText(
                                   text: TextSpan(
-                                      style: TextStyle(fontSize:16, fontWeight: FontWeight.w600, color: white),
+                                      style: TextStyle(fontSize:16, fontWeight: FontWeight.w600, color: Color(0xFF333333)),
                                       children: [
-                                        TextSpan(text:"${user.loginUser.name}", style: TextStyle(fontSize: 25, color: white)),
+                                        TextSpan(text:"${user.loginUser.name}", style: TextStyle(fontSize: 25, color: Color(0xFF333333))),
                                         TextSpan(text:" 님\n"),
                                         TextSpan(text:"반갑습니다.")
                                       ]
                                   ),
                                 ),
                                 Spacer(),
-                                Icon(Icons.arrow_forward_ios, size: 24,color: white,),
+                                Icon(Icons.arrow_forward_ios, size: 24,color: Color(0xFF333333),),
                               ]
                           ),
                           whiteSpaceH(40),
@@ -212,8 +216,8 @@ class _MyPageState extends State<MyPage> {
                                     children: [
                                       Image.asset("assets/icon/rp-coin.png",height: 24, fit: BoxFit.contain,),
                                       whiteSpaceW(5),
-                                      Text("${demicalFormat.format(user.pointMap['RP'])} RP",style: TextStyle(fontSize: 12, color: white),),
-                                      Icon(Icons.arrow_forward_ios, color: white, size: 12,),
+                                      Text("${demicalFormat.format(user.pointMap['RP'])} RP",style: TextStyle(fontSize: 12, color: Color(0xFF333333)),),
+                                      Icon(Icons.arrow_forward_ios, color: Color(0xFF333333), size: 12,),
                                     ],
                                   ),
                                 ),
@@ -232,8 +236,8 @@ class _MyPageState extends State<MyPage> {
                                     children: [
                                       Image.asset("assets/icon/bza.png",height: 24, fit: BoxFit.contain,),
                                       whiteSpaceW(5),
-                                      Text("${demicalFormat.format(user.pointMap['DL'])} BZA",style: TextStyle(fontSize: 12, color: white),),
-                                      Icon(Icons.arrow_forward_ios, color: white, size: 12,),
+                                      Text("${demicalFormat.format(user.pointMap['DL'])} BZA",style: TextStyle(fontSize: 12, color: Color(0xFF333333)),),
+                                      Icon(Icons.arrow_forward_ios, color: Color(0xFF333333), size: 12,),
                                     ],
                                   ),
                                 ),
@@ -253,6 +257,7 @@ class _MyPageState extends State<MyPage> {
                             children: [
                               HistoryCard(),
                               RecoCard(),
+                              easyPayCard(),
                               scrapCard(),
                               SizedBox(height: 16,),
                               Tabs(name: "공지사항", routesName: "/notice",),
@@ -284,7 +289,7 @@ class _MyPageState extends State<MyPage> {
             width: MediaQuery.of(context).size.width,
             padding: const EdgeInsets.only(top: 30.0, left: 12.0, right: 12.0, bottom: 50.0),
             decoration: BoxDecoration(
-              color: mainColor,
+              color: white,
             ),
             child: Row(
               children: [
@@ -298,13 +303,13 @@ class _MyPageState extends State<MyPage> {
                             style: TextStyle(
                                 fontSize: 25,
                                 fontWeight: FontWeight.w600,
-                              color: white,
+                              color: Color(0xFF333333),
                             )),
                         Text("${user.phone}",
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w600,
-                              color: white,
+                              color: Color(0xFF333333),
                             )),
                       ],
                     ),
@@ -319,17 +324,11 @@ class _MyPageState extends State<MyPage> {
                 transform: Matrix4.translationValues(0.0, -30.0, 0.0),
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: mainColor,
                   borderRadius: BorderRadius.all(
                     Radius.circular(16),
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      offset: Offset(3,3),
-                      blurRadius: 3,
-                      color: Color(0xff888888).withOpacity(0.15),
-                    ),
-                  ],
+
                 ),
                 child:
                   Consumer<RecoProvider>(
@@ -346,13 +345,13 @@ class _MyPageState extends State<MyPage> {
                                 Text("ADP 리워드",
                                     style: TextStyle(
                                       fontSize: 12,
-                                      color: Color(0xff888888),
+                                      color: white,
                                     )),
                                 whiteSpaceH(5),
                                 Text("${numberFormat.format(reco.adp)} ADP",
                                     style: TextStyle(
                                         fontSize: 12,
-                                        color: mainColor,
+                                        color: white,
                                         fontWeight: FontWeight.w600
                                     )),
                               ],
@@ -369,13 +368,13 @@ class _MyPageState extends State<MyPage> {
                                 Text("현금리워드",
                                     style: TextStyle(
                                       fontSize: 12,
-                                      color: Color(0xff888888),
+                                      color: white,
                                     )),
                                 whiteSpaceH(5),
                                 Text("${numberFormat.format(reco.pay)}원",
                                     style: TextStyle(
                                         fontSize: 12,
-                                        color: subYellow,
+                                        color: white,
                                         fontWeight: FontWeight.w600
                                     )),
                               ],
@@ -392,13 +391,13 @@ class _MyPageState extends State<MyPage> {
                                 Text("대리점 수",
                                     style: TextStyle(
                                       fontSize: 12,
-                                      color: Color(0xff888888),
+                                      color: white,
                                     )),
                                 whiteSpaceH(5),
                                 Text("${user.userGrade == "DISTRIBUTOR" ? numberFormat.format(reco.ageAmount) : 0} 개",
                                     style: TextStyle(
                                         fontSize: 12,
-                                        color: mainColor,
+                                        color: white,
                                         fontWeight: FontWeight.w600
                                     )),
                               ],
@@ -415,13 +414,13 @@ class _MyPageState extends State<MyPage> {
                                 Text("가맹점 수",
                                     style: TextStyle(
                                       fontSize: 12,
-                                      color: Color(0xff888888),
+                                      color: white,
                                     )),
                                 whiteSpaceH(5),
                                 Text("${user.userGrade == "DISTRIBUTOR" ? numberFormat.format(reco.franAmount) : numberFormat.format(reco.ageAmount)}개",
                                     style: TextStyle(
                                         fontSize: 12,
-                                        color: subYellow,
+                                        color: white,
                                         fontWeight: FontWeight.w600
                                     )),
                               ],
@@ -647,10 +646,10 @@ class _MyPageState extends State<MyPage> {
                           });
                         },
                         color: white,
-                        disabledColor: Colors.cyan,
+                        disabledColor: mainColor,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
-                            side: BorderSide(color: Colors.cyan)
+                            side: BorderSide(color: mainColor)
                         ),
                         child:
                         Text(
@@ -669,10 +668,10 @@ class _MyPageState extends State<MyPage> {
                           });
                         },
                         color: white,
-                        disabledColor: Colors.cyan,
+                        disabledColor: mainColor,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
-                            side: BorderSide(color: Colors.cyan)
+                            side: BorderSide(color: mainColor)
                         ),
                         child:
                         Text(
@@ -796,7 +795,7 @@ class _MyPageState extends State<MyPage> {
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height - 53 - 50,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: white,
             ),
             child: Center(
                 child: CircularProgressIndicator(
@@ -811,11 +810,11 @@ class _MyPageState extends State<MyPage> {
                 Container(
                     padding: const EdgeInsets.only(top: 30.0, left: 15.0, right: 15.0, bottom: 10),
                     decoration: BoxDecoration(
-                      color: mainColor,
+                      color: white,
                     ),
                     child: InkWell(
                       onTap: () async{
-                        Navigator.of(context).pushNamed("/store/modify/store");
+                        await Navigator.of(context).pushNamed("/store/modify/store");
                       },
                       child:
                       Container(
@@ -833,25 +832,32 @@ class _MyPageState extends State<MyPage> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Center(
-                                            child: Text("${user.storeModel.store.name}\n", style: TextStyle(fontSize: 25, color: white, fontWeight: FontWeight.w600))
+                                            child: Text("${user.storeModel.store.name}", style: TextStyle(fontSize: 25, color: Color(0xFF333333), fontWeight: FontWeight.w600))
                                           ),
                                           whiteSpaceW(10),
-                                          Icon(Icons.arrow_forward_ios, size: 24,color: white,),
+                                          Icon(Icons.arrow_forward_ios, size: 24,color: Color(0xFF333333),),
                                         ]
                                       ),
-                                      Text("${user.storeModel.store.tel}\n", style: TextStyle(fontSize: 20, color: white, fontWeight: FontWeight.w600)),
+                                      whiteSpaceH(8.0),
+                                      Text("${user.storeModel.store.tel}\n", style: TextStyle(fontSize: 20,color: Color(0xFF333333), fontWeight: FontWeight.w600)),
                                     ]
                                   ),
                                   Spacer(),
                                   CachedNetworkImage(
                                     imageUrl: user.storeModel.store.shop_img1,
-                                    fit: BoxFit.contain,
-                                    width: 70,
-                                    height: 70,
+                                    imageBuilder: (context, img) => Container(
+                                        width: 64,
+                                        height: 64,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(6),
+                                            image: DecorationImage(
+                                                image: img, fit: BoxFit.fill
+                                            )
+                                        )
+                                    ),
                                   ),
                                 ]
                             ),
-                            whiteSpaceH(40),
                             Row(
                                 children: [
                                   InkWell(
@@ -869,8 +875,8 @@ class _MyPageState extends State<MyPage> {
                                       children: [
                                         Image.asset("assets/icon/adp.png",height: 24, fit: BoxFit.contain,),
                                         whiteSpaceW(5),
-                                        Text("${demicalFormat.format(user.pointMap['ADP'])} ADP",style: TextStyle(fontSize: 12, color: white),),
-                                        Icon(Icons.arrow_forward_ios, color: white, size: 12,),
+                                        Text("${demicalFormat.format(user.pointMap['ADP'])} ADP",style: TextStyle(fontSize: 12, color: Color(0xFF333333)),),
+                                        Icon(Icons.arrow_forward_ios, color: Color(0xFF333333), size: 12,),
                                       ],
                                     ),
                                   ),
@@ -881,25 +887,30 @@ class _MyPageState extends State<MyPage> {
                       ),
                     )
                 ),
-                Column(
-                    children:[
-                      SizedBox(height: 24,),
-                      Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Column(
-                              children: [
-                                QrCard(),
-                                HistoryCard(),
-                                sellDlCard(),
-                                whiteSpaceH(16.0),
-                                Tabs(name: "사업자정보 수정", routesName: "/store/modify/business",),
-                                Tabs(name: "매장정보 수정", routesName: "/store/modify/store",),
-                                CustomerCenter(),
-                              ]
-                          )
+                Container(
+                      color: white,
+                      child:Column(
+                          children:[
+                            SizedBox(height: 24,),
+                            Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16),
+                                child: Column(
+                                    children: [
+                                      QrCard(),
+                                      HistoryCard(),
+                                      sellDlCard(),
+                                      whiteSpaceH(16.0),
+                                      Tabs(name: "알림", routesName: "/store/modify/business",),
+                                      Tabs(name: "사업자정보 수정", routesName: "/store/modify/business",),
+                                      Tabs(name: "매장정보 수정", routesName: "/store/modify/store",),
+                                      Tabs(name: "BZA 결제 한도 설정", routesName: "/store/modify/limitDL",),
+                                      CustomerCenter(),
+                                    ]
+                                )
+                            ),
+                          ]
                       ),
-                    ]
-                )
+                  ),
               ]
           );
         }
@@ -923,8 +934,7 @@ class _MyPageState extends State<MyPage> {
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Color(0xffffff),
-          border: Border.all(),
+          color: white,
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
@@ -933,9 +943,9 @@ class _MyPageState extends State<MyPage> {
             children: [
               Image.asset("assets/icon/recommend.png", height: 42, fit: BoxFit.contain,),
               SizedBox(width: 12,),
-              Text("이용내역",style: TextStyle(fontSize: 16,color: Color(0xff444444))),
+              Text("이용내역",style: TextStyle(fontSize: 16,color: Color(0xff444444), fontWeight: FontWeight.w600)),
               Spacer(),
-              Icon(Icons.arrow_forward_ios, color: Colors.black, size: 24,),
+              Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 24,),
             ],
           ),
         ),
@@ -950,6 +960,33 @@ class _MyPageState extends State<MyPage> {
           type: type,
         )
     ));
+  }
+
+  Widget easyPayCard(){
+    return InkWell(
+      onTap: (){
+        showAlert();
+      },
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: white,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset("assets/icon/card_blue.png", height: 42, fit: BoxFit.contain,),
+              SizedBox(width: 12,),
+              Text("간편결제 관리",style: TextStyle(fontSize: 16,color: Color(0xff444444), fontWeight: FontWeight.w600)),
+              Spacer(),
+              Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 24,),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget QrCard(){
@@ -969,8 +1006,7 @@ class _MyPageState extends State<MyPage> {
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Color(0xffffff),
-          border: Border.all(),
+          color: white,
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
@@ -979,9 +1015,9 @@ class _MyPageState extends State<MyPage> {
             children: [
               Image.asset("assets/resource/map/qr.png", height: 42, fit: BoxFit.contain,),
               SizedBox(width: 12,),
-              Text("결제QR 생성",style: TextStyle(fontSize: 16,color: Color(0xff444444))),
+              Text("결제QR 생성",style: TextStyle(fontSize: 16,color: Color(0xff444444), fontWeight: FontWeight.w600)),
               Spacer(),
-              Icon(Icons.arrow_forward_ios, color: Colors.black, size: 24,),
+              Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 24,),
             ],
           ),
         ),
@@ -989,16 +1025,26 @@ class _MyPageState extends State<MyPage> {
     );
   }
 
+  showAlert() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("알림"),
+            content: Text("서비스 준비중입니다."),
+          );
+        });
+  }
+
   Widget sellDlCard(){
     return InkWell(
       onTap: (){
-
+        showAlert();
       },
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Color(0xffffff),
-          border: Border.all(),
+          color: white,
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
@@ -1007,9 +1053,9 @@ class _MyPageState extends State<MyPage> {
             children: [
               Image.asset("assets/icon/bza.png", height: 42, fit: BoxFit.contain,),
               SizedBox(width: 12,),
-              Text("BZA 판매",style: TextStyle(fontSize: 16,color: Color(0xff444444))),
+              Text("BZA 판매",style: TextStyle(fontSize: 16,color: Color(0xff444444), fontWeight: FontWeight.w600)),
               Spacer(),
-              Icon(Icons.arrow_forward_ios, color: Colors.black, size: 24,),
+              Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 24,),
             ],
           ),
         ),
@@ -1028,8 +1074,7 @@ class _MyPageState extends State<MyPage> {
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Color(0xffffff),
-          border: Border.all(),
+          color: white,
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
@@ -1039,7 +1084,7 @@ class _MyPageState extends State<MyPage> {
 //              Image.asset("assets/icon/friends-wt.png", height: 32, fit: BoxFit.contain,),
               Image.asset("assets/icon/recommend.png", height: 42, fit: BoxFit.contain,),
               SizedBox(width: 12,),
-              Text("추천인 관리",style: TextStyle(fontSize: 16,color: Color(0xff444444))),
+              Text("추천인 관리",style: TextStyle(fontSize: 16,color: Color(0xff444444), fontWeight: FontWeight.w600)),
               Spacer(),
               Icon(Icons.arrow_forward_ios, color: Colors.black, size: 24,),
             ],
@@ -1060,18 +1105,16 @@ class _MyPageState extends State<MyPage> {
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Color(0xffffff),
-          border: Border.all(),
+          color: white,
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-//              Image.asset("assets/icon/friends-wt.png", height: 32, fit: BoxFit.contain,),
               Image.asset("assets/icon/recommend.png", height: 42, fit: BoxFit.contain,),
               SizedBox(width: 12,),
-              Text("찜한 매장",style: TextStyle(fontSize: 16,color: Color(0xff444444))),
+              Text("찜한 매장",style: TextStyle(fontSize: 16,color: Color(0xff444444),fontWeight: FontWeight.w600)),
               Spacer(),
               Icon(Icons.arrow_forward_ios, color: Colors.black, size: 24,),
             ],
@@ -1118,6 +1161,7 @@ class _MyPageState extends State<MyPage> {
       },
           child: Container(
             height: 48,
+            color: white,
             child: Row(
               children: [
                 Text("문의하기",style: TextStyle(fontSize: 14, color: Color(0xff444444)),),
@@ -1155,13 +1199,57 @@ class _MyPageState extends State<MyPage> {
                 onPressed: () {
                   Navigator.pop(context);
                 }
-              )
+              ),
             ]
           );
         }
     );
   }
 }
+
+/*
+class DeliveryCard extends StatefulWidget {
+  @override
+  _DeliveryCard createState() => _DeliveryCard();
+}
+
+class _DeliveryCard extends State<DeliveryCard> {
+  bool status = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: (){
+      },
+      enableFeedback:false,
+      child: Container(
+        height: 55.0,
+        color: white,
+        child: Row(
+          children: [
+            Text("BZA 결제 한도 설정",style: TextStyle(fontSize: 14,color: Color(0xff444444)),),
+            Spacer(),
+            FlutterSwitch(
+              width: 40.0,
+              height: 22.0,
+              toggleColor: status ? mainColor : white,
+              toggleSize: 24.0,
+              padding: 0.0,
+              activeColor: subBlue,
+              inactiveColor: Color(0xFFDDDDDD),
+              value: status,
+              onToggle: (val) {
+                setState(() {
+                  status = val;
+                });
+              },
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}*/
 
 class Tabs extends StatelessWidget {
   final String routesName;
@@ -1178,11 +1266,12 @@ class Tabs extends StatelessWidget {
         enableFeedback:false,
           child: Container(
             height: 48,
+            color: white,
             child: Row(
               children: [
                 Text(name,style: TextStyle(fontSize: 14,color: Color(0xff444444)),),
                 Spacer(),
-                Icon(Icons.arrow_forward_ios, size: 24,color: Colors.black,)
+                Icon(Icons.arrow_forward_ios, size: 24, color: Color(0xff444444),)
               ],
         ),
           ),
@@ -1200,7 +1289,7 @@ class Tabs2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: Color(0xffeeeeee),
+        color: Color(0xFFEEEEEE),
         padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 16),
         child: InkWell(
           onTap: () async{

@@ -10,11 +10,13 @@ import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/search.dart';
+import 'package:cashcook/src/screens/mypage/points/pointMgmt.dart';
 import 'package:cashcook/src/screens/qr/qr.dart';
 import 'package:cashcook/src/screens/mypage/mypage.dart';
 import 'package:cashcook/src/services/Search.dart';
 import 'package:cashcook/src/utils/Share.dart';
 import 'package:cashcook/src/utils/colors.dart';
+import 'package:cashcook/src/utils/datastorage.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,6 +31,11 @@ import 'package:cashcook/src/utils/customSlidePop.dart' as slideDialog;
 import 'package:url_launcher/url_launcher.dart';
 
 class MainMap extends StatefulWidget {
+  double lat;
+  double lon;
+
+  MainMap({this.lat, this.lon});
+
   @override
   _MainMap createState() => _MainMap();
 }
@@ -56,12 +63,14 @@ class _MainMap extends State<MainMap> {
   bool detailView = false;
   int selStore = 0;
 
+  // Pop Scope Controll
+  String loadCompleteUrl;
+  DateTime currentBackPressTime;
+
   @override
   void initState(){
     super.initState();
     getLocation();
-
-
   }
 
   @override
@@ -79,7 +88,7 @@ class _MainMap extends State<MainMap> {
           backgroundColor: white,
           resizeToAvoidBottomInset: true,
           appBar: sp.isCurrentPage != 2 ? AppBar(
-          backgroundColor: mainColor,
+          backgroundColor: white,
           elevation: 0.5,
           centerTitle: true,
           automaticallyImplyLeading: false,
@@ -87,306 +96,368 @@ class _MainMap extends State<MainMap> {
           Image.asset(
           "assets/icon/cashcook_logo.png",
           width: 116,
-          height: 23,
+          height: 30,
           ),
       actions: [
         Padding(
       padding: EdgeInsets.only(right: 14),
       child: InkWell(
-      onTap: () {
-          Navigator.of(context).push(
+      onTap: () async {
+          await Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => MyPage()));
+
+              googleMapController
+                  .getVisibleRegion()
+                  .then((value) async {
+            String start = value.northeast.latitude.toString() +
+                "," +
+                value.northeast.longitude.toString();
+            String end = value.southwest.latitude.toString() +
+                "," +
+                value.southwest.longitude.toString();
+            await sp.getStore(start, end, my.id);
+          });
       },
       child: Image.asset(
       "assets/icon/three_line.png",
       width: 24,
       height: 24,
       fit: BoxFit.contain,
+        color: Color(0xFF333333)
       ),
       ),
       )
       ],
       ) : Container(),
-      body: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height -
-          MediaQuery.of(context).padding.top -
-          MediaQuery.of(context).padding.bottom,
-          color: white,
-          child: Stack(
-          children: [
-          Positioned(
-          top: 0,
-          child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height -
-          MediaQuery.of(context).padding.top -
-          MediaQuery.of(context).padding.bottom -
-          53,
-          child: getChild(),
-          ),
-          ),
-          sp.detailView
-          ? Positioned(
-          bottom: my.id.toString() == sp.selStore.user_id ? 260 + (sp.position * 2) : 185 + (sp.position * 2),
-          right: 10,
-          child: Container(
-          width: 180,
-          height: 40,
-          decoration: BoxDecoration(
-          color: white,
-          borderRadius: BorderRadius.circular(50),
-          ),
-          child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-          Text(
-          "내 위치에서의 거리",
-          style: TextStyle(
-          color: Color(0xFF888888),
-          fontFamily: 'noto',
-          fontSize: 12),
-          ),
-          whiteSpaceW(8),
-          Text(
-          "${sp.distance.toStringAsFixed(1)}km",
-          style: TextStyle(
-          fontSize: 14,
-          fontFamily: 'noto',
-          color: mainColor),
-          )
-          ],
-          ),
-          ),
-          )
-              : Container(),
-          sp.detailView
-          ?
-
-          Positioned(
-          bottom: sp.position,
-          child: GestureDetector(
-            onPanUpdate: (details) async {
-              if(details.delta.dy > 0) {
-                  await sp.hideDetailView();
-              } else {
-                  if (!Provider.of<StoreServiceProvider>(context,listen: false).isLoading) {
-                    await Provider.of<StoreServiceProvider>(
-                        context, listen: false).setServiceNum(
-                        0, sp.selStore.id);
-                    storeDetailDialog();
-                  }
-                }
-              },
-            onPanEnd: (details) async {
-              await sp.backPosition();
-            },
-            child: Container(
-              decoration: BoxDecoration(
+            body: WillPopScope(
+              onWillPop: onWillPop,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height -
+                    MediaQuery.of(context).padding.top -
+                    MediaQuery.of(context).padding.bottom,
                 color: white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20.0),
-                      topRight: Radius.circular(20.0)
-                  )
-              ),
-              width: MediaQuery.of(context).size.width,
-              height: my.id.toString() == sp.selStore.user_id? 253 + (sp.position * 2) : 180 + (sp.position * 2),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  InkWell(
-                    onTap: () async {
-                      if(!Provider.of<StoreServiceProvider>(context, listen: false).isLoading){
-                        await Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(0, sp.selStore.id);
-                        storeDetailDialog();
-                        Provider.of<StoreServiceProvider>(context, listen: false).showView();
-                      }
-                    },
-                    child:
-                    Container(
-                      decoration: BoxDecoration(
-                        color: white,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20.0),
-                          topRight: Radius.circular(20.0)
-                        )
+                child: Stack(
+                  children: [
+                    Positioned(
+                      top: 0,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height -
+                            MediaQuery.of(context).padding.top -
+                            MediaQuery.of(context).padding.bottom -
+                            53,
+                        child: getChild(),
                       ),
-                      width: MediaQuery.of(context).size.width,
-                      height: 150,
-                      padding: EdgeInsets.all(16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CachedNetworkImage(
-                            imageUrl: sp.selStore.store.shop_img1,
-                            fit: BoxFit.fill,
-                            width: 74,
-                            height: 84,
-                          ),
-                          whiteSpaceW(12),
-                          Expanded(
+                    ),
+                    sp.detailView
+                        ? Positioned(
+                      bottom: my.id.toString() == sp.selStore.user_id ? 230 + (sp.position * 2) : 143 + (sp.position * 2),
+                      right: 10,
+                      child: Container(
+                        width: 180,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: white,
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "내 위치에서의 거리",
+                              style: TextStyle(
+                                  color: Color(0xFF888888),
+                                  fontFamily: 'noto',
+                                  fontSize: 12),
+                            ),
+                            whiteSpaceW(8),
+                            Text(
+                              "${sp.distance.toStringAsFixed(1)}km",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: 'noto',
+                                  color: mainColor),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                        : Container(),
+                    sp.detailView
+                        ?
+
+                    Positioned(
+                        bottom: sp.position,
+                        child: GestureDetector(
+                          onPanUpdate: (details) async {
+                            if(details.delta.dy > 0) {
+                              await sp.hideDetailView();
+                            } else {
+                              if (!Provider.of<StoreServiceProvider>(context,listen: false).isLoading) {
+                                await Provider.of<StoreServiceProvider>(
+                                    context, listen: false).setServiceNum(
+                                    0, sp.selStore.id);
+                                storeDetailDialog();
+                              }
+                            }
+                          },
+                          onPanEnd: (details) async {
+                            await sp.backPosition();
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: white,
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20.0),
+                                    topRight: Radius.circular(20.0)
+                                )
+                            ),
+                            width: MediaQuery.of(context).size.width,
+                            height: my.id.toString() == sp.selStore.user_id? 223 + (sp.position * 2) : 136 + (sp.position * 2),
                             child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                                children: [
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                InkWell(
+                                  onTap: () async {
+                                    if(!Provider.of<StoreServiceProvider>(context, listen: false).isLoading){
+                                      await Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(0, sp.selStore.id);
+                                      storeDetailDialog();
+                                      Provider.of<StoreServiceProvider>(context, listen: false).showView();
+                                    }
+                                  },
+                                  child:
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: white,
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(20.0),
+                                            topRight: Radius.circular(20.0)
+                                        )
+                                    ),
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 136,
+                                    padding: EdgeInsets.all(16),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            showBigImage(sp.selStore.store.shop_img1);
+                                          },
+                                          child: CachedNetworkImage(
+                                            imageUrl: sp.selStore.store.shop_img1,
+                                            imageBuilder: (context, img) => Container(
+                                                width: 64,
+                                                height: 64,
+                                                decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.all(
+                                                        Radius.circular(6.0)
+                                                    ),
+                                                    image: DecorationImage(
+                                                        image: img, fit: BoxFit.fill
+                                                    )
+                                                )
+                                            ),
+                                          ),
+                                        ),
+                                        whiteSpaceW(12),
+                                        Expanded(
+                                          child: Column(
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: <Widget>[
+                                                    Text(
+                                                      sp.selStore.store.name,
+                                                      style: TextStyle(
+                                                          fontWeight: FontWeight.w600,
+                                                          fontSize: 14,
+                                                          color: Color(0xFF444444),
+                                                          fontFamily: 'noto'),
+                                                    ),
+                                                    whiteSpaceW(20),
+                                                    Text(
+                                                      "${sp.selStore.store.category_name} / ${sp.selStore.store.category_sub_name}",
+                                                      style: TextStyle(
+                                                          fontWeight: FontWeight.w100,
+                                                          fontSize: 12,
+                                                          color: mainColor,
+                                                          fontFamily: 'noto'),
+                                                    )
+                                                  ],
+                                                ),
+                                                whiteSpaceH(5),
+                                                Text(
+                                                  sp.selStore.address.address,
+                                                  style: TextStyle(
+                                                      fontFamily: 'noto',
+                                                      color: Color(0xFF888888),
+                                                      fontSize: 12),
+                                                ),
+                                                whiteSpaceH(12),
+                                                my.id.toString() == sp.selStore.user_id ?
+                                                Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                                  children: [
+                                                    Image.asset("assets/icon/adp.png",height: 30, fit: BoxFit.contain,),
+                                                    Text(
+                                                      "  ${pointMap['ADP'] == null ? demicalFormat.format(0)
+                                                          : demicalFormat.format(pointMap['ADP'])}",
+                                                      style: TextStyle(
+                                                          fontSize: 12,
+                                                          color: black,
+                                                          fontWeight: FontWeight.bold,
+                                                          fontFamily: 'noto'),
+                                                    ),
+                                                    whiteSpaceW(12),
+                                                    Image.asset("assets/icon/bza.png",height: 30, fit: BoxFit.contain,),
+                                                    Text(
+                                                      "  ${demicalFormat.format(pointMap['DL'])}",
+                                                      style: TextStyle(
+                                                          fontFamily: 'noto',
+                                                          color: black,
+                                                          fontWeight: FontWeight.bold,
+                                                          fontSize: 12),
+                                                    )
+                                                  ],
+                                                ) : Row(),
+                                              ]
+                                          ),
+                                        ),
+                                        whiteSpaceW(6),
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) => Qr(),
+                                                  settings: RouteSettings(
+                                                      arguments: sp.selStore.id
+                                                  )),);
+                                          },
+                                          child: Image.asset(
+                                            "assets/resource/map/qr.png",
+                                            width: 24,
+                                            height: 24,
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                ),
+                                my.id.toString() == sp.selStore.user_id ? Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 80,
+                                  color: white,
+                                  padding: EdgeInsets.only(left: 20, right: 20, bottom: 30),
+                                  child:
                                   Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      Text(
-                                        sp.selStore.store.name,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 14,
-                                            color: Color(0xFF444444),
-                                            fontFamily: 'noto'),
+                                      Expanded(
+                                          child: Container(
+                                            child:RaisedButton(
+                                                color: white,
+                                                onPressed: () async {
+                                                  await Navigator.of(context).pushNamed("/store/modify/store");
+                                                  googleMapController
+                                                      .getVisibleRegion()
+                                                      .then((value) async {
+                                                    String start = value.northeast.latitude.toString() +
+                                                        "," +
+                                                        value.northeast.longitude.toString();
+                                                    String end = value.southwest.latitude.toString() +
+                                                        "," +
+                                                        value.southwest.longitude.toString();
+
+                                                    print("끝나서 다시 불러주세용");
+                                                    await sp.getStore(start, end, my.id);
+                                                  });
+                                                },
+                                                elevation: 0.0,
+                                                child: Center(
+                                                  child: Text(
+                                                    "매장정보/수정",
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Color(0xFF333333),
+                                                        fontFamily: 'noto'),
+                                                  ),
+                                                ),
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(20.0),
+                                                    side: BorderSide(color: Color(0xFFDDDDDD))
+                                                )
+                                            ),
+                                          )
+
                                       ),
-                                      whiteSpaceW(20),
-                                      Text(
-                                        "${sp.selStore.store.category_name} / ${sp.selStore.store.category_sub_name}",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w100,
-                                            fontSize: 12,
-                                            color: mainColor,
-                                            fontFamily: 'noto'),
-                                      )
+                                      whiteSpaceW(5),
+                                      Expanded(
+                                        child:
+                                        Container(
+                                          child: RaisedButton(
+                                              color: white,
+                                              onPressed: () {
+                                                Navigator.of(context).push(MaterialPageRoute(
+                                                    builder: (context) => pointMgmt()
+                                                ));
+                                              },
+                                              elevation: 0.0,
+                                              child: Center(
+                                                child: Text(
+                                                  "이용내역",
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Color(0xFF333333),
+                                                      fontFamily: 'noto'),
+                                                ),
+                                              ),
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(20.0),
+                                                  side: BorderSide(color: Color(0xFFDDDDDD))
+                                              )
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                   ),
-                                  whiteSpaceH(5),
-                                  Text(
-                                    sp.selStore.address.address,
-                                    style: TextStyle(
-                                        fontFamily: 'noto',
-                                        color: Color(0xFF888888),
-                                        fontSize: 12),
-                                  ),
-                                  whiteSpaceH(12),
-                                  my.id.toString() == sp.selStore.user_id ?
-                                  Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.start,
-                                    children: [
-                                      Image.asset("assets/icon/adp.png",height: 30, fit: BoxFit.contain,),
-                                      Text(
-                                        "  ${pointMap['ADP'] == null ? demicalFormat.format(0)
-                                            : demicalFormat.format(pointMap['ADP'])}",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: black,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'noto'),
-                                      ),
-                                      whiteSpaceW(12),
-                                      Image.asset("assets/icon/DL 2.png",height: 30, fit: BoxFit.contain,),
-                                      Text(
-                                        "  ${demicalFormat.format(pointMap['DL'])}",
-                                        style: TextStyle(
-                                            fontFamily: 'noto',
-                                            color: black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12),
-                                      )
-                                    ],
-                                  ) : Row(),
-                                ]
+                                ) : Container(),
+                              ],
                             ),
                           ),
-                          whiteSpaceW(6),
-                          InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) => Qr(),
-                                    settings: RouteSettings(
-                                        arguments: sp.selStore.id
-                                    )),);
-                            },
-                            child: Image.asset(
-                              "assets/resource/map/qr.png",
-                              width: 24,
-                              height: 24,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                  ),
-                  my.id.toString() == sp.selStore.user_id ? Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 80,
-                    color: white,
-                    padding: EdgeInsets.only(left: 20, right: 20, bottom: 30),
-                    child:
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Expanded(
-                          child: RaisedButton(
-                            color: Colors.cyan,
-                            onPressed: () async {
-                              await Navigator.of(context).pushNamed("/store/modify/store");
-                              googleMapController
-                                  .getVisibleRegion()
-                                  .then((value) async {
-                                String start = value.northeast.latitude.toString() +
-                                    "," +
-                                    value.northeast.longitude.toString();
-                                String end = value.southwest.latitude.toString() +
-                                    "," +
-                                    value.southwest.longitude.toString();
-
-                                print("끝나서 다시 불러주세용");
-                                await sp.getStore(start, end, my.id);
-                              });
-                            },
-                            elevation: 0.0,
-                            child: Center(
-                              child: Text(
-                                "매장정보/수정",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: white,
-                                    fontFamily: 'noto'),
-                              ),
-                            ),
-                          ),
-                        ),
-                        whiteSpaceW(5),
-                        Expanded(
-                          child: RaisedButton(
-                            color: Colors.cyan,
-                            onPressed: () {
-                                showAlert();
-                            },
-                            elevation: 0.0,
-                            child: Center(
-                              child: Text(
-                                "이용내역",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: white,
-                                    fontFamily: 'noto'),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ) : Container(),
-                ],
+                        )
+                    )
+                        : Container(),
+                  ],
+                ),
               ),
             ),
-          )
-          )
-              : Container(),
-          ],
-          ),
-          ),
       );
         }
       );
+  }
+
+  // 누르면 종료 팝업
+  Future<bool> onWillPop() {
+    if(loadCompleteUrl == null){
+      DateTime now = DateTime.now();
+      if(currentBackPressTime == null ||
+          now.difference(currentBackPressTime) > Duration(seconds: 2)){
+        currentBackPressTime = now;
+        showToast("한번 더 누르면 캐시쿡이 종료됩니다.");
+
+
+        return Future.value(false);
+      }
+      return Future.value(true);
+    }
   }
 
   // 매장정보/수정 팝업
@@ -417,11 +488,25 @@ class _MainMap extends State<MainMap> {
                                       child:
                                       Row(
                                         children: <Widget>[
-                                          CachedNetworkImage(
-                                            imageUrl: sp.selStore.store.shop_img1,
-                                            fit: BoxFit.fill,
-                                            width: 74,
-                                            height: 84,
+                                          InkWell(
+                                            onTap: () {
+                                              showBigImage(sp.selStore.store.shop_img1);
+                                            },
+                                            child: CachedNetworkImage(
+                                              imageUrl: sp.selStore.store.shop_img1,
+                                              imageBuilder: (context, img) => Container(
+                                                  width: 64,
+                                                  height: 64,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.all(
+                                                          Radius.circular(6.0)
+                                                      ),
+                                                      image: DecorationImage(
+                                                          image: img, fit: BoxFit.fill
+                                                      )
+                                                  )
+                                              ),
+                                            ),
                                           ),
                                           whiteSpaceW(10),
                                           Expanded(
@@ -472,7 +557,7 @@ class _MainMap extends State<MainMap> {
                                               width: 65,
                                               child:
                                               RaisedButton(
-                                                color: Colors.cyan,
+                                                color: mainColor,
                                                 onPressed: () async {
                                                   await Navigator.of(context).pushNamed("/store/modify/store");
                                                   googleMapController
@@ -550,6 +635,7 @@ class _MainMap extends State<MainMap> {
                                                             "assets/icon/star_blue.png",
                                                             width: 20,
                                                             height: 20,
+                                                            color: mainColor,
                                                           ),
                                                           whiteSpaceW(2.0),
                                                           Text(
@@ -588,6 +674,7 @@ class _MainMap extends State<MainMap> {
                                                            "assets/icon/share_blue.png",
                                                           width: 20,
                                                           height: 20,
+                                                             color: mainColor,
                                                           ),
                                                           whiteSpaceW(2.0),
                                                          Text(
@@ -624,6 +711,7 @@ class _MainMap extends State<MainMap> {
                                                             "assets/icon/tel_blue.png",
                                                             width: 20,
                                                             height: 20,
+                                                            color: mainColor,
                                                           ),
                                                           whiteSpaceW(2.0),
                                                           Text(
@@ -645,29 +733,47 @@ class _MainMap extends State<MainMap> {
                                           Row(
                                               children: [
                                                 Expanded(
-                                                  child:CachedNetworkImage(
-                                                    imageUrl: sp.selStore.store.shop_img1,
-                                                    fit: BoxFit.fill,
-                                                    width: MediaQuery.of(context).size.width/3.5,
-                                                    height: 130,
+                                                  child:
+                                                      InkWell(
+                                                  onTap: () {
+                                                    showBigImage(sp.selStore.store.shop_img1);
+                                                  },
+                                                    child: CachedNetworkImage(
+                                                      imageUrl: sp.selStore.store.shop_img1,
+                                                      fit: BoxFit.fill,
+                                                      width: MediaQuery.of(context).size.width/3.5,
+                                                      height: 130,
+                                                    ),
                                                   ),
                                                 ),
                                                 whiteSpaceW(5),
                                                 Expanded(
-                                                  child:CachedNetworkImage(
-                                                    imageUrl: sp.selStore.store.shop_img2,
-                                                    fit: BoxFit.fill,
-                                                    width: MediaQuery.of(context).size.width/3.5,
-                                                    height: 130,
+                                                  child:
+                                                  InkWell(
+                                                    onTap: () {
+                                                      showBigImage(sp.selStore.store.shop_img2);
+                                                    },
+                                                    child: CachedNetworkImage(
+                                                      imageUrl: sp.selStore.store.shop_img2,
+                                                      fit: BoxFit.fill,
+                                                      width: MediaQuery.of(context).size.width/3.5,
+                                                      height: 130,
+                                                    ),
                                                   ),
                                                 ),
                                                 whiteSpaceW(5),
                                                 Expanded(
-                                                  child:CachedNetworkImage(
-                                                    imageUrl: sp.selStore.store.shop_img3,
-                                                    fit: BoxFit.fill,
-                                                    width: MediaQuery.of(context).size.width/3.5,
-                                                    height: 130,
+                                                  child:
+                                                  InkWell(
+                                                    onTap: () {
+                                                      showBigImage(sp.selStore.store.shop_img3);
+                                                    },
+                                                    child: CachedNetworkImage(
+                                                      imageUrl: sp.selStore.store.shop_img3,
+                                                      fit: BoxFit.fill,
+                                                      width: MediaQuery.of(context).size.width/3.5,
+                                                      height: 130,
+                                                    ),
                                                   ),
                                                 ),
                                               ],
@@ -783,8 +889,8 @@ class _MainMap extends State<MainMap> {
                                               Expanded(
                                                 flex:3,
                                                 child:Text(
-                                                  sp.selStore.store.limitDL == "1"?
-                                                  "${sp.selStore.store.fromDL} BZA  ~  ${sp.selStore.store.toDL} BZA" : "결제한도가 없습니다.",
+                                                  sp.selStore.store.limitDL == null?
+                                                  "결제한도가 없습니다." : "${sp.selStore.store.limitDL} BZA",
                                                   style: TextStyle(
                                                       fontWeight: FontWeight.w200,
                                                       fontSize: 12,
@@ -815,7 +921,7 @@ class _MainMap extends State<MainMap> {
                                         child: Container(
                                           height: 30,
                                           child:Text(
-                                              "매장정보",
+                                              "상품정보",
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                   fontSize: 14,
@@ -865,7 +971,7 @@ class _MainMap extends State<MainMap> {
                                       child: Container(
                                         height: 30,
                                         child:Text(
-                                            "기타정보",
+                                            "매장정보",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                                 fontSize: 14,
@@ -1271,6 +1377,7 @@ class _MainMap extends State<MainMap> {
           "assets/icon/hate_color.png",
           width: 18,
           height: 18,
+          color: mainColor
         )
     );
   }
@@ -1299,6 +1406,7 @@ class _MainMap extends State<MainMap> {
           "assets/icon/like_color.png",
           width: 18,
           height: 18,
+          color: mainColor,
         )
     );
   }
@@ -1418,6 +1526,7 @@ class _MainMap extends State<MainMap> {
                   "assets/resource/main/search_blue.png",
                   width: 24,
                   height: 24,
+                  color: mainColor,
                 ),
                 Text("검색",
                     style: TextStyle(
@@ -1430,8 +1539,7 @@ class _MainMap extends State<MainMap> {
               ),
               elevation: 5.0,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
-                side: BorderSide(color: mainColor, width: 1.0)
+                borderRadius: BorderRadius.circular(6.0),
               ),
             )
             ),
@@ -1485,9 +1593,16 @@ class _MainMap extends State<MainMap> {
 
   getLocation() async {
     currentLocation = await location.getLocation();
-    cameraPosition = CameraPosition(
-        target: LatLng(currentLocation.latitude, currentLocation.longitude),
-        zoom: 14);
+    if((widget.lat != null && widget.lat != 0.0) && (widget.lon != null && widget.lon != 0.0)){
+      cameraPosition = CameraPosition(
+          target: LatLng(widget.lat, widget.lon),
+          zoom: 14);
+    } else {
+      cameraPosition = CameraPosition(
+          target: LatLng(currentLocation.latitude, currentLocation.longitude),
+          zoom: 14);
+    }
+
     setState(() {
       mapLoad = true;
     });
@@ -1508,5 +1623,50 @@ class _MainMap extends State<MainMap> {
             content: Text("서비스 준비중입니다."),
           );
         });
+  }
+
+  showBigImage(String img) {
+    showDialog(
+      context: context,
+      builder: (context){
+        return
+          Stack(
+            children: [
+              Opacity(
+                  opacity: 0.4,
+                  child: Scaffold(
+                      body: InkWell(
+                        onTap: () {
+                          Navigator.pop(context,true);
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height,
+                          color: Color(0xFFEEEEEE),
+                        ),
+                      )
+                  )
+              ),
+              Positioned.fill(
+                child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 100.0, horizontal: 32.0),
+                    child:
+                    CachedNetworkImage(
+                      imageUrl: img,
+                      imageBuilder: (context, img) => Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                              image: DecorationImage(
+                                  image: img, fit: BoxFit.fill
+                              )
+                          )
+                      ),
+                    ),
+              )
+              ),
+            ],
+          );
+      }
+    );
   }
 }

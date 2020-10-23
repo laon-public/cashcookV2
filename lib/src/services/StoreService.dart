@@ -117,4 +117,12 @@ class StoreService{
 
     return utf8.decode(response.bodyBytes);
   }
+
+  cancleScrap(int store_id) async {
+    final response = await client.delete(cookURL+"/franchises/scrap?store_id=$store_id", headers: {
+      "Authorization": "BEARER ${dataStorage.token}"
+    });
+
+    return utf8.decode(response.bodyBytes);
+  }
 }
