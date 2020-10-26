@@ -1,5 +1,6 @@
 import 'package:cashcook/src/provider/QRProvider.dart';
 import 'package:cashcook/src/screens/bargain/bargain.dart';
+import 'package:cashcook/src/screens/bargain/bargaingame.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/dialog.dart';
@@ -45,7 +46,7 @@ class _Qr extends State<Qr> {
 
   bargainMove() {
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => Bargain()), (route) => false);
+        MaterialPageRoute(builder: (context) => BargainGame()), (route) => false);
   }
 
   @override

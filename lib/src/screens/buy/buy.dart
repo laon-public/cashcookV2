@@ -1,7 +1,6 @@
 import 'package:cashcook/src/model/usercheck.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
-import 'package:cashcook/src/screens/bargain/bargain.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:provider/provider.dart' as P;
@@ -54,12 +53,6 @@ class _Buy extends State<Buy> {
   dialogPop() {
     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
       builder: (context) => MainMap()
-    ), (route) => false);
-  }
-
-  bargainMove() {
-    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
-      builder: (context) => Bargain()
     ), (route) => false);
   }
 
