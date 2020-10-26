@@ -47,7 +47,12 @@ class _Inquiry extends State<Inquiry> {
     return Scaffold(
       backgroundColor: white,
       appBar: AppBar(
-        title: Text("서비스 문의"),
+        title: Text("서비스 문의",
+        style: TextStyle(
+        color: Color(0xFF333333),
+    fontSize: 14,
+    fontFamily: 'noto',
+    fontWeight: FontWeight.w600)),
         centerTitle: true,
         elevation: 1.0,
         actions: [
@@ -85,16 +90,17 @@ class _Inquiry extends State<Inquiry> {
 //              return InquiryItem(center.inquiry[idx]);
               return InquiryItem(idx, center.inquiry[idx]);
             }
-            return Center(
-                child: CircularProgressIndicator(
-                    backgroundColor: mainColor,
-                    valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
-                )
-            );
+            // return Center(
+            //     child: CircularProgressIndicator(
+            //         backgroundColor: mainColor,
+            //         valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+            //     )
+            // );
           },
           physics: AlwaysScrollableScrollPhysics(),
           controller: _scrollController,
-          itemCount: center.inquiry.length + 1,
+          // itemCount: center.inquiry.length + 1,
+          itemCount: center.inquiry.length,
         );
       },
     );

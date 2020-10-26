@@ -1,3 +1,5 @@
+import 'package:cashcook/src/provider/StoreProvider.dart';
+import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -124,6 +126,42 @@ class _Scrap extends State<Scrap> {
                   ],
                 )
             )
+          ),
+          Row(
+              children: [
+                InkWell(
+                  onTap: () async {
+                    await Provider.of<StoreProvider>(context, listen: false).clearMap();
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => MainMap(
+                          lat: scrap.lat,
+                          lon: scrap.lng,
+                        )
+                      ),
+                        (route) => false
+                    );
+                  },
+                  child: Image.asset(
+                    "assets/icon/grey_mk.png",
+                    width: 36,
+                    height: 36,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Provider.of<StoreServiceProvider>(context, listen: false).cancleScrap(scrap.id);
+                  },
+                  child: Image.asset(
+                    "assets/icon/delete.png",
+                    width: 48,
+                    height: 48,
+                    color: black,
+                    fit: BoxFit.fill,
+                  ),
+                )
+              ],
           )
         ],
       ),

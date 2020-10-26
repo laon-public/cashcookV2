@@ -31,7 +31,14 @@ class Faq extends StatelessWidget {
     return Scaffold(
       backgroundColor: white,
       appBar: AppBar(
-        title: Text("FAQ"),
+        title: Text("FAQ",
+          style: TextStyle(
+            color: Color(0xFF333333),
+            fontSize: 14,
+            fontFamily: 'noto',
+            fontWeight: FontWeight.w600
+          ),
+        ),
         centerTitle: true,
         elevation: 1.0,
       ),
@@ -50,15 +57,16 @@ class Faq extends StatelessWidget {
             if(idx < centers.faq.length){
               return FaqItem(centers.faq[idx]);
             }
-            return Center(
-                child: CircularProgressIndicator(
-                    backgroundColor: mainColor,
-                    valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
-                )
-            );
+            // return Center(
+            //     child: CircularProgressIndicator(
+            //         backgroundColor: mainColor,
+            //         valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+            //     )
+            // );
           },
           physics: AlwaysScrollableScrollPhysics(),
-          itemCount: centers.faq.length + 1,
+          // itemCount: centers.faq.length + 1,
+          itemCount: centers.faq.length,
         );
       },
     );

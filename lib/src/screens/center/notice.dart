@@ -31,7 +31,12 @@ class Notice extends StatelessWidget {
     return Scaffold(
       backgroundColor: white,
       appBar: AppBar(
-        title: Text("공지사항"),
+        title: Text("공지사항",
+        style: TextStyle(
+        color: Color(0xFF333333),
+    fontSize: 14,
+    fontFamily: 'noto',
+    fontWeight: FontWeight.w600)),
         centerTitle: true,
         elevation: 1.0,
       ),
@@ -50,16 +55,17 @@ class Notice extends StatelessWidget {
           if(idx < center.notice.length){
             return NoticeItem(center.notice[idx]);
           }
-          return Center(
-              child: CircularProgressIndicator(
-                  backgroundColor: mainColor,
-                  valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
-              )
-          );
+          // return Center(
+          //     child: CircularProgressIndicator(
+          //         backgroundColor: mainColor,
+          //         valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+          //     )
+          // );
         },
           physics: AlwaysScrollableScrollPhysics(),
           controller: _scrollController,
-          itemCount: center.notice.length + 1,
+          // itemCount: center.notice.length + 1,
+          itemCount: center.notice.length,
         );
       },
     );

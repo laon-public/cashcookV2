@@ -42,11 +42,21 @@ class _IntegratedPoint extends State<IntegratedPoint> {
           color: white,
           fontSize: 14,
           fontFamily: 'noto',
-
+          fontWeight: FontWeight.w600
         )),
         centerTitle: true,
         elevation: 0.0,
         backgroundColor: mainColor,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Image.asset(
+            "assets/resource/public/close.png",
+            width: 24,
+            height: 24,
+          ),
+        ),
       ),
       body: Column(
           children: [

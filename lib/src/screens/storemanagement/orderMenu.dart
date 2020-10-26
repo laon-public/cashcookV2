@@ -1,3 +1,4 @@
+import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/model/store/menu.dart';
 import 'package:cashcook/src/model/usercheck.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
@@ -40,6 +41,7 @@ class _OrderMenu extends State<OrderMenu> {
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> pointMap =  Provider.of<UserProvider>(context, listen: false).pointMap;
+    StoreModel store = Provider.of<StoreProvider>(context, listen: false).selStore;
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
@@ -121,6 +123,7 @@ class _OrderMenu extends State<OrderMenu> {
                 children: [
                   whiteSpaceH(8),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text("BZA 결제",
                           style: TextStyle(
@@ -133,6 +136,18 @@ class _OrderMenu extends State<OrderMenu> {
                       Text("${demicalFormat.format(pointMap['DL'])} BZA 보유",
                           style: TextStyle(
                               fontSize: 12,
+                              fontFamily: 'noto',
+                              color: mainColor,
+                              fontWeight: FontWeight.w600
+                          )),
+                      whiteSpaceW(10),
+                      Text(
+                          store.store.limitDL == null ?
+                          "* 결제한도가 없는 매장 입니다."
+                              :
+                          "* 해당매장의 결제한도는 ${store.store.limitDL} BZA 입니다.",
+                          style: TextStyle(
+                              fontSize: 10,
                               fontFamily: 'noto',
                               color: mainColor,
                               fontWeight: FontWeight.w600
@@ -711,7 +726,7 @@ class _OrderMenu extends State<OrderMenu> {
 
   showBZADialog() {
     Map<String, dynamic> pointMap =  Provider.of<UserProvider>(context, listen: false).pointMap;
-
+    StoreModel store = Provider.of<StoreProvider>(context, listen: false).selStore;
     showDialog(
         context: context,
         builder: (context) {
@@ -733,15 +748,19 @@ class _OrderMenu extends State<OrderMenu> {
                 height: 180,
                 child: Column(
                   children: [
-                    Text(
-                        "캐시푸드 주문 금액 29,000 중\n"
-                            + "BZA로 결제할 수량을 입력하세요.",
-                      style: TextStyle(
-                        color: Color(0xFF444444),
-                        fontSize: 12,
-                        fontFamily: 'noto'
-                      ),
-                      textAlign: TextAlign.center,
+                    Consumer<StoreServiceProvider>(
+                      builder: (context, ssp, _){
+                        return Text(
+                          "${store.store.name} 주문 금액 ${numberFormat.format(ssp.orderPay)}원 중\n"
+                              + "BZA로 결제할 수량을 입력하세요.",
+                          style: TextStyle(
+                              color: Color(0xFF444444),
+                              fontSize: 12,
+                              fontFamily: 'noto'
+                          ),
+                          textAlign: TextAlign.center,
+                        );
+                      },
                     ),
                     Consumer<StoreServiceProvider>(
                       builder: (context, ssp, _) {
@@ -830,7 +849,9 @@ class _OrderMenu extends State<OrderMenu> {
                                           color: Colors.transparent,
                                           child: InkWell(
                                             onTap: () {
-                                              if(pointMap['DL'] < int.parse(ssp.bzaCtrl.text)){
+                                              if(store.store.limitDL != null && int.parse(store.store.limitDL) < int.parse(ssp.bzaCtrl.text)){
+                                                showToast("해당 매장의 결제한도보다 많습니다.");
+                                              } else if(pointMap['DL'] < int.parse(ssp.bzaCtrl.text)){
                                                 showToast("보유 BZA보다 많습니다.");
                                               } else if((int.parse(ssp.bzaCtrl.text) * 100) > ssp.orderPay) {
                                                 showToast("결제금액 보다 많습니다.");

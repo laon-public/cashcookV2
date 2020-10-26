@@ -45,167 +45,138 @@ class _FirstBiz extends State<FirstBiz> {
           ),
           automaticallyImplyLeading: false,
         ),
-        body: Column(
-            children: [
-              Container(
-                height: 70,
-                child: Center(
-                    child:Text(
-                      "가입하는 회원등급을 선택해주세요.",
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          child:
+          Column(
+              children: [
+                Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.only(top: 40.0, bottom: 10.0),
+                    child: Text(
+                      "가입하는 회원등급을\n"
+                          "선택해주세요.",
                       style: TextStyle(
-                          color: black,
+                          color: Color(0xFF222222),
                           fontFamily: 'noto',
                           fontSize: 16,
                           fontWeight: FontWeight.w300),
+                      textAlign: TextAlign.start,
                     )
-
                 ),
-              ),
-
-              Container(
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child:InkWell(
-                            onTap: () async {
-                              await Provider.of<UserProvider>(context,listen: false).recognitionSelect().then((value) async =>
-                              {
-                                if(value == 0){
-                                  showToast("추천자가 없습니다."),
-                                  await Provider.of<UserProvider>(context, listen: false).withoutReco(),
-
-                                  Navigator.of(context)
-                                      .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false),
-                                } else {
-                                  Navigator.of(context)
-                                      .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => FirstRecommendation(type: "NORMAL")), (route) => false),
-                                }
-                              }
-                              );
-                            },
-                            child: whiteBox("일반"),
-                          )
-                        )
-
-                      ]
-                  ),
-                ),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child:InkWell(
-                          onTap: () async {
-                            await Provider.of<UserProvider>(context,listen: false).recognitionSelect().then((value) async =>
-                            {
-                              if(value == 0){
-                                showToast("추천자가 없습니다."),
-                                await Provider.of<UserProvider>(context, listen: false).withoutRecoDis(),
-
-                                Navigator.of(context)
-                                    .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false),
-                              } else {
-                                Navigator.of(context)
-                                    .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => FirstRecommendation(type:"DISTRIBUTOR")), (route) => false),
-                              }
-                            }
-                            );
-                          },
-                          child: whiteBox("총판"),
-                        ),
-                      ),
-                      Expanded(
-                          child:InkWell(
-                            onTap: () async {
-                              Navigator.of(context)
-                                  .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => FirstBizSelect()), (route) => false);
-                            },
-                            child: whiteBox("대리점"),
-                          )
-                      )
-                    ]
-                ),
-              ),
-              whiteSpaceH(50),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                      "*매장 회원등록은 일반회원으로 가입 후 마이페이지에서",
-                    style: TextStyle(
-                      color: black,
-                      fontSize: 12,
-                      fontFamily: 'noto'
-                    ),
-                  ),
-                  Text(
-                      "매장등록을 하면 매장회원으로 등록됩니다.",
+                Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.only(bottom: 24.0),
+                    child: Text(
+                      "매장 회원등록은 일반회원으로 가입 후 마이페이지에서\n"
+                          "매장등록을 하면 매장회원으로 등록됩니다.",
                       style: TextStyle(
-                          color: black,
+                          color: Color(0xFF999999),
                           fontSize: 12,
                           fontFamily: 'noto'
                       ),
-                  )
-                ]
-              )
+                      textAlign: TextAlign.start,
+                    ),
+                ),
+               Container(
+                    height: 88,
+                    child:InkWell(
+                      onTap: () async {
+                        await Provider.of<UserProvider>(context,listen: false).recognitionSelect().then((value) async =>
+                        {
+                          if(value == 0){
+                            showToast("추천자가 없습니다."),
+                            await Provider.of<UserProvider>(context, listen: false).withoutReco(),
 
-          ]
+                            Navigator.of(context)
+                                .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false),
+                          } else {
+                            Navigator.of(context)
+                                .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => FirstRecommendation(type: "NORMAL")), (route) => false),
+                          }
+                        }
+                        );
+                      },
+                      child: whiteBox("일반","assets/icon/maru.png"),
+                    )
+                ),
+                Container(
+                  height: 88,
+                  child:InkWell(
+                    onTap: () async {
+                      await Provider.of<UserProvider>(context,listen: false).recognitionSelect().then((value) async =>
+                      {
+                        if(value == 0){
+                          showToast("추천자가 없습니다."),
+                          await Provider.of<UserProvider>(context, listen: false).withoutRecoDis(),
+
+                          Navigator.of(context)
+                              .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false),
+                        } else {
+                          Navigator.of(context)
+                              .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => FirstRecommendation(type:"DISTRIBUTOR")), (route) => false),
+                        }
+                      }
+                      );
+                    },
+                    child: whiteBox("총판","assets/resource/public/payment.png"),
+                  ),
+                ),
+                Container(
+                    height: 88,
+                    child:InkWell(
+                      onTap: () async {
+                        Navigator.of(context)
+                            .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => FirstBizSelect()), (route) => false);
+                      },
+                      child: whiteBox("대리점","assets/icon/cookie.png"),
+                    )
+                ),
+              ]
+          ),
         )
+
     );
   }
 
-  Widget whiteBox(text) {
+  Widget whiteBox(text, imagePath) {
     return Container(
-          margin: EdgeInsets.all(10),
+      margin: EdgeInsets.only(bottom: 12.0),
+          width: MediaQuery.of(context).size.width,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              (text == "일반") ?
               Container(
-                height: 74,
-                width: 60,
-                transform: Matrix4.rotationZ(pi / 25),
+                width: 84,
+                height: 84,
+                margin: EdgeInsets.only(top: 4.0, left: 4.0, bottom: 4.0, right: 12.0),
                 child: Image.asset(
-                  "assets/icon/maru.png",
-                  width: 60,
-                  height: 74,
+                  imagePath,
+                  width: 80,
+                  height: 80,
                   fit: BoxFit.contain,
                 ),
-              )
-              : Container(),
+              ),
               Text(
                 text,
                 style: TextStyle(
-                    fontSize: (text == "일반") ? 36 : 24,
-                    color: Colors.black,
+                    fontSize: 20,
+                    color: Color(0xFF333333),
                     fontFamily: 'noto',
                     fontWeight: FontWeight.w600
                 ),
               ),
-              (text != "일반") ?
+              Spacer(),
               Container(
-                height: 66,
-                width: 64,
+                margin: EdgeInsets.only(right: 12.0),
                 child: Image.asset(
-                  (text == "총판") ? "assets/resource/public/payment.png" : "assets/icon/cookie.png",
-                  width: 66,
-                  height: 64,
-                  fit: BoxFit.contain,
+                  "assets/resource/public/small-arrow-right.png",
+                  width: 24,
+                  height: 24,
                 ),
               )
-                  : Container(),
-            ],
+            ]
           ),
-          decoration: BoxDecoration(
-              color: mainColor,
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          ),
-      padding: EdgeInsets.only(top:30, bottom:30),
-        );
+    );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:cashcook/src/model/account.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
+import 'package:cashcook/src/screens/mypage/points/chargePoint_2.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
@@ -134,6 +135,12 @@ class History extends StatelessWidget {
           };
           String path = "charge";
           await Navigator.of(context).pushNamed("/point/$path", arguments: args);
+          // await Provider.of<UserProvider>(context, listen: false).clearAdpQuantity();
+          // await Navigator.of(context).push(
+          //   MaterialPageRoute(
+          //     builder: (context) => ChargePoint2()
+          //   )
+          // );
         },
         child: Text("충전하기", style: TextStyle(fontSize: 14),),
         padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),

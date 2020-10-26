@@ -65,7 +65,7 @@ class _FirstRecommendation extends State<FirstRecommendation> {
       body: SingleChildScrollView(
         child: Container(
           width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom - appBar.preferredSize.height,
+          height: MediaQuery.of(context).size.height - appBar.preferredSize.height,
           child: Padding(
             padding: EdgeInsets.only(top: 30,left: 16, right: 16, bottom: 16),
             child:
@@ -112,7 +112,9 @@ class _FirstRecommendation extends State<FirstRecommendation> {
                     return (user.isStop) ? SizedBox(
                       child: DropdownButton(
                         isExpanded: true,
-                        icon: Icon(Icons.arrow_drop_down),
+                        icon: Icon(Icons.arrow_drop_down,
+                          color: mainColor,
+                        ),
                         iconSize: 24,
                         elevation: 16,
                         underline: Container(
@@ -178,6 +180,8 @@ class _FirstRecommendation extends State<FirstRecommendation> {
                     },
                     elevation: 0.0,
                     color: mainColor,
+                    shape:
+                       RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                     child: Center(
                       child: Text(
                         "확인",

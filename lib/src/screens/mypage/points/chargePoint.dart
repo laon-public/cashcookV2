@@ -23,8 +23,6 @@ class _ChargePointState extends State<ChargePoint> {
 
   String id;
 
-  bool _isButtonDisabled;
-
   int accountModel = 0;
   int dlAccountModel = 0;
 
@@ -469,6 +467,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
               if (!response) {
                 Fluttertoast.showToast(msg: "에러");
               } else {
+                await Provider.of<UserProvider>(context, listen:false).fetchMyInfo(context);
                 await Provider.of<UserProvider>(context, listen: false).getAccountsHistory('ADP', 0);
                 Fluttertoast.showToast(msg: "충전이 완료되었습니다.");
               }
@@ -480,12 +479,12 @@ class _PaymentMethodState extends State<PaymentMethod> {
     );
   }
 
-  buyMove(name, pay, id, q, payType) {
+  buyMove(name, pay, id, q, payType) async {
     print("결제");
     if(q < 500000){
-      showToast("500000ADP 이상 충전 가능합니다.`");
+      showToast("500000ADP 이상 충전 가능합니다.");
     } else {
-      Navigator.of(context).push(MaterialPageRoute(
+      await Navigator.of(context).push(MaterialPageRoute(
           builder: (context) =>
               Buy(
                 name: name,
@@ -494,6 +493,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
                 quantity: q,
                 paymentType: payType,
               )));
+      Navigator.of(context).pop();
     }
   }
 }

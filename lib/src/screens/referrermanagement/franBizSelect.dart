@@ -185,9 +185,8 @@ class _FranBizSelect extends State<FranBizSelect> {
 
                           await Provider.of<UserProvider>(context, listen: false).insertDisAge();
 
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => StoreApplyState()
-                          ));
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(builder: (context) => StoreApplyState()), (route) => false);
                         },
                         elevation: 0.0,
                         color: mainColor,

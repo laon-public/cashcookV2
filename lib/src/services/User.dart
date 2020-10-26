@@ -168,4 +168,14 @@ class UserService {
     return utf8.decode(response.bodyBytes);
   }
 
+  Future<String> changeLimitDL(Map<String, dynamic> data) async {
+    print(data.toString());
+    final response = await client.patch(cookURL+"/users/me/franchise/limitdl", body: json.encode(data),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "BEARER ${dataStorage.token}"
+        });
+    print(response.body);
+    return utf8.decode(response.bodyBytes);
+  }
 }

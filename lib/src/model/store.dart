@@ -59,7 +59,7 @@ class StoreModel {
             shop_img3: json['store']['shop_img3'],
             comment: json['store']['comment']),
         address = Address(
-            address: json['address']['address'],
+            address: json['address']['address'].split("대한민국 ")[1],
             detail: json['address']['detail'],
             coords: json['address']['coords']),
         bank = Bank(bank: json['bank']['bank'], number: json['bank']['number']);

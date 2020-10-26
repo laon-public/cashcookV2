@@ -73,11 +73,13 @@ class _StoreApplyThirdStepState extends State<StoreApplyThirdStep> {
                                     }
                                     ).toList()
                                 ),
+                                whiteSpaceH(2.0),
                                 Container(
                                   width: MediaQuery.of(context).size.width,
                                   height: 40,
                                   child:RaisedButton(
-                                    color: mainColor,
+                                    elevation: 0.0,
+                                    color: white,
                                     onPressed: () {
                                       Provider.of<StoreProvider>(context, listen: false).appendBigMenu();
                                     },
@@ -86,9 +88,12 @@ class _StoreApplyThirdStepState extends State<StoreApplyThirdStep> {
                                         style: TextStyle(
                                           fontSize: 14,
                                           fontFamily: 'noto',
-                                          color: white,
+                                          color: Color(0xFF333333),
                                         )
                                     ),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Color(0xFFDDDDDD), width: 1),
                                   ),
                                 ),
                               ]
@@ -232,6 +237,7 @@ class _StoreApplyThirdStepState extends State<StoreApplyThirdStep> {
                 color: black
               ),
               decoration: InputDecoration(
+                contentPadding: EdgeInsets.only(left: 7.0, right: 7.0),
                 suffixIcon: InkWell(
                   onTap: () {
                     Provider.of<StoreProvider>(context, listen: false).removeMenu(bigIdx, idx);
@@ -266,6 +272,7 @@ class _StoreApplyThirdStepState extends State<StoreApplyThirdStep> {
                 color: black
               ),
               decoration: InputDecoration(
+                contentPadding: EdgeInsets.only(left: 7.0, right: 7.0),
                 hintText: "가격",
                 border: OutlineInputBorder(
                   borderSide: BorderSide(color: Color(0xffdddddd), width: 2.0),

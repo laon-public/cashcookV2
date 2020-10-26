@@ -343,4 +343,20 @@ class StoreServiceProvider with ChangeNotifier {
     stopLoading();
   }
 
+  void cancleScrap(int store_id) async {
+    var response = await service.cancleScrap(store_id);
+
+    print(response);
+
+    if(json.decode(response)['data']['result'] == 0){
+      showToast(json.decode(response)['data']['resultMsg']);
+    } else {
+      scrapList = scrapList.where((scrap) => scrap.id != store_id).toList();
+
+      showToast("취소되었습니다.");
+
+      notifyListeners();
+    }
+  }
+
 }
