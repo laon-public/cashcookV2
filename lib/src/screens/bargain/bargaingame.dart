@@ -19,6 +19,7 @@ class BargainGame extends StatefulWidget {
 }
 
 class _BargainGame extends State<BargainGame> {
+
   static final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   UnityWidgetController _unityWidgetController;
   var price;
@@ -71,7 +72,7 @@ class _BargainGame extends State<BargainGame> {
             String temp = price.toString() + "/" + discount.toString() + "/" + bza.toString() + "/" + rp.toString();
             print(temp);
             if(gameLoad) {
-              setSendMessage(price, discount, bza, rp);
+              // setSendMessage(price, discount, bza, rp);
             }
 
             // print("^^^");
@@ -88,6 +89,7 @@ class _BargainGame extends State<BargainGame> {
                   onUnityViewCreated: onUnityCreated,
                   onUnityMessage: onUnityMessage,
                   onUnityUnloaded: onUnityUnloaded,
+                  safeMode: true,
                 ),
               ),
             );
@@ -99,13 +101,16 @@ class _BargainGame extends State<BargainGame> {
   }
 
   void onUnityCreated(controller) {
+    print("onUnityCreated1");
     this._unityWidgetController = controller;
     setState(() {
+      print("onUnityCreated2");
       gameLoad = true;
     });
   }
 
   void onUnityUnloaded(controller){
+    print("onUnityUnloaded");
     this._unityWidgetController = null;
   }
 
