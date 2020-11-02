@@ -12,7 +12,10 @@ class StoreService {
 
   Future<String> getStore(String start, String end) async {
     Response response =
-        await Dio().get(cookURL + "/franchises?start=$start&end=$end");
+        await Dio().get(cookURL + "/franchises?start=$start&end=$end",
+            options: Options(
+              headers: {"Authorization": "BEARER ${dataStorage.token}"},
+            ));
 
     return response.toString();
   }

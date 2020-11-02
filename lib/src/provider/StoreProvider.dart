@@ -6,6 +6,7 @@ import 'dart:ui' as u;
 import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/model/store/menu.dart';
 import 'package:cashcook/src/model/store/menuedit.dart';
+import 'package:cashcook/src/model/store/review.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/services/Store.dart';
@@ -42,6 +43,7 @@ class StoreProvider with ChangeNotifier{
   List<BigMenuEditModel> menuEditList = [];
   FormData formData;
   List<Map<String, dynamic>> menuData = [];
+  List<ReviewModel> reviewList = [];
 
   void decreasePosition() {
     position -= 2.5;
@@ -177,27 +179,43 @@ class StoreProvider with ChangeNotifier{
 
   void getStore(String start, String end, int myId) async {
       newStore.clear();
-      print("getStore");
-      print(start);
-      print(end);
+
+      notifyListeners();
+
       int cnt = 0;
       String response = await service.getStore(start, end);
-      print(response);
+      print(response.length);
       Map<String, dynamic> mapJson = jsonDecode(response);
+      print("getStore2");
       if(isResponse(mapJson)){
         for(var storeList in mapJson['data']["list"]){
          StoreModel tmp = StoreModel.fromJson(storeList);
-
          if((store.where((s) => (s.id == tmp.id)).toList().length == 0)){
            newStore.add(tmp);
            store.add(tmp);
          }
        }
+        print("getStore3");
     }
 
       if(newStore.length != 0){
-        print("추가됨");
         markerAdds(newStore, myId);
+      }
+
+      response = await service_2.fetchReviewList();
+      print(response);
+
+      dynamic _reviewList = json.decode(response)['data']['avg'];
+      // dynamic _reviewList = json.decode(response)['data']['list'];
+      // reviewAvg = json.decode(response)['data']['avg'];
+
+      print("reviewListSelect1");
+      if(_reviewList != null){
+        print("reviewListSelect2");
+        for(var _review in _reviewList) {
+          reviewList.add(ReviewModel.fromJsonScope(_review));
+        }
+        print("reviewListSelect3");
       }
 
       notifyListeners();

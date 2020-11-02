@@ -37,6 +37,14 @@ class StoreService{
     return utf8.decode(response.bodyBytes);
   }
 
+  fetchReviewList() async {
+    final response = await client.get(cookURL+"/franchises/reviewList", headers: {
+      "Authorization": "BEARER ${dataStorage.token}"
+    });
+
+    return utf8.decode(response.bodyBytes);
+  }
+
   insertReview(int store_id, int scope, String contents)async{
     Map<String, dynamic> data = {
       "store_id": store_id,

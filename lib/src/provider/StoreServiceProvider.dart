@@ -137,6 +137,26 @@ class StoreServiceProvider with ChangeNotifier {
     stopLoading();
   }
 
+  void reviewListSelect() async{
+    final response = await service.fetchReviewList();
+    print(response);
+
+    dynamic _reviewList = json.decode(response)['data']['avg'];
+    // dynamic _reviewList = json.decode(response)['data']['list'];
+    // reviewAvg = json.decode(response)['data']['avg'];
+
+    print("reviewListSelect1");
+    if(_reviewList != null){
+      print("reviewListSelect2");
+      for(var _review in _reviewList) {
+        reviewList.add(ReviewModel.fromJsonScope(_review));
+      }
+      print("reviewListSelect3");
+    }
+
+    stopLoading();
+  }
+
   void setCheck(bigIdx, idx, value){
     menuList[bigIdx].menuList[idx].isCheck = value;
 

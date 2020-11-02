@@ -13,6 +13,7 @@ class StoreModel {
   final Store store;
   final Address address;
   final Bank bank;
+  final Scrap scrap;
   final String status;
 
   StoreModel(
@@ -27,6 +28,7 @@ class StoreModel {
       this.store,
       this.address,
       this.bank,
+      this.scrap,
       this.status});
 
   StoreModel.fromJson(Map<String, dynamic> json)
@@ -47,9 +49,8 @@ class StoreModel {
             email: json['store']['email'],
             store_time: json['store']['store_time'],
             useDL: json['store']['useDL'],
+            useDL_Percent: json['store']['useDL_Percent'],
             limitDL: json['store']['limitDL'],
-            fromDL: json['store']['fromDL'],
-            toDL: json['store']['toDL'],
             category_code: json['store']['category_code'],
             category_name: json['store']['category_name'],
             category_sub_code: json['store']['category_sub_code'],
@@ -57,12 +58,19 @@ class StoreModel {
             shop_img1: json['store']['shop_img1'],
             shop_img2: json['store']['shop_img2'],
             shop_img3: json['store']['shop_img3'],
-            comment: json['store']['comment']),
+            comment: json['store']['comment'],
+            deliveryStatus: json['store']['deliveryStatus'],
+            deliveryTime: json['store']['deliveryTime'],
+            minOrderAmount: json['store']['minOrderAmount'],
+        ),
+
+
         address = Address(
             address: json['address']['address'].split("대한민국 ")[1],
             detail: json['address']['detail'],
             coords: json['address']['coords']),
-        bank = Bank(bank: json['bank']['bank'], number: json['bank']['number']);
+        bank = Bank(bank: json['bank']['bank'], number: json['bank']['number']),
+        scrap = Scrap(scrap: json['scrap']['scrap']);
 }
 
 class Store {
@@ -73,9 +81,8 @@ class Store {
   final String email;
   final String store_time;
   final bool useDL;
+  final String useDL_Percent;
   final String limitDL;
-  final String fromDL;
-  final String toDL;
   final String category_code;
   final String category_name;
   final String category_sub_code;
@@ -84,18 +91,20 @@ class Store {
   final String shop_img2;
   final String shop_img3;
   final String comment;
+  final String deliveryStatus;
+  final String deliveryTime;
+  final String minOrderAmount;
 
   Store(
       {this.name,
-        this.short_description,
+      this.short_description,
       this.description,
       this.tel,
       this.email,
       this.store_time,
       this.useDL,
+      this.useDL_Percent,
       this.limitDL,
-      this.fromDL,
-      this.toDL,
       this.category_code,
       this.category_name,
       this.category_sub_code,
@@ -103,7 +112,10 @@ class Store {
       this.shop_img1,
       this.shop_img2,
       this.shop_img3,
-        this.comment,
+      this.comment,
+      this.deliveryStatus,
+      this.deliveryTime,
+      this.minOrderAmount,
       });
 }
 
@@ -121,3 +133,10 @@ class Bank {
 
   Bank({this.bank, this.number});
 }
+
+class Scrap {
+  final String scrap;
+
+  Scrap({this.scrap});
+}
+

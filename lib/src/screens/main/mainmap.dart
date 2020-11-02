@@ -105,7 +105,6 @@ class _MainMap extends State<MainMap> {
       onTap: () async {
           await Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => MyPage()));
-
               googleMapController
                   .getVisibleRegion()
                   .then((value) async {
@@ -451,7 +450,7 @@ class _MainMap extends State<MainMap> {
       if(currentBackPressTime == null ||
           now.difference(currentBackPressTime) > Duration(seconds: 2)){
         currentBackPressTime = now;
-        showToast("한번 더 누르면 캐시쿡이 종료됩니다.");
+        showToast("한번 더 누르면 메인페이지로 이동합니다.");
 
 
         return Future.value(false);
@@ -1455,6 +1454,7 @@ class _MainMap extends State<MainMap> {
               children: [
             mapLoad
             ? Positioned.fill(
+
             child: GoogleMap(
               initialCameraPosition: cameraPosition,
               mapType: MapType.normal,

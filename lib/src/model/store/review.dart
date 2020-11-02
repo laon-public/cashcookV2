@@ -1,11 +1,11 @@
 class ReviewModel {
-  final int id;
-  final String username;
-  final String scope;
-  final String contents;
+  int id;
+  String username;
+  String scope;
+  String contents;
   int like;
   int hate;
-  final String date;
+  String date;
   int isLike;
   int isHate;
 
@@ -20,4 +20,9 @@ class ReviewModel {
       this.date = json['date'],
       this.isLike = int.parse(json['isLike']),
       this.isHate = int.parse(json['isHate']);
+
+  ReviewModel.fromJsonScope(Map<String, dynamic> json)
+      :
+        this.scope = json['scope'];
+
 }

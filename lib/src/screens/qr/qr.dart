@@ -1,4 +1,5 @@
 import 'package:cashcook/src/provider/QRProvider.dart';
+import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/screens/bargain/bargain.dart';
 import 'package:cashcook/src/screens/bargain/bargaingame.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
@@ -175,9 +176,11 @@ class _Qr extends State<Qr> {
     QRProvider qrProvider = Provider.of<QRProvider>(context, listen: false);
     String t = await qrProvider.applyPayment(uuid);
     if(t == "1"){
+      print(type);
       if (type == "NORMAL") {
         bargainMove();
       } else if (type == "DILLING") {
+        await Provider.of<StoreProvider>(context, listen:false).clearMap();
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
       }
