@@ -10,6 +10,8 @@ import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/search.dart';
+import 'package:cashcook/src/screens/main/storeDetail.dart';
+import 'package:cashcook/src/screens/main/storeDetail_2.dart';
 import 'package:cashcook/src/screens/mypage/points/pointMgmt.dart';
 import 'package:cashcook/src/screens/qr/qr.dart';
 import 'package:cashcook/src/screens/mypage/mypage.dart';
@@ -29,6 +31,8 @@ import 'package:provider/provider.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/utils/customSlidePop.dart' as slideDialog;
 import 'package:url_launcher/url_launcher.dart';
+
+import 'home.dart';
 
 class MainMap extends StatefulWidget {
   double lat;
@@ -81,6 +85,7 @@ class _MainMap extends State<MainMap> {
       my = Provider.of<UserProvider>(context, listen: false).loginUser;
       pointMap = Provider.of<UserProvider>(context, listen: false).pointMap;
     });
+
     return
       Consumer<StoreProvider>(
         builder: (context, sp, _) {
@@ -88,49 +93,24 @@ class _MainMap extends State<MainMap> {
           backgroundColor: white,
           resizeToAvoidBottomInset: true,
           appBar: sp.isCurrentPage != 2 ? AppBar(
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back, color: Colors.black), 
+              onPressed: () => Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => Home()),
+                      (route) => false),
+              ),
           backgroundColor: white,
           elevation: 0.5,
           centerTitle: true,
-          automaticallyImplyLeading: false,
+          automaticallyImplyLeading: true,
           title:
           Image.asset(
           "assets/icon/cashcook_logo.png",
           width: 116,
           height: 30,
           ),
-      actions: [
-        Padding(
-      padding: EdgeInsets.only(right: 14),
-      child: InkWell(
-      onTap: () async {
-          await Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => MyPage()));
-              googleMapController
-                  .getVisibleRegion()
-                  .then((value) async {
-            String start = value.northeast.latitude.toString() +
-                "," +
-                value.northeast.longitude.toString();
-            String end = value.southwest.latitude.toString() +
-                "," +
-                value.southwest.longitude.toString();
-            await sp.getStore(start, end, my.id);
-          });
-      },
-      child: Image.asset(
-      "assets/icon/three_line.png",
-      width: 24,
-      height: 24,
-      fit: BoxFit.contain,
-        color: Color(0xFF333333)
-      ),
-      ),
-      )
-      ],
       ) : Container(),
-            body: WillPopScope(
-              onWillPop: onWillPop,
-              child: Container(
+            body: Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height -
                     MediaQuery.of(context).padding.top -
@@ -197,7 +177,21 @@ class _MainMap extends State<MainMap> {
                                 await Provider.of<StoreServiceProvider>(
                                     context, listen: false).setServiceNum(
                                     0, sp.selStore.id);
-                                storeDetailDialog();
+                                Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                        builder: (context) => StoreDetail2(
+                                          store: sp.selStore,
+                                        )
+                                    )
+                                );
+                                // Navigator.of(context).push(
+                                //   MaterialPageRoute(builder:
+                                //   (context) => StoreDetail(
+                                //     store: sp.selStore,
+                                //   )
+                                //   )
+                                // );
+                                //storeDetailDialog();
                               }
                             }
                           },
@@ -221,8 +215,22 @@ class _MainMap extends State<MainMap> {
                                   onTap: () async {
                                     if(!Provider.of<StoreServiceProvider>(context, listen: false).isLoading){
                                       await Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(0, sp.selStore.id);
-                                      storeDetailDialog();
-                                      Provider.of<StoreServiceProvider>(context, listen: false).showView();
+                                      // Navigator.of(context).push(
+                                      //     MaterialPageRoute(builder:
+                                      //         (context) => StoreDetail(
+                                      //       store: sp.selStore,
+                                      //     )
+                                      //     )
+                                      // );
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) => StoreDetail2(
+                                                store: sp.selStore,
+                                              )
+                                          )
+                                      );
+                                      // storeDetailDialog();
+                                      // Provider.of<StoreServiceProvider>(context, listen: false).showView();
                                     }
                                   },
                                   child:
@@ -313,7 +321,7 @@ class _MainMap extends State<MainMap> {
                                                           fontFamily: 'noto'),
                                                     ),
                                                     whiteSpaceW(12),
-                                                    Image.asset("assets/icon/bza.png",height: 30, fit: BoxFit.contain,),
+                                                    Image.asset("assets/icon/DL 2.png",height: 30, fit: BoxFit.contain,),
                                                     Text(
                                                       "  ${demicalFormat.format(pointMap['DL'])}",
                                                       style: TextStyle(
@@ -334,7 +342,10 @@ class _MainMap extends State<MainMap> {
                                               MaterialPageRoute(
                                                   builder: (context) => Qr(),
                                                   settings: RouteSettings(
-                                                      arguments: sp.selStore.id
+                                                      arguments: {
+                                                        "store_id": sp.selStore.id,
+                                                        "store_name" : sp.selStore.store.name
+                                                      }
                                                   )),);
                                           },
                                           child: Image.asset(
@@ -437,7 +448,6 @@ class _MainMap extends State<MainMap> {
                   ],
                 ),
               ),
-            ),
       );
         }
       );
@@ -591,7 +601,10 @@ class _MainMap extends State<MainMap> {
                                                 MaterialPageRoute(
                                                     builder: (context) => Qr(),
                                                     settings: RouteSettings(
-                                                        arguments: sp.selStore.id
+                                                        arguments: {
+                                                          "store_id": sp.selStore.id,
+                                                          "store_name" : sp.selStore.store.name
+                                                        }
                                                     )),);
                                             },
                                             child: Image.asset(
@@ -877,7 +890,7 @@ class _MainMap extends State<MainMap> {
                                               Expanded(
                                                 flex:1,
                                                 child:Text(
-                                                  "BZA 결제한도",
+                                                  "DL 결제한도",
                                                   style: TextStyle(
                                                       fontWeight: FontWeight.w100,
                                                       fontSize: 12,
@@ -889,7 +902,7 @@ class _MainMap extends State<MainMap> {
                                                 flex:3,
                                                 child:Text(
                                                   sp.selStore.store.limitDL == null?
-                                                  "결제한도가 없습니다." : "${sp.selStore.store.limitDL} BZA",
+                                                  "결제한도가 없습니다." : "${sp.selStore.store.limitDL}% DL",
                                                   style: TextStyle(
                                                       fontWeight: FontWeight.w200,
                                                       fontSize: 12,

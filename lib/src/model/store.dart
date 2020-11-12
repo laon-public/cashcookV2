@@ -49,7 +49,6 @@ class StoreModel {
             email: json['store']['email'],
             store_time: json['store']['store_time'],
             useDL: json['store']['useDL'],
-            useDL_Percent: json['store']['useDL_Percent'],
             limitDL: json['store']['limitDL'],
             category_code: json['store']['category_code'],
             category_name: json['store']['category_name'],
@@ -62,6 +61,7 @@ class StoreModel {
             deliveryStatus: json['store']['deliveryStatus'],
             deliveryTime: json['store']['deliveryTime'],
             minOrderAmount: json['store']['minOrderAmount'],
+            scope: json['store']['scope']
         ),
 
 
@@ -81,7 +81,6 @@ class Store {
   final String email;
   final String store_time;
   final bool useDL;
-  final String useDL_Percent;
   final String limitDL;
   final String category_code;
   final String category_name;
@@ -94,6 +93,7 @@ class Store {
   final String deliveryStatus;
   final String deliveryTime;
   final String minOrderAmount;
+  final double scope;
 
   Store(
       {this.name,
@@ -103,7 +103,6 @@ class Store {
       this.email,
       this.store_time,
       this.useDL,
-      this.useDL_Percent,
       this.limitDL,
       this.category_code,
       this.category_name,
@@ -116,6 +115,7 @@ class Store {
       this.deliveryStatus,
       this.deliveryTime,
       this.minOrderAmount,
+        this.scope
       });
 }
 
@@ -135,8 +135,38 @@ class Bank {
 }
 
 class Scrap {
-  final String scrap;
+  String scrap;
 
   Scrap({this.scrap});
+}
+
+class StoreMinify {
+  final int id;
+  final String store_name;
+  final String store_description;
+  final String store_img;
+  final int store_dl;
+  final double store_scope;
+  final String store_cat;
+  final String store_sub_cat;
+  final String deliveryTime;
+  final bool deliveryStatus;
+  final String minOrderAmount;
+  String scrap;
+
+  StoreMinify.fromJson(Map<String, dynamic> json)
+    :
+      this.id = json['id'],
+      this.store_name = json['store_name'],
+      this.store_description = json['store_description'],
+      this.store_img = json['store_img'],
+      this.store_dl = int.parse(json['store_dl'].toString()),
+      this.store_scope = json['store_scope'],
+      this.store_cat = json['store_cat'],
+      this.store_sub_cat = json['store_sub_cat'],
+      this.deliveryTime = json['deliveryTime'],
+      this.deliveryStatus = json['deliveryStatus'] != "0",
+      this.minOrderAmount = json['minOrderAmount'],
+      this.scrap = json['scrap'];
 }
 

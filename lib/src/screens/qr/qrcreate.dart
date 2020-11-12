@@ -49,7 +49,7 @@ class _QrCreate extends State<QrCreate> {
           ),
         ),
         title: Text(
-          widget.type == 0 ? "현장 결제" : "BZA 결제",
+          widget.type == 0 ? "현장 결제" : "DL 결제",
           style: TextStyle(
               fontFamily: 'noto',
               fontSize: 14,
@@ -81,7 +81,7 @@ class _QrCreate extends State<QrCreate> {
                     Text(
                       widget.type == 0
                           ? "현장결제의 경우, 반드시\n결제를 완료한 이후 진행 바랍니다."
-                          : "BZA결제의 경우, 반드시\n결제하기 이전에 진행 바랍니다.",
+                          : "DL결제의 경우, 반드시\n결제하기 이전에 진행 바랍니다.",
                       textAlign: TextAlign.start,
                       style: TextStyle(
                           fontFamily: 'noto', fontSize: 14, color: Color(0xFF222222)),
@@ -177,7 +177,7 @@ class _QrCreate extends State<QrCreate> {
                         Row(
                           children: [
                             Text(
-                              "결제BZA",
+                              "결제DL",
                               style: TextStyle(
                                   color: Color(0xFF888888),
                                   fontSize: 12,
@@ -186,7 +186,7 @@ class _QrCreate extends State<QrCreate> {
                             whiteSpaceW(10),
                             Text(
                               myStore.store.limitDL == null ? "결제한도가 없습니다." :
-                              "결제한도 ${myStore.store.limitDL} BZA",
+                              "결제한도 ${myStore.store.limitDL} DL",
                               style: TextStyle(
                                   color: mainColor,
                                   fontSize: 12,
@@ -197,7 +197,7 @@ class _QrCreate extends State<QrCreate> {
                         whiteSpaceH(4),
                         Row(
                           children: [
-                            Image.asset("assets/icon/bza.png",
+                            Image.asset("assets/icon/DL 2.png",
                                 width: 40, height: 40),
                             whiteSpaceW(8),
                             Expanded(
@@ -220,7 +220,7 @@ class _QrCreate extends State<QrCreate> {
                                   readOnly: true,
                                   decoration: InputDecoration(
                                       filled: true,
-                                      suffixText: "BZA",
+                                      suffixText: "DL",
                                       suffixStyle: TextStyle(
                                           fontFamily: 'noto',
                                           color: black,
@@ -253,7 +253,7 @@ class _QrCreate extends State<QrCreate> {
                         Container(
                           width: MediaQuery.of(context).size.width,
                           child: Text(
-                            "100 원 = 1 BZA",
+                            "100 원 = 1 DL",
                             style: TextStyle(
                                 color: Color(0xFF999999),
                                 fontSize: 12,
@@ -282,7 +282,7 @@ class _QrCreate extends State<QrCreate> {
                     print(price);
                     print(dilling);
                     print("현재 상태 : ${ payment } ");
-                    if( myStore.store.limitDL != null ) {
+                    if( widget.type != 0 && myStore.store.limitDL != null ) {
                       if( int.parse(myStore.store.limitDL) < int.parse(dlController.text) ){
                         showToast("결제한도 보다 많습니다.");
                         return;

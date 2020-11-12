@@ -14,41 +14,65 @@ class Splash extends StatefulWidget {
 }
 
 class _Splash extends State<Splash> {
-
-  qrCreate(type) {
-    print("type : " + type);
-  }
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      backgroundColor: white,
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child:
-             Center(
-                child: Image.asset(
-                  "assets/icon/splash2.png",
-                  height: 249,
-                  width: 200,
-                  fit: BoxFit.contain,
+      backgroundColor: black,
+      body: Stack(
+        children: [
+          Positioned.fill(
+              child: Image.asset(
+               "assets/resource/main/splash_apple.png",
+                fit: BoxFit.fill
+              )
+          ),
+          Positioned.fill(
+              child: Container(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("소비가 소득이 되는 앱",
+                        style: TextStyle(
+                          fontFamily: 'noto',
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: white,
+                        )
+                      ),
+                      Image.asset(
+                      "assets/icon/cashcook_logo.png",
+                      width: 180,
+                      height: 53.33,
+                      ),
+                    ],
+                    )
                 ),
-              ),
-            )
-//            Expanded(
-//                child: dialog(
-//                    title: "앱버전 안내",
-//                    content: "최신버전이 있습니다.\n지금 업데이트 하시겠습니까?",
-//                    sub: "",
-//                    context: context,
-//                    selectOneText: "예",
-//                    selectTwoText: "아니요",
-//                    selectOneVoid: () => qrCreate(0),
-//                    selectTwoVoid: () => qrCreate(1)
-//                ),
-//            ),
+              )
+          ),
+          Positioned(
+            bottom: 0,
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 45),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                  child: Text(
+                      "Copyright ⓒ 2020 CashCook Inc. All Rights Reserved.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'noto',
+                      fontSize: 11,
+                      color: white,
+                      fontWeight: FontWeight.w400
+                    )
+                  ),
+               ),
+              )
+          )
+        ],
+      )
         );
   }
 

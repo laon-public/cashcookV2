@@ -1,9 +1,6 @@
-import 'package:cashcook/main.dart';
-import 'package:cashcook/src/model/account.dart';
 import 'package:cashcook/src/model/usercheck.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/buy/buy.dart';
-import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
@@ -12,6 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ChargePoint2 extends StatefulWidget {
+  final String pointType;
+
+  ChargePoint2({this.pointType});
+
   @override
   _ChargePoint2State createState() => _ChargePoint2State();
 }
@@ -21,6 +22,9 @@ class _ChargePoint2State extends State<ChargePoint2> {
 
   bool isAgree = false;
   int methodType = 0;
+  int payLimit = 0;
+  int pay;
+  int rate;
 
   Map<int, String> paymentType = {
     0: "CREDIT_CARD",
@@ -32,6 +36,8 @@ class _ChargePoint2State extends State<ChargePoint2> {
     // TODO: implement initState
     super.initState();
     adpQuantityCtrl.text = "";
+    (widget.pointType == "RP") ? payLimit = 100 : payLimit = 500000;
+    (widget.pointType == "RP") ? rate = 10 : rate = 1;
   }
 
   @override
@@ -75,7 +81,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("보유 ADP",
+                            Text("보유 ${widget.pointType == "RP" ? "CP" : "ADP"}",
                               style: TextStyle(
                                 color: Color(0xFF333333),
                                 fontSize: 20,
@@ -87,12 +93,12 @@ class _ChargePoint2State extends State<ChargePoint2> {
                             Row(
                               children: [
                                 Image.asset(
-                                  "assets/icon/adp.png",
+                                  widget.pointType == "RP" ? "assets/icon/rp-coin.png" : "assets/icon/adp.png",
                                   width: 24,
                                   height: 24,
                                 ),
                                 whiteSpaceW(12.0),
-                                Text("${numberFormat.format(point['ADP'])} ADP",
+                                Text("${numberFormat.format(point[widget.pointType])} ${widget.pointType == "RP" ? "CP" : "ADP"}",
                                   style: TextStyle(
                                       color: Color(0xFF333333),
                                       fontSize: 12,
@@ -130,7 +136,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
                         Row(
                           children: [
                             Image.asset(
-                              "assets/icon/adp.png",
+                              widget.pointType == "RP" ? "assets/icon/rp-coin.png" : "assets/icon/adp.png",
                               width: 40,
                               height: 40,
                             ),
@@ -143,13 +149,13 @@ class _ChargePoint2State extends State<ChargePoint2> {
                                   fontSize: 16,
                                 ),
                                 onChanged: (value) {
-                                  up.setChargePay();
+                                  up.setChargePay(rate);
                                 },
                                 cursorColor: Color(0xff000000),
-                                controller: up.adpQuantityCtrl,
+                                controller: up.chargeQuantityCtrl,
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
-                                  suffixText: " ADP",
+                                  suffixText: widget.pointType == "RP" ? "CP" : "ADP",
                                   suffixStyle: TextStyle(
                                       color: Color(0xFF333333),
                                       fontSize: 16,
@@ -195,7 +201,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            Text("BZA결제",
+                            Text("DL결제",
                                 style: TextStyle(
                                     color: Color(0xFF999999),
                                     fontSize: 12,
@@ -301,6 +307,9 @@ class _ChargePoint2State extends State<ChargePoint2> {
                                 ((up.chargePay - (up.dlPay * 100))) < 0 ?
                                 "결제금액보다 많을 수 없습니다."
                                 :
+                                (point['DL'] < up.dlPay) ?
+                                "보유DL보다 많습니다."
+                                :
                                 "${numberFormat.format((up.chargePay - (up.dlPay * 100)))}원",
                                 style: TextStyle(
                                     fontFamily: 'noto',
@@ -371,13 +380,16 @@ class _ChargePoint2State extends State<ChargePoint2> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("* 최소 충전금액은 500,000원 입니다.",
+                        Text("* 최소 충전금액은 ${numberFormat.format(payLimit * rate)}원 입니다.",
                           style: TextStyle(
                             color: Color(0xFF666666),
                             fontSize: 14,
                             fontFamily: 'noto'
                           )
                         ),
+                        (widget.pointType == "RP") ?
+                        Container()
+                        :
                         Text("* 현금/카드 결제시 20%ADP가 추가지급됩니다.",
                             style: TextStyle(
                                 color: Color(0xFF666666),
@@ -397,8 +409,62 @@ class _ChargePoint2State extends State<ChargePoint2> {
                     child: RaisedButton(
                       color: mainColor,
                       disabledColor: Color(0xFFDDDDDD),
-                      onPressed: up.chargePay < 500000 || !isAgree || ((up.chargePay - (up.dlPay * 100))) < 0 ? null : () {
-                        showToast("결제 가자");
+                      onPressed: up.chargePay < payLimit || !isAgree || ((up.chargePay - (up.dlPay * 100))) < 0 || (point['DL'] < up.dlPay)? null : () async {
+                        if (paymentType[methodType] == "CREDIT_CARD") {
+                          if((up.chargePay - (up.dlPay * 100)) <= 0){
+                            bool response =
+                            await Provider.of<UserProvider>(context, listen: false)
+                                .postCharge(
+                              "1",
+                              widget.pointType,
+                              int.parse(up.chargeQuantityCtrl.text),
+                              paymentType[methodType],
+                              int.parse(up.dlQuantityCtrl.text == "" ? "0" : up.dlQuantityCtrl.text),
+                            );
+                            if (!response) {
+                              showToast("에러");
+                            } else {
+                              await Provider.of<UserProvider>(context, listen:false).fetchMyInfo(context);
+                              await Provider.of<UserProvider>(context, listen: false).getAccountsHistory(widget.pointType, 0);
+                              showToast("충전이 완료되었습니다.");
+                            }
+                          } else {
+                            await Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    Buy(
+                                      name: Provider.of<UserProvider>(context, listen: false)
+                                          .loginUser
+                                          .name,
+                                      point: widget.pointType,
+                                      pay: (up.chargePay - (up.dlPay * 100)),
+                                      id: "1",
+                                      quantity: int.parse(up.chargeQuantityCtrl.text),
+                                      paymentType: paymentType[methodType],
+                                      dl: int.parse(up.dlQuantityCtrl.text == "" ? "0" : up.dlQuantityCtrl.text),
+                                    )));
+                          }
+
+                          Navigator.of(context).pop();
+                        }
+                        else {
+                          bool response =
+                              await Provider.of<UserProvider>(context, listen: false)
+                              .postCharge(
+                                "1",
+                                widget.pointType,
+                                int.parse(up.chargeQuantityCtrl.text),
+                                paymentType[methodType],
+                                int.parse(up.dlQuantityCtrl.text == "" ? "0" : up.dlQuantityCtrl.text),
+                              );
+                          if (!response) {
+                            showToast("에러");
+                          } else {
+                            await Provider.of<UserProvider>(context, listen:false).fetchMyInfo(context);
+                            await Provider.of<UserProvider>(context, listen: false).getAccountsHistory(widget.pointType, 0);
+                            showToast("충전이 완료되었습니다.");
+                          }
+                          Navigator.of(context).pop();
+                        }
                       },
                       child: Text("결제하기",
                         style: TextStyle(

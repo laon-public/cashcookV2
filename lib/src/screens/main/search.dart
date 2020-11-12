@@ -1,16 +1,24 @@
 import 'dart:async';
 
 import 'package:cashcook/src/model/place.dart';
+import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/provider/PlaceProvider.dart';
+import 'package:cashcook/src/provider/StoreProvider.dart';
+import 'package:cashcook/src/provider/StoreServiceProvider.dart';
+import 'package:cashcook/src/screens/main/searchDetail.dart';
 import 'package:cashcook/src/services/Search.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 
 class SearchPage extends StatefulWidget {
+  bool isHome;
+
+  SearchPage({this.isHome = false});
+
   @override
   _SearchPage createState() => _SearchPage();
 }
@@ -25,11 +33,14 @@ class _SearchPage extends State<SearchPage> {
 
   SearchService service = SearchService();
 
+  Location location = Location();
+
+  var currentLocation;
+
   @override
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<PlaceProvider>(context, listen: false).clearPlace();
       queryCtrl.addListener(_onSearchChanged);
     });
 
@@ -42,27 +53,34 @@ class _SearchPage extends State<SearchPage> {
       print("끝남");
       if(queryCtrl.text != "") {
         print("검색어 있움");
-        Provider.of<PlaceProvider>(context, listen: false).queryRoute(queryCtrl.text);
-        // Provider.of<PlaceProvider>(context,listen: false).fetchStoreSearch(queryCtrl.text);
-        // Provider.of<PlaceProvider>(context,listen: false).fetchGoogleSearch(queryCtrl.text);
-      } else {
-        Provider.of<PlaceProvider>(context, listen: false).clearPlace();
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+          var currentLocation =  await location.getLocation();
+
+          String start = (currentLocation.latitude + 0.04).toString() +
+              "," +
+              (currentLocation.longitude + 0.04).toString();
+          String end = (currentLocation.latitude - 0.04).toString() +
+              "," +
+              (currentLocation.longitude - 0.04).toString();
+
+          await Provider.of<StoreServiceProvider>(context,listen: false).fetchStoreSearch(queryCtrl.text, start, end);
+        });
       }
     });
   }
 
   Widget body(BuildContext context) {
     return SingleChildScrollView(
-        padding: EdgeInsets.only(top: 30.0),
         child:  Container(
+          padding: EdgeInsets.only(left: 15.0, right: 15.0),
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           child:
           Column(
             children: [
-              Consumer<PlaceProvider>(
+              Consumer<StoreServiceProvider>(
                 builder: (context, pp, _) {
-                  return TextFormField(
+                  return TextField(
                     cursorColor: Color(0xff000000),
                     style: TextStyle(
                         color: Color(0xFF333333),
@@ -72,127 +90,58 @@ class _SearchPage extends State<SearchPage> {
                     ),
                     controller: queryCtrl,
                     autofocus: false,
-                    decoration: InputDecoration(
-                      hintText: pp.queryType == "google" ?
-                      "장소를 입력해주세요."
-                          :
-                      "매장명을 입력해주세요."
-                      ,
-                      prefixIcon: InkWell(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(12.0),
-                            width: 16,
-                            height: 16,
-                            child: Image.asset(
-                              "assets/resource/public/prev.png",
-                              width: 16,
-                              height: 16,
-                            ),
+                    onSubmitted: (value) async {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => SearchDetail(
+                            filter: queryCtrl.text,
+                            filterType: "contain",
                           )
+                        )
+                      );
+                    },
+                    decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                        color: mainColor),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                            color: mainColor),
+                      ),
+                      prefixIcon: InkWell(
+                        onTap: () {},
+                        child: Container(
+                          padding: EdgeInsets.all(12.0),
+                          child: Image.asset(
+                            "assets/resource/main/search_blue.png",
+                            width: 24,
+                            height: 24,
+                            color: mainColor,
+                          ),
+                        ),
                       ),
                       suffixIcon: InkWell(
-                          onTap: () {
-                            queryCtrl.text = "";
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(12.0),
-                            child: Text(
-                                "취소",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xFF666666),
-                                  fontFamily: 'noto',
-                                )
-                            ),
-                          )
+                        onTap: () {
+                          queryCtrl.text = "";
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(12.0),
+                          child: Image.asset(
+                            "assets/icon/cancle.png",
+                            width: 24,
+                            height: 24,
+                          ),
+                        ),
                       ),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                   );
                 },
               ),
-              Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 1,
-                  color: mainColor
-              ),
-              Consumer<PlaceProvider>(
-                builder: (context, pp, _){
-                  return Padding(
-                    padding: EdgeInsets.only(top: 20.0, bottom: 20.0, left: 15.0, right: 15.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            RaisedButton(
-                              onPressed: (pp.queryType == "google") ? null : () {
-                                pp.setQueryType("google");
-                              },
-                              color: white,
-                              disabledColor: white,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                  side: BorderSide(color: (pp.queryType == "google") ? mainColor : Color(0xFF999999))
-                              ),
-                              child:
-                              Text(
-                                "장소검색",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: (pp.queryType == "google") ? mainColor : Color(0xFF999999)
-                                ),
-                              ),
-                            ),
-                            whiteSpaceW(10),
-                            RaisedButton(
-                              onPressed: (pp.queryType == "store") ? null : () {
-                                pp.setQueryType("store");
-                              },
-                              color: white,
-                              disabledColor: white,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                  side: BorderSide(color: (pp.queryType == "store") ? mainColor : Color(0xFF999999))
-                              ),
-                              child:
-                              Text(
-                                "매장검색",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: (pp.queryType == "store") ? mainColor : Color(0xFF999999)
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  );
-                },
-              ),
-              Padding(
-                  padding: EdgeInsets.only(bottom: 20.0, left: 15.0, right: 15.0),
-                  child:
-                  Row(
-                    children: [
-                      Text("검색결과",
-                          style: TextStyle(
-                              color: Color(0xFF333333),
-                              fontSize: 16,
-                              fontFamily: 'noto',
-                              fontWeight: FontWeight.bold
-                          )),
-                    ],
-                  )
-              ),
-              Consumer<PlaceProvider>(
+              whiteSpaceH(24.0),
+              Consumer<StoreServiceProvider>(
                 builder: (context, pp, _) {
-                  return Padding(
-                    padding: EdgeInsets.only(left: 15.0, right: 15.0),
-                    child:
+                  return
                     pp.isLoading ?
                     Center(
                         child: CircularProgressIndicator(
@@ -200,15 +149,18 @@ class _SearchPage extends State<SearchPage> {
                             valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
                         )
                     )
-                        :
-
-                    Column(
-                      children:
-                      pp.placeList.map((e) =>
-                          PlaceItem(e)
-                      ).toList(),
-                    ),
-                  );
+                    :
+                            Column(
+                              children:
+                            pp.searchStore.length == 0 ?
+                              [
+                                Text("검색결과가 없습니다.")
+                              ]
+                                :
+                              pp.searchStore.map((e) =>
+                                PlaceItem(e)
+                              ).toList(),
+                            );
                 },
               ),
             ],
@@ -221,15 +173,29 @@ class _SearchPage extends State<SearchPage> {
     // TODO: implement build
     return Scaffold(
         backgroundColor: white,
-        body: SafeArea(top: false, child: body(context)),
+        appBar: AppBar(
+          elevation: 0,
+          leading: widget.isHome ? null : IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Image.asset(
+              "assets/resource/public/prev.png",
+              width: 24,
+              height: 24,
+            ),
+          ),
+        ),
+        body: body(context),
     );
   }
 
-  Widget PlaceItem(Place place) {
-    return
-      Padding(
-        padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-        child:
+  Widget PlaceItem(StoreModel place) {
+    return Consumer<StoreServiceProvider>(
+      builder: (context, ssp, _){
+        return Padding(
+          padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+          child:
           Container(
             width: MediaQuery.of(context).size.width,
             child: Row(
@@ -238,7 +204,7 @@ class _SearchPage extends State<SearchPage> {
                 Padding(
                   padding: EdgeInsets.only(left: 8.0, right: 8.0),
                   child:Image.asset(
-                    "assets/icon/grey_mk.png",
+                    "assets/icon/place.png",
                     height: 24,
                     width: 24,
                     fit: BoxFit.contain,
@@ -247,21 +213,17 @@ class _SearchPage extends State<SearchPage> {
                 Expanded(
                   child: InkWell(
                     onTap: () async {
-                      if(place.type == "store") {
-                        Navigator.of(context).pop({
-                          "lat" : place.pd.lat,
-                          "lng" : place.pd.lng,
-                        });
-                      } else {
-                         PlaceDetail pd = await service.getPlaceDetail(place.placeId);
-                         Navigator.of(context).pop({
-                           "lat" : pd.lat,
-                           "lng" : pd.lng,
-                         });
-                      }
+                      Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => SearchDetail(
+                                filter: place.store.name,
+                                filterType: "none",
+                              )
+                          )
+                      );
                     },
                     child: Text(
-                        place.description,
+                        place.store.name,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             color: Color(0xFF333333),
@@ -275,6 +237,8 @@ class _SearchPage extends State<SearchPage> {
               ],
             ),
           ),
-      );
+        );
+      },
+    );
   }
 }

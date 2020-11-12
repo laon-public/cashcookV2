@@ -199,13 +199,13 @@ class _pointMgmtState extends State<pointMgmt> {
                                   padding: const EdgeInsets.only(top: 15.0, left: 12.0, right: 12.0, bottom: 15.0),
                                   child:Column(
                                     children: [
-                                      Text("총 BZA 결제",
+                                      Text("총 DL 결제",
                                           style: TextStyle(
                                             fontSize: 12,
                                             color: white,
                                           )),
                                       whiteSpaceH(5),
-                                      Text("${numberFormat.format(pm.dl)} BZA",
+                                      Text("${numberFormat.format(pm.dl)} DL",
                                           style: TextStyle(
                                               fontSize: 12,
                                               color: white,
@@ -386,13 +386,13 @@ class _pointMgmtState extends State<pointMgmt> {
                 Expanded(
                     flex: 2,
                     child:Image.asset(
-                      "assets/icon/bza.png", width: 30, fit: BoxFit.contain,)
+                      "assets/icon/DL 2.png", width: 30, fit: BoxFit.contain,)
                 ),
                 Expanded(
                   flex: 5,
                   child:Container(
                       child:
-                      Text("  ${numberFormat.format(double.parse(data.sub_amount))} BZA",
+                      Text("  ${numberFormat.format(double.parse(data.sub_amount))} DL",
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               fontFamily: 'noto',
@@ -479,7 +479,7 @@ class _pointMgmtState extends State<pointMgmt> {
                                         fontFamily: 'noto',
                                         fontSize: 20,
                                         fontWeight: FontWeight.w600,
-                                        color: (e['title'].toString().contains("BZA")) ? Color(0xffBE1833)
+                                        color: (e['title'].toString().contains("DL")) ? Color(0xffBE1833)
                                             : Color(0xFFFF6622))
                                 )
                             ),

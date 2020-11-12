@@ -71,7 +71,7 @@ class _ChargePointState extends State<ChargePoint> {
             chargeCount(),
             whiteSpaceH(49),
             PaymentMethod(
-                id, pay , quantity, point, dlAccountModel, dlCtrl),
+                id, pay ,point, quantity, point, dlAccountModel, dlCtrl),
           ],
         ),
       ),
@@ -88,7 +88,7 @@ class _ChargePointState extends State<ChargePoint> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "보유 $point",
+                "보유 ${point == "RP" ? "CP" : point}",
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
@@ -105,7 +105,7 @@ class _ChargePointState extends State<ChargePoint> {
                       width: 24,
                     ),
                   ),
-                  Text("${demicalFormat.format(accountModel)} $point")
+                  Text("${demicalFormat.format(accountModel)} ${point == "RP" ? "CP" : point}")
                 ],
               ),
             ],
@@ -152,7 +152,7 @@ class _ChargePointState extends State<ChargePoint> {
                   cursorColor: Color(0xff000000),
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    suffixText: "$point",
+                    suffixText: "${point == "RP" ? "CP" : point}",
                     suffixStyle:
                         TextStyle(fontSize: 16, color: Color(0xff444444)),
                     border: UnderlineInputBorder(
@@ -166,7 +166,10 @@ class _ChargePointState extends State<ChargePoint> {
                   ),
                   onChanged: (value) {
                       setState(() {
-                        pay = int.parse(value);
+                        (point == "ADP") ?
+                        pay = int.parse(value)
+                        :
+                        pay = (int.parse(value) / 10).round();
                         quantity = int.parse(value);
                         dlCtrl.text = (pay / 100).toInt().toString();
                       });
@@ -194,12 +197,13 @@ class _ChargePointState extends State<ChargePoint> {
 class PaymentMethod extends StatefulWidget {
   final String id;
   final int pay;
+  final String point;
   final int quantity;
   final String type;
   final int dlAccountModel;
   final TextEditingController dlCtrl;
 
-  PaymentMethod(this.id, this.pay,this.quantity, this.type, this.dlAccountModel, this.dlCtrl);
+  PaymentMethod(this.id, this.pay, this.point, this.quantity, this.type, this.dlAccountModel, this.dlCtrl);
 
   @override
   _PaymentMethodState createState() => _PaymentMethodState(dlCtrl,dlAccountModel);
@@ -240,29 +244,32 @@ class _PaymentMethodState extends State<PaymentMethod> {
         whiteSpaceH(20),
         methodView(dlCtrl,dlAccount),
         whiteSpaceH(20),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("* 최소 충전금액은 500,000원 입니다.",
-              style: TextStyle(
-                color: Color(0xFF666666),
-                fontSize: 14,
-                fontFamily: 'noto'
+        (widget.point == "ADP") ?
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("* 최소 충전금액은 500,000원 입니다.",
+                style: TextStyle(
+                  color: Color(0xFF666666),
+                  fontSize: 14,
+                  fontFamily: 'noto'
+                ),
+                textAlign: TextAlign.start,
               ),
-              textAlign: TextAlign.start,
-            ),
-            currentMethod == 2 ?
-                Container() :
-            Text("* 현금/카드 결제 시 20%ADP가 추가지급됩니다.",
-              style: TextStyle(
-                color: Color(0xFF666666),
-                fontSize: 14,
-                fontFamily: 'noto'
-              ),
-              textAlign: TextAlign.start,
-            )
-            ],
-        ),
+              currentMethod == 2 ?
+                  Container() :
+              Text("* 현금/카드 결제 시 20%ADP가 추가지급됩니다.",
+                style: TextStyle(
+                  color: Color(0xFF666666),
+                  fontSize: 14,
+                  fontFamily: 'noto'
+                ),
+                textAlign: TextAlign.start,
+              )
+              ],
+          )
+          :
+        Container(),
         whiteSpaceH(60),
         agreePolicy(),
         whiteSpaceH(24),
@@ -289,7 +296,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
           child: method("무통장입금", 1),
         ),
         Expanded(
-          child: method("BZA 결제", 2),
+          child: method("DL 결제", 2),
         ),
       ],
     );
@@ -451,49 +458,72 @@ class _PaymentMethodState extends State<PaymentMethod> {
             String name = Provider.of<UserProvider>(context, listen: false)
                 .loginUser
                 .name;
-            buyMove(name, widget.pay, widget.id, widget.quantity,
+            buyMove(name, widget.point,widget.pay, widget.id, widget.quantity,
                 paymentType[currentMethod]);
           }
           else {
-            if (widget.pay < 500000) {
-              showToast("500000ADP 이상 충전 가능합니다.");
-            } else if (paymentType[currentMethod] == "DILLING" && dlAccount < widget.pay / 100) {
-              showToast("BZA가 부족합니다.");
-            } else {
-              bool response =
-              await Provider.of<UserProvider>(context, listen: false)
-                  .postCharge(
-                  widget.id, widget.quantity, paymentType[currentMethod]);
-              if (!response) {
-                Fluttertoast.showToast(msg: "에러");
-              } else {
-                await Provider.of<UserProvider>(context, listen:false).fetchMyInfo(context);
-                await Provider.of<UserProvider>(context, listen: false).getAccountsHistory('ADP', 0);
-                Fluttertoast.showToast(msg: "충전이 완료되었습니다.");
+            if(widget.point == "ADP"){
+              if (widget.pay < 500000) {
+                showToast("500000ADP 이상 충전 가능합니다.");
+
+                return;
+              } else if (paymentType[currentMethod] == "DILLING" && dlAccount < widget.pay / 100) {
+                showToast("DL이 부족합니다.");
+
+                return;
               }
-              Navigator.of(context).pop();
+            } else if(widget.point == "RP"){
+              if (widget.quantity < 1000) {
+                showToast("1000CP 이상 충전 가능합니다.");
+
+                return;
+              } else if (paymentType[currentMethod] == "DILLING" && dlAccount < widget.pay / 100) {
+                showToast("DL이 부족합니다.");
+
+                return;
+              }
             }
+            // bool response =
+            // await Provider.of<UserProvider>(context, listen: false)
+            //     .postCharge(
+            //     widget.id, widget.point ,widget.quantity, paymentType[currentMethod]);
+            // if (!response) {
+            //   Fluttertoast.showToast(msg: "에러");
+            // } else {
+            //   await Provider.of<UserProvider>(context, listen:false).fetchMyInfo(context);
+            //   await Provider.of<UserProvider>(context, listen: false).getAccountsHistory(widget.point, 0);
+            //   Fluttertoast.showToast(msg: "충전이 완료되었습니다.");
+            // }
+            // Navigator.of(context).pop();
           }
         },
       ),
     );
   }
 
-  buyMove(name, pay, id, q, payType) async {
+  buyMove(name, point,pay, id, q, payType) async {
     print("결제");
-    if(q < 500000){
-      showToast("500000ADP 이상 충전 가능합니다.");
-    } else {
-      await Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) =>
-              Buy(
-                name: name,
-                pay: pay,
-                id: id,
-                quantity: q,
-                paymentType: payType,
-              )));
-      Navigator.of(context).pop();
+    if(point == "ADP"){
+      if(q < 500000){
+        showToast("500000ADP 이상 충전 가능합니다.");
+        return;
+      }
+    } else if (point == "RP") {
+      if(q < 1000){
+        showToast("1000CP 이상 충전 가능합니다.");
+        return;
+      }
     }
+    await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) =>
+            Buy(
+              name: name,
+              point: point,
+              pay: pay,
+              id: id,
+              quantity: q,
+              paymentType: payType,
+            )));
+    Navigator.of(context).pop();
   }
 }

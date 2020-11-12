@@ -3,6 +3,7 @@ import 'package:cashcook/src/provider/PointMgmtProvider.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
+import 'package:cashcook/src/utils/CustomBottomNavBar.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
@@ -14,8 +15,9 @@ import 'package:provider/provider.dart';
 
 class pointMgmtUser extends StatefulWidget {
   bool afterGame;
+  bool isHome;
 
-  pointMgmtUser({this.afterGame = false});
+  pointMgmtUser({this.afterGame = false, this.isHome = false});
 
   @override
   _pointMgmtUserState createState() => _pointMgmtUserState();
@@ -38,13 +40,17 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
           centerTitle: true,
           elevation: 0,
           backgroundColor: mainColor,
-          leading: IconButton(
+          leading: widget.isHome ? null : IconButton(
             onPressed: () {
               if(widget.afterGame){
                 Provider.of<StoreProvider>(context,listen: false).clearMap();
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context) => MainMap()),
                         (route) => false);
+
+                // Navigator.of(context).pushNamed("/mainmap"); 안됨
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(builder: (context) => MainMap())); 안됨
               } else {
                 Navigator.of(context).pop();
               }
@@ -57,209 +63,216 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
             ),
           ),
         ),
-        body:
-        Consumer<PointMgmtProvider>(
-            builder: (context, pm, _){
-              return
-                Column(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: const EdgeInsets.only(top: 30.0, left: 12.0, right: 12.0, bottom: 50.0),
-                        decoration: BoxDecoration(
-                          color: mainColor,
-                        ),
-                        child: Row(
-                          children: [
-                            Column (
-                              crossAxisAlignment: CrossAxisAlignment.start,
+        body: Stack (
+          children: [
+            Consumer<PointMgmtProvider>(
+                builder: (context, pm, _){
+                  return
+                    Column(
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: const EdgeInsets.only(top: 30.0, left: 12.0, right: 12.0, bottom: 50.0),
+                            decoration: BoxDecoration(
+                              color: mainColor,
+                            ),
+                            child: Row(
                               children: [
-                                whiteSpaceH(1),
-                                whiteSpaceH(5),
-                                whiteSpaceH(1),
-                                whiteSpaceH(20),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                Column (
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("${Provider.of<UserProvider>(context, listen:false).loginUser.username}   ",
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600,
-                                            color: white
-                                        )),
-                                    Text("${Provider.of<UserProvider>(context, listen:false).loginUser.phone}",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600,
-                                            color: white
-                                        ))
+                                    whiteSpaceH(1),
+                                    whiteSpaceH(5),
+                                    whiteSpaceH(1),
+                                    whiteSpaceH(20),
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
+                                        Text("${Provider.of<UserProvider>(context, listen:false).loginUser.username}   ",
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w600,
+                                                color: white
+                                            )),
+                                        Text("${Provider.of<UserProvider>(context, listen:false).loginUser.phone}",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600,
+                                                color: white
+                                            ))
+                                      ],
+                                    ),
                                   ],
                                 ),
+                                Spacer(),
+                                Image.asset("assets/icon/recommend.png", height: 42, fit: BoxFit.contain,),
                               ],
                             ),
-                            Spacer(),
-                            Image.asset("assets/icon/recommend.png", height: 42, fit: BoxFit.contain,),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                        child: Container(
-                            transform: Matrix4.translationValues(0.0, -40.0, 0.0),
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(16),
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  offset: Offset(3,3),
-                                  blurRadius: 3,
-                                  color: Color(0xff888888).withOpacity(0.15),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                            child: Container(
+                                transform: Matrix4.translationValues(0.0, -40.0, 0.0),
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(16),
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      offset: Offset(3,3),
+                                      blurRadius: 3,
+                                      color: Color(0xff888888).withOpacity(0.15),
+                                    ),
+                                  ],
                                 ),
-                              ],
+                                child:
+                                Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child:
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 15.0, left: 12.0, right: 12.0, bottom: 15.0),
+                                          child:Column(
+                                            children: [
+                                              Text("총 현장결제",
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Color(0xff888888),
+                                                  )),
+                                              whiteSpaceH(5),
+                                              Text("${numberFormat.format(pm.pay)}원",
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Color(0xffFF6622),
+                                                      fontWeight: FontWeight.w600
+                                                  )),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child:
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 15.0, left: 12.0, right: 12.0, bottom: 15.0),
+                                          child:Column(
+                                            children: [
+                                              Text("총 DL 결제",
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Color(0xff888888),
+                                                  )),
+                                              whiteSpaceH(5),
+                                              Text("${numberFormat.format(pm.dl)} DL",
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Color(0xffD4145A),
+                                                      fontWeight: FontWeight.w600
+                                                  )),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ]
+                                )
                             ),
-                            child:
-                            Row(
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child:
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 15.0, left: 12.0, right: 12.0, bottom: 15.0),
-                                      child:Column(
-                                        children: [
-                                          Text("총 현장결제",
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: Color(0xff888888),
-                                              )),
-                                          whiteSpaceH(5),
-                                          Text("${numberFormat.format(pm.pay)}원",
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Color(0xffFF6622),
-                                                  fontWeight: FontWeight.w600
-                                              )),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child:
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 15.0, left: 12.0, right: 12.0, bottom: 15.0),
-                                      child:Column(
-                                        children: [
-                                          Text("총 BZA 결제",
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: Color(0xff888888),
-                                              )),
-                                          whiteSpaceH(5),
-                                          Text("${numberFormat.format(pm.dl)} BZA",
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Color(0xffD4145A),
-                                                  fontWeight: FontWeight.w600
-                                              )),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ]
-                            )
-                        ),
-                      ),
-                      Padding(
-                          padding: const EdgeInsets.only(left: 32.0, right: 32.0),
-                          child:
-                          Container(
-                              transform: Matrix4.translationValues(0.0, -20.0, 0.0),
-                              width: MediaQuery.of(context).size.width,
+                          ),
+                          Padding(
+                              padding: const EdgeInsets.only(left: 32.0, right: 32.0),
                               child:
-                              Row(
-                                  children: [
-                                    RaisedButton(
-                                      onPressed: (viewType == "day") ? null : () {
-                                        setState(() {
-                                          viewType = "day";
-                                        });
-                                      },
-                                      color: white,
-                                      disabledColor: Colors.cyan,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(20.0),
-                                          side: BorderSide(color: Colors.cyan)
-                                      ),
-                                      child:
-                                      Text(
-                                        "일간",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: (viewType == "day") ? Colors.white : Colors.black
+                              Container(
+                                  transform: Matrix4.translationValues(0.0, -20.0, 0.0),
+                                  width: MediaQuery.of(context).size.width,
+                                  child:
+                                  Row(
+                                      children: [
+                                        RaisedButton(
+                                          onPressed: (viewType == "day") ? null : () {
+                                            print("viewType");
+                                            print(viewType);
+                                            setState(() {
+                                              viewType = "day";
+                                            });
+                                          },
+                                          color: white,
+                                          disabledColor: mainColor,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(20.0),
+                                              side: BorderSide(color: mainColor)
+                                          ),
+                                          child:
+                                          Text(
+                                            "일간",
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: (viewType == "day") ? Colors.white : Colors.black
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                    whiteSpaceW(10),
-                                    RaisedButton(
-                                      onPressed: (viewType == "month") ? null : () {
-                                        setState(() {
-                                          viewType = "month";
-                                        });
-                                      },
-                                      color: white,
-                                      disabledColor: Colors.cyan,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(20.0),
-                                          side: BorderSide(color: Colors.cyan)
-                                      ),
-                                      child:
-                                      Text(
-                                        "월간",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: (viewType == "month") ? Colors.white : Colors.black
+                                        whiteSpaceW(10),
+                                        RaisedButton(
+                                          onPressed: (viewType == "month") ? null : () {
+                                            setState(() {
+                                              viewType = "month";
+                                            });
+                                          },
+                                          color: white,
+                                          disabledColor: mainColor,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(20.0),
+                                              side: BorderSide(color: mainColor)
+                                          ),
+                                          child:
+                                          Text(
+                                            "월간",
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: (viewType == "month") ? Colors.white : Colors.black
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                    whiteSpaceW(10),
-                                    RaisedButton(
-                                      onPressed: (viewType == "year") ? null : () {
-                                        setState(() {
-                                          viewType = "year";
-                                        });
-                                      },
-                                      color: white,
-                                      disabledColor: Colors.cyan,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(20.0),
-                                          side: BorderSide(color: Colors.cyan)
-                                      ),
-                                      child:
-                                      Text(
-                                        "연간",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: (viewType == "year") ? Colors.white : Colors.black
+                                        whiteSpaceW(10),
+                                        RaisedButton(
+                                          onPressed: (viewType == "year") ? null : () {
+                                            setState(() {
+                                              viewType = "year";
+                                            });
+                                          },
+                                          color: white,
+                                          disabledColor: mainColor,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(20.0),
+                                              side: BorderSide(color: mainColor,)
+                                          ),
+                                          child:
+                                          Text(
+                                            "연간",
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: (viewType == "year") ? Colors.white : Colors.black
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  ]
+                                      ]
+                                  )
                               )
-                          )
-                      ),
-                      Flexible(
-                          child: (viewType == "day") ? historyList()
-                              : (viewType == "month") ? ReportList()
-                              : ReportList()
-                      ),
-                    ]
-                );
-            }
-        ),
+                          ),
+                          Flexible(
+                              child: (viewType == "day") ? historyList()
+                                  : (viewType == "month") ? ReportList()
+                                  : ReportList()
+                          ),
+                        ]
+                    );
+                }
+            ),
+            widget.isHome ? CustomBottomNavBar(context, "pointmgmt") : Container(),
+          ],
+        )
+
       );
   }
 
@@ -339,13 +352,13 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                 Expanded(
                     flex: 2,
                     child:Image.asset(
-                      "assets/icon/bza.png", width: 40, fit: BoxFit.contain,)
+                      "assets/icon/DL 2.png", width: 40, fit: BoxFit.contain,)
                 ),
                 Expanded(
                   flex: 5,
                   child:Container(
                       child:
-                      Text("  ${numberFormat.format(double.parse(data.sub_amount))} BZA",
+                      Text("  ${numberFormat.format(double.parse(data.sub_amount))} DL",
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               fontFamily: 'noto',
@@ -460,7 +473,7 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                                     fontFamily: 'noto',
                                     fontWeight: FontWeight.w600,
                                     color:
-                                    (e['title'].toString().contains("BZA") || (e['title'].toString().contains("ADP")) ? Color(0xffD4145A)
+                                    (e['title'].toString().contains("DL") || (e['title'].toString().contains("ADP")) ? Color(0xffD4145A)
                                         : (e['title'].toString().contains("RP")) ? mainColor
                                         :  Color(0xffFF6622)),
                                   )

@@ -12,7 +12,9 @@ import 'package:provider/provider.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:cashcook/src/screens/mypage/points/pointMgmtUser.dart';
 import 'package:cashcook/src/screens/qr/qr.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
+// QR코드로 진행한 실시간 흥정 게임
 class BargainGame extends StatefulWidget {
   @override
   _BargainGame createState() => _BargainGame();
@@ -32,16 +34,17 @@ class _BargainGame extends State<BargainGame> {
   List<int> values = List.generate(10, (index) => index);
   bool gameLoad = false;
   int i = 0;
-  bool isShow = true;
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
   @override
   void initState() {
+    print("BargainGame Start");
+    DefaultCacheManager().emptyCache();
+    print("DefaultCacheManager().emptyCache()");
     super.initState();
   }
 
@@ -52,14 +55,17 @@ class _BargainGame extends State<BargainGame> {
       body: SafeArea(
         bottom: false,
         key: _scaffoldKey,
-        child: Consumer<QRProvider>(
+        child:
+        Consumer<QRProvider>(
           builder: (context, qrProvider, _) {
             String payDiscount = qrProvider.paymentModel.discount;
+            print(payDiscount);
             int n_discount = int.parse(payDiscount);
+            print(n_discount);
             percentage = n_discount.toDouble() * 0.01;
+            print(percentage);
 
             print("game start!!!");
-            // print("price : ${numberFormat.format(qrProvider.paymentModel.price)}");
             print("price : ${qrProvider.paymentModel.price}");
             print("discount : ${qrProvider.paymentModel.discount}");
             print("bza : ${demicalFormat.format(qrProvider.paymentModel.price * percentage / 100)}");
@@ -72,10 +78,9 @@ class _BargainGame extends State<BargainGame> {
             String temp = price.toString() + "/" + discount.toString() + "/" + bza.toString() + "/" + rp.toString();
             print(temp);
             if(gameLoad) {
-              // setSendMessage(price, discount, bza, rp);
+              setSendMessage(price, discount, bza, rp);
             }
 
-            // print("^^^");
 
             return WillPopScope(
               onWillPop: () async {
@@ -116,22 +121,24 @@ class _BargainGame extends State<BargainGame> {
 
   void setSendMessage(price, discount, bza, rp) {
     print("sendStart");
+    print(_unityWidgetController.toString());
     String message = price.toString() + "/" + discount.toString() + "/" + bza.toString() + "/" + rp.toString();
     _unityWidgetController.postMessage(
         'Main',
-        'SetUserInfo',
+        'SetUserInfo_QR',
         message
     );
     print("sendEnd");
+
   }
 
   void onUnityMessage(controller, message) {
     if(message.toString() == "quit"){ //나가기
       print("나가기");
-       Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => pointMgmtUser(
-            afterGame: true,
-          )),);
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => pointMgmtUser(
+          afterGame: true,
+        )), (routes) => false);
     } else{ // 한번더하기
       print("한번더");
       var list = ['10','20','30','40','50','60','70','80','90','100'];

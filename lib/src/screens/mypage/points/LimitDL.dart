@@ -15,7 +15,7 @@ class limitDL extends StatefulWidget {
 class _limitDLState extends State<limitDL> {
   AppBar appBarWidget = AppBar(
     centerTitle: true,
-    title: Text("BZA 결제 한도 설정",
+    title: Text("DL 결제 한도 설정",
         style: TextStyle(
             color: Color(0xFF333333),
             fontSize: 14,
@@ -60,7 +60,7 @@ class _limitDLState extends State<limitDL> {
             children: [
               Row(
                 children: [
-                  Text("BZA 결제 한도 설정",
+                  Text("DL 결제 한도 설정",
                     style: TextStyle(
                       color: Color(0xFF333333),
                       fontSize: 16,
@@ -82,11 +82,11 @@ class _limitDLState extends State<limitDL> {
               Container(
                 margin: EdgeInsets.only(top: 47.0),
                 width: MediaQuery.of(context).size.width,
-                height: 66,
+                height: 70,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("최대 결제 BZA",
+                    Text("최대 결제 DL",
                       style: TextStyle(
                         color: Color(0xFF999999),
                         fontSize: 12,
@@ -97,7 +97,7 @@ class _limitDLState extends State<limitDL> {
                     Row(
                       children: [
                         Image.asset(
-                          "assets/icon/bza.png",
+                          "assets/icon/DL 2.png",
                           width: 40,
                           height: 40,
                         ),
@@ -114,7 +114,7 @@ class _limitDLState extends State<limitDL> {
                             keyboardType: TextInputType.number,
                             readOnly: !limitState,
                             decoration: InputDecoration(
-                              suffixText: "BZA",
+                              suffixText: "DL",
                               contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
                               border: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Color(0xffdddddd), width: 1.0),

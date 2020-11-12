@@ -19,8 +19,8 @@ class SearchService{
     return response.body;
   }
 
-  Future<String> getStoreSearch(String query) async {
-    final response = await client.get(cookURL+"/franchises/store?query=$query", headers: {
+  Future<String> getStoreSearch(String query, String start, String end) async {
+    final response = await client.get(cookURL+"/franchises/store?query=$query&start=$start&end=$end", headers: {
       "Authorization": "BEARER ${dataStorage.token}"
     });
     return utf8.decode(response.bodyBytes);

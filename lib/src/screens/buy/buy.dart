@@ -17,11 +17,12 @@ class Buy extends StatefulWidget {
   final String name;
   final int pay;
   String id;
+  String point;
   int quantity;
   String paymentType;
   int dl;
 
-  Buy({this.name, this.pay, this.id, this.quantity,
+  Buy({this.name, this.pay, this.id, this.point, this.quantity,
       this.paymentType, this.dl}); //  Buy({this.name, this.pay});
 
 
@@ -94,7 +95,7 @@ class _Buy extends State<Buy> {
       data: PaymentData.fromJson({
         'pg': 'inicis',
         'payMethod': 'card',
-        'name': (widget.paymentType.contains("ORDER")) ? '캐시쿡 결제' : 'ADP 카드 충전',
+        'name': (widget.paymentType.contains("ORDER")) ? '캐시쿡 결제' : '${widget.point} 카드 충전',
         'merchantUid': 'mid_${DateTime.now().millisecondsSinceEpoch}',
         'amount': widget.pay,
         'buyerName': buyerName,
@@ -114,24 +115,29 @@ class _Buy extends State<Buy> {
           print(widget.paymentType);
 
           if(widget.paymentType.contains("ORDER")) {
-            bool response =
-            await Provider.of<StoreServiceProvider>(context, listen: false).orderMenu(int.parse(widget.id), widget.pay, widget.paymentType, widget.dl);
+            await Provider.of<StoreServiceProvider>(context, listen: false).setOrderMap(widget.id, "ORDER").then((value) {
+              if (value) {
+                Fluttertoast.showToast(msg: "결제가 완료되었습니다.");
+              } else {
+                Fluttertoast.showToast(msg: "에러");
+              }
+            });
 
-            if (!response) {
-              Fluttertoast.showToast(msg: "에러");
-            } else {
-              Fluttertoast.showToast(msg: "결제가 완료되었습니다.");
-            }
+            // if (!response) {
+            //   Fluttertoast.showToast(msg: "에러");
+            // } else {
+            //   Fluttertoast.showToast(msg: "결제가 완료되었습니다.");
+            // }
           } else {
             bool response =
             await Provider.of<UserProvider>(context, listen: false)
                 .postCharge(
-                widget.id, widget.quantity, widget.paymentType);
+                widget.id, widget.point, widget.quantity, widget.paymentType, widget.dl);
             if (!response) {
               Fluttertoast.showToast(msg: "에러");
             } else {
               await Provider.of<UserProvider>(context, listen:false).fetchMyInfo(context);
-              await Provider.of<UserProvider>(context, listen: false).getAccountsHistory('ADP', 0);
+              await Provider.of<UserProvider>(context, listen: false).getAccountsHistory(widget.point, 0);
 
               Fluttertoast.showToast(msg: "충전이 완료되었습니다.");
             }

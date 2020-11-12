@@ -11,7 +11,7 @@ class PointFranModel {
       : type = json['point_type'],
         amount = json['amount'],
         created_at = json['created_at'],
-        point_img = (json['point_type'] == "DILLING") ? "assets/icon/bza.png"
+        point_img = (json['point_type'] == "DILLING") ? "assets/icon/DL 2.png"
               : "assets/resource/public/krw-coin.png";
 }
 
@@ -30,9 +30,9 @@ class PointUserModel {
         amount = json['amount'],
         created_at = json['created_at'],
         point_img = (json['point_type'] == "DILLING") ?
-        "assets/icon/bza.png"
+        "assets/icon/DL 2.png"
             : (json['point_type'] == "R_POINT") ?
-        "assets/icon/rp-coin.png"
+        "assets/icon/c_point.png"
             : (json['point_type'] == "AD_POINT") ?
         "assets/icon/adp.png"
             :

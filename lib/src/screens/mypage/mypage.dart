@@ -9,6 +9,7 @@ import 'package:cashcook/src/screens/mypage/points/pointMgmt.dart';
 import 'package:cashcook/src/screens/mypage/points/pointMgmtUser.dart';
 import 'package:cashcook/src/screens/qr/qrcreate.dart';
 import 'package:cashcook/src/screens/referrermanagement/referrermanagement.dart';
+import 'package:cashcook/src/utils/CustomBottomNavBar.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/dialog.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
@@ -20,6 +21,10 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:cashcook/src/screens/mypage/info/scrap.dart';
 
 class MyPage extends StatefulWidget {
+  bool isHome;
+
+  MyPage({this.isHome = false});
+
   @override
   _MyPageState createState() => _MyPageState();
 }
@@ -53,7 +58,7 @@ class _MyPageState extends State<MyPage> {
         appBar: AppBar(
           backgroundColor: white,
           elevation: 2.0,
-          leading: IconButton(
+          leading: widget.isHome ? null : IconButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -118,32 +123,39 @@ class _MyPageState extends State<MyPage> {
             )
           ],
         ),
-        body: SingleChildScrollView(
-          child:Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 0),
-                child: Container(
-                  color: white,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      (view == "My") ? myPageForm()
-                          : (view == "Store") ? storeForm()
-                          : agencyForm(),
-                    ],
+        body: Stack(
+          children: [
+            Positioned.fill(child:
+            SingleChildScrollView(
+              child:Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 0),
+                      child: Container(
+                        color: white,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            (view == "My") ? myPageForm()
+                                : (view == "Store") ? storeForm()
+                                : agencyForm(),
+                          ],
+                        ),
+                      )
                   ),
-                )
-              ),
 
-            ],
-          ),
-        ),
+                ],
+              ),
+            ),
+            ),
+            widget.isHome ? CustomBottomNavBar(context, "mypage") : Container(),
+          ],
+        )
       );
   }
 
@@ -206,7 +218,7 @@ class _MyPageState extends State<MyPage> {
                                   onTap: (){
                                     Map<String, dynamic> args = {
                                       "point":"RP",
-                                      "pointImg":"assets/icon/rp-coin.png"
+                                      "pointImg":"assets/icon/c_point.png"
                                     };
                                     Navigator.of(context).pushNamed("/point/history", arguments: args);
                                   },
@@ -214,9 +226,9 @@ class _MyPageState extends State<MyPage> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Image.asset("assets/icon/rp-coin.png",height: 24, fit: BoxFit.contain,),
+                                      Image.asset("assets/icon/c_point.png",height: 24, fit: BoxFit.contain,),
                                       whiteSpaceW(5),
-                                      Text("${demicalFormat.format(user.pointMap['RP'])} RP",style: TextStyle(fontSize: 12, color: Color(0xFF333333)),),
+                                      Text("${demicalFormat.format(user.pointMap['RP'])} CP",style: TextStyle(fontSize: 12, color: Color(0xFF333333)),),
                                       Icon(Icons.arrow_forward_ios, color: Color(0xFF333333), size: 12,),
                                     ],
                                   ),
@@ -226,7 +238,7 @@ class _MyPageState extends State<MyPage> {
                                   onTap: (){
                                     Map<String, dynamic> args = {
                                       "point":"DL",
-                                      "pointImg":"assets/icon/bza.png"
+                                      "pointImg":"assets/icon/DL 2.png"
                                     };
                                     Navigator.of(context).pushNamed("/point/history", arguments: args);
                                   },
@@ -234,9 +246,9 @@ class _MyPageState extends State<MyPage> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Image.asset("assets/icon/bza.png",height: 24, fit: BoxFit.contain,),
+                                      Image.asset("assets/icon/DL 2.png",height: 24, fit: BoxFit.contain,),
                                       whiteSpaceW(5),
-                                      Text("${demicalFormat.format(user.pointMap['DL'])} BZA",style: TextStyle(fontSize: 12, color: Color(0xFF333333)),),
+                                      Text("${demicalFormat.format(user.pointMap['DL'])} DL",style: TextStyle(fontSize: 12, color: Color(0xFF333333)),),
                                       Icon(Icons.arrow_forward_ios, color: Color(0xFF333333), size: 12,),
                                     ],
                                   ),
@@ -903,7 +915,7 @@ class _MyPageState extends State<MyPage> {
                                       Tabs(name: "알림", routesName: "/store/modify/business",),
                                       Tabs(name: "사업자정보 수정", routesName: "/store/modify/business",),
                                       Tabs(name: "매장정보 수정", routesName: "/store/modify/store",),
-                                      Tabs(name: "BZA 결제 한도 설정", routesName: "/store/modify/limitDL",),
+                                      Tabs(name: "DL 결제 한도 설정", routesName: "/store/modify/limitDL",),
                                       CustomerCenter(),
                                     ]
                                 )
@@ -998,7 +1010,7 @@ class _MyPageState extends State<MyPage> {
             sub: "",
             context: context,
             selectOneText: "현장결제",
-            selectTwoText: "BZA결제",
+            selectTwoText: "DL결제",
             selectOneVoid: () => qrCreate(0),
             selectTwoVoid: () => qrCreate(1)
         );
@@ -1051,9 +1063,9 @@ class _MyPageState extends State<MyPage> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset("assets/icon/bza.png", height: 42, fit: BoxFit.contain,),
+              Image.asset("assets/icon/DL 2.png", height: 42, fit: BoxFit.contain,),
               SizedBox(width: 12,),
-              Text("BZA 판매",style: TextStyle(fontSize: 16,color: Color(0xff444444), fontWeight: FontWeight.w600)),
+              Text("DL 판매",style: TextStyle(fontSize: 16,color: Color(0xff444444), fontWeight: FontWeight.w600)),
               Spacer(),
               Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 24,),
             ],
@@ -1227,7 +1239,7 @@ class _DeliveryCard extends State<DeliveryCard> {
         color: white,
         child: Row(
           children: [
-            Text("BZA 결제 한도 설정",style: TextStyle(fontSize: 14,color: Color(0xff444444)),),
+            Text("DL 결제 한도 설정",style: TextStyle(fontSize: 14,color: Color(0xff444444)),),
             Spacer(),
             FlutterSwitch(
               width: 40.0,

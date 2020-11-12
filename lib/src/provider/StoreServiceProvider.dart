@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:cashcook/src/model/category.dart';
+import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/model/store/menu.dart';
 import 'package:cashcook/src/model/store/review.dart';
 import 'package:cashcook/src/model/scrap.dart';
-import 'package:cashcook/src/services/StoreService.dart';
+import 'package:cashcook/src/services/Store.dart' as s;
+import 'package:cashcook/src/services/StoreService.dart ';
 import 'package:cashcook/src/utils/responseCheck.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,7 +29,9 @@ class StoreServiceProvider with ChangeNotifier {
   List<BigMenuModel> menuList = [];
   List<BigMenuModel> orderList = [];
   int orderPay = 0;
-  TextEditingController bzaCtrl = TextEditingController();
+  int orderAmount = 0;
+  int initAmount = 0;
+  TextEditingController dlCtrl = TextEditingController();
   int pay = 0;
 
   // reviewService
@@ -37,9 +41,26 @@ class StoreServiceProvider with ChangeNotifier {
   // scrapService
   List<ScrapModel> scrapList = [];
 
-  void clearBzaCtrl() {
-    bzaCtrl.text = "0";
+  // main Service
+  List<StoreModel> store = [];
+  s.StoreService service_2 = s.StoreService();
+
+  // Cat Search Service;
+  List<StoreMinify> storeMiniList = [];
+  List<StoreModel> searchStore = [];
+  int count = 0;
+
+  void clearDlCtrl() {
+    dlCtrl.text = "0";
     notifyListeners();
+  }
+
+  void clearOrderAmount() {
+    orderAmount = 0;
+  }
+
+  void orderComplete() {
+    orderAmount = initAmount;
   }
 
   void setOrderMenu(List<BigMenuModel> setMenus, int orderPay) {
@@ -48,9 +69,55 @@ class StoreServiceProvider with ChangeNotifier {
     orderList = setMenus;
     this.orderPay = orderPay;
     this.pay = orderPay;
-    bzaCtrl.text = "0";
+    dlCtrl.text = "0";
+    initAmount = orderAmount;
 
     notifyListeners();
+  }
+
+  Future<bool> setOrderMap(String store_id, String logType) async {
+    Map<String, dynamic> orderMap = {};
+
+    // OrderLog Mapping
+    orderMap['storeId'] = store_id;
+    orderMap['content'] = initAmount == 1 ? orderList[0].menuList[0]
+        : "${orderList[0].menuList[0].name} 외 ${initAmount - 1}건";
+    orderMap['pay'] = orderPay;
+    orderMap['dl'] = int.parse(dlCtrl.text == "" ? "0" : dlCtrl.text);
+    orderMap['logType'] = logType;
+    orderMap['mainCatList'] = [];
+
+    // MainCat Mapping
+    orderList.forEach((mainCat) {
+      // SubCat Mapping
+      List<Map<String, dynamic>> subCatList = [];
+      mainCat.menuList.forEach((subCat) {
+        subCatList.add(
+            {
+              'menuName': subCat.name,
+              'amount': subCat.count,
+              'price': subCat.price
+            }
+        );
+      });
+      orderMap['mainCatList'].add(
+          {
+            'menuName' : mainCat.name,
+            'subCatList' : subCatList,
+          }
+      );
+    });
+
+    print(orderMap.toString());
+
+    final response = await service.orderPayment(orderMap);
+
+    Map<String, dynamic> json = jsonDecode(response);
+    print(json);
+    if(!isResponse(json)){
+      return Future.value(false);
+    }
+    return Future.value(true);
   }
 
   void startLoading() {
@@ -160,12 +227,17 @@ class StoreServiceProvider with ChangeNotifier {
   void setCheck(bigIdx, idx, value){
     menuList[bigIdx].menuList[idx].isCheck = value;
 
+    value ? orderAmount += 1 : orderAmount -= 1;
+
     notifyListeners();
   }
 
   void increaseCount(bigIdx, idx) {
     orderList[bigIdx].menuList[idx].count++;
     orderPay += orderList[bigIdx].menuList[idx].price;
+    orderAmount += 1;
+
+    print(orderAmount);
 
     notifyListeners();
   }
@@ -173,6 +245,9 @@ class StoreServiceProvider with ChangeNotifier {
   void decreaseCount(bigIdx,idx) {
     orderList[bigIdx].menuList[idx].count--;
     orderPay -= orderList[bigIdx].menuList[idx].price;
+    orderAmount -= 1;
+
+    print(orderAmount);
 
     notifyListeners();
   }
@@ -183,12 +258,12 @@ class StoreServiceProvider with ChangeNotifier {
     print(pay);
     print('=============');
     print(123);
-    final response = await service.orderPayment(pay, store_user, type, dl);
-    print(response);
-    if (isResponse(jsonDecode(response))) {
-      return true;
-    }
-    return false;
+    // final response = await service.orderPayment(pay, store_user, type, dl);
+    // print(response);
+    // if (isResponse(jsonDecode(response))) {
+    //   return true;
+    // }
+    // return false;
   }
 
   Future<bool> insertReview(int store_id, int scope, String contents) async {
@@ -231,6 +306,59 @@ class StoreServiceProvider with ChangeNotifier {
       return true;
     }
     return false;
+  }
+
+  void selSearchCategory(String code, String code_name, String start, String end) async {
+    searchStore.clear();
+
+    List<SubCatModel> selSubCat = subCatList.where((e) => e.code_name == code_name).toList();
+
+    selectSubCat = selSubCat[0].code_name;
+    selectSubCat_code = selSubCat[0].code;
+
+    var response = await service.fetchStoreList(code, selectSubCat_code,start ,end);
+    print(response);
+
+    dynamic _storeMiniList = json.decode(response)['data']['list'];
+    for(var _storeMini in _storeMiniList) {
+      searchStore.add(StoreModel.fromJson(_storeMini));
+    }
+    count = searchStore.length;
+
+    notifyListeners();
+  }
+
+  void fetchSubCategory(String code,String start, String end) async {
+    subCatList.clear();
+    searchStore.clear();
+    notifyListeners();
+
+    var response = await service.fetchSubCategory(code);
+
+    print(response);
+
+    dynamic _subCatList = json.decode(response)['data']['list'];
+    subCatList.add(SubCatModel(
+        code: "000",
+        code_name: "전체"
+    ));
+    for(var _subCat in _subCatList) {
+      subCatList.add(SubCatModel.fromJson(_subCat));
+    }
+
+    response = await service.fetchStoreList(code, "000", start, end);
+    print(response);
+
+    dynamic _storeMiniList = json.decode(response)['data']['list'];
+    for(var _storeMini in _storeMiniList) {
+      searchStore.add(StoreModel.fromJson(_storeMini));
+    }
+    count = searchStore.length;
+
+    selectSubCat = subCatList[0].code_name;
+    selectSubCat_code = subCatList[0].code;
+
+    notifyListeners();
   }
 
   void fetchNewCategory(String code_name) async {
@@ -344,6 +472,35 @@ class StoreServiceProvider with ChangeNotifier {
     print(response);
 
     showToast(json.decode(response)['data']['msg']);
+
+    if(store.length != 0){
+      store.forEach((element) {
+        if(element.id == int.parse(store_id)) {
+          element.scrap.scrap = "1";
+          return;
+        }
+      });
+    }
+
+    if(storeMiniList.length != 0){
+      storeMiniList.forEach((element) {
+        if(element.id == int.parse(store_id)) {
+          element.scrap = "1";
+          return;
+        }
+      });
+    }
+
+    if(searchStore.length != 0){
+      searchStore.forEach((element) {
+        if(element.id == int.parse(store_id)) {
+          element.scrap.scrap = "1";
+          return;
+        }
+      });
+    }
+
+    notifyListeners();
   }
 
   void readScrap() async {
@@ -374,9 +531,76 @@ class StoreServiceProvider with ChangeNotifier {
       scrapList = scrapList.where((scrap) => scrap.id != store_id).toList();
 
       showToast("취소되었습니다.");
+      if(store.length != 0){
+        store.forEach((element) {
+          if(element.id == store_id) {
+            element.scrap.scrap = "0";
+            return;
+          }
+        });
+      }
+
+      if(storeMiniList.length != 0){
+        storeMiniList.forEach((element) {
+          if(element.id == store_id) {
+            element.scrap = "0";
+            return;
+          }
+        });
+      }
+
+      if(searchStore.length != 0){
+        searchStore.forEach((element) {
+          if(element.id == store_id) {
+            element.scrap.scrap = "0";
+            return;
+          }
+        });
+      }
 
       notifyListeners();
     }
+  }
+
+  void fetchStoreSearch(String query, String start, String end) async {
+    searchStore.clear();
+
+    startLoading();
+
+    final response = await service.getStoreSearch(query, start, end);
+    Map<String,dynamic> storeJson = jsonDecode(response);
+
+    print(response);
+    for (var store in storeJson['data']['list']) {
+      StoreModel tmp = StoreModel.fromJson(store);
+      if((searchStore.where((s) => (s.id == tmp.id)).toList().length == 0)){
+        searchStore.add(tmp);
+      }
+
+    }
+
+    stopLoading();
+  }
+
+  void getStore(String start, String end) async {
+    store.clear();
+    startLoading();
+
+    int cnt = 0;
+    String response = await service_2.getStore(start, end);
+    print("=================");
+    print(response);
+    Map<String, dynamic> mapJson = jsonDecode(response);
+    if(isResponse(mapJson)){
+      for(var storeList in mapJson['data']["list"]){
+        StoreModel tmp = StoreModel.fromJson(storeList);
+        if((store.where((s) => (s.id == tmp.id)).toList().length == 0)){
+          store.add(tmp);
+        }
+      }
+    }
+
+    stopLoading();
   }
 
 }

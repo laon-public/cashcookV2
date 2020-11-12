@@ -138,18 +138,18 @@ class StoreProvider with ChangeNotifier{
           return false;
         }
         _menuList.add(
-          MenuModel(
-            name: menu.nameCtrl.text,
-            price: int.parse(menu.priceCtrl.text)
-          )
+            MenuModel(
+                name: menu.nameCtrl.text,
+                price: int.parse(menu.priceCtrl.text)
+            )
         );
       }
 
       _bigMenuList.add(
-        BigMenuModel(
-          name: bigMenu.nameCtrl.text,
-          menuList: _menuList
-        )
+          BigMenuModel(
+              name: bigMenu.nameCtrl.text,
+              menuList: _menuList
+          )
       );
     }
 
@@ -178,47 +178,30 @@ class StoreProvider with ChangeNotifier{
   }
 
   void getStore(String start, String end, int myId) async {
-      newStore.clear();
+    newStore.clear();
 
-      notifyListeners();
+    notifyListeners();
 
-      int cnt = 0;
-      String response = await service.getStore(start, end);
-      print(response.length);
-      Map<String, dynamic> mapJson = jsonDecode(response);
-      print("getStore2");
-      if(isResponse(mapJson)){
-        for(var storeList in mapJson['data']["list"]){
-         StoreModel tmp = StoreModel.fromJson(storeList);
-         if((store.where((s) => (s.id == tmp.id)).toList().length == 0)){
-           newStore.add(tmp);
-           store.add(tmp);
-         }
-       }
-        print("getStore3");
+    int cnt = 0;
+    String response = await service.getStore(start, end);
+    print("=================");
+    print(response);
+    Map<String, dynamic> mapJson = jsonDecode(response);
+    if(isResponse(mapJson)){
+      for(var storeList in mapJson['data']["list"]){
+        StoreModel tmp = StoreModel.fromJson(storeList);
+        if((store.where((s) => (s.id == tmp.id)).toList().length == 0)){
+          newStore.add(tmp);
+          store.add(tmp);
+        }
+      }
     }
 
-      if(newStore.length != 0){
-        markerAdds(newStore, myId);
-      }
+    if(newStore.length != 0){
+      markerAdds(newStore, myId);
+    }
 
-      response = await service_2.fetchReviewList();
-      print(response);
-
-      dynamic _reviewList = json.decode(response)['data']['avg'];
-      // dynamic _reviewList = json.decode(response)['data']['list'];
-      // reviewAvg = json.decode(response)['data']['avg'];
-
-      print("reviewListSelect1");
-      if(_reviewList != null){
-        print("reviewListSelect2");
-        for(var _review in _reviewList) {
-          reviewList.add(ReviewModel.fromJsonScope(_review));
-        }
-        print("reviewListSelect3");
-      }
-
-      notifyListeners();
+    notifyListeners();
   }
 
   markerAdds(List<StoreModel> newStore, int myId) {
@@ -231,31 +214,66 @@ class StoreProvider with ChangeNotifier{
   }
 
   addMarker(StoreModel store, markerId, int myId) async {
-    final icon = await getBitmapDescriptorFromAssetBytes(
-        "assets/icon/other_mk.png", 96);
-    final my_icon = await getBitmapDescriptorFromAssetBytes(
-        "assets/icon/my_mk.png", 72);
+    // final icon = await getBitmapDescriptorFromAssetBytes(
+    //     "assets/icon/other_mk.png", 96);
+    // final my_icon = await getBitmapDescriptorFromAssetBytes(
+    //     "assets/icon/my_mk.png", 72);
+    final icon = await getBitmapDescriptorFromAssetMarkers((myId.toString() == store.user_id) ? "MY" : store.store.category_code, 96);
 
 
-      markers.add(Marker(
-          markerId: markerId,
-          position: LatLng(
+    markers.add(Marker(
+        markerId: markerId,
+        position: LatLng(
+            double.parse(store.address.coords.split(",").first),
+            double.parse(store.address.coords.split(",").last)),
+        icon: icon,
+        onTap: () async {
+          storeSelAddMarker(store, MarkerId("selMarker"));
+
+          // await ssp.setServiceNum(0, store.id);
+          currentLocation = await location.getLocation();
+
+          distance = calculateDistance(
+              currentLocation.latitude,
+              currentLocation.longitude,
               double.parse(store.address.coords.split(",").first),
-              double.parse(store.address.coords.split(",").last)),
-          icon: (myId.toString() == store.user_id) ? my_icon : icon,
-          onTap: () async {
-            // await ssp.setServiceNum(0, store.id);
-            currentLocation = await location.getLocation();
+              double.parse(store.address.coords.split(",").last));
+          showDetailView(store);
 
-            distance = calculateDistance(
-                currentLocation.latitude,
-                currentLocation.longitude,
-                double.parse(store.address.coords.split(",").first),
-                double.parse(store.address.coords.split(",").last));
-            showDetailView(store);
-          }));
 
-      notifyListeners();
+        }));
+
+
+
+    notifyListeners();
+  }
+
+  storeSelAddMarker(StoreModel store, MarkerId markerId) async {
+
+
+    final icon = await getBitmapDescriptorFromAssetMarkers("SEL" , 96);
+
+    markers.add(Marker(
+        markerId: markerId,
+        position: LatLng(
+            double.parse(store.address.coords.split(",").first),
+            double.parse(store.address.coords.split(",").last)),
+        icon: icon,
+        onTap: () async {
+          // await ssp.setServiceNum(0, store.id);
+          currentLocation = await location.getLocation();
+
+          distance = calculateDistance(
+              currentLocation.latitude,
+              currentLocation.longitude,
+              double.parse(store.address.coords.split(",").first),
+              double.parse(store.address.coords.split(",").last));
+        }));
+
+    // markers.removeWhere((element) => element.markerId === "selMarker")
+
+    print(markers.toString());
+    notifyListeners();
   }
 
   double calculateDistance(lat1, lon1, lat2, lon2) {
@@ -293,9 +311,9 @@ class StoreProvider with ChangeNotifier{
   }
 
   void appendMenu(int idx) {
-      menuList[idx].menuEditList.add(MenuEditModel.autoConf());
+    menuList[idx].menuEditList.add(MenuEditModel.autoConf());
 
-      notifyListeners();
+    notifyListeners();
   }
 
   void removeBigMenu(int idx) {
@@ -311,13 +329,13 @@ class StoreProvider with ChangeNotifier{
   }
 
   void postStoreService() async {
-      await postStore();
-      isStoreSuccess = true;
-      notifyListeners();
+    await postStore();
+    isStoreSuccess = true;
+    notifyListeners();
 
-      await ssp.postMenu(menuData);
-      isMenuSuccess = true;
-      notifyListeners();
+    await ssp.postMenu(menuData);
+    isMenuSuccess = true;
+    notifyListeners();
   }
 
   void clearSuccess() {

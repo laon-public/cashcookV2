@@ -123,7 +123,7 @@ class _RPExchangeState extends State<RPExchange> {
           Row(
             children: [
               Image.asset(
-                "assets/icon/bza.png",
+                "assets/icon/DL 2.png",
                 fit: BoxFit.contain,
                 width: 40,
               ),
@@ -133,7 +133,7 @@ class _RPExchangeState extends State<RPExchange> {
                   cursorColor: Color(0xff000000),
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    suffixText: "BZA",
+                    suffixText: "DL",
                     suffixStyle: TextStyle(fontSize: 16, color: Color(0xff444444)),
                     border: UnderlineInputBorder(
                       borderSide:
@@ -226,7 +226,7 @@ class _RPExchangeState extends State<RPExchange> {
           Map<String, dynamic> args = {
             "quantity": quantity,
             'point': "RP",
-            "pointImg":"assets/icon/rp-coin.png"
+            "pointImg":"assets/icon/c_point.png"
           };
 
           await Provider.of<UserProvider>(context, listen:false).getAccountsHistory("RP", 0);

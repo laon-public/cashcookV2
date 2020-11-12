@@ -8,6 +8,13 @@ import 'package:http/http.dart' as http;
 class UserService {
   http.Client client = http.Client();
 
+  Future<String> fetchServiceList() async {
+    print("cookURL : " + cookURL);
+    final response = await client.get(cookURL + "/users/me/service/list",
+        headers: {"Authorization": "BEARER ${dataStorage.token}"});
+    return utf8.decode(response.bodyBytes);
+  }
+
   Future<String> userSync() async {
     final response = await client.post(cookURL + "/users/me/sync",
         headers: {"Authorization": "BEARER ${dataStorage.token}"});
@@ -27,10 +34,10 @@ class UserService {
     return utf8.decode(response.bodyBytes);
   }
 
-  Future<String> postCharge(int quantity, String payment) async {
+  Future<String> postCharge(int quantity, String point, String payment, int dlQuantity) async {
     final response = await client.post(cookURL + "/accounts/charge",
         headers: {"Authorization": "BEARER ${dataStorage.token}","Content-Type": "application/json",},
-        body: json.encode({"quantity": quantity, "payment": payment}));
+        body: json.encode({"quantity": quantity, "payment": payment , "point" : point, "dlQuantity" : dlQuantity}));
     return utf8.decode(response.bodyBytes);
   }
 
@@ -177,5 +184,19 @@ class UserService {
         });
     print(response.body);
     return utf8.decode(response.bodyBytes);
+  }
+
+  Future<String> authCashcook(String id, String pw) async {
+    final response = await client.post(baseUrl+"users/login",body: {
+      "username" : id,
+      "password" : pw,
+    }, headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    });
+
+    print(response.headers['location']);
+    print(response.headers.toString());
+
+    return response.headers['location'];
   }
 }

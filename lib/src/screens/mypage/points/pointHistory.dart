@@ -134,13 +134,15 @@ class History extends StatelessWidget {
             "dlAccount": dl
           };
           String path = "charge";
-          await Navigator.of(context).pushNamed("/point/$path", arguments: args);
-          // await Provider.of<UserProvider>(context, listen: false).clearAdpQuantity();
-          // await Navigator.of(context).push(
-          //   MaterialPageRoute(
-          //     builder: (context) => ChargePoint2()
-          //   )
-          // );
+          // await Navigator.of(context).pushNamed("/point/$path", arguments: args);
+          await Provider.of<UserProvider>(context, listen: false).clearQuantity();
+          await Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => ChargePoint2(
+                pointType: point,
+              )
+            )
+          );
         },
         child: Text("충전하기", style: TextStyle(fontSize: 14),),
         padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
@@ -153,10 +155,39 @@ class History extends StatelessWidget {
       );
     } else if (type == "DL") {
       return SizedBox(height: 10, width: 2);
-    } else if (type == "RP") {
+    } if (type == "RP") {
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: [
+          RaisedButton(
+            onPressed: () async {
+              Map<String, dynamic> args = {
+                'point': point,
+                "pointImg": pointImg,
+                "id": id,
+                "account": Provider.of<UserProvider>(context, listen:false).nowPoint,
+                "dlAccount": dl
+              };
+              String path = "charge";
+              // await Navigator.of(context).pushNamed("/point/$path", arguments: args);
+              await Provider.of<UserProvider>(context, listen: false).clearQuantity();
+              await Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ChargePoint2(
+                    pointType: point,
+                  )
+                )
+              );
+            },
+            child: Text("충전하기", style: TextStyle(fontSize: 14),),
+            padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(color: Color(0xffdddddd))
+            ),
+            color: Colors.white,
+            elevation: 0.0,
+          ),
           RaisedButton(
             onPressed: () async {
               Map<String, dynamic> args = {
@@ -167,8 +198,6 @@ class History extends StatelessWidget {
               String path = "rp";
 
               await Navigator.of(context).pushNamed("/point/$path", arguments: args);
-
-
             },
             child: Text("BZA 구매", style: TextStyle(fontSize: 14),),
             padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),

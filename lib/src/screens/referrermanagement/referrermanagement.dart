@@ -15,8 +15,8 @@ class ReferrerManagement extends StatefulWidget {
 }
 
 class _ReferrerManagement extends State {
-  String selectValue = "전체";
-  String type = "all";
+  String selectValue = "직접 추천회원";
+  String type = "dir";
 //  List<Referrer> referrerList = List();
 
   @override
@@ -164,7 +164,7 @@ class _ReferrerManagement extends State {
                                     )
                                 ),
                                 Text(
-                                  "${numberFormat.format(reco.dirAmount)} RP",
+                                  "${numberFormat.format(reco.dirAmount)} CP",
                                   style: TextStyle(
                                       fontFamily: 'noto',
                                       color: mainColor,
@@ -174,27 +174,27 @@ class _ReferrerManagement extends State {
                               ]
                           ),
                           whiteSpaceW(20),
-                          Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                    "간접추천회원 적립",
-                                    style: TextStyle(
-                                      fontFamily: 'noto',
-                                      color: Color(0xFF888888),
-                                      fontSize: 10,
-                                    )
-                                ),
-                                Text(
-                                  "${numberFormat.format(reco.inDirAmount)} RP",
-                                  style: TextStyle(
-                                      fontFamily: 'noto',
-                                      color: mainColor,
-                                      fontSize: 15
-                                  ),
-                                )
-                              ]
-                          ),
+                          // Column(
+                          //     crossAxisAlignment: CrossAxisAlignment.start,
+                          //     children: [
+                          //       Text(
+                          //           "간접추천회원 적립",
+                          //           style: TextStyle(
+                          //             fontFamily: 'noto',
+                          //             color: Color(0xFF888888),
+                          //             fontSize: 10,
+                          //           )
+                          //       ),
+                          //       Text(
+                          //         "${numberFormat.format(reco.inDirAmount)} RP",
+                          //         style: TextStyle(
+                          //             fontFamily: 'noto',
+                          //             color: mainColor,
+                          //             fontSize: 15
+                          //         ),
+                          //       )
+                          //     ]
+                          // ),
                         ]
                     ),
                   );
@@ -256,7 +256,8 @@ class _ReferrerManagement extends State {
                                     color: black,
                                     fontSize: 14,
                                     fontFamily: 'noto'),
-                                items: <String>['전체', '직접 추천회원', '간접 추천회원', '가입 대기회원']
+                                items: // <String>['전체', '직접 추천회원', '간접 추천회원', '가입 대기회원']
+                                    <String>['직접 추천회원', '가입 대기회원']
                                     .map((value) {
                                   return DropdownMenuItem<String>(
                                     value: value,

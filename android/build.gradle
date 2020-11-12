@@ -11,7 +11,6 @@ buildscript {
     }
 }
 
-
 allprojects {
     repositories {
         flatDir {
@@ -34,3 +33,4 @@ subprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+

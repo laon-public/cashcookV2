@@ -6,13 +6,14 @@ import 'package:http/http.dart' as http;
 class StoreService{
   http.Client client = new http.Client();
 
-  orderPayment(int pay, int store_user, String type, int dl)async{
-    Map<String, dynamic> data = {
-      "pay":pay,
-      "store_user": store_user,
-      "type": type,
-      "dl" : dl
-    };
+  Future<String> getStoreSearch(String query, String start, String end) async {
+    final response = await client.get(cookURL+"/franchises/store?query=$query&start=$start&end=$end", headers: {
+      "Authorization": "BEARER ${dataStorage.token}"
+    });
+    return utf8.decode(response.bodyBytes);
+  }
+
+  orderPayment(Map<String, dynamic> data)async{
     final response = await client.post(cookURL+"/payment/orderPay", body: json.encode(data), headers: {
       "Content-Type": "application/json",
       "Authorization": "BEARER ${dataStorage.token}"
@@ -75,6 +76,16 @@ class StoreService{
 
   fetchCategory() async {
     final response = await client.get(cookURL+"/franchises/category", headers: {
+      "Authorization": "BEARER ${dataStorage.token}"
+    });
+
+    return utf8.decode(response.bodyBytes);
+  }
+
+  fetchStoreList(String cat_code, String sub_cat_code, String start, String end) async {
+    final response = await client.get(cookURL+"/franchises/storelist"
+        "?cat_code=$cat_code&sub_cat_code=$sub_cat_code&"
+        "start=$start&end=$end", headers: {
       "Authorization": "BEARER ${dataStorage.token}"
     });
 

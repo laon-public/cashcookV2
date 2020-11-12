@@ -1,4 +1,5 @@
 import 'package:cashcook/src/model/account.dart';
+import 'package:cashcook/src/model/log/orderLog.dart';
 import 'package:cashcook/src/model/page.dart';
 import 'package:cashcook/src/model/reco.dart';
 import 'package:cashcook/src/model/recomemberlist.dart';
@@ -9,6 +10,7 @@ import 'package:cashcook/src/utils/responseCheck.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart' as P;
 import 'package:cashcook/src/services/User.dart';
 import 'package:cashcook/src/utils/datastorage.dart';
@@ -34,15 +36,46 @@ class UserProvider with ChangeNotifier {
   int nowPoint = 0;
 
   // Charge ADP Variable
-  TextEditingController adpQuantityCtrl = TextEditingController();
+  TextEditingController chargeQuantityCtrl = TextEditingController();
   TextEditingController dlQuantityCtrl = TextEditingController();
   int dlPay = 0;
   int chargePay = 0;
 
   List<String> recomemberList = [];
 
-  void clearAdpQuantity() {
-    adpQuantityCtrl.text = "";
+  // Service List
+  List<ServiceLogListItem> serviceLogList = [];
+
+  void fetchServiceList() async {
+    serviceLogList.clear();
+    startLoading();
+
+    final response = await service.fetchServiceList();
+    print(response);
+
+    Map<String, dynamic> data = jsonDecode(response)['data'];
+
+    String date = "";
+    int idx = -1;
+    for(var json in data['serviceList']) {
+      String dateChk = DateFormat("yyyy.MM.dd").format(
+          DateTime.parse(json['created_at'].toString()));
+      if(date != dateChk){
+        serviceLogList.add(
+          ServiceLogListItem.initFromJson(json)
+        );
+        idx++;
+        date = serviceLogList[idx].date;
+      } else {
+        serviceLogList[idx].addfromJson(json);
+      }
+    }
+
+    stopLoading();
+  }
+
+  void clearQuantity() {
+    chargeQuantityCtrl.text = "";
     dlQuantityCtrl.text = "";
     dlPay = 0;
     chargePay = 0;
@@ -50,11 +83,11 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setChargePay(){
-    if(adpQuantityCtrl.text == "") {
+  void setChargePay(int rate){
+    if(chargeQuantityCtrl.text == "") {
       chargePay = 0;
     } else {
-      chargePay = int.parse(adpQuantityCtrl.text);
+      chargePay = (int.parse(chargeQuantityCtrl.text) / rate).round();
     }
 
     notifyListeners();
@@ -206,13 +239,13 @@ class UserProvider with ChangeNotifier {
     stopLoading();
   }
 
-  Future<bool> postCharge(String id, int quantity, String payment) async {
+  Future<bool> postCharge(String id, String point ,int quantity, String payment, int dlQuantity) async {
     print('=============');
     print(quantity);
     print(payment);
     print('=============');
     print(123);
-    final response = await service.postCharge(quantity, payment);
+    final response = await service.postCharge(quantity, point, payment,dlQuantity);
     print(response);
     if (isResponse(jsonDecode(response))) {
       return true;
@@ -459,5 +492,11 @@ class UserProvider with ChangeNotifier {
     Map<String, dynamic> json = jsonDecode(response);
 
     showToast(json['resultMsg']);
+  }
+
+  Future<String> authCashcook(String id, String pw) async {
+    String response = await service.authCashcook(id, pw);
+
+    return response;
   }
 }

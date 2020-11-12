@@ -71,7 +71,7 @@ class PointMgmtProvider with ChangeNotifier {
             obj["date"] = date;
             obj["history"] = [];
             obj["history"].add({
-              "title": pfmModel.type == "DILLING" ? numberFormat.format(double.parse(pfmModel.amount)) + " BZA"
+              "title": pfmModel.type == "DILLING" ? numberFormat.format(double.parse(pfmModel.amount)) + " DL"
                   : numberFormat.format(double.parse(pfmModel.amount)) + " 원",
               "time": pfmModel.created_at.split("T").last.split(".").first,
               "price": demicalFormat.format(double.parse(pfmModel.amount)),
@@ -80,7 +80,7 @@ class PointMgmtProvider with ChangeNotifier {
           } else {
             print("여기겠지");
             obj["history"].add({
-              "title": pfmModel.type == "DILLING" ? numberFormat.format(double.parse(pfmModel.amount)) + " BZA"
+              "title": pfmModel.type == "DILLING" ? numberFormat.format(double.parse(pfmModel.amount)) + " DL"
                   : numberFormat.format(double.parse(pfmModel.amount)) + " 원",
               "time": pfmModel.created_at.split("T").last.split(".").first,
               "price": numberFormat.format(double.parse(pfmModel.amount)),
@@ -152,9 +152,9 @@ class PointMgmtProvider with ChangeNotifier {
             obj["date"] = date;
             obj["history"] = [];
             obj["history"].add({
-              "title": pfmModel.type == "DILLING" ? numberFormat.format(double.parse(pfmModel.amount)) + " BZA"
+              "title": pfmModel.type == "DILLING" ? numberFormat.format(double.parse(pfmModel.amount)) + " DL"
                   : numberFormat.format(double.parse(pfmModel.amount)) + " 원",
-              "type": pfmModel.type == "DILLING" ? " BZA"
+              "type": pfmModel.type == "DILLING" ? " DL"
                   : "PAY",
               "time": pfmModel.created_at.split("T").last.split(".").first,
               "price": demicalFormat.format(double.parse(pfmModel.amount)),
@@ -164,9 +164,9 @@ class PointMgmtProvider with ChangeNotifier {
           } else {
             print("여기겠지");
             obj["history"].add({
-              "title": pfmModel.type == "DILLING" ? numberFormat.format(double.parse(pfmModel.amount)) + " BZA"
+              "title": pfmModel.type == "DILLING" ? numberFormat.format(double.parse(pfmModel.amount)) + " DL"
                   : numberFormat.format(double.parse(pfmModel.amount)) + " 원",
-              "type": pfmModel.type == "DILLING" ? " BZA"
+              "type": pfmModel.type == "DILLING" ? " DL"
                   : "PAY",
               "time": pfmModel.created_at.split("T").last.split(".").first,
               "price": numberFormat.format(double.parse(pfmModel.amount)),
@@ -277,7 +277,7 @@ class PointMgmtProvider with ChangeNotifier {
             obj["history"] = [];
             obj["history"].add({
               "title" : (pomModel.type == "DILLING") ?
-              numberFormat.format(double.parse(pomModel.amount)) + " BZA"
+              numberFormat.format(double.parse(pomModel.amount)) + " DL"
                   : (pomModel.type == "R_POINT") ?
               numberFormat.format(double.parse(pomModel.amount)) + " RP"
                   : (pomModel.type == "AD_POINT") ?
@@ -292,7 +292,7 @@ class PointMgmtProvider with ChangeNotifier {
             print("여기겠지");
             obj["history"].add({
               "title" : (pomModel.type == "DILLING") ?
-              numberFormat.format(double.parse(pomModel.amount)) + " BZA"
+              numberFormat.format(double.parse(pomModel.amount)) + " DL"
                   : (pomModel.type == "R_POINT") ?
               numberFormat.format(double.parse(pomModel.amount)) + " RP"
                   : (pomModel.type == "AD_POINT") ?

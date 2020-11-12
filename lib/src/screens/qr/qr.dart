@@ -52,10 +52,13 @@ class _Qr extends State<Qr> {
 
   @override
   Widget build(BuildContext context) {
-    final int detailId = ModalRoute.of(context).settings.arguments;
+    final Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
+    final int detailId = args['store_id'];
+    final String storeName = args['store_name'];
 
     return Scaffold(
-      body: Container(
+      body:
+      Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Stack(
@@ -66,20 +69,10 @@ class _Qr extends State<Qr> {
               left: 0,
               right: 0,
               child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                color: Color.fromRGBO(0, 0, 0, 0.6),
-              ),
-            ),
-            Positioned(
-              top: 144,
-              left: 40,
-              right: 40,
-              child: Container(
-                  width: 280,
-                  height: 280,
-                  child: QRBarScannerCamera(
-
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  child:
+                  QRBarScannerCamera(
                     onError: (context, error) {
                       print(error.toString());
                       return Container();
@@ -93,7 +86,8 @@ class _Qr extends State<Qr> {
                         CheckQRData(detailId,data);
                       }
                     },
-                  )),
+                  )
+              ),
             ),
             Positioned(
               top: 144,
@@ -111,27 +105,50 @@ class _Qr extends State<Qr> {
               left: 0,
               right: 0,
               child: Text(
-                "해당 영역 안에 제공된\nQR코드를 스캔해주세요.",
+                "위 영역 안에 제공된\nQR코드를 스캔해주세요.",
                 textAlign: TextAlign.center,
                 style:
-                    TextStyle(color: white, fontFamily: 'noto', fontSize: 14),
+                TextStyle(color: white, fontFamily: 'noto', fontSize: 14),
               ),
             ),
             Positioned(
               top: 52,
               left: 16,
-              child: InkWell(
+              child:
+              InkWell(
                 onTap: () {
                   Navigator.of(context).pop();
                 },
                 child: Container(
                     child: Image.asset(
-                  "assets/resource/public/prev.png",
-                  width: 24,
-                  height: 24,
-                  color: white,
-                )),
+                      "assets/resource/public/prev.png",
+                      width: 24,
+                      height: 24,
+                      color: white,
+                    )),
               ),
+            ),
+            Positioned(
+                top: 52,
+                left: 0,
+                child:
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: Text(storeName,
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontFamily: 'noto',
+                        fontWeight: FontWeight.w700,
+                        color: white,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                )
             )
           ],
         ),

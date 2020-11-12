@@ -1,8 +1,11 @@
+import 'package:cashcook/src/screens/bargain/bargain.dart';
 import 'package:cashcook/src/screens/center/appinfomation.dart';
 import 'package:cashcook/src/screens/center/faq.dart';
 import 'package:cashcook/src/screens/center/notice.dart';
 import 'package:cashcook/src/screens/center/serviceInquiry.dart';
 import 'package:cashcook/src/screens/center/serviceInquiryWrite.dart';
+import 'package:cashcook/src/screens/main/home.dart';
+import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/screens/mypage/points/DL/dlSend.dart';
 import 'package:cashcook/src/screens/mypage/points/LimitDL.dart';
 import 'package:cashcook/src/screens/mypage/points/RP/rpExchange.dart';
@@ -19,6 +22,8 @@ import 'package:cashcook/src/screens/storemanagement/modifyStore.dart';
 import 'package:cashcook/src/screens/mypage/info/userState.dart';
 import 'package:cashcook/src/screens/mypage/myUpdate.dart';
 import 'package:cashcook/src/screens/mypage/logout.dart';
+import 'package:cashcook/src/screens/bargain/bargaingame.dart';
+
 final routes = {
   '/Splash': (context) => Splash(),
   "/store/apply1":(context) => StoreApplyFirstStep(),
@@ -41,4 +46,7 @@ final routes = {
   "/myUpdate" : (context) => MyUpdate(),
   "/logout" : (context) => Logout(),
   "/appinfomation" : (context) => AppInfomation(),
+  "/home" : (context) => Home(),
+  "/mainmap" : (context) => MainMap(),
+  "/bargaingame" : (context) => BargainGame(),
 };

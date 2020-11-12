@@ -168,13 +168,13 @@ class _IntegratedPoint extends State<IntegratedPoint> {
                                 padding: const EdgeInsets.only(top: 5.0, left: 10.0, right: 10.0, bottom: 5.0),
                                 child:Column(
                                   children: [
-                                    Text("BZA",
+                                    Text("DL",
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Color(0xff888888),
                                         )),
                                     whiteSpaceH(5),
-                                    Text("${numberFormat.format(pm.dl)} BZA",
+                                    Text("${numberFormat.format(pm.dl)} DL",
                                         style: TextStyle(
                                             fontSize: 12,
                                             color: Color(0xffD4145A),
@@ -315,7 +315,7 @@ class _IntegratedPoint extends State<IntegratedPoint> {
                                       fontFamily: 'noto',
                                       fontWeight: FontWeight.w600,
                                       color:
-                                      (e['title'].toString().contains("BZA") || (e['title'].toString().contains("ADP")) ? Color(0xffBE1833)
+                                      (e['title'].toString().contains("DL") || (e['title'].toString().contains("ADP")) ? Color(0xffBE1833)
                                           : (e['title'].toString().contains("RP")) ? subYellow
                                           :  Colors.black),
                                 )

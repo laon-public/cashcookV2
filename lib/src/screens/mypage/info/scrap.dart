@@ -1,5 +1,6 @@
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
+import 'package:cashcook/src/utils/CustomBottomNavBar.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -10,6 +11,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 
 class Scrap extends StatefulWidget {
+  bool isHome;
+
+  Scrap({this.isHome = false});
+
   @override
   _Scrap createState() => _Scrap();
 }
@@ -37,36 +42,41 @@ class _Scrap extends State<Scrap> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<StoreServiceProvider>(context, listen: false).readScrap();
     });
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        child:
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: Consumer<StoreServiceProvider>(
-                  builder: (context, sp, _) {
-                    return (sp.isLoading) ?
-                    Center(
-                        child: CircularProgressIndicator(
-                            backgroundColor: mainColor,
-                            valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
-                        )
-                    )
-                        :
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children:
-                        sp.scrapList.map((e) =>
-                          scrapItem(e)
-                        ).toList()
-                    );
-                  }
-              ),
-            )
-      ),
+    return Stack(
+      children: [
+        SingleChildScrollView(
+          child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              child:
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: Consumer<StoreServiceProvider>(
+                    builder: (context, sp, _) {
+                      return (sp.isLoading) ?
+                      Center(
+                          child: CircularProgressIndicator(
+                              backgroundColor: mainColor,
+                              valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                          )
+                      )
+                          :
+                      Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children:
+                          sp.scrapList.map((e) =>
+                              scrapItem(e)
+                          ).toList()
+                      );
+                    }
+                ),
+              )
+          ),
+        ),
+        widget.isHome ? CustomBottomNavBar(context, "scrap") : Container()
+      ],
     );
   }
 
