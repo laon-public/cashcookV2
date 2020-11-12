@@ -438,17 +438,18 @@ class _OrderMenu extends State<OrderMenu> {
 
                                     if((int.parse(ss.dlCtrl.text == "" ? "0" : ss.dlCtrl.text) * 100) == ss.orderPay){
                                       ss.setOrderMap(widget.store_id, "ORDER");
-                                      // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
-                                      //   isHome: false,
-                                      // )), (route) => false);
+                                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
+                                        isHome: true, afterGame: true,
+                                      )), (route) => false);
                                     } else {
-                                      if(currentMethod == 1){ // 무통장입금 결제
-                                        showGameDialog();
-                                        ss.orderComplete();
+                                      var orderPayment = ss.orderPay - (int.parse(ss.dlCtrl.text) * 100);
 
-                                        var orderPayment = ss.orderPay - (int.parse(ss.dlCtrl.text) * 100);
-                                        // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => BargainGame2(
-                                        // orderPayment: orderPayment,)), (route) => false);
+                                      if(currentMethod == 1){ // 무통장입금 결제
+                                        ss.setOrderMap(widget.store_id, "ORDER");
+                                        ss.orderComplete();
+                                        showGameDialog(orderPayment);
+
+
                                       } else {  // 신용카드 결제
                                         await Navigator.of(context).push(MaterialPageRoute(
                                             builder: (context) =>
@@ -460,6 +461,7 @@ class _OrderMenu extends State<OrderMenu> {
                                                     dl: (int.parse(ss.dlCtrl.text == "" ? "0":ss.dlCtrl.text))
                                                 )));
                                         ss.orderComplete();
+                                        showGameDialog(orderPayment);
                                       }
                                     }
 
@@ -484,34 +486,48 @@ class _OrderMenu extends State<OrderMenu> {
     );
   }
 
-  showGameDialog(){
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-              title: Text("아직 매장등록을 안하셨군요!\n매장등록을 하시고,\n여러가지 포인트 혜택을 누려보세요!",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xff444444),
-                ),),
-              actions: <Widget>[
-                FlatButton(
-                    child: new Text("예"),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.of(context).pushNamed("/store/apply1");
-                    }
-                ),
-                FlatButton(
-                    child: new Text("아니요"),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    }
-                ),
-              ]
-          );
-        }
+  showGameDialog(orderPayment) {
+    showDialog( 
+      context: context,
+      builder: (context) => AlertDialog( content: Container(
+          child: Text("실시간 흥정 게임을 진행하시겠습니까?",
+            style: TextStyle(
+                fontFamily: 'noto',
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF333333)
+            ),
+            textAlign: TextAlign.center,
+          )
+      ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text("지금하기",
+              style: TextStyle(
+                  fontFamily: 'noto',
+                  fontSize: 14,
+                  color: mainColor
+              ),
+            ),
+            onPressed: () async {
+              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => BargainGame2(
+              orderPayment: orderPayment,)), (route) => false);
+            }),
+          FlatButton(
+            child: Text("나중에하기",
+              style: TextStyle(
+                  fontFamily: 'noto',
+                  fontSize: 14,
+                  color: subColor
+              ),
+            ),
+            onPressed: () async {
+              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
+                isHome : true, afterGame : true,
+              )), (routes) => false);
+            }),
+        ],
+      ),
     );
   }
 

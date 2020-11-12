@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cashcook/src/model/log/orderLog.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/mypage/info/serviceDetail.dart';
+import 'package:cashcook/src/screens/mypage/mypage.dart';
 import 'package:cashcook/src/utils/CustomBottomNavBar.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
@@ -12,9 +13,10 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ServiceList extends StatefulWidget {
-  bool isHome = false;
+  bool isHome;
+  bool afterGame;
 
-  ServiceList({this.isHome});
+  ServiceList({this.isHome = false, this.afterGame = false});
 
   @override
   _ServiceList createState() => _ServiceList();
@@ -23,6 +25,7 @@ class ServiceList extends StatefulWidget {
 class _ServiceList extends State<ServiceList> {
   @override
   Widget build(BuildContext context) {
+    print(widget.afterGame);
     // TODO: implement build
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<UserProvider>(context, listen: false).fetchServiceList();
@@ -40,6 +43,22 @@ class _ServiceList extends State<ServiceList> {
             fontWeight: FontWeight.w600
           ),
         ),
+        leading: widget.afterGame ? IconButton(
+          onPressed: () {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => MyPage(
+                isHome: true,
+              ))
+            , (route) => false);
+          },
+          icon: Image.asset(
+            "assets/resource/public/prev.png",
+            width: 24,
+            height: 24,
+          ),
+        )
+        :
+            null,
       ),
       body: Stack(
         children: [

@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:cashcook/src/screens/mypage/points/pointMgmtUser.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:cashcook/src/screens/mypage/info/serviceList.dart';
 
 // 선결제로 진행한 실시간 흥정 게임
 class BargainGame2 extends StatefulWidget {
@@ -142,11 +143,16 @@ class _BargainGame2 extends State<BargainGame2> {
     if(message.toString() == "quit"){ //나가기
       print("나가기");
 
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => pointMgmtUser(
-          afterGame: true,
-        )),
-          (routes) => false);
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
+        isHome: true,
+        afterGame : true,
+      )), (route) => false);
+
+      // Navigator.of(context).pushAndRemoveUntil(
+      //   MaterialPageRoute(builder: (context) => pointMgmtUser(
+      //     afterGame: true,
+      //   )),
+      //     (routes) => false);
     } else{ // 한번더하기
       print("한번더");
       var list = ['10','20','30','40','50','60','70','80','90','100'];
