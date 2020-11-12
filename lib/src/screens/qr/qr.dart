@@ -3,6 +3,7 @@ import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/screens/bargain/bargain.dart';
 import 'package:cashcook/src/screens/bargain/bargaingame.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
+import 'package:cashcook/src/screens/mypage/info/serviceList.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/dialog.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
@@ -39,10 +40,16 @@ class _Qr extends State<Qr> {
 //    ));
 //  }
 
-  dialogPop() {
-    Navigator.of(context, rootNavigator: true).pop();
-    qrSet = false;
+  dialogPop() async {
+    await Provider.of<QRProvider>(context,listen: false).confirmPayment(
+        Provider.of<QRProvider>(context,listen: false).paymentModel.uuid
+    );
 
+    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
+      isHome: true,
+      afterGame : true,
+    )), (route) => false);
+    qrSet = false;
   }
 
   bargainMove() {
@@ -168,7 +175,7 @@ class _Qr extends State<Qr> {
           content: "${qrProvider.store.store.name}에서\n"
               "${numberFormat.format(qrProvider.paymentModel.price)}원을 결제하셨습니다.",
           sub: "실시간 흥정하기로 가시겠습니까?",
-          selectOneText: "취소",
+          selectOneText: "나중에",
           selectOneVoid: () => dialogPop(),
           selectTwoText: "확인",
           selectTwoVoid: () => payment(type, qrProvider.paymentModel.uuid));
@@ -180,7 +187,7 @@ class _Qr extends State<Qr> {
               "\n결제금액 ${numberFormat.format(qrProvider.paymentModel.price)}원을\n"
               "${numberFormat.format(double.parse(qrProvider.paymentModel.dilling))} DL로 결제합니다.",
           sub: "DL로 결제 하시겠습니까?",
-          selectOneText: "취소",
+          selectOneText: "나중에",
           selectOneVoid: () => dialogPop(),
           selectTwoText: "결제",
           selectTwoVoid: () => payment(type, qrProvider.paymentModel.uuid));

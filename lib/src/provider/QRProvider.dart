@@ -70,7 +70,7 @@ class QRProvider with ChangeNotifier {
   }
 
   //재흥정시
-  Future<String> discountPayment(String uuid) async {
+  Future<bool> discountPayment(String uuid) async {
     isStop = false;
     final response = await service.discountPayment(uuid);
     final jsonResponse = json.decode(response);
@@ -79,7 +79,10 @@ class QRProvider with ChangeNotifier {
       paymentModel =
           PaymentModel.fromJson(jsonResponse['data']['paymentRequest']);
       notifyListeners();
+      return Future.value(true);
     }
+
+    return Future.value(false);
   }
 
   //결제 할인율 확정

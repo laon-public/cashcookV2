@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:cashcook/src/provider/QRProvider.dart';
 import 'package:cashcook/src/screens/bargain/bargainresult.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
+import 'package:cashcook/src/screens/mypage/info/serviceList.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
@@ -33,6 +34,8 @@ class _BargainGame extends State<BargainGame> {
 
   List<int> values = List.generate(10, (index) => index);
   bool gameLoad = false;
+  bool isQuit = false;
+  bool isReplay = false;
   int i = 0;
 
   @override
@@ -50,6 +53,43 @@ class _BargainGame extends State<BargainGame> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      if(isQuit) {
+        await Provider.of<QRProvider>(context,listen: false).confirmPayment(
+            Provider.of<QRProvider>(context,listen: false).paymentModel.uuid
+        );
+
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
+          isHome: true,
+          afterGame : true,
+        )), (route) => false);
+      }
+
+      if(isReplay) {
+        bool res = await Provider.of<QRProvider>(context, listen: false)
+            .discountPayment(
+            Provider
+                .of<QRProvider>(context, listen: false)
+                .paymentModel
+                .uuid
+        );
+        if (!res) {
+          await Provider.of<QRProvider>(context, listen: false).confirmPayment(
+              Provider
+                  .of<QRProvider>(context, listen: false)
+                  .paymentModel
+                  .uuid
+          );
+
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) =>
+                  ServiceList(
+                    isHome: true,
+                    afterGame: true,
+                  )), (route) => false);
+        }
+      }
+    });
     return Scaffold(
       // body: SafeArea(
       body: SafeArea(
@@ -135,22 +175,17 @@ class _BargainGame extends State<BargainGame> {
   void onUnityMessage(controller, message) {
     if(message.toString() == "quit"){ //나가기
       print("나가기");
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => pointMgmtUser(
-          afterGame: true,
-        )), (routes) => false);
+
+      setState(() {
+        isReplay = false;
+        isQuit = true;
+      });
     } else{ // 한번더하기
       print("한번더");
-      var list = ['10','20','30','40','50','60','70','80','90','100'];
-      final _random = new Random();
-      var randomDiscount = list[_random.nextInt(list.length)];
-      var randomPercentage = int.parse(randomDiscount).toDouble() * 0.01;
-      print(price.toString());
-      print(randomDiscount.toString());
-      print((price * randomPercentage / 100).toString());
-      print(rp.toString());
 
-      setSendMessage(price.toString(), randomDiscount.toString(), demicalFormat.format(price * randomPercentage / 100).toString(), rp.toString());
+      setState(() {
+        isReplay = true;
+      });
     }
   }
 

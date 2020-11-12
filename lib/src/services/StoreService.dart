@@ -22,6 +22,24 @@ class StoreService{
     return response.body;
   }
 
+  gameConfirm(Map<String, dynamic> data)async{
+    final response = await client.patch(cookURL+"/payment/game/confirm", body: json.encode(data), headers: {
+      "Content-Type": "application/json",
+      "Authorization": "BEARER ${dataStorage.token}"
+    });
+
+    return response.body;
+  }
+
+  gameReplay(Map<String, dynamic> data)async{
+    final response = await client.patch(cookURL+"/payment/game/replay", body: json.encode(data), headers: {
+      "Content-Type": "application/json",
+      "Authorization": "BEARER ${dataStorage.token}"
+    });
+
+    return response.body;
+  }
+
   fetchMenu(int store_id) async {
     final response = await client.get(cookURL+"/franchises/menu?store_id=$store_id", headers: {
       "Authorization": "BEARER ${dataStorage.token}"

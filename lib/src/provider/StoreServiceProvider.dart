@@ -120,6 +120,45 @@ class StoreServiceProvider with ChangeNotifier {
     return Future.value(true);
   }
 
+  Future<bool> confirmGame({int orderId = 0, int gameQuantity}) async {
+    Map<String, dynamic> confirmGame = {};
+
+    // OrderLog Mapping
+    confirmGame['orderId'] = orderId;
+    confirmGame['gameQuantity'] = gameQuantity;
+
+    print(confirmGame.toString());
+
+    final response = await service.gameConfirm(confirmGame);
+
+    Map<String, dynamic> json = jsonDecode(response);
+    print(json);
+    if(!isResponse(json)){
+      return Future.value(false);
+    }
+    return Future.value(true);
+  }
+
+  Future<bool> replayGame({int orderId = 0}) async {
+    Map<String, dynamic>replayGame = {};
+
+    // OrderLog Mapping
+    replayGame['orderId'] = orderId;
+
+    print(confirmGame.toString());
+
+    final response = await service.gameReplay(replayGame);
+;
+    Map<String, dynamic> json = jsonDecode(response);
+    print(json);
+    if(!isResponse(json)){
+      showToast("RP가 부족합니다. 이전 결과로 출력됩니다.");
+
+      return Future.value(false);
+    }
+    return Future.value(true);
+  }
+
   void startLoading() {
     isLoading = true;
     notifyListeners();

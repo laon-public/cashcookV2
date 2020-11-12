@@ -5,6 +5,7 @@ import 'package:cashcook/src/model/store/reviewWrite.dart';
 import 'package:cashcook/src/screens/bargain/bargaingame2.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
+import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -182,12 +183,18 @@ class _ServiceDetail extends State<ServiceDetail> {
                     Expanded(
                       child: InkWell(
                         onTap: () {
+                          if(widget.ol.playGame){
+                            showToast("게임을 이미 진행하였습니다.");
+                          } else {
                             Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (context) => BargainGame2(
-                                    orderPayment: widget.ol.pay - (widget.ol.dl * 100),
-                                  ))
-                            , (route) => false);
+                                MaterialPageRoute(
+                                    builder: (context) => BargainGame2(
+                                      orderId: widget.ol.id,
+                                      orderPayment: widget.ol.pay - (widget.ol.dl * 100),
+                                    ))
+                                , (route) => false);
+                          }
+
                         },
                         child: Container(
                             height: 40,
@@ -299,7 +306,7 @@ class _ServiceDetail extends State<ServiceDetail> {
                     ),
                     Spacer(),
                     Text(widget.ol.playGame ?
-                        "${numberFormat.format(widget.ol.dl)}DL 적립"
+                        "${numberFormat.format(widget.ol.gameQuantity)}DL 적립"
                         :
                         "아직 게임을 진행하지 않았습니다.",
                         style: TextStyle(
