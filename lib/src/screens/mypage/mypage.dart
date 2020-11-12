@@ -47,7 +47,46 @@ class _MyPageState extends State<MyPage> {
 
   @override
   Widget build(BuildContext context) {
-    return body();
+    return
+      WillPopScope(
+          child: body(),
+          onWillPop: ExitPressed
+      );
+  }
+
+  Future<bool> ExitPressed() {
+    return showDialog( context: context,
+      builder: (context) => AlertDialog( content: Container(
+          child: Text("앱을 종료하시겠습니까?",
+            style: TextStyle(
+                fontFamily: 'noto',
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF333333)
+            ),
+            textAlign: TextAlign.center,
+          )
+      ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text("예",
+              style: TextStyle(
+                  fontFamily: 'noto',
+                  fontSize: 14,
+                  color: mainColor
+              ),
+            ),
+            onPressed: () => Navigator.pop(context, true), ),
+          FlatButton(
+            child: Text("아니요",
+              style: TextStyle(
+                  fontFamily: 'noto',
+                  fontSize: 14,
+                  color: subColor
+              ),
+            ),
+            onPressed: () => Navigator.pop(context, false), ), ], ), ) ?? false;
+
   }
 
   Widget body(){

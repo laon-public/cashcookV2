@@ -263,8 +263,8 @@ class _Bargain extends State<Bargain> {
                       height: 40,
                       child: RaisedButton(
                         onPressed: () async {
-                          await qrProvider
-                              .confirmPayment(qrProvider.paymentModel.uuid);
+                          // await qrProvider
+                          //     .confirmPayment(qrProvider.paymentModel.uuid);
 
                           Navigator.of(context).pushReplacement(
                               MaterialPageRoute(

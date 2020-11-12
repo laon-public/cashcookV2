@@ -46,7 +46,6 @@ class _BargainGame2 extends State<BargainGame2> {
   bool gameLoad = false;
   bool isQuit = false;
   bool isReplay = false;
-  int i = 0;
   bool isShow = true;
 
 
@@ -82,6 +81,8 @@ class _BargainGame2 extends State<BargainGame2> {
           isHome: true,
           afterGame : true,
         )), (route) => false);
+
+        return;
       }
 
       if(isReplay){
@@ -90,22 +91,21 @@ class _BargainGame2 extends State<BargainGame2> {
         );
 
         if(res) {
-          var list = ['10','20','30','40','50','60','70','80','90','100'];
-          final _random = new Random();
-          var randomDiscount = list[_random.nextInt(list.length)];
-          var randomPercentage = int.parse(randomDiscount).toDouble() * 0.01;
-          print(price.toString());
-          print(randomDiscount.toString());
-          print((price * randomPercentage / 100).toString());
-          print(rp.toString());
-
-          setSendMessage(price.toString(), randomDiscount.toString(), demicalFormat.format(price * randomPercentage / 100).toString(), rp.toString());
+          setSendMessage();
         } else {
           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
             isHome: true,
             afterGame : true,
           )), (route) => false);
         }
+
+        return;
+      }
+
+      if(gameLoad) {
+        setSendMessage();
+
+        return;
       }
     });
 
@@ -116,28 +116,7 @@ class _BargainGame2 extends State<BargainGame2> {
         bottom: false,
         key: _scaffoldKey,
         child:
-        Consumer<StoreServiceProvider>(
-          builder: (context, ssp, _) {
-            randomDiscount = list[random.nextInt(list.length)];
-            randomPercentage = int.parse(randomDiscount).toDouble() * 0.01;
-
-            print("gameStart2");
-            print("price : $orderPayment");
-            print("discount : ${demicalFormat.format(randomPercentage * 100)}");
-            print("bza : ${demicalFormat.format(orderPayment * randomPercentage / 100)}");
-            print("rp : ${(orderPayment / 100000).ceil()*1000}");
-
-            price = orderPayment;
-            discount = demicalFormat.format(randomPercentage * 100);
-            bza = demicalFormat.format(orderPayment * randomPercentage / 100);
-            rp = (orderPayment / 100000).ceil() * 1000;
-            String temp = price.toString() + "/" + discount.toString() + "/" + bza.toString() + "/" + rp.toString();
-            print(temp);
-            if(gameLoad) {
-              setSendMessage(price, discount, bza, rp);
-            }
-
-            return WillPopScope(
+        WillPopScope(
               onWillPop: () async {
                 showToast("게임이 끝나고 나가실수 있습니다.");
                 return Future.value(false);
@@ -152,17 +131,16 @@ class _BargainGame2 extends State<BargainGame2> {
                   safeMode: true,
                 ),
               ),
-            );
-          },
+            )
         ),
-      ),
-    );
+      );
 
   }
 
   void onUnityCreated(controller) {
     showToast("게임이 실행되는 중 입니다.");
     this._unityWidgetController = controller;
+
     setState(() {
       gameLoad = true;
     });
@@ -172,8 +150,20 @@ class _BargainGame2 extends State<BargainGame2> {
     this._unityWidgetController = null;
   }
 
-  void setSendMessage(price, discount, bza, rp) {
-    String message = price.toString() + "/" + discount.toString() + "/" + bza.toString() + "/" + rp.toString();
+  void setSendMessage() {
+    final _random = new Random();
+    var randomDiscount = this.list[_random.nextInt(list.length)];
+    var randomPercentage = int.parse(randomDiscount).toDouble() * 0.01;
+    bza = demicalFormat.format(widget.orderPayment * randomPercentage / 100);
+    rp = (widget.orderPayment / 100000).ceil() * 1000;
+    discount = demicalFormat.format(randomPercentage * 100);
+
+    print(widget.orderPayment.toString());
+    print(randomDiscount.toString());
+    print((widget.orderPayment * randomPercentage / 100).toString());
+    print(rp.toString());
+
+    String message = widget.orderPayment.toString() + "/" + discount.toString() + "/" + bza.toString() + "/" + rp.toString();
     _unityWidgetController.postMessage(
         'Main',
         'SetUserInfo_Pay',

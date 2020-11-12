@@ -56,6 +56,7 @@ class _BargainGame extends State<BargainGame> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       if(isQuit) {
         await Provider.of<QRProvider>(context,listen: false).confirmPayment(
+          false,
             Provider.of<QRProvider>(context,listen: false).paymentModel.uuid
         );
 
@@ -75,6 +76,7 @@ class _BargainGame extends State<BargainGame> {
         );
         if (!res) {
           await Provider.of<QRProvider>(context, listen: false).confirmPayment(
+            false,
               Provider
                   .of<QRProvider>(context, listen: false)
                   .paymentModel

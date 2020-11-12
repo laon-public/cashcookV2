@@ -86,12 +86,14 @@ class QRProvider with ChangeNotifier {
   }
 
   //결제 할인율 확정
-  Future<String> confirmPayment(String uuid) async {
+  Future<String> confirmPayment(bool later ,String uuid) async {
     final response = await service.confirmPayment(uuid);
     final jsonResponse = json.decode(response);
     print(jsonResponse);
     if(isResponse(jsonResponse)){
-      Fluttertoast.showToast(msg: "적립이 완료되었습니다.");
+      if(!later){
+        Fluttertoast.showToast(msg: "적립이 완료되었습니다.");
+      }
       return "1";
     }
   }

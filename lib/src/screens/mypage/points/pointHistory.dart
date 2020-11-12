@@ -52,7 +52,7 @@ class History extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("${point == "DL" ? "BZA" : point} 적립 / 사용 내역",
+        title: Text("${point == "DL" ? "DL" : point} 적립 / 사용 내역",
           style: TextStyle(
             fontSize: 14,
             fontFamily: 'noto',
@@ -90,7 +90,7 @@ class History extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
-            child: Text("현재 보유 ${point == "DL" ? "BZA" : point}",
+            child: Text("현재 보유 ${point == "DL" ? "DL" : point}",
               style: TextStyle(fontSize: 14, color: mainColor),),
           ),
           Row(
@@ -107,7 +107,7 @@ class History extends StatelessWidget {
                             fontWeight: FontWeight.w600),
                         children: [
                           TextSpan(text: "${demicalFormat.format(user.nowPoint)}"),
-                          TextSpan(text: "${point == "DL" ? "BZA" : point}", style: TextStyle(fontSize: 14))
+                          TextSpan(text: "${point == "DL" ? "DL" : point}", style: TextStyle(fontSize: 14))
                         ]
                     ),
                   );
@@ -199,7 +199,7 @@ class History extends StatelessWidget {
 
               await Navigator.of(context).pushNamed("/point/$path", arguments: args);
             },
-            child: Text("BZA 구매", style: TextStyle(fontSize: 14),),
+            child: Text("DL 구매", style: TextStyle(fontSize: 14),),
             padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -327,7 +327,7 @@ class History extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 3,
-                    child: Text("${e['price']} ${point == "DL" ? "BZA" : point}", style: TextStyle(fontSize: 18,
+                    child: Text("${e['price']} ${point == "DL" ? "DL" : point}", style: TextStyle(fontSize: 18,
                         fontWeight: FontWeight.w600,
                         color: e['type'] == "충전" ? mainColor : Color(
                             0xff888888)),

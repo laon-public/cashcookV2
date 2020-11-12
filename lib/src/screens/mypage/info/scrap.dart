@@ -21,20 +21,23 @@ class Scrap extends StatefulWidget {
 class _Scrap extends State<Scrap> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+        child: Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("찜한매장",
             style: TextStyle(
-              fontSize: 14,
-              fontFamily: 'noto',
-              color: black,
-              fontWeight: FontWeight.w600
+                fontSize: 14,
+                fontFamily: 'noto',
+                color: black,
+                fontWeight: FontWeight.w600
             )),
         centerTitle: true,
         elevation: 0.5,
       ),
       body: SafeArea(top: false, child: body(context)),
+    ),
+        onWillPop: ExitPressed
     );
   }
 
@@ -176,5 +179,40 @@ class _Scrap extends State<Scrap> {
         ],
       ),
     );
+  }
+
+  Future<bool> ExitPressed() {
+    return showDialog( context: context,
+      builder: (context) => AlertDialog( content: Container(
+          child: Text("앱을 종료하시겠습니까?",
+            style: TextStyle(
+                fontFamily: 'noto',
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF333333)
+            ),
+            textAlign: TextAlign.center,
+          )
+      ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text("예",
+              style: TextStyle(
+                  fontFamily: 'noto',
+                  fontSize: 14,
+                  color: mainColor
+              ),
+            ),
+            onPressed: () => Navigator.pop(context, true), ),
+          FlatButton(
+            child: Text("아니요",
+              style: TextStyle(
+                  fontFamily: 'noto',
+                  fontSize: 14,
+                  color: subColor
+              ),
+            ),
+            onPressed: () => Navigator.pop(context, false), ), ], ), ) ?? false;
+
   }
 }

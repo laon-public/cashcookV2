@@ -42,6 +42,7 @@ class _Qr extends State<Qr> {
 
   dialogPop() async {
     await Provider.of<QRProvider>(context,listen: false).confirmPayment(
+      true,
         Provider.of<QRProvider>(context,listen: false).paymentModel.uuid
     );
 

@@ -30,60 +30,62 @@ class _ServiceList extends State<ServiceList> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<UserProvider>(context, listen: false).fetchServiceList();
     });
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0.5,
-        centerTitle: true,
-        title: Text(
-          "서비스 이용내역",
-          style: TextStyle(
-            fontSize: 14,
-            fontFamily: 'noto',
-            color: Color(0xFF333333),
-            fontWeight: FontWeight.w600
-          ),
-        ),
-        leading: widget.afterGame ? IconButton(
-          onPressed: () {
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => MyPage(
-                isHome: true,
-              ))
-            , (route) => false);
-          },
-          icon: Image.asset(
-            "assets/resource/public/prev.png",
-            width: 24,
-            height: 24,
-          ),
-        )
-        :
-            null,
-      ),
-      body: Stack(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(top: 16.0, right: 16.0, left: 16.0, bottom: widget.isHome ? 60.0 : 16.0),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: SingleChildScrollView(
-                child: Consumer<UserProvider>(
-                  builder: (context, up, _){
-                    return Column(
-                        children: up.serviceLogList.map((e) =>
-                            ServiceItem(e)
-                        ).toList()
-                    );
-                  },
+    return WillPopScope(
+        child: Scaffold(
+            appBar: AppBar(
+              elevation: 0.5,
+              centerTitle: true,
+              title: Text(
+                "서비스 이용내역",
+                style: TextStyle(
+                    fontSize: 14,
+                    fontFamily: 'noto',
+                    color: Color(0xFF333333),
+                    fontWeight: FontWeight.w600
                 ),
               ),
+              leading: widget.afterGame ? IconButton(
+                onPressed: () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => MyPage(
+                        isHome: true,
+                      ))
+                      , (route) => false);
+                },
+                icon: Image.asset(
+                  "assets/resource/public/prev.png",
+                  width: 24,
+                  height: 24,
+                ),
+              )
+                  :
+              null,
             ),
-          ),
-          widget.isHome ? CustomBottomNavBar(context, "pointmgmt") : Container(),
-        ],
-      )
-    );
+            body: Stack(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top: 16.0, right: 16.0, left: 16.0, bottom: widget.isHome ? 60.0 : 16.0),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    child: SingleChildScrollView(
+                      child: Consumer<UserProvider>(
+                        builder: (context, up, _){
+                          return Column(
+                              children: up.serviceLogList.map((e) =>
+                                  ServiceItem(e)
+                              ).toList()
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                widget.isHome ? CustomBottomNavBar(context, "pointmgmt") : Container(),
+              ],
+            )
+        ),
+        onWillPop: ExitPressed);
   }
 
   Widget ServiceItem(ServiceLogListItem sll) {
@@ -221,5 +223,40 @@ class _ServiceList extends State<ServiceList> {
           )
       ),
     );
+  }
+
+  Future<bool> ExitPressed() {
+    return showDialog( context: context,
+      builder: (context) => AlertDialog( content: Container(
+          child: Text("앱을 종료하시겠습니까?",
+            style: TextStyle(
+                fontFamily: 'noto',
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF333333)
+            ),
+            textAlign: TextAlign.center,
+          )
+      ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text("예",
+              style: TextStyle(
+                  fontFamily: 'noto',
+                  fontSize: 14,
+                  color: mainColor
+              ),
+            ),
+            onPressed: () => Navigator.pop(context, true), ),
+          FlatButton(
+            child: Text("아니요",
+              style: TextStyle(
+                  fontFamily: 'noto',
+                  fontSize: 14,
+                  color: subColor
+              ),
+            ),
+            onPressed: () => Navigator.pop(context, false), ), ], ), ) ?? false;
+
   }
 }
