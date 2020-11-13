@@ -72,17 +72,17 @@ class _SearchDetail extends State<SearchDetail> {
                                         width: MediaQuery.of(context).size.width,
                                         child:
                                         Column(
-                                          children: ssp.storeMiniList.map((e) =>
+                                          children: ssp.searchStore.map((e) =>
                                           (widget.filterType == "none") ?
-                                          (e.store_name != widget.filter) ?
+                                          (e.store.name != widget.filter) ?
                                               Container()
                                               :
-                                              storeMiniItem(e, context)
+                                              storeItem(e, context)
                                               :
-                                          (!e.store_name.contains(widget.filter)) ?
+                                          (!e.store.name.contains(widget.filter)) ?
                                             Container()
                                                 :
-                                            storeMiniItem(e, context)
+                                            storeItem(e, context)
                                           ).toList() ,
                                         ),
                                       );

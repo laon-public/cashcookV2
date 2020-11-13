@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:cashcook/src/model/place.dart';
 import 'package:cashcook/src/model/store.dart';
-import 'package:cashcook/src/provider/PlaceProvider.dart';
-import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/screens/main/searchDetail.dart';
 import 'package:cashcook/src/services/Search.dart';
@@ -27,7 +25,7 @@ class _SearchPage extends State<SearchPage> {
   TextEditingController queryCtrl = TextEditingController();
 
   Timer _debounce;
-  int _debouncetime = 700;
+  int _debouncetime = 800;
 
   PlaceDetail placeDetail;
 
@@ -65,6 +63,8 @@ class _SearchPage extends State<SearchPage> {
 
           await Provider.of<StoreServiceProvider>(context,listen: false).fetchStoreSearch(queryCtrl.text, start, end);
         });
+      } else {
+        Provider.of<StoreServiceProvider>(context,listen: false).claerSearchStore();
       }
     });
   }
@@ -154,7 +154,7 @@ class _SearchPage extends State<SearchPage> {
                               children:
                             pp.searchStore.length == 0 ?
                               [
-                                Text("검색결과가 없습니다.")
+                                Text("검색어를 입력해주세요.")
                               ]
                                 :
                               pp.searchStore.map((e) =>

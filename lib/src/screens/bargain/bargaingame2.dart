@@ -58,12 +58,10 @@ class _BargainGame2 extends State<BargainGame2> {
 
   @override
   void initState() {
-    print("BargainGame2 Start");
+    print("BargainGame2 initState");
     orderPayment = widget.orderPayment;
-    print("orderPayment");
-    print(orderPayment);
+    print("orderPayment $orderPayment");
     DefaultCacheManager().emptyCache();
-    print("DefaultCacheManager().emptyCache()");
     _unityWidgetController = null;
     super.initState();
   }
@@ -86,13 +84,16 @@ class _BargainGame2 extends State<BargainGame2> {
       }
 
       if(isReplay){
+        print("isReplay1");
         bool res = await Provider.of<StoreServiceProvider>(context, listen: false).replayGame(
             orderId: widget.orderId
         );
 
         if(res) {
+          print("isReplay2");
           setSendMessage();
         } else {
+          print("isReplay3");
           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
             isHome: true,
             afterGame : true,
@@ -103,8 +104,8 @@ class _BargainGame2 extends State<BargainGame2> {
       }
 
       if(gameLoad) {
+        print("gameLoad Start");
         setSendMessage();
-
         return;
       }
     });
@@ -153,15 +154,18 @@ class _BargainGame2 extends State<BargainGame2> {
   void setSendMessage() {
     final _random = new Random();
     var randomDiscount = this.list[_random.nextInt(list.length)];
+    print("randomDiscount : $randomDiscount");
     var randomPercentage = int.parse(randomDiscount).toDouble() * 0.01;
+    print("randomPercentage : $randomPercentage");
+
     bza = demicalFormat.format(widget.orderPayment * randomPercentage / 100);
     rp = (widget.orderPayment / 100000).ceil() * 1000;
     discount = demicalFormat.format(randomPercentage * 100);
 
-    print(widget.orderPayment.toString());
-    print(randomDiscount.toString());
-    print((widget.orderPayment * randomPercentage / 100).toString());
-    print(rp.toString());
+    print("orderPayment : ${widget.orderPayment}");
+    print("discount : $discount");
+    print("bza : $bza");
+    print("rp : $rp");
 
     String message = widget.orderPayment.toString() + "/" + discount.toString() + "/" + bza.toString() + "/" + rp.toString();
     _unityWidgetController.postMessage(
@@ -176,17 +180,23 @@ class _BargainGame2 extends State<BargainGame2> {
     if(message.toString() == "quit"){ //나가기
       print("나가기");
 
-      setState(() {
-        isReplay = false;
-        isQuit = true;
-      });
+      if(this.mounted){
+        setState(() {
+          isReplay = false;
+          isQuit = true;
+        });
+      }
+
 
     } else{ // 한번더하기
       print("한번더");
 
-      setState(() {
-        isReplay = true;
-      });
+      if(this.mounted) {
+        setState(() {
+          isReplay = true;
+        });
+      }
+
     }
   }
 

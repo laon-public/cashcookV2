@@ -113,9 +113,9 @@ class CenterProvider with ChangeNotifier{
 
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
-    phoneVersion = packageInfo.version;
+    phoneVersion = "${packageInfo.version}+${packageInfo.buildNumber}";
     print(phoneVersion);
 
-    notifyListeners();
+    stopLoading();
   }
 }

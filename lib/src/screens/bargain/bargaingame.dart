@@ -48,6 +48,7 @@ class _BargainGame extends State<BargainGame> {
     print("BargainGame Start");
     DefaultCacheManager().emptyCache();
     print("DefaultCacheManager().emptyCache()");
+
     super.initState();
   }
 
@@ -57,13 +58,16 @@ class _BargainGame extends State<BargainGame> {
       if(isQuit) {
         await Provider.of<QRProvider>(context,listen: false).confirmPayment(
           false,
-            Provider.of<QRProvider>(context,listen: false).paymentModel.uuid
+          Provider.of<QRProvider>(context,listen: false).paymentModel.uuid
         );
+        print("_unityWidgetController.pause()");
+        _unityWidgetController.pause();
 
         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
           isHome: true,
           afterGame : true,
         )), (route) => false);
+        return;
       }
 
       if(isReplay) {
@@ -90,6 +94,7 @@ class _BargainGame extends State<BargainGame> {
                     afterGame: true,
                   )), (route) => false);
         }
+        return;
       }
     });
     return Scaffold(
@@ -178,16 +183,21 @@ class _BargainGame extends State<BargainGame> {
     if(message.toString() == "quit"){ //나가기
       print("나가기");
 
-      setState(() {
-        isReplay = false;
-        isQuit = true;
-      });
+      if(this.mounted) {
+        setState(() {
+          isReplay = false;
+          isQuit = true;
+        });
+      }
     } else{ // 한번더하기
       print("한번더");
 
-      setState(() {
-        isReplay = true;
-      });
+      if(this.mounted) {
+        setState(() {
+          isReplay = true;
+        });
+      }
+
     }
   }
 

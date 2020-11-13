@@ -3,8 +3,10 @@ import 'dart:convert';
 
 import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/model/usercheck.dart';
+import 'package:cashcook/src/provider/CenterProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/provider/provider.dart';
+import 'package:cashcook/src/screens/center/appConfirm.dart';
 import 'package:cashcook/src/screens/main/home.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/screens/referrermanagement/firstbiz.dart';
@@ -141,9 +143,11 @@ class _Login extends State<Login> {
 
                 //최초 로그인 인지 판단하는 곳
                 if (userCheck.isFirstLogin != true) {
+                  P.Provider.of<CenterProvider>(context, listen: false).startLoading();
                   Navigator.of(context)
                       // .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
-                      .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Home()), (route) => false);
+                      // .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Home()), (route) => false);
+                      .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => AppConfirm()), (route) => false);
                 } else{
                     Navigator.of(context)
                         .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => FirstBiz()), (route) => false); //첫 로그인시 추천회원 입력 페이지면

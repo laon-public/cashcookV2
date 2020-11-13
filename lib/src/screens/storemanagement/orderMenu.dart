@@ -431,11 +431,6 @@ class _OrderMenu extends State<OrderMenu> {
                                 color: mainColor,
                                 onPressed: () async {
                                   if(isAgreeCheck){
-                                    print("ss.dlCtrl.text : ${ss.dlCtrl.text}");
-                                    print("currentMethod : $currentMethod");
-                                    print("orderPay : ${ss.orderPay}");
-                                    print("store_id : ${widget.store_id}");
-
                                     if((int.parse(ss.dlCtrl.text == "" ? "0" : ss.dlCtrl.text) * 100) == ss.orderPay){
                                       ss.setOrderMap(widget.store_id, "ORDER");
                                       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(

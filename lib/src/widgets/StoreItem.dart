@@ -5,8 +5,10 @@ import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/screens/main/storeDetail.dart';
 import 'package:cashcook/src/screens/main/storeDetail_2.dart';
 import 'package:cashcook/src/utils/colors.dart';
+import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 Widget storeMiniItem(StoreMinify store, BuildContext context) {
@@ -109,7 +111,7 @@ Widget storeMiniItem(StoreMinify store, BuildContext context) {
                   ),
                   whiteSpaceW(2.0),
                   Text(
-                    "${store.store_scope}",
+                    "${NumberFormat("#.#").format(store.store_scope)}",
                     style: TextStyle(
                         fontSize: 11,
                         fontFamily: 'noto',

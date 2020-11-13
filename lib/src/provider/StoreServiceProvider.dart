@@ -39,7 +39,7 @@ class StoreServiceProvider with ChangeNotifier {
   double reviewAvg = 0.0;
 
   // scrapService
-  List<ScrapModel> scrapList = [];
+  List<StoreModel> scrapList = [];
 
   // main Service
   List<StoreModel> store = [];
@@ -80,7 +80,7 @@ class StoreServiceProvider with ChangeNotifier {
 
     // OrderLog Mapping
     orderMap['storeId'] = store_id;
-    orderMap['content'] = initAmount == 1 ? orderList[0].menuList[0]
+    orderMap['content'] = initAmount == 1 ? orderList[0].menuList[0].name
         : "${orderList[0].menuList[0].name} 외 ${initAmount - 1}건";
     orderMap['pay'] = orderPay;
     orderMap['dl'] = int.parse(dlCtrl.text == "" ? "0" : dlCtrl.text);
@@ -148,7 +148,7 @@ class StoreServiceProvider with ChangeNotifier {
     print(confirmGame.toString());
 
     final response = await service.gameReplay(replayGame);
-;
+
     Map<String, dynamic> json = jsonDecode(response);
     print(json);
     if(!isResponse(json)){
@@ -516,7 +516,6 @@ class StoreServiceProvider with ChangeNotifier {
       store.forEach((element) {
         if(element.id == int.parse(store_id)) {
           element.scrap.scrap = "1";
-          return;
         }
       });
     }
@@ -525,7 +524,6 @@ class StoreServiceProvider with ChangeNotifier {
       storeMiniList.forEach((element) {
         if(element.id == int.parse(store_id)) {
           element.scrap = "1";
-          return;
         }
       });
     }
@@ -534,7 +532,6 @@ class StoreServiceProvider with ChangeNotifier {
       searchStore.forEach((element) {
         if(element.id == int.parse(store_id)) {
           element.scrap.scrap = "1";
-          return;
         }
       });
     }
@@ -554,7 +551,7 @@ class StoreServiceProvider with ChangeNotifier {
     dynamic _scrapList = json.decode(response)['data']['list'];
 
     for(var scrap in _scrapList)
-      scrapList.add(ScrapModel.fromJson(scrap));
+      scrapList.add(StoreModel.fromJson(scrap));
 
     stopLoading();
   }
@@ -574,7 +571,6 @@ class StoreServiceProvider with ChangeNotifier {
         store.forEach((element) {
           if(element.id == store_id) {
             element.scrap.scrap = "0";
-            return;
           }
         });
       }
@@ -583,7 +579,6 @@ class StoreServiceProvider with ChangeNotifier {
         storeMiniList.forEach((element) {
           if(element.id == store_id) {
             element.scrap = "0";
-            return;
           }
         });
       }
@@ -592,13 +587,18 @@ class StoreServiceProvider with ChangeNotifier {
         searchStore.forEach((element) {
           if(element.id == store_id) {
             element.scrap.scrap = "0";
-            return;
           }
         });
       }
 
       notifyListeners();
     }
+  }
+
+  void claerSearchStore() {
+    searchStore.clear();
+
+    notifyListeners();
   }
 
   void fetchStoreSearch(String query, String start, String end) async {
@@ -611,11 +611,7 @@ class StoreServiceProvider with ChangeNotifier {
 
     print(response);
     for (var store in storeJson['data']['list']) {
-      StoreModel tmp = StoreModel.fromJson(store);
-      if((searchStore.where((s) => (s.id == tmp.id)).toList().length == 0)){
-        searchStore.add(tmp);
-      }
-
+        searchStore.add(StoreModel.fromJson(store));
     }
 
     stopLoading();

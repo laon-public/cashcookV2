@@ -31,6 +31,7 @@ class _StoreDetail2 extends State<StoreDetail2> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    Provider.of<StoreServiceProvider>(context, listen: false).clearOrderAmount();
   }
   @override
   Widget build(BuildContext context) {
@@ -194,19 +195,27 @@ class _StoreDetail2 extends State<StoreDetail2> {
                                       ),
                                     ),
                                     whiteSpaceW(12.0),
-                                    InkWell(
-                                      onTap: () {
-                                        Provider.of<StoreServiceProvider>(context, listen: false).doScrap(
-                                            widget.store.id.toString()
+                                    Consumer<StoreServiceProvider>(
+                                      builder: (context, ssp, _) {
+                                        return InkWell(
+                                          onTap: widget.store.scrap.scrap == "0" ? () {
+                                            ssp.doScrap(
+                                                widget.store.id.toString()
+                                            );
+                                          } : () {
+                                            ssp.cancleScrap(
+                                                widget.store.id
+                                            );
+                                          },
+                                          child: Image.asset(
+                                            "assets/resource/main/steam.png",
+                                            width: 24,
+                                            height: 24,
+                                            color: widget.store.scrap.scrap == "0" ? white : mainColor,
+                                          ),
                                         );
                                       },
-                                      child: Image.asset(
-                                        "assets/resource/main/steam.png",
-                                        width: 24,
-                                        height: 24,
-                                        color: white,
-                                      ),
-                                    ),
+                                    )
                                   ],
                                 ),
                               ),
@@ -251,7 +260,7 @@ class _StoreDetail2 extends State<StoreDetail2> {
                             child: Container(
                               padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 18.0, bottom: 12.0),
                               width: MediaQuery.of(context).size.width,
-                              height: 100,
+                              height: 102,
                               decoration: BoxDecoration(
                                   color: white,
                                 borderRadius: BorderRadius.all(
@@ -342,10 +351,7 @@ class _StoreDetail2 extends State<StoreDetail2> {
                                               MaterialPageRoute(
                                                   builder: (context) => Qr(),
                                                   settings: RouteSettings(
-                                                      arguments: {
-                                                        "store_id": widget.store.id,
-                                                        "store_name" : widget.store.store.name
-                                                      }
+                                                      arguments: widget.store.id
                                                   )),);
                                           },
                                           child: Row(
@@ -717,6 +723,7 @@ class _StoreDetail2 extends State<StoreDetail2> {
 
                           if(bigMenus.length != 0) {
                             await ss.setOrderMenu(bigMenus,orderPay);
+
                             Navigator.of(context).push(
                                 MaterialPageRoute(
                                     builder: (context) =>
