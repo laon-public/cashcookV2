@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cashcook/src/model/category.dart';
+import 'package:cashcook/src/model/log/orderLog.dart';
 import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/model/store/menu.dart';
 import 'package:cashcook/src/model/store/review.dart';
@@ -33,6 +34,7 @@ class StoreServiceProvider with ChangeNotifier {
   int initAmount = 0;
   TextEditingController dlCtrl = TextEditingController();
   int pay = 0;
+  BankInfo bankInfo;
 
   // reviewService
   List<ReviewModel> reviewList = [];
@@ -49,6 +51,15 @@ class StoreServiceProvider with ChangeNotifier {
   List<StoreMinify> storeMiniList = [];
   List<StoreModel> searchStore = [];
   int count = 0;
+
+  void setBankInfo(String cardName, String cardNumber) {
+      bankInfo = BankInfo(
+        cardName: cardName,
+        cardNumber: cardNumber
+      );
+
+      notifyListeners();
+  }
 
   void clearDlCtrl() {
     dlCtrl.text = "0";
