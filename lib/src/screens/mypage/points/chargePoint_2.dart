@@ -120,7 +120,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    height: 94,
+                    height: 102,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -193,7 +193,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
                   Container(
                     margin: EdgeInsets.only(bottom: 30.0),
                     width: MediaQuery.of(context).size.width,
-                    height: 94,
+                    height: 102,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,

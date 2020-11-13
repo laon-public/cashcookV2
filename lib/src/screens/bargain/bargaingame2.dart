@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:cashcook/src/provider/QRProvider.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
+import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:flutter/material.dart';
@@ -123,15 +124,48 @@ class _BargainGame2 extends State<BargainGame2> {
                 return Future.value(false);
 
               },
-              child: isQuit ? Container() : Container(
-                color: Colors.yellow,
-                child: UnityWidget(
-                  onUnityViewCreated: onUnityCreated,
-                  onUnityMessage: onUnityMessage,
-                  onUnityUnloaded: onUnityUnloaded,
-                  safeMode: true,
-                ),
-              ),
+              child: isQuit ? Container() : Stack(
+                children: [
+                  Positioned.fill(
+                    child: Container(
+                    color: Colors.yellow,
+                    child: UnityWidget(
+                      onUnityViewCreated: onUnityCreated,
+                      onUnityMessage: onUnityMessage,
+                      onUnityUnloaded: onUnityUnloaded,
+                      safeMode: true,
+                    ),
+                  ),
+                  ),
+                  // Positioned.fill(
+                  //   child: Opacity(
+                  //     opacity: 0.7,
+                  //     child: Container(
+                  //       color: Colors.black,
+                  //     ),
+                  //   )
+                  // ),
+                  // Center(
+                  //           child: Container(
+                  //               width: MediaQuery.of(context).size.width * 3/4,
+                  //               height: MediaQuery.of(context).size.height * 2/4,
+                  //               child: Center(
+                  //                   child: CircularProgressIndicator(
+                  //                       backgroundColor: mainColor,
+                  //                       valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                  //                   )
+                  //               ),
+                  //             decoration: BoxDecoration(
+                  //                 color: Colors.white,
+                  //               borderRadius: BorderRadius.all(
+                  //                 Radius.circular(20.0)
+                  //               )
+                  //             ),
+                  //
+                  //     )
+                  // )
+                ],
+              )
             )
         ),
       );

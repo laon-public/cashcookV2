@@ -125,3 +125,5 @@ android/unityLibrary/
 
 # wrapper
 wrapper/
+
+API.dart

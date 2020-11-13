@@ -292,6 +292,26 @@ class _MyPageState extends State<MyPage> {
                                     ],
                                   ),
                                 ),
+                                whiteSpaceW(20),
+                                InkWell(
+                                  onTap: (){
+                                    Map<String, dynamic> args = {
+                                      "point":"CARAT",
+                                      "pointImg":"assets/icon/carat.jpg"
+                                    };
+                                    Navigator.of(context).pushNamed("/point/history", arguments: args);
+                                  },
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Image.asset("assets/icon/carat.jpg",height: 24, fit: BoxFit.contain,),
+                                      whiteSpaceW(5),
+                                      Text("${demicalFormat.format(user.pointMap['RP'])} CR",style: TextStyle(fontSize: 12, color: Color(0xFF333333)),),
+                                      Icon(Icons.arrow_forward_ios, color: Color(0xFF333333), size: 12,),
+                                    ],
+                                  ),
+                                ),
                               ]
                           ),
                         ],

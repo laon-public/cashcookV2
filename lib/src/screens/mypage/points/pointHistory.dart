@@ -49,10 +49,12 @@ class History extends StatelessWidget {
         loadMore(context);
     });
 
+    print("point : $point");
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("${point == "DL" ? "DL" : point} 적립 / 사용 내역",
+        // title: Text("${point == "DL" ? "DL" : point} 적립 / 사용 내역",
+        title: Text("${point == "DL" ? "DL" : point == "CARAT" ? "CARAT" : point} 적립 / 사용 내역",
           style: TextStyle(
             fontSize: 14,
             fontFamily: 'noto',
@@ -90,7 +92,8 @@ class History extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
-            child: Text("현재 보유 ${point == "DL" ? "DL" : point}",
+            // child: Text("현재 보유 ${point == "DL" ? "DL" : point}",
+              child: Text("현재 보유 ${point == "DL" ? "DL" : point == "CARAT" ? "CARAT" : point}",
               style: TextStyle(fontSize: 14, color: mainColor),),
           ),
           Row(
@@ -107,7 +110,8 @@ class History extends StatelessWidget {
                             fontWeight: FontWeight.w600),
                         children: [
                           TextSpan(text: "${demicalFormat.format(user.nowPoint)}"),
-                          TextSpan(text: "${point == "DL" ? "DL" : point}", style: TextStyle(fontSize: 14))
+                          // TextSpan(text: "${point == "DL" ? "DL" : point}", style: TextStyle(fontSize: 14))
+                          TextSpan(text: "${point == "DL" ? "DL" : point == "CARAT" ? "CARAT" : point}", style: TextStyle(fontSize: 14))
                         ]
                     ),
                   );
@@ -196,6 +200,61 @@ class History extends StatelessWidget {
                 "quantity": Provider.of<UserProvider>(context, listen: false).nowPoint,
               };
               String path = "rp";
+
+              await Navigator.of(context).pushNamed("/point/$path", arguments: args);
+            },
+            child: Text("DL 구매", style: TextStyle(fontSize: 14),),
+            padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(color: Color(0xffdddddd))
+            ),
+            color: Colors.white,
+            elevation: 0.0,
+          ),
+        ],
+      );
+    } else if (type == "CARAT") {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          RaisedButton(
+            onPressed: () async {
+              Map<String, dynamic> args = {
+                'point': point,
+                "pointImg": pointImg,
+                "id": id,
+                "account": Provider.of<UserProvider>(context, listen:false).nowPoint,
+                "dlAccount": dl
+              };
+              String path = "charge";
+              // await Navigator.of(context).pushNamed("/point/$path", arguments: args);
+              await Provider.of<UserProvider>(context, listen: false).clearQuantity();
+              await Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => ChargePoint2(
+                        pointType: point,
+                      )
+                  )
+              );
+            },
+            child: Text("충전하기", style: TextStyle(fontSize: 14),),
+            padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(color: Color(0xffdddddd))
+            ),
+            color: Colors.white,
+            elevation: 0.0,
+          ),
+          RaisedButton(
+            onPressed: () async {
+              Map<String, dynamic> args = {
+                'point': point,
+                "pointImg": pointImg,
+                "quantity": Provider.of<UserProvider>(context, listen: false).nowPoint,
+              };
+              String path = "CARAT";
 
               await Navigator.of(context).pushNamed("/point/$path", arguments: args);
             },
@@ -327,7 +386,7 @@ class History extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 3,
-                    child: Text("${e['price']} ${point == "DL" ? "DL" : point}", style: TextStyle(fontSize: 18,
+                    child: Text("${e['price']} ${point == "DL" ? "DL" : point == "CARAT" ? "CARAT" : point}", style: TextStyle(fontSize: 18,
                         fontWeight: FontWeight.w600,
                         color: e['type'] == "충전" ? mainColor : Color(
                             0xff888888)),

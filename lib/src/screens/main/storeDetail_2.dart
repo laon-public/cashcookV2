@@ -351,8 +351,12 @@ class _StoreDetail2 extends State<StoreDetail2> {
                                               MaterialPageRoute(
                                                   builder: (context) => Qr(),
                                                   settings: RouteSettings(
-                                                      arguments: widget.store.id
-                                                  )),);
+                                                      arguments: {
+                                                        "store_id": widget.store.id,
+                                                        "store_name" : widget.store.store.name
+                                                      }
+                                                  )
+                                              ),);
                                           },
                                           child: Row(
                                             children: [
