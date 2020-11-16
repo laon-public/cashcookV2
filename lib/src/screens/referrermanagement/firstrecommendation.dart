@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cashcook/src/model/usercheck.dart';
 import 'package:cashcook/src/provider/RecoProvider.dart';
+import 'package:cashcook/src/screens/main/home.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
@@ -250,7 +251,7 @@ class _FirstRecommendation extends State<FirstRecommendation> {
       }
 
      Navigator.of(context).pushAndRemoveUntil(
-         MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
+         MaterialPageRoute(builder: (context) => Home()), (route) => false);
     }
   }
 

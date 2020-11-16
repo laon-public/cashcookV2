@@ -126,7 +126,7 @@ Widget storeMiniItem(StoreMinify store, BuildContext context) {
                       )
                   ),
                   Text(
-                    "BZA ",
+                    "DL ",
                     style: TextStyle(
                       fontSize: 11,
                       fontFamily: 'noto',
@@ -361,7 +361,7 @@ Widget storeItem(StoreModel store, BuildContext context) {
                     ),
                     whiteSpaceW(2.0),
                     Text(
-                      "${store.store.scope}",
+                      "${NumberFormat("#.#").format(store.store.scope)}",
                       style: TextStyle(
                           fontSize: 11,
                           fontFamily: 'noto',
@@ -376,7 +376,7 @@ Widget storeItem(StoreModel store, BuildContext context) {
                         )
                     ),
                     Text(
-                      "BZA ",
+                      "DL ",
                       style: TextStyle(
                         fontSize: 11,
                         fontFamily: 'noto',

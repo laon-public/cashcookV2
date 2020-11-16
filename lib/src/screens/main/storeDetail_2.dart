@@ -15,6 +15,7 @@ import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class StoreDetail2 extends StatefulWidget {
@@ -296,7 +297,7 @@ class _StoreDetail2 extends State<StoreDetail2> {
                                               height: 20,
                                             ),
                                             whiteSpaceW(4.0),
-                                            Text("${widget.store.store.scope}",
+                                            Text("${NumberFormat("#.#").format(widget.store.store.scope)}",
                                               style: TextStyle(
                                                 color: Color(0xFF666666),
                                                 fontSize: 13,
