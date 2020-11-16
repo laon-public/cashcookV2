@@ -1,5 +1,6 @@
 import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/model/usercheck.dart';
+import 'package:flutter/cupertino.dart';
 
 class PaymentModel{
   final String uuid;
@@ -39,4 +40,14 @@ class PaymentModel{
         expired_at = json['expired_at'],
         created_at = json['created_at'],
         updated_at = json['updated_at'];
+}
+
+class PaymentEditModel {
+  TextEditingController dlCtrl;
+  TextEditingController priceCtrl;
+
+  PaymentEditModel.fromJson(Map<String, dynamic> json)
+    :
+      this.dlCtrl = TextEditingController(text: "0"),
+      this.priceCtrl = TextEditingController(text: json['price'].toString());
 }

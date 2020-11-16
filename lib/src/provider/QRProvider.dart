@@ -13,6 +13,8 @@ class QRProvider with ChangeNotifier {
   final QRService service = QRService();
   StoreModel store;
   PaymentModel paymentModel;
+  PaymentEditModel paymentEditModel;
+
 
   bool isStop = false;
 
@@ -35,6 +37,19 @@ class QRProvider with ChangeNotifier {
     return "";
   }
 
+  // Qr 결제 Version 2
+  void changeDl() {
+    if(paymentEditModel.dlCtrl.text != "" && int.parse(paymentEditModel.dlCtrl.text) >= 0){
+        int minusValue = (paymentModel.price -
+            (int.parse(paymentEditModel.dlCtrl.text) * 100));
+        paymentEditModel.priceCtrl.text = minusValue.toString();
+    } else {
+      paymentEditModel.priceCtrl.text = paymentModel.price.toString();
+    }
+
+    notifyListeners();
+  }
+
   //결제 qr 확인
   Future<String> checkQR(int id,String uuid) async {
     final response = await service.checkQR(id,uuid);
@@ -44,6 +59,8 @@ class QRProvider with ChangeNotifier {
       store = StoreModel.fromJson(jsonResponse['data']['franchise']);
       paymentModel =
           PaymentModel.fromJson(jsonResponse['data']['paymentRequest']);
+      paymentEditModel =
+          PaymentEditModel.fromJson(jsonResponse['data']['paymentRequest']);
     }else {
       return jsonResponse["resultMsg"];
     }
@@ -78,6 +95,7 @@ class QRProvider with ChangeNotifier {
     if(isResponse(jsonResponse)){
       paymentModel =
           PaymentModel.fromJson(jsonResponse['data']['paymentRequest']);
+
       notifyListeners();
       return Future.value(true);
     }

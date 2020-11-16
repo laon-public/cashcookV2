@@ -4,6 +4,7 @@ import 'package:cashcook/src/screens/bargain/bargain.dart';
 import 'package:cashcook/src/screens/bargain/bargaingame.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/screens/mypage/info/serviceList.dart';
+import 'package:cashcook/src/screens/qr/qrPayment.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/dialog.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
@@ -86,6 +87,7 @@ class _Qr extends State<Qr> {
                       return Container();
                     },
                     qrCodeCallback: (data) {
+                      print("켜지긴 했냐?");
                       if (qrSet) return;
                       print("QrData : $data");
                       print(qrSet);
@@ -169,32 +171,44 @@ class _Qr extends State<Qr> {
     String type = await qrProvider.checkQR(id,data);
     print("QRCHECKDATA");
     print(type);
+
+    Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
+
     if (type == "NORMAL") {
-      dialog(
-          title: "결제안내",
-          context: context,
-          content: "${qrProvider.store.store.name}에서\n"
-              "${numberFormat.format(qrProvider.paymentModel.price)}원을 결제하셨습니다.",
-          sub: "실시간 흥정하기로 가시겠습니까?",
-          selectOneText: "나중에",
-          selectOneVoid: () => dialogPop(),
-          selectTwoText: "확인",
-          selectTwoVoid: () => payment(type, qrProvider.paymentModel.uuid));
-    } else if (type == "DILLING") {
-      dialog(
-          title: "결제안내",
-          context: context,
-          content: "${qrProvider.store.store.name}에서"
-              "\n결제금액 ${numberFormat.format(qrProvider.paymentModel.price)}원을\n"
-              "${numberFormat.format(double.parse(qrProvider.paymentModel.dilling))} DL로 결제합니다.",
-          sub: "DL로 결제 하시겠습니까?",
-          selectOneText: "나중에",
-          selectOneVoid: () => dialogPop(),
-          selectTwoText: "결제",
-          selectTwoVoid: () => payment(type, qrProvider.paymentModel.uuid));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => QrPayment(
+          storeName: args['store_name'],
+        )
+      ));
     } else {
       Fluttertoast.showToast(msg: type);
     }
+    // if (type == "NORMAL") {
+    //   dialog(
+    //       title: "결제안내",
+    //       context: context,
+    //       content: "${qrProvider.store.store.name}에서\n"
+    //           "${numberFormat.format(qrProvider.paymentModel.price)}원을 결제하셨습니다.",
+    //       sub: "실시간 흥정하기로 가시겠습니까?",
+    //       selectOneText: "나중에",
+    //       selectOneVoid: () => dialogPop(),
+    //       selectTwoText: "확인",
+    //       selectTwoVoid: () => payment(type, qrProvider.paymentModel.uuid));
+    // } else if (type == "DILLING") {
+    //   dialog(
+    //       title: "결제안내",
+    //       context: context,
+    //       content: "${qrProvider.store.store.name}에서"
+    //           "\n결제금액 ${numberFormat.format(qrProvider.paymentModel.price)}원을\n"
+    //           "${numberFormat.format(double.parse(qrProvider.paymentModel.dilling))} DL로 결제합니다.",
+    //       sub: "DL로 결제 하시겠습니까?",
+    //       selectOneText: "나중에",
+    //       selectOneVoid: () => dialogPop(),
+    //       selectTwoText: "결제",
+    //       selectTwoVoid: () => payment(type, qrProvider.paymentModel.uuid));
+    // } else {
+    //   Fluttertoast.showToast(msg: type);
+    // }
   }
 
   payment(type, uuid) async {
