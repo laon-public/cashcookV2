@@ -36,8 +36,8 @@ class _ChargePoint2State extends State<ChargePoint2> {
     // TODO: implement initState
     super.initState();
     adpQuantityCtrl.text = "";
-    (widget.pointType == "RP") ? payLimit = 100 : payLimit = 500000;
-    (widget.pointType == "RP") ? rate = 10 : rate = 1;
+    (widget.pointType == "CARAT") ? payLimit = 1: payLimit = 500000;
+    (widget.pointType == "CARAT") ? rate = 100 : rate = 1;
   }
 
   @override
@@ -81,7 +81,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("보유 ${widget.pointType == "RP" ? "CP" : "ADP"}",
+                            Text("보유 ${widget.pointType}",
                               style: TextStyle(
                                 color: Color(0xFF333333),
                                 fontSize: 20,
@@ -93,12 +93,12 @@ class _ChargePoint2State extends State<ChargePoint2> {
                             Row(
                               children: [
                                 Image.asset(
-                                  widget.pointType == "RP" ? "assets/icon/rp-coin.png" : "assets/icon/adp.png",
+                                  widget.pointType == "CARAT" ? "assets/icon/carat.jpg" : "assets/icon/adp.png",
                                   width: 24,
                                   height: 24,
                                 ),
                                 whiteSpaceW(12.0),
-                                Text("${numberFormat.format(point[widget.pointType])} ${widget.pointType == "RP" ? "CP" : "ADP"}",
+                                Text("${numberFormat.format(point[widget.pointType])} ${widget.pointType}",
                                   style: TextStyle(
                                       color: Color(0xFF333333),
                                       fontSize: 12,
@@ -136,7 +136,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
                         Row(
                           children: [
                             Image.asset(
-                              widget.pointType == "RP" ? "assets/icon/rp-coin.png" : "assets/icon/adp.png",
+                              widget.pointType == "CARAT" ? "assets/icon/carat.jpg" : "assets/icon/adp.png",
                               width: 40,
                               height: 40,
                             ),
@@ -155,7 +155,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
                                 controller: up.chargeQuantityCtrl,
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
-                                  suffixText: widget.pointType == "RP" ? "CP" : "ADP",
+                                  suffixText: widget.pointType == "CARAT" ? "CARAT" : "ADP",
                                   suffixStyle: TextStyle(
                                       color: Color(0xFF333333),
                                       fontSize: 16,

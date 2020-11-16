@@ -87,7 +87,7 @@ class UserProvider with ChangeNotifier {
     if(chargeQuantityCtrl.text == "") {
       chargePay = 0;
     } else {
-      chargePay = (int.parse(chargeQuantityCtrl.text) / rate).round();
+      chargePay = (int.parse(chargeQuantityCtrl.text) * rate).round();
     }
 
     notifyListeners();
