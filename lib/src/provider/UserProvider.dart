@@ -154,6 +154,7 @@ class UserProvider with ChangeNotifier {
         "DL" : accountsJson['data']['DL'],
         "RP" : accountsJson['data']['RP'],
         "ADP" : accountsJson['data']['ADP'],
+        "CARAT" : accountsJson['data']['CARAT']
       };
     }
     stopLoading();
@@ -232,6 +233,7 @@ class UserProvider with ChangeNotifier {
           "DL" : accountsJson['data']['DL'],
           "RP" : accountsJson['data']['RP'],
           "ADP" : accountsJson['data']['ADP'],
+          "CARAT" : accountsJson['data']['CARAT']
         };
       }
     }
