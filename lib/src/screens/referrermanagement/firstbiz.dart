@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cashcook/src/screens/main/home.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/screens/referrermanagement/firstBizSelect.dart';
 import 'package:cashcook/src/utils/colors.dart';
@@ -89,7 +90,7 @@ class _FirstBiz extends State<FirstBiz> {
                             await Provider.of<UserProvider>(context, listen: false).withoutReco(),
 
                             Navigator.of(context)
-                                .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false),
+                                .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Home()), (route) => false),
                           } else {
                             Navigator.of(context)
                                 .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => FirstRecommendation(type: "NORMAL")), (route) => false),
@@ -111,7 +112,7 @@ class _FirstBiz extends State<FirstBiz> {
                           await Provider.of<UserProvider>(context, listen: false).withoutRecoDis(),
 
                           Navigator.of(context)
-                              .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false),
+                              .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Home()), (route) => false),
                         } else {
                           Navigator.of(context)
                               .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => FirstRecommendation(type:"DISTRIBUTOR")), (route) => false),
