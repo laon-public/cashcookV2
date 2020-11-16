@@ -307,7 +307,7 @@ class _MyPageState extends State<MyPage> {
                                     children: [
                                       Image.asset("assets/icon/carat.jpg",height: 24, fit: BoxFit.contain,),
                                       whiteSpaceW(5),
-                                      Text("${demicalFormat.format(user.pointMap['RP'])} CR",style: TextStyle(fontSize: 12, color: Color(0xFF333333)),),
+                                      Text("${demicalFormat.format(user.pointMap['CARAT'])} CR",style: TextStyle(fontSize: 12, color: Color(0xFF333333)),),
                                       Icon(Icons.arrow_forward_ios, color: Color(0xFF333333), size: 12,),
                                     ],
                                   ),

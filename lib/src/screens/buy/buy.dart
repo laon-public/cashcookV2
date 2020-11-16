@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:cashcook/src/model/usercheck.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
+import 'package:cashcook/src/services/IMPort.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:provider/provider.dart' as P;
 import 'package:cashcook/src/widgets/showToast.dart';
@@ -38,6 +41,8 @@ class _Buy extends State<Buy> {
   String buyerEmail = "";
   WebViewController webViewController;
 
+  IMPortService imPortService;
+
   bool ispOn = false;
 
   @override
@@ -49,6 +54,8 @@ class _Buy extends State<Buy> {
 
     buyerName = user.name;
     buyerTel = user.phone;
+
+    imPortService = IMPortService();
   }
 
   dialogPop() {
@@ -110,9 +117,24 @@ class _Buy extends State<Buy> {
           setState(() {
             ispOn = true;
           });
+
+          print("IMPORT UID!!!! ${result['imp_uid']}");
+          print("IMPORT 주문번호!!! ${result['merchant_uid']}");
           print(widget.id);
           print(widget.quantity);
           print(widget.paymentType);
+
+          dynamic response = await imPortService.getIMPORTToken();
+          Map<String, dynamic> json = jsonDecode(response);
+
+          String token = json['response']['access_token'];
+          response = await imPortService.getIMPortHistory(result['imp_uid'], token);
+
+          json = jsonDecode(response);
+          String cardName = json['response']['card_name'];
+          String cardNumber = json['response']['card_number'];
+
+          P.Provider.of<StoreServiceProvider>(context, listen: false).setBankInfo(cardName, cardNumber);
 
           if(widget.paymentType.contains("ORDER")) {
             await Provider.of<StoreServiceProvider>(context, listen: false).setOrderMap(widget.id, "ORDER").then((value) {
