@@ -67,10 +67,12 @@ class StoreServiceProvider with ChangeNotifier {
   }
 
   void clearOrderAmount() {
+    bankInfo = null;
     orderAmount = 0;
   }
 
   void orderComplete() {
+    bankInfo = null;
     orderAmount = initAmount;
   }
 
@@ -89,7 +91,6 @@ class StoreServiceProvider with ChangeNotifier {
   Future<bool> setOrderMap(String store_id, String logType) async {
     Map<String, dynamic> orderMap = {};
 
-    // OrderLog Mapping
     orderMap['storeId'] = store_id;
     orderMap['content'] = initAmount == 1 ? orderList[0].menuList[0].name
         : "${orderList[0].menuList[0].name} 외 ${initAmount - 1}건";
@@ -97,6 +98,13 @@ class StoreServiceProvider with ChangeNotifier {
     orderMap['dl'] = int.parse(dlCtrl.text == "" ? "0" : dlCtrl.text);
     orderMap['logType'] = logType;
     orderMap['mainCatList'] = [];
+
+    if(bankInfo != null){
+      orderMap['bankInfo'] = {
+        "cardName" : bankInfo.cardName,
+        "cardNumber" : bankInfo.cardNumber,
+      };
+    }
 
     // MainCat Mapping
     orderList.forEach((mainCat) {

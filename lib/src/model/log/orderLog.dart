@@ -35,7 +35,7 @@ class OrderLog {
   List<OrderMainCat> mainCatList;
 
   OrderLog({this.id, this.storeName, this.storeImg,this.storeId, this.content,
-      this.pay, this.dl, this.logType, this.reviewId, this.gameQuantity, this.createdAt, this.updatedAt});
+      this.pay, this.dl, this.logType, this.reviewId, this.gameQuantity, this.bankInfo ,this.createdAt, this.updatedAt});
 
   OrderLog.fromJson(Map<String, dynamic> json)
     :
@@ -52,10 +52,7 @@ class OrderLog {
       this.gameQuantity = json['gameQuantity'],
       this.createdAt = DateTime.parse(json['created_at'].toString()),
       this.updatedAt = DateTime.parse(json['updated_at'].toString()),
-      this.bankInfo = json['backInfo'] == null ? BankInfo(
-        cardName: "",
-        cardNumber: "",
-      ) : BankInfo.fromJson(json['bankInfo']),
+      this.bankInfo = BankInfo.fromJson(json['bankInfo']),
       this.mainCatList = (json['mainCatList'] as List).map((e) => OrderMainCat.fromJson(e)).toList();
 }
 
@@ -72,7 +69,6 @@ class BankInfo {
 
   BankInfo.fromJson(Map<String, dynamic> json)
     :
-        this.orderId = json['orderId'] == null ? 0 : json['orderId'],
         this.cardName = json['cardName'],
         this.cardNumber = json['cardNumber'];
 }

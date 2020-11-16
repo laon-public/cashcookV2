@@ -224,7 +224,7 @@ class _ServiceDetail extends State<ServiceDetail> {
                 padding: EdgeInsets.symmetric(vertical: 8.0),
                 width: MediaQuery.of(context).size.width,
                 child: Text(
-                  "결제금액",
+                  "결제내역",
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
@@ -317,6 +317,37 @@ class _ServiceDetail extends State<ServiceDetail> {
                     ),
                   ],
                 ),
+              ),
+              whiteSpaceH(54),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 8.0),
+                width: MediaQuery.of(context).size.width,
+                child: Text(
+                  "결제방식",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'noto',
+                      color: Color(0xFF333333)
+                  ),
+                ),
+              ),
+              whiteSpaceH(22),
+              Container(
+                width:MediaQuery.of(context).size.width,
+                child: Text(widget.ol.logType == "ORDER" ?
+                    widget.ol.bankInfo.cardName == "" ?
+                    "무통장 입금"
+                        :
+                    "신용카드 / ${widget.ol.bankInfo.cardName} / ${widget.ol.bankInfo.cardNumber}"
+                    :
+                    "현장 QR결제 진행",
+                  style: TextStyle(
+                      fontSize: 12,
+                      fontFamily: 'noto',
+                      color: Color(0xFF333333)
+                  ),
+                )
               )
             ],
           ),
