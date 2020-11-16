@@ -332,7 +332,7 @@ class _MyPageState extends State<MyPage> {
                               scrapCard(),
                               SizedBox(height: 16,),
                               Tabs(name: "공지사항", routesName: "/notice",),
-                              CustomerCenter(),
+                              // CustomerCenter(),
                               Tabs(name: "FAQ", routesName: "/faq",),
                               Tabs(name: "서비스 문의", routesName: "/inquiry",),
                               Tabs(name: "약관 및 정책", routesName: "",),

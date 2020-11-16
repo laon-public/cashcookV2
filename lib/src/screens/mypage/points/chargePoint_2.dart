@@ -209,7 +209,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
                                 )
                             ),
                             whiteSpaceW(5.0),
-                            Text("* ${numberFormat.format(point['DL'])} BZA 보유 중",
+                            Text("* ${numberFormat.format(point['DL'])} DL 보유 중",
                                 style: TextStyle(
                                 fontSize: 10,
                                 fontFamily: 'noto',
@@ -223,7 +223,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
                         Row(
                           children: [
                             Image.asset(
-                              "assets/icon/bza.png",
+                              "assets/icon/DL 2.png",
                               width: 40,
                               height: 40,
                             ),
@@ -242,7 +242,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
                                 controller: up.dlQuantityCtrl,
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
-                                  suffixText: " BZA",
+                                  suffixText: " DL",
                                   suffixStyle: TextStyle(
                                       color: Color(0xFF333333),
                                       fontSize: 16,
@@ -265,7 +265,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(
-                                "= ${numberFormat.format(up.dlPay)} BZA",
+                                "= ${numberFormat.format(up.dlPay)} DL",
                                 style: TextStyle(
                                     color: Color(0xFF999999),
                                     fontSize: 12,

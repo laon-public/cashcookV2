@@ -54,7 +54,7 @@ class History extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         // title: Text("${point == "DL" ? "DL" : point} 적립 / 사용 내역",
-        title: Text("${point == "DL" ? "DL" : point == "CARAT" ? "CARAT" : point} 적립 / 사용 내역",
+        title: Text("${point == "DL" ? "DL" : point == "CARAT" ? "CARAT" : "CP"} 적립 / 사용 내역",
           style: TextStyle(
             fontSize: 14,
             fontFamily: 'noto',
@@ -93,7 +93,7 @@ class History extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             // child: Text("현재 보유 ${point == "DL" ? "DL" : point}",
-              child: Text("현재 보유 ${point == "DL" ? "DL" : point == "CARAT" ? "CARAT" : point}",
+              child: Text("현재 보유 ${point == "DL" ? "DL" : point == "CARAT" ? "CARAT" : "CP"}",
               style: TextStyle(fontSize: 14, color: mainColor),),
           ),
           Row(
@@ -111,7 +111,7 @@ class History extends StatelessWidget {
                         children: [
                           TextSpan(text: "${demicalFormat.format(user.nowPoint)}"),
                           // TextSpan(text: "${point == "DL" ? "DL" : point}", style: TextStyle(fontSize: 14))
-                          TextSpan(text: "${point == "DL" ? "DL" : point == "CARAT" ? "CARAT" : point}", style: TextStyle(fontSize: 14))
+                          TextSpan(text: "${point == "DL" ? "DL" : point == "CARAT" ? "CARAT" : "CP"}", style: TextStyle(fontSize: 14))
                         ]
                     ),
                   );
@@ -386,7 +386,7 @@ class History extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 3,
-                    child: Text("${e['price']} ${point == "DL" ? "DL" : point == "CARAT" ? "CARAT" : point}", style: TextStyle(fontSize: 18,
+                    child: Text("${e['price']} ${point == "DL" ? "DL" : point == "CARAT" ? "CR" : "CP"}", style: TextStyle(fontSize: 18,
                         fontWeight: FontWeight.w600,
                         color: e['type'] == "충전" ? mainColor : Color(
                             0xff888888)),

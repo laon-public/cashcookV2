@@ -33,7 +33,7 @@ class _RPExchangeState extends State<RPExchange> {
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("RP 환전하기",
+        title: Text("CP 환전하기",
           style: TextStyle(
             fontSize: 14,
             fontFamily: 'noto',
@@ -74,7 +74,7 @@ class _RPExchangeState extends State<RPExchange> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("보유 ${point}",style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600,color: Color(0xff444444)),),
+              Text("보유 CP",style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600,color: Color(0xff444444)),),
               whiteSpaceH(4),
               Row(
                 children: [
@@ -86,7 +86,7 @@ class _RPExchangeState extends State<RPExchange> {
                       width: 24,
                     ),
                   ),
-                  Text("${demicalFormat.format(quantity)} ${point}")
+                  Text("${demicalFormat.format(quantity)} CP")
                 ],
               ),
             ],
@@ -157,7 +157,7 @@ class _RPExchangeState extends State<RPExchange> {
             padding: const EdgeInsets.only(top: 5.0),
             child: Align(
               child: Text(
-                "${(ctrl.text == "") ? 0 : numberFormat.format(int.parse(ctrl.text) * 1000)} RP",
+                "${(ctrl.text == "") ? 0 : numberFormat.format(int.parse(ctrl.text) * 1000)} CP",
                 style: TextStyle(fontSize: 12, color: Color(0xff888888)),
               ),
               alignment: Alignment.centerRight,
@@ -225,11 +225,11 @@ class _RPExchangeState extends State<RPExchange> {
           //Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
           Map<String, dynamic> args = {
             "quantity": quantity,
-            'point': "RP",
+            'point': "CP",
             "pointImg":"assets/icon/c_point.png"
           };
 
-          await Provider.of<UserProvider>(context, listen:false).getAccountsHistory("RP", 0);
+          await Provider.of<UserProvider>(context, listen:false).getAccountsHistory("CP", 0);
           await Provider.of<StoreProvider>(context, listen: false).clearMap();
           await Provider.of<UserProvider>(context, listen: false).fetchAccounts();
           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
