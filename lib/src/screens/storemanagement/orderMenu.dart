@@ -514,7 +514,7 @@ class _OrderMenu extends State<OrderMenu> {
               builder: (context, ssp, _){
                 return Container(
                     width: 240,
-                    height: 175,
+                    height: 185,
                     child: Column(
                       children: [
                         Text("${widget.store.store.name}에서 ${numberFormat.format(ssp.orderPay)}원을\n"

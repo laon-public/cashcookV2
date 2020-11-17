@@ -269,7 +269,7 @@ class _QrPayment extends State<QrPayment> {
               builder: (context, qp, _){
                 return Container(
                     width: 240,
-                    height: 175,
+                    height: 185,
                     child: Column(
                       children: [
                         Text("${qp.store.store.name}에서 ${numberFormat.format(qp.paymentModel.price)}원을\n"
