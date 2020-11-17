@@ -187,64 +187,60 @@ Widget reviewForm(BuildContext context, StoreModel store) {
                     child:Column(
                         children: [
                           Container(
-                              padding: EdgeInsets.all(10.0),
-                              child:Stack(
-                                  children: [
-                                    Positioned(
-                                        top:0,
-                                        right: 0,
-                                        child: RaisedButton(
-                                            color: mainColor,
-                                            onPressed: () async {
-                                              await Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (context) => ReviewWrite(
-                                                        store_id: selStore.id,
-                                                      )));
-                                              ss.setServiceNum(1, selStore.id);
-                                            },
-                                            child: Text("작성하기",
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontFamily: 'noto',
-                                                  color: white,
-                                                ))
-                                        )
-                                    ),
-                                    Column(
-                                        children:[
-                                          Text("평가 및 리뷰",
-                                              style: TextStyle(
-                                                  fontFamily: 'noto',
-                                                  fontSize: 12,
-                                                  color: mainColor,
-                                                  fontWeight: FontWeight.w600
-                                              )),
-                                          Text("${NumberFormat("#.#").format(ss.reviewAvg)}",
-                                              style: TextStyle(
-                                                  fontFamily: 'noto',
-                                                  fontSize: 40,
-                                                  color: mainColor,
-                                                  fontWeight: FontWeight.w600
-                                              )),
-                                          Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                starImage(ss.reviewAvg,1),
-                                                starImage(ss.reviewAvg,2),
-                                                starImage(ss.reviewAvg,3),
-                                                starImage(ss.reviewAvg,4),
-                                                starImage(ss.reviewAvg,5),
-                                              ]
-                                          ),
-                                        ]
-                                    )
-                                  ]
+                            height: 74,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [
+                                  mainColor,
+                                  subColor,
+                                ]
                               )
+                            ),
+                              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
+                              child:
+                                  Row(
+                                    children: [
+                                      Text("고객평점",
+                                        style:
+                                          TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w600,
+                                            fontFamily: 'noto',
+                                            color: Color(0xFF333333)
+                                          )
+                                      ),
+                                      Spacer(),
+                                      Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            starImage(ss.reviewAvg,1),
+                                            starImage(ss.reviewAvg,2),
+                                            starImage(ss.reviewAvg,3),
+                                            starImage(ss.reviewAvg,4),
+                                            starImage(ss.reviewAvg,5),
+                                          ]
+                                      ),
+                                      whiteSpaceW(8.0),
+                                      Text("${NumberFormat("#.#").format(ss.reviewAvg)}",
+                                          style: TextStyle(
+                                              fontFamily: 'noto',
+                                              fontSize: 13,
+                                              color: white,
+                                          )),
+                                      Text(" | 5.0",
+                                          style: TextStyle(
+                                              fontFamily: 'noto',
+                                              fontSize: 13,
+                                              color: Color(0xFFFFDD88),
+                                          )),
+                                    ],
+                                  )
                           ),
                           Container(
                               width: MediaQuery.of(context).size.width,
-                              height:12,
+                              height:6,
                               color: Color(0xFFEEEEEE)
                           ),
                           (ss.isLoading) ?
@@ -257,50 +253,45 @@ Widget reviewForm(BuildContext context, StoreModel store) {
                                   )
                               )
                           )
-                              :
-                          (ss.reviewList.length == 0) ?
+                          :
                           Container(
-                              padding: EdgeInsets.all(20),
                               child:Column(
-                                  children:[
-                                    Text("리뷰가 없습니다.",
-                                        style: TextStyle(
-                                          color: Color(0xFF888888),
-                                          fontSize: 16,
-                                          fontFamily: 'noto',
-                                        )
-                                    ),
-                                    whiteSpaceH(10),
-                                    RaisedButton(
-                                        color: mainColor,
-                                        onPressed: () async {
-                                          await Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (context) => ReviewWrite(
-                                                    store_id: selStore.id,
-                                                  )));
-                                          ss.setServiceNum(1, selStore.id);
-                                        },
-                                        child: Text("첫 리뷰를 작성해주세요!",
+                                children: [
+                                  Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                    height: 42,
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
+                                        Text("리뷰  ",
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontFamily: 'noto',
+                                            fontWeight: FontWeight.w600,
+                                            color: Color(0xFF333333)
+                                          )
+                                        ),
+                                        Text("${ss.reviewList.length} 개",
                                             style: TextStyle(
-                                              fontSize: 12,
-                                              fontFamily: 'noto',
-                                              color: white,
-                                            ))
+                                                fontSize: 15,
+                                                fontFamily: 'noto',
+                                                fontWeight: FontWeight.w600,
+                                                color: mainColor
+                                            )
+                                        )
+                                      ],
                                     )
-                                  ]
-                              )
-                          )
-                              :
-                          Container(
-                              padding: EdgeInsets.all(10),
-                              child:ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: ss.reviewList.length,
-                                itemBuilder: (context, idx) {
-                                  return reviewListItem(idx,ss.reviewList[idx], context);
-                                },
-                                physics: NeverScrollableScrollPhysics(),
+                                  ),
+                                  ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: ss.reviewList.length,
+                                    itemBuilder: (context, idx) {
+                                      return reviewListItem(idx,ss.reviewList[idx], context);
+                                    },
+                                    physics: NeverScrollableScrollPhysics(),
+                                  )
+                                ],
                               )
                           )
                         ]
@@ -315,6 +306,7 @@ Widget reviewForm(BuildContext context, StoreModel store) {
 Widget reviewListItem(idx,review, BuildContext context) {
   return Container(
       width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.all(16),
       child:
       Column(
           children: [
@@ -455,12 +447,14 @@ Widget starImage(avg,idx) {
     "assets/icon/star_full_color.png",
     width: 14,
     height: 14,
+    color: white,
   )
       :
   Image.asset(
     "assets/icon/star_color.png",
     width: 14,
     height: 14,
+    color: white,
   );
 }
 
