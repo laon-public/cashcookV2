@@ -245,7 +245,7 @@ class StoreServiceProvider with ChangeNotifier {
       //   });
       // });
 
-    } else if(num == 1){
+    } else if(num == 2){
       final response = await service.fetchReview(store_id);
       print(response);
 

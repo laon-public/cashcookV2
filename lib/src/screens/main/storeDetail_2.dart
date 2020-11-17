@@ -586,12 +586,11 @@ class _StoreDetail2 extends State<StoreDetail2> {
                           Container(
                               width: MediaQuery.of(context).size.width,
                               height: 6,
-                              color: Color(0xFFF2F2F2)
+                              color: Color(0xFFF2F2F2),
                           ),
                           Consumer<StoreServiceProvider>(
                             builder: (context, ss, _){
                               return Container(
-                                padding: EdgeInsets.symmetric(horizontal: 16.0),
                                 child: Row(
                                   children: [
                                     Expanded(
@@ -613,16 +612,13 @@ class _StoreDetail2 extends State<StoreDetail2> {
                                                     Color(0xFF999999)
                                                 )
                                             ),
-                                            decoration: ss.serviceNum == 0 ? BoxDecoration(
-                                                border: Border(bottom: BorderSide(color: mainColor, width: 2.0))
-                                            ): BoxDecoration(),
                                           )
                                       ),
                                     ),
                                     Expanded(
                                       child:InkWell(
                                         onTap: () {
-                                          Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(2, widget.store.id);
+                                          Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(1, widget.store.id);
                                         },
                                         child: Container(
                                           padding: EdgeInsets.symmetric(vertical: 10.0),
@@ -632,22 +628,19 @@ class _StoreDetail2 extends State<StoreDetail2> {
                                               style: TextStyle(
                                                   fontSize: 13,
                                                   fontFamily: 'noto',
-                                                  color: ss.serviceNum == 2 ?
+                                                  color: ss.serviceNum == 1 ?
                                                   Color(0xFF333333)
                                                       :
                                                   Color(0xFF999999)
                                               )
                                           ),
-                                          decoration: ss.serviceNum == 2 ? BoxDecoration(
-                                              border: Border(bottom: BorderSide(color: mainColor, width: 2.0))
-                                          ): BoxDecoration(),
                                         ),
                                       ),
                                     ),
                                     Expanded(
                                       child:InkWell(
                                           onTap: () async {
-                                            await Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(1, widget.store.id);
+                                            await Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(2, widget.store.id);
                                           },
                                           child: Container(
                                             padding: EdgeInsets.symmetric(vertical: 10.0),
@@ -657,15 +650,12 @@ class _StoreDetail2 extends State<StoreDetail2> {
                                               style: TextStyle(
                                                   fontSize: 13,
                                                   fontFamily: 'noto',
-                                                  color: ss.serviceNum == 1 ?
+                                                  color: ss.serviceNum == 2 ?
                                                   Color(0xFF333333)
                                                       :
                                                   Color(0xFF999999)
                                               ),
                                             ),
-                                            decoration: ss.serviceNum == 1 ? BoxDecoration(
-                                                border: Border(bottom: BorderSide(color: mainColor, width: 2.0))
-                                            ): BoxDecoration(),
                                           )
                                       ),
                                     ),
@@ -677,7 +667,27 @@ class _StoreDetail2 extends State<StoreDetail2> {
                           Container(
                               width: MediaQuery.of(context).size.width,
                               height: 1,
-                              color: Color(0xFFF2F2F2)
+                              color: Color(0xFFF2F2F2),
+                              child: Stack(
+                                children: [
+                                  Consumer<StoreServiceProvider>(
+                                    builder: (context, ssp, _){
+                                      return AnimatedPositioned(
+                                        left: (MediaQuery.of(context).size.width * 1 / 3) * (ssp.serviceNum),
+                                        child: Container(
+                                          width: MediaQuery.of(context).size.width * 1 / 3,
+                                          height: 1,
+                                          decoration: BoxDecoration(
+                                            color: mainColor,
+                                          ),
+                                        ),
+                                        duration: Duration(milliseconds: 450),
+                                      );
+                                    },
+                                  )
+
+                                ]
+                              ),
                           ),
                           whiteSpaceH(12.0),
                           Consumer<StoreServiceProvider>(
@@ -692,9 +702,9 @@ class _StoreDetail2 extends State<StoreDetail2> {
                                           menuForm(context)
                                               :
                                           (ss.serviceNum == 1) ?
-                                          reviewForm(context, widget.store)
+                                          otherForm(context, widget.store)
                                               :
-                                          otherForm(context, widget.store);
+                                          reviewForm(context, widget.store);
                                         }
                                     )
                                   ]
