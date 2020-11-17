@@ -7,10 +7,8 @@ import 'package:cashcook/src/provider/CenterProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/provider/provider.dart';
 import 'package:cashcook/src/screens/center/appConfirm.dart';
-import 'package:cashcook/src/screens/main/home.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/screens/referrermanagement/firstbiz.dart';
-import 'package:cashcook/src/screens/referrermanagement/firstrecommendation.dart';
 import 'package:cashcook/src/screens/splash.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/utils/datastorage.dart';
@@ -134,6 +132,7 @@ class _Login extends State<Login> {
 
               if (userCheck.username != "") {
                 P.Provider.of<UserProvider>(context,listen: false).setLoginUser(userCheck);
+                await P.Provider.of<UserProvider>(context,listen: false).fetchMyInfo(context);
                 dynamic franchise = json.decode(value)['data']['franchise'];
 
                  if(franchise != null) {

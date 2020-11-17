@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:cashcook/src/provider/UserProvider.dart';
 
 class AppConfirm extends StatefulWidget {
   @override
@@ -13,11 +14,16 @@ class AppConfirm extends StatefulWidget {
 }
 
 class _AppConfirm extends State<AppConfirm> {
+
+
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async{
       await Provider.of<CenterProvider>(context, listen: false).getAppInfo();
     });
+
+    UserProvider up = Provider.of<UserProvider>(context, listen: false);
+
     // TODO: implement build
     return Consumer<CenterProvider>(
       builder: (context, cp, _){
@@ -27,12 +33,121 @@ class _AppConfirm extends State<AppConfirm> {
               Container()
                 :
               (cp.phoneVersion == cp.appVersion) ?
+              (up.loginUser.isFran && up.pointMap['ADP'] < 30000 ) ?
+              adpCheckForm()
+                  :
               pageMove()
               :
               updateForm()
         );
       },
     );
+  }
+
+  Widget adpCheckForm() {
+    return Stack(
+      children: [
+        Container(
+            color: mainColor,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+        ),
+        Positioned.fill(
+            child: Opacity(
+              opacity: 0.7,
+              child: Container(
+                  color: black,
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+              ),
+            )
+        ),
+        Positioned(
+            bottom: 0,
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 45),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                child: Text(
+                    "Copyright ⓒ 2020 CashCook Inc. All Rights Reserved.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontFamily: 'noto',
+                        fontSize: 11,
+                        color: white,
+                        fontWeight: FontWeight.w400
+                    )
+                ),
+              ),
+            )
+        ),
+        Center(
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
+            width: MediaQuery.of(context).size.width * (3 / 4),
+            height: 250,
+            child: Center(
+              child: Column(
+                children: [
+                  Text("ADP 경고",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontFamily: 'noto',
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF333333)
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  whiteSpaceH(40.0),
+                  Text("소유 ADP가 30,000 ADP 이하입니다.\n"
+                      "10,000 ADP 이하일시 결제 후\n"
+                      "추가할인 서비스가 제한됩니다.",
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontFamily: 'noto',
+                        color: Color(0xFF333333)
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  whiteSpaceH(27.0),
+                  Container(
+                    width: 64,
+                    height: 64,
+                    child: RaisedButton(
+                      elevation: 0.0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(100)
+                        )
+                      ),
+                      color: subColor,
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushReplacement(MaterialPageRoute(builder: (context) => Home()));
+                      },
+                      child: Text("확인",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'noto',
+                          color: white,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(
+                  Radius.circular(20.0)
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+
   }
 
   Widget pageMove() {
@@ -47,6 +162,16 @@ class _AppConfirm extends State<AppConfirm> {
   Widget updateForm() {
     return Stack(
       children: [
+        Positioned.fill(
+            child: Opacity(
+              opacity: 0.7,
+              child: Container(
+                color: black,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+              ),
+            )
+        ),
         Positioned(
             bottom: 0,
             child: Padding(
@@ -88,40 +213,52 @@ class _AppConfirm extends State<AppConfirm> {
                           "업데이트 되었습니다!\n"
                           "새로운 캐시쿡을 만나보세요!",
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 12,
                           fontFamily: 'noto',
-                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF333333),
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      whiteSpaceH(15.0),
+                      whiteSpaceH(40.0),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(
-                              child: Container(
+                          Container(
+                            width: 84,
+                            height: 84,
                                 child: RaisedButton(
                                   elevation: 0.0,
                                   color: subColor,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(100)
+                                      )
+                                  ),
                                   onPressed: () {
                                     Navigator.of(context)
                                         .pushReplacement(MaterialPageRoute(builder: (context) => Home()));
                                   },
                                   child: Text("나중에",
                                     style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 12,
                                       fontFamily: 'noto',
                                       color: white,
                                     ),
                                   ),
                                 ),
-                              )
-                          ),
+                              ),
                           whiteSpaceW(6.0),
-                          Expanded(
-                              child: Container(
+                          Container(
+                            width: 84,
+                                height: 84,
                                 child: RaisedButton(
                                   elevation: 0.0,
                                   color: mainColor,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(100)
+                                      )
+                                  ),
                                   onPressed: () {
                                     launch(
                                         "https://play.google.com/store/apps/details?id=com.hozo.cashcook.cashcook"
@@ -135,7 +272,6 @@ class _AppConfirm extends State<AppConfirm> {
                                     ),),
                                 ),
                               )
-                          ),
                         ],
                       )
                     ],
@@ -146,13 +282,6 @@ class _AppConfirm extends State<AppConfirm> {
                   borderRadius: BorderRadius.all(
                       Radius.circular(20.0)
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      offset: Offset(3,3),
-                      blurRadius: 3,
-                      color: Color(0xff888888).withOpacity(0.15),
-                    ),
-                  ],
                 ),
               ),
             )
