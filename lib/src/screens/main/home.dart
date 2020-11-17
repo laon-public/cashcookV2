@@ -219,7 +219,7 @@ class _Home extends State<Home> {
                             fit: BoxFit.fill,
                           ),
                           Image.asset(
-                            "assets/resource/ad/ad_1.PNG",
+                            "assets/resource/ad/banner3.png",
                             width: MediaQuery.of(context).size.width,
                             fit: BoxFit.fill,
                           ),

@@ -32,8 +32,8 @@ class _BargainGame2 extends State<BargainGame2> {
   UnityWidgetController _unityWidgetController;
   var price;
   var discount;
-  var bza;
-  var rp;
+  var dl;
+  var carat;
 
 
   var list = ['10','20','30','40','50','60','70','80','90','100'];
@@ -73,7 +73,7 @@ class _BargainGame2 extends State<BargainGame2> {
       if(isQuit) {
         await Provider.of<StoreServiceProvider>(context, listen: false).confirmGame(
             orderId: widget.orderId,
-            gameQuantity: int.parse(bza.toString())
+            gameQuantity: int.parse(dl.toString())
         );
 
         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
@@ -192,16 +192,17 @@ class _BargainGame2 extends State<BargainGame2> {
     var randomPercentage = int.parse(randomDiscount).toDouble() * 0.01;
     print("randomPercentage : $randomPercentage");
 
-    bza = demicalFormat.format(widget.orderPayment * randomPercentage / 100);
-    rp = (widget.orderPayment / 100000).ceil() * 1000;
+    dl = demicalFormat.format(widget.orderPayment * randomPercentage / 100);
+    // rp = (widget.orderPayment / 100000).ceil() * 1000;
+    carat = caratReword(widget.orderPayment);
     discount = demicalFormat.format(randomPercentage * 100);
 
     print("orderPayment : ${widget.orderPayment}");
     print("discount : $discount");
-    print("bza : $bza");
-    print("rp : $rp");
+    print("dl : $dl");
+    print("carat : $carat");
 
-    String message = widget.orderPayment.toString() + "/" + discount.toString() + "/" + bza.toString() + "/" + rp.toString();
+    String message = widget.orderPayment.toString() + "/" + discount.toString() + "/" + dl.toString() + "/" + carat.toString();
     _unityWidgetController.postMessage(
         'Main',
         'SetUserInfo_Pay',
@@ -234,4 +235,23 @@ class _BargainGame2 extends State<BargainGame2> {
     }
   }
 
+  int caratReword(orderPayment) {
+    int carat;
+
+    if(orderPayment < 30000){
+      carat = 2;
+    } else if(orderPayment < 50000){
+      carat = 3;
+    } else if(orderPayment < 100000){
+      carat = 5;
+    } else if(orderPayment < 500000){
+      carat = 10;
+    } else {
+      carat = 20;
+    }
+
+    return carat;
+  }
+
 }
+
