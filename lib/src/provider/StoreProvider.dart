@@ -37,6 +37,7 @@ class StoreProvider with ChangeNotifier{
   StoreModel selStore;
   var currentLocation;
   Location location = Location();
+  bool lookAppbar = false;
 
   // 메뉴 Editing
   List<BigMenuEditModel> menuList = [BigMenuEditModel.autoConf()];
@@ -44,6 +45,14 @@ class StoreProvider with ChangeNotifier{
   FormData formData;
   List<Map<String, dynamic>> menuData = [];
   List<ReviewModel> reviewList = [];
+
+  void setAppbar(bool value) {
+    if(this.lookAppbar.toString() != value.toString()){
+      this.lookAppbar = value;
+
+      notifyListeners();
+    }
+  }
 
   void decreasePosition() {
     position -= 2.5;

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/provider/CarouselProvider.dart';
+import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/screens/main/storeDetail.dart';
 import 'package:cashcook/src/screens/main/storeDetail_2.dart';
@@ -250,6 +251,7 @@ Widget storeItem(StoreModel store, BuildContext context) {
       //   )
       // );
       await Provider.of<CarouselProvider>(context, listen:false).changePage(1);
+      await Provider.of<StoreProvider>(context, listen: false).setAppbar(false);
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => StoreDetail2(
