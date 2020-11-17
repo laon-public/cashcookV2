@@ -222,7 +222,9 @@ class _QrPayment extends State<QrPayment> {
                   height: 40,
                   child: RaisedButton(
                       elevation: 0.0,
-                      onPressed: qp.paymentModel.price < (int.parse(qp.paymentEditModel.dlCtrl.text == "" ? "0" : qp.paymentEditModel.dlCtrl.text) * 100) ?
+                      onPressed: (qp.paymentModel.price < (int.parse(qp.paymentEditModel.dlCtrl.text == "" ? "0" : qp.paymentEditModel.dlCtrl.text) * 100))
+                            || (qp.store.store.limitDL != null &&
+                              (qp.paymentModel.price * int.parse(qp.store.store.limitDL) / 100).round() < (int.parse(qp.paymentEditModel.dlCtrl.text) * 100))?
                           null
                           :
                           () {
@@ -265,3 +267,4 @@ class _QrPayment extends State<QrPayment> {
     );
   }
 }
+

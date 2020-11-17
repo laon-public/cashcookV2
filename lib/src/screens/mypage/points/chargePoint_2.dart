@@ -387,7 +387,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
                             fontFamily: 'noto'
                           )
                         ),
-                        (widget.pointType == "RP") ?
+                        (widget.pointType == "CARAT") ?
                         Container()
                         :
                         Text("* 현금/카드 결제시 20%ADP가 추가지급됩니다.",
