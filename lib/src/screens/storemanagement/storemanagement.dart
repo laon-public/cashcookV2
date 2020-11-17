@@ -21,9 +21,7 @@ class _StoreManagement extends State<StoreManagement> {
 
   qrCreate(type) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => QrCreate(
-        type: type,
-      )
+      builder: (context) => QrCreate()
     ));
   }
 

@@ -1026,11 +1026,7 @@ class _MyPageState extends State<MyPage> {
 
   //큐알 생성기
   qrCreate(type) {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => QrCreate(
-          type: type,
-        )
-    ));
+
   }
 
   Widget easyPayCard(){
@@ -1063,16 +1059,9 @@ class _MyPageState extends State<MyPage> {
   Widget QrCard(){
     return InkWell(
       onTap: (){
-        dialog(
-            title: "QR생성 안내",
-            content: "고객의 결제방식을\n확인해주세요.",
-            sub: "",
-            context: context,
-            selectOneText: "현장결제",
-            selectTwoText: "DL결제",
-            selectOneVoid: () => qrCreate(0),
-            selectTwoVoid: () => qrCreate(1)
-        );
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => QrCreate()
+        ));
       },
       child: Container(
         width: double.infinity,

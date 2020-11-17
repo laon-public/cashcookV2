@@ -29,17 +29,18 @@ dialog(
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             backgroundColor: white,
             child: Container(
+              padding: EdgeInsets.all(20.0),
               width: 240,
               height: 300,
               decoration: BoxDecoration(
                   color: white, borderRadius: BorderRadius.circular(10)),
               child: Column(
                 children: [
-                  whiteSpaceH(20),
+                  whiteSpaceH(3),
                   Text(
                     title,
                     style: TextStyle(
-                        color: black,
+                        color: Color(0xFF333333),
                         fontFamily: 'noto',
                         fontSize: 14,
                         fontWeight: FontWeight.w600),
@@ -49,7 +50,7 @@ dialog(
                   Text(
                     content,
                     style: TextStyle(
-                        fontSize: 12, fontFamily: 'noto', color: black),
+                        fontSize: 12, fontFamily: 'noto', color: Color(0xFF333333),),
                     textAlign: TextAlign.center,
                   ),
                   whiteSpaceH(23),
@@ -63,6 +64,7 @@ dialog(
                     textAlign: TextAlign.center,
                   ),
                   whiteSpaceH(23),
+                  Spacer(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -71,7 +73,7 @@ dialog(
                         height: 64,
                         child: ClipOval(
                           child: RaisedButton(
-                            color: Color(0xFF888888),
+                            color: Color(0xFF999999),
                             onPressed: () {
                               selectOneVoid();
                             },
