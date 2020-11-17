@@ -14,6 +14,8 @@ import 'package:iamport_flutter/iamport_payment.dart';
 import 'package:iamport_flutter/model/payment_data.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:cashcook/src/screens/bargain/bargaingame2.dart';
+import 'package:cashcook/src/screens/mypage/info/serviceList.dart';
 
 class Buy extends StatefulWidget {
 
@@ -24,9 +26,10 @@ class Buy extends StatefulWidget {
   int quantity;
   String paymentType;
   int dl;
+  bool isPlayGame;
 
   Buy({this.name, this.pay, this.id, this.point, this.quantity,
-      this.paymentType, this.dl}); //  Buy({this.name, this.pay});
+      this.paymentType, this.dl, this.isPlayGame = false}); //  Buy({this.name, this.pay});
 
 
   @override
@@ -139,17 +142,25 @@ class _Buy extends State<Buy> {
           if(widget.paymentType.contains("ORDER")) {
             await Provider.of<StoreServiceProvider>(context, listen: false).setOrderMap(widget.id, "ORDER").then((value) {
               if (value) {
+                Provider.of<StoreServiceProvider>(context, listen: false).orderComplete();
                 Fluttertoast.showToast(msg: "결제가 완료되었습니다.");
               } else {
                 Fluttertoast.showToast(msg: "에러");
               }
             });
 
-            // if (!response) {
-            //   Fluttertoast.showToast(msg: "에러");
-            // } else {
-            //   Fluttertoast.showToast(msg: "결제가 완료되었습니다.");
-            // }
+            if(widget.isPlayGame){
+              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
+                builder: (context) => BargainGame2(
+                  orderPayment: widget.pay,
+                )
+              ), (route) => false);
+            } else {
+              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
+                  builder: (context) => ServiceList(
+                    isHome : true, afterGame : true,
+              )), (routes) => false);
+            }
           } else {
             bool response =
             await Provider.of<UserProvider>(context, listen: false)
@@ -163,9 +174,9 @@ class _Buy extends State<Buy> {
 
               Fluttertoast.showToast(msg: "충전이 완료되었습니다.");
             }
-          }
 
-          Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          }
 
         } else {
           showToast("결제를 실패하였습니다.");

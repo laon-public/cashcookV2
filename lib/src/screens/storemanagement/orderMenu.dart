@@ -1,6 +1,5 @@
 import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/model/store/menu.dart';
-import 'package:cashcook/src/model/usercheck.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
@@ -335,9 +334,10 @@ class _OrderMenu extends State<OrderMenu> {
                           children: [
                             Expanded(
                                 child: Text(
-                                  (ssp.orderPay > (int.parse(ssp.dlCtrl.text) * 100)) ? "결제 방식"
+                                  (ssp.orderPay > (int.parse(ssp.dlCtrl.text == "" ? "0" : ssp.dlCtrl.text) * 100)) ? "결제 방식"
                                       :
-                                  "DL 결제가 진행됩니다.",
+                                  "DL 결제가 진행됩니다.\n"
+                                      "DL 결제는 실시간 흥정 혜택이 없습니다.",
                                   style: TextStyle(
                                       fontFamily: 'noto',
                                       fontSize: (ssp.orderPay > (int.parse(ssp.dlCtrl.text) * 100)) ? 14 : 16,
@@ -431,7 +431,16 @@ class _OrderMenu extends State<OrderMenu> {
                                 color: mainColor,
                                 onPressed: () async {
                                   if(isAgreeCheck){
-                                    showGameDialog();
+
+                                    if((int.parse(ss.dlCtrl.text == "" ? "0" : ss.dlCtrl.text) * 100) == ss.orderPay){
+                                      await ss.setOrderMap(widget.store_id, "ORDER");
+                                      await ss.orderComplete();
+                                        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
+                                          isHome: true, afterGame: true,
+                                        )), (route) => false);
+                                    } else {
+                                      showGameDialog();
+                                    }
                                     // if((int.parse(ss.dlCtrl.text == "" ? "0" : ss.dlCtrl.text) * 100) == ss.orderPay){
                                     //
                                     //   ss.setOrderMap(widget.store_id, "ORDER");
@@ -574,7 +583,8 @@ class _OrderMenu extends State<OrderMenu> {
                                                   pay: ssp.orderPay - (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text) * 100),
                                                   id: widget.store_id,
                                                   paymentType: paymentType[currentMethod],
-                                                  dl: (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text))
+                                                  dl: (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text)),
+                                                isPlayGame: false,
                                               )));
                                     }
                                   },
@@ -614,7 +624,8 @@ class _OrderMenu extends State<OrderMenu> {
                                                   pay: ssp.orderPay - (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text) * 100),
                                                   id: widget.store_id,
                                                   paymentType: paymentType[currentMethod],
-                                                  dl: (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text))
+                                                  dl: (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text)),
+                                                isPlayGame: true,
                                               )));
                                     }
 
