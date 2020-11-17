@@ -431,34 +431,36 @@ class _OrderMenu extends State<OrderMenu> {
                                 color: mainColor,
                                 onPressed: () async {
                                   if(isAgreeCheck){
-                                    if((int.parse(ss.dlCtrl.text == "" ? "0" : ss.dlCtrl.text) * 100) == ss.orderPay){
-                                      ss.setOrderMap(widget.store_id, "ORDER");
-                                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
-                                        isHome: true, afterGame: true,
-                                      )), (route) => false);
-                                    } else {
-                                      var orderPayment = ss.orderPay - (int.parse(ss.dlCtrl.text) * 100);
-
-                                      if(currentMethod == 1){ // 무통장입금 결제
-                                        ss.setOrderMap(widget.store_id, "ORDER");
-                                        ss.orderComplete();
-                                        showGameDialog(orderPayment);
-
-
-                                      } else {  // 신용카드 결제
-                                        await Navigator.of(context).push(MaterialPageRoute(
-                                            builder: (context) =>
-                                                Buy(
-                                                    name: widget.name,
-                                                    pay: ss.orderPay - (int.parse(ss.dlCtrl.text == "" ? "0":ss.dlCtrl.text) * 100),
-                                                    id: widget.store_id,
-                                                    paymentType: paymentType[currentMethod],
-                                                    dl: (int.parse(ss.dlCtrl.text == "" ? "0":ss.dlCtrl.text))
-                                                )));
-                                        ss.orderComplete();
-                                        showGameDialog(orderPayment);
-                                      }
-                                    }
+                                    showGameDialog();
+                                    // if((int.parse(ss.dlCtrl.text == "" ? "0" : ss.dlCtrl.text) * 100) == ss.orderPay){
+                                    //
+                                    //   ss.setOrderMap(widget.store_id, "ORDER");
+                                    //   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
+                                    //     isHome: true, afterGame: true,
+                                    //   )), (route) => false);
+                                    // } else {
+                                    //   var orderPayment = ss.orderPay - (int.parse(ss.dlCtrl.text) * 100);
+                                    //
+                                    //   if(currentMethod == 1){ // 무통장입금 결제
+                                    //     // ss.setOrderMap(widget.store_id, "ORDER");
+                                    //     // ss.orderComplete();
+                                    //
+                                    //
+                                    //
+                                    //   } else {  // 신용카드 결제
+                                    //     await Navigator.of(context).push(MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             Buy(
+                                    //                 name: widget.name,
+                                    //                 pay: ss.orderPay - (int.parse(ss.dlCtrl.text == "" ? "0":ss.dlCtrl.text) * 100),
+                                    //                 id: widget.store_id,
+                                    //                 paymentType: paymentType[currentMethod],
+                                    //                 dl: (int.parse(ss.dlCtrl.text == "" ? "0":ss.dlCtrl.text))
+                                    //             )));
+                                    //     ss.orderComplete();
+                                    //     showGameDialog(orderPayment);
+                                    //   }
+                                    // }
 
                                   } else {
                                     showToast("개인정보 이용동의를 해주셔야 합니다.");
@@ -481,47 +483,169 @@ class _OrderMenu extends State<OrderMenu> {
     );
   }
 
-  showGameDialog(orderPayment) {
+  showGameDialog() {
     showDialog( 
       context: context,
-      builder: (context) => AlertDialog( content: Container(
-          child: Text("실시간 흥정 게임을 진행하시겠습니까?",
-            style: TextStyle(
-                fontFamily: 'noto',
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFF333333)
+      builder: (context) =>
+          AlertDialog(
+            title: Consumer<StoreServiceProvider>(
+              builder: (context, ssp, _){
+                return Text("결제안내",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF333333),
+                    fontFamily: 'noto'
+                  ),
+                  textAlign: TextAlign.center,
+                );
+              },
             ),
-            textAlign: TextAlign.center,
-          )
-      ),
-        actions: <Widget>[
-          FlatButton(
-            child: Text("지금하기",
-              style: TextStyle(
-                  fontFamily: 'noto',
-                  fontSize: 14,
-                  color: mainColor
-              ),
+            content: Consumer<StoreServiceProvider>(
+              builder: (context, ssp, _){
+                return Container(
+                    width: 240,
+                    height: 175,
+                    child: Column(
+                      children: [
+                        Text("${widget.store.store.name}에서 ${numberFormat.format(ssp.orderPay)}원을\n"
+                            "${numberFormat.format(ssp.orderPay - (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text) * 100))}원과 ${numberFormat.format(int.parse(ssp.dlCtrl.text))} DL로 각각 결제합니다.",
+                          style: TextStyle(
+                              fontFamily: 'noto',
+                              fontSize: 12,
+                              color: Color(0xFF333333)
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        whiteSpaceH(22),
+                        Text("결제 후 게임하기를 진행하시겠습니까?",
+                            style: TextStyle(
+                                fontSize: 10,
+                                fontFamily: 'noto',
+                                decoration: TextDecoration.underline,
+                                color: Color(0xFFCCCCCC)
+                            )
+                        ),
+                        whiteSpaceH(22),
+                        Container(
+                          width: 240,
+                          height: 76,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Container(
+                                    width: 64,
+                                    height: 64,
+                                    child: Center(
+                                      child: Text("취소",
+                                          style: TextStyle(
+                                            color: white,
+                                            fontSize: 14,
+                                            fontFamily: 'noto',
+                                          )
+                                      ),
+                                    ),
+                                    decoration: BoxDecoration(
+                                        color: Color(0xFF999999),
+                                        shape: BoxShape.circle
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () async {
+                                    if(currentMethod == 1){ // 무통장입금 결제
+                                      await ssp.setOrderMap(widget.store_id, "ORDER");
+                                      ssp.orderComplete();
+
+                                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
+                                        isHome : true, afterGame : true,
+                                      )), (routes) => false);
+                                    } else {  // 신용카드 결제
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                          builder: (context) =>
+                                              Buy(
+                                                  name: widget.name,
+                                                  pay: ssp.orderPay - (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text) * 100),
+                                                  id: widget.store_id,
+                                                  paymentType: paymentType[currentMethod],
+                                                  dl: (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text))
+                                              )));
+                                    }
+                                  },
+                                  child: Container(
+                                    width: 64,
+                                    height: 64,
+                                    child: Center(
+                                      child: Text("나중에",
+                                          style: TextStyle(
+                                            color: white,
+                                            fontSize: 14,
+                                            fontFamily: 'noto',
+                                          )
+                                      ),
+                                    ),
+                                    decoration: BoxDecoration(
+                                        color: mainColor,
+                                        shape: BoxShape.circle
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () async {
+                                    if(currentMethod == 1){ // 무통장입금 결제
+                                      await ssp.setOrderMap(widget.store_id, "ORDER");
+                                      ssp.orderComplete();
+
+                                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => BargainGame2(
+                                        orderPayment: ssp.orderPay - (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text) * 100),)), (route) => false);
+                                    } else {  // 신용카드 결제
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                          builder: (context) =>
+                                              Buy(
+                                                  name: widget.name,
+                                                  pay: ssp.orderPay - (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text) * 100),
+                                                  id: widget.store_id,
+                                                  paymentType: paymentType[currentMethod],
+                                                  dl: (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text))
+                                              )));
+                                    }
+
+                                  },
+                                  child: Container(
+                                    width: 64,
+                                    height: 64,
+                                    child: Center(
+                                      child: Text("확인",
+                                          style: TextStyle(
+                                            color: white,
+                                            fontSize: 14,
+                                            fontFamily: 'noto',
+                                          )
+                                      ),
+                                    ),
+                                    decoration: BoxDecoration(
+                                        color: subColor,
+                                        shape: BoxShape.circle
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    )
+                );
+              }
             ),
-            onPressed: () async {
-              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => BargainGame2(
-              orderPayment: orderPayment,)), (route) => false);
-            }),
-          FlatButton(
-            child: Text("나중에하기",
-              style: TextStyle(
-                  fontFamily: 'noto',
-                  fontSize: 14,
-                  color: subColor
-              ),
-            ),
-            onPressed: () async {
-              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
-                isHome : true, afterGame : true,
-              )), (routes) => false);
-            }),
-        ],
       ),
     );
   }
