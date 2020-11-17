@@ -73,7 +73,7 @@ class _BargainGame2 extends State<BargainGame2> {
       if(isQuit) {
         await Provider.of<StoreServiceProvider>(context, listen: false).confirmGame(
             orderId: widget.orderId,
-            gameQuantity: int.parse(dl.toString())
+            gameQuantity: double.parse(dl.toString()).round()
         );
 
         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(

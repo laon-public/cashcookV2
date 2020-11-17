@@ -1,6 +1,8 @@
 import 'package:cashcook/src/model/payment.dart';
 import 'package:cashcook/src/provider/QRProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
+import 'package:cashcook/src/screens/bargain/bargaingame2.dart';
+import 'package:cashcook/src/screens/mypage/info/serviceList.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/dialog.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
@@ -228,27 +230,7 @@ class _QrPayment extends State<QrPayment> {
                           null
                           :
                           () {
-                            dialog(
-                                      title: "결제안내",
-                                      context: context,
-                                      content: "${qp.store.store.name}에서 "
-                                          "${numberFormat.format(qp.paymentModel.price)}원을\n"
-                                          "${int.parse(qp.paymentEditModel.priceCtrl.text) <= 0 ?
-                                          "${numberFormat.format(int.parse(qp.paymentEditModel.dlCtrl.text))} DL로만 결제 진행 합니다."
-                                          :
-                                          "${numberFormat.format(int.parse(qp.paymentEditModel.priceCtrl.text))}원과 "
-                                          "${numberFormat.format(int.parse(qp.paymentEditModel.dlCtrl.text))} DL로 각각 결제합니다."
-                                          }",
-                                      sub: "",
-                                      selectOneText: "취소",
-                                      selectOneVoid: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      selectTwoText: "확인",
-                                      selectTwoVoid: () {
-
-                                      }
-                            );
+                            showPaymentDialog();
                           },
                       color: mainColor,
                       child: Text("결제하기",
@@ -265,6 +247,147 @@ class _QrPayment extends State<QrPayment> {
         ),
       ),
     );
+  }
+
+  showPaymentDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20)),
+            title: Text("결제안내",
+              style: TextStyle(
+                color: Color(0xFF444444),
+                fontSize: 14,
+                fontFamily: 'noto',
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            content: Consumer<QRProvider>(
+              builder: (context, qp, _){
+                return Container(
+                    width: 240,
+                    height: 175,
+                    child: Column(
+                      children: [
+                        Text("${qp.store.store.name}에서 ${numberFormat.format(qp.paymentModel.price)}원을\n"
+                            "${numberFormat.format(int.parse(qp.paymentEditModel.priceCtrl.text))}원과 "
+                            "${numberFormat.format(int.parse(qp.paymentEditModel.dlCtrl.text))}DL로 각각 결제합니다.",
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontFamily: 'noto',
+                            color: Color(0xFF333333)
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        whiteSpaceH(22),
+                        Text("결제 후 게임하기를 진행하시겠습니까?",
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontFamily: 'noto',
+                            decoration: TextDecoration.underline,
+                            color: Color(0xFFCCCCCC)
+                          )
+                        ),
+                        whiteSpaceH(22),
+                        Container(
+                          width: 240,
+                          height: 76,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Container(
+                                    width: 64,
+                                    height: 64,
+                                    child: Center(
+                                      child: Text("취소",
+                                        style: TextStyle(
+                                          color: white,
+                                          fontSize: 14,
+                                          fontFamily: 'noto',
+                                        )
+                                      ),
+                                    ),
+                                    decoration: BoxDecoration(
+                                        color: Color(0xFF999999),
+                                        shape: BoxShape.circle
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () async {
+                                    await qp.confirmPayment(true, qp.paymentModel.uuid);
+
+                                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
+                                      isHome: true,
+                                      afterGame : true,
+                                    )), (route) => false);
+                                  },
+                                  child: Container(
+                                    width: 64,
+                                    height: 64,
+                                    child: Center(
+                                      child: Text("나중에",
+                                          style: TextStyle(
+                                            color: white,
+                                            fontSize: 14,
+                                            fontFamily: 'noto',
+                                          )
+                                      ),
+                                    ),
+                                    decoration: BoxDecoration(
+                                        color: mainColor,
+                                        shape: BoxShape.circle
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () async {
+                                    await qp.confirmPayment(true, qp.paymentModel.uuid);
+
+                                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => BargainGame2(
+                                      orderPayment: int.parse(qp.paymentEditModel.priceCtrl.text),
+                                    )), (route) => false);
+                                  },
+                                  child: Container(
+                                    width: 64,
+                                    height: 64,
+                                    child: Center(
+                                      child: Text("확인",
+                                          style: TextStyle(
+                                            color: white,
+                                            fontSize: 14,
+                                            fontFamily: 'noto',
+                                          )
+                                      ),
+                                    ),
+                                    decoration: BoxDecoration(
+                                        color: subColor,
+                                        shape: BoxShape.circle
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                );
+              },
+            )
+          );
+        });
   }
 }
 

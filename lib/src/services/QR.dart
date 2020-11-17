@@ -43,10 +43,13 @@ class QRService{
     return utf8.decode(response.bodyBytes);
   }
 
-  confirmPayment(String uuid) async {
-    final response = await client.post(cookURL+"/payment/$uuid/confirm", headers: {
-      "Authorization": "BEARER ${dataStorage.token}"
-    });
+  confirmPayment(String uuid, Map<String, dynamic> data) async {
+    final response = await client.post(cookURL+"/payment/$uuid/confirm",
+        body: json.encode(data),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "BEARER ${dataStorage.token}"
+        });
     return utf8.decode(response.bodyBytes);
   }
 

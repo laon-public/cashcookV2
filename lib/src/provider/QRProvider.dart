@@ -114,12 +114,20 @@ class QRProvider with ChangeNotifier {
 
   //결제 할인율 확정
   Future<String> confirmPayment(bool later ,String uuid) async {
-    final response = await service.confirmPayment(uuid);
+    Map<String, dynamic> data = {
+      "price" : int.parse(paymentEditModel.priceCtrl.text),
+      "dilling" : paymentEditModel.dlCtrl.text == "" ? 0
+          : int.parse(paymentEditModel.dlCtrl.text )
+    };
+
+    final response = await service.confirmPayment(uuid,data);
     final jsonResponse = json.decode(response);
     print(jsonResponse);
     if(isResponse(jsonResponse)){
       if(!later){
         Fluttertoast.showToast(msg: "적립이 완료되었습니다.");
+      } else {
+        Fluttertoast.showToast(msg: "결제처리가 되었습니다.");
       }
       return "1";
     }
