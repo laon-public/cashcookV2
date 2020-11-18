@@ -25,6 +25,7 @@ class PointMgmtProvider with ChangeNotifier {
   int dl = 0;
   int rp = 0;
   int franAmount = 0;
+  bool isLastPage = false;
 
 
   void startLoading() {
@@ -37,13 +38,15 @@ class PointMgmtProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void fetchFranMgmt(String viewType) async {
-    pfmList_my.clear();
-    pfmList.clear();
+  void fetchFranMgmt(String viewType, int page) async {
+      pfmList_my.clear();
+      if(page == 1){
+        pfmList.clear();
+      }
     startLoading();
 
     print("fetchFranMgmt");
-    final response = await pmService.getMgmtFran(viewType);
+    final response = await pmService.getMgmtFran(viewType, page);
     Map<String, dynamic> json = jsonDecode(response);
 
     print(json);
@@ -56,17 +59,18 @@ class PointMgmtProvider with ChangeNotifier {
     String date = "";
     Map<String, dynamic> obj = {};
 
-    if(viewType == "day"){
+      isLastPage = (json["data"]["list"] as List).length == 0;
+      if(viewType == "day"){
       for (var history in json["data"]['list']) {
         try {
           PointFranModel pfmModel = PointFranModel.fromJson(history);
           print(pfmModel.point_img);
           String time = pfmModel.created_at.split("T").first;
-          if (date != time) {
-            if (date != "") {
-              pfmList.add(obj);
-              obj = {};
-            }
+          int existIdx = pfmList.indexWhere((pfm) => pfm["date"] == time);
+
+          print("ExistIdx ========> $existIdx");
+          if (existIdx == -1) {
+            obj = {};
             date = pfmModel.created_at.split("T").first;
             obj["date"] = date;
             obj["history"] = [];
@@ -77,9 +81,9 @@ class PointMgmtProvider with ChangeNotifier {
               "price": demicalFormat.format(double.parse(pfmModel.amount)),
               "point_img": pfmModel.point_img,
             });
+            pfmList.add(obj);
           } else {
-            print("여기겠지");
-            obj["history"].add({
+            pfmList[existIdx]["history"].add({
               "title": pfmModel.type == "DILLING" ? numberFormat.format(double.parse(pfmModel.amount)) + " DL"
                   : numberFormat.format(double.parse(pfmModel.amount)) + " 원",
               "time": pfmModel.created_at.split("T").last.split(".").first,
@@ -91,7 +95,7 @@ class PointMgmtProvider with ChangeNotifier {
           print(e.toString());
         }
       }
-      if (obj.isNotEmpty) pfmList.add(obj);
+      // if (obj.isNotEmpty) pfmList.add(obj);
 
       print(pfmList.toString());
     } else if(viewType == "month") {

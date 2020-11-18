@@ -17,16 +17,31 @@ class pointMgmt extends StatefulWidget {
 }
 
 class _pointMgmtState extends State<pointMgmt> {
-  ScrollController _scrollController = ScrollController();
-
   String viewType = "day";
+
+  int page;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    page = 1;
+  }
+
+  void loadMore()  async{
+    setState(() {
+      page = page + 1;
+    });
+    await Provider.of<PointMgmtProvider>(context, listen: false).fetchFranMgmt(viewType,page);
+  }
 
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await Provider.of<PointMgmtProvider>(context, listen: false).fetchFranMgmt(viewType);
+      if(page == 1 || viewType!="day") {
+        await Provider.of<PointMgmtProvider>(context, listen: false)
+            .fetchFranMgmt(viewType, page);
+      }
     });
-
     return
       Scaffold(
       backgroundColor: Colors.white,
@@ -321,26 +336,24 @@ class _pointMgmtState extends State<pointMgmt> {
         )
             :
         Container(
-            child:
-            ListView.builder(
-              controller: _scrollController,
-              itemBuilder: (context, idx) {
-                if(idx < pm.pfmList_my.length){
-                  return ReportItem(pm.pfmList_my[idx]);
-                }
-                if(pm.pfmList_my.length == 0) {
-                  return SizedBox();
-                }
-                return Center(
-                    child: CircularProgressIndicator(
-                        backgroundColor: mainColor,
-                        valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
-                    )
-                );
-              },
-              physics: AlwaysScrollableScrollPhysics(),
-              itemCount: pm.pfmList_my.length,
-            )
+            child: ListView.builder(
+                itemBuilder: (context, idx) {
+                  if(idx < pm.pfmList_my.length){
+                    return ReportItem(pm.pfmList_my[idx]);
+                  }
+                  if(pm.pfmList_my.length == 0) {
+                    return SizedBox();
+                  }
+                  return Center(
+                      child: CircularProgressIndicator(
+                          backgroundColor: mainColor,
+                          valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                      )
+                  );
+                },
+                physics: AlwaysScrollableScrollPhysics(),
+                itemCount: pm.pfmList_my.length,
+              ),
         );
       },
     );
@@ -411,30 +424,41 @@ class _pointMgmtState extends State<pointMgmt> {
   Widget historyList() {
     return Consumer<PointMgmtProvider>(
       builder: (context, pm, _) {
-        return (pm.isLoading) ?
-        Center(
-            child: CircularProgressIndicator(
-                backgroundColor: mainColor,
-                valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
-            )
-        )
-          :
+        return
           Container(
-          child:
-          ListView.builder(
-            controller: _scrollController,
-            itemBuilder: (context, idx) {
-              if(idx < pm.pfmList.length){
-                return historyItem(pm.pfmList[idx]);
+          child: NotificationListener<ScrollNotification>(
+              onNotification: (ScrollNotification scrollInfo) {
+                if(scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
+                    if(!pm.isLoading && pm.pfmList.length != 0 && !pm.isLastPage) {
+                      loadMore();
+                    }
+                }
 
-              }
-              if(pm.pfmList.length == 0) {
-                return SizedBox();
-              };
-            },
-            physics: AlwaysScrollableScrollPhysics(),
-            itemCount: pm.pfmList.length + 1,
-          )
+                return true;
+              },
+              child: ListView.builder(
+                itemBuilder: (context, idx) {
+                  if(idx < pm.pfmList.length){
+                    return historyItem(pm.pfmList[idx]);
+
+                  }
+                  if(pm.pfmList.length == 0) {
+                    return SizedBox();
+                  }
+                  return Center(
+                      child: Opacity(
+                          opacity: pm.isLoading ? 1.0 : 0.0,
+                          child:CircularProgressIndicator(
+                              backgroundColor: mainColor,
+                              valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                          )
+                      )
+                  );
+                },
+                physics: AlwaysScrollableScrollPhysics(),
+                itemCount: pm.pfmList.length + 1,
+              )
+          ),
         );
       },
     );

@@ -7,9 +7,9 @@ import 'package:http/http.dart';
 class PointMgmtService {
   Client client = Client();
 
-  Future<String> getMgmtFran(String viewType) async {
+  Future<String> getMgmtFran(String viewType, int page) async {
     print("cookURL : " + cookURL);
-    final response = await client.get(cookURL + "/users/me/pointmgmt/fran?type=$viewType",
+    final response = await client.get(cookURL + "/users/me/pointmgmt/fran?type=$viewType&page=$page",
         headers: {"Authorization": "BEARER ${dataStorage.token}"});
     return utf8.decode(response.bodyBytes);
   }

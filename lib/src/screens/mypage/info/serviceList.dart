@@ -29,20 +29,18 @@ class _ServiceList extends State<ServiceList> {
   void initState() {
     // TODO: implement initState
     page = 1;
+    Provider.of<UserProvider>(context, listen: false).fetchServiceList(page);
   }
 
-  void loadMore() {
+  void loadMore() async {
     setState(() {
       page = page + 1;
     });
-    Provider.of<UserProvider>(context, listen: false).fetchServiceList(page);
+    await Provider.of<UserProvider>(context, listen: false).fetchServiceList(page);
   }
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await Provider.of<UserProvider>(context, listen: false).fetchServiceList(page);
-    });
     print(widget.afterGame);
     // TODO: implement build
     return WillPopScope(
@@ -135,18 +133,14 @@ class _ServiceList extends State<ServiceList> {
                                               )
                                                   :
                                               Container(
-                                                  width: MediaQuery.of(context).size.width,
-                                                  height: 60,
-                                                  child: Center(
-                                                    child:Image.asset(
-                                                      "assets/icon/cashcook_logo.png",
-                                                      width: 180,
-                                                      height: 53.33,
-                                                    ),
-                                                  )
+                                                width: MediaQuery.of(context).size.width,
+                                                height: 45,
                                               )
                                                   :
-                                              Container()
+                                              Container(
+                                                width: MediaQuery.of(context).size.width,
+                                                height: 45,
+                                              )
                                             ],
                                           )
                                     ]
