@@ -13,7 +13,6 @@ class _UserState extends State<UserState> {
   @override
   void initState() {
     super.initState();
-    Provider.of<UserProvider>(context, listen: false).fetchMyInfo(context);
   }
 
     @override

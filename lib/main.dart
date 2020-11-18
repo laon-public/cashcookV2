@@ -1,3 +1,4 @@
+import 'package:cashcook/src/provider/AuthProvider.dart';
 import 'package:cashcook/src/provider/CarouselProvider.dart';
 import 'package:cashcook/src/provider/CenterProvider.dart';
 import 'package:cashcook/src/provider/PhoneProvider.dart';
@@ -51,6 +52,9 @@ class CashCook extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => CarouselProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AuthProvider(),
         )
       ],
       child: MaterialApp(

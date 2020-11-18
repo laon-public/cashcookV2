@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cashcook/src/provider/StoreProvider.dart';
+import 'package:cashcook/src/screens/login/loginVerRest.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/dialog.dart';
 import 'package:flutter/material.dart';
@@ -80,6 +81,7 @@ class _Splash extends State<Splash> {
     await Provider.of<StoreProvider>(context, listen: false).clearMap();
     Navigator.of(context)
         .pushReplacement(MaterialPageRoute(builder: (context) => Login()));
+        // .pushReplacement(MaterialPageRoute(builder: (context) => LoginVerRest()));
   }
 
   startTime() async {
