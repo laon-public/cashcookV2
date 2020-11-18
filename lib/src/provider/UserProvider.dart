@@ -45,30 +45,46 @@ class UserProvider with ChangeNotifier {
 
   // Service List
   List<ServiceLogListItem> serviceLogList = [];
+  bool isLastList = false;
 
-  void fetchServiceList() async {
-    serviceLogList.clear();
+  void fetchServiceList(int page) async {
+    if(page == 1){
+      serviceLogList.clear();
+    }
     startLoading();
 
-    final response = await service.fetchServiceList();
+    final response = await service.fetchServiceList(page);
     print(response);
 
     Map<String, dynamic> data = jsonDecode(response)['data'];
 
     String date = "";
     int idx = -1;
+    isLastList = ((data['serviceList'] as List).length == 0);
     for(var json in data['serviceList']) {
       String dateChk = DateFormat("yyyy.MM.dd").format(
           DateTime.parse(json['created_at'].toString()));
-      if(date != dateChk){
-        serviceLogList.add(
-          ServiceLogListItem.initFromJson(json)
-        );
-        idx++;
-        date = serviceLogList[idx].date;
+      // dateChk가 이미 serviceLogList에 존재하는 date 일 때,
+      print("LogList Date Check");
+      int existIdx = serviceLogList.indexWhere((log) => log.date == dateChk);
+      print(existIdx);
+      print("========================");
+      if(existIdx != -1) {
+        serviceLogList[existIdx].addfromJson(json);
       } else {
-        serviceLogList[idx].addfromJson(json);
+        serviceLogList.add(
+            ServiceLogListItem.initFromJson(json)
+        );
       }
+      // if(date != dateChk){
+      //   serviceLogList.add(
+      //     ServiceLogListItem.initFromJson(json)
+      //   );
+      //   idx++;
+      //   date = serviceLogList[idx].date;
+      // } else {
+      //   serviceLogList[idx].addfromJson(json);
+      // }
     }
 
     stopLoading();

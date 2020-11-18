@@ -23,13 +23,28 @@ class ServiceList extends StatefulWidget {
 }
 
 class _ServiceList extends State<ServiceList> {
+  int page;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    page = 1;
+  }
+
+  void loadMore() {
+    setState(() {
+      page = page + 1;
+    });
+    Provider.of<UserProvider>(context, listen: false).fetchServiceList(page);
+  }
+
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await Provider.of<UserProvider>(context, listen: false).fetchServiceList(page);
+    });
     print(widget.afterGame);
     // TODO: implement build
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<UserProvider>(context, listen: false).fetchServiceList();
-    });
     return WillPopScope(
         child: Scaffold(
             appBar: AppBar(
@@ -68,17 +83,78 @@ class _ServiceList extends State<ServiceList> {
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height,
-                    child: SingleChildScrollView(
-                      child: Consumer<UserProvider>(
-                        builder: (context, up, _){
-                          return Column(
-                              children: up.serviceLogList.map((e) =>
-                                  ServiceItem(e)
-                              ).toList()
-                          );
-                        },
-                      ),
-                    ),
+                    child: Consumer<UserProvider>(
+                      builder: (context, up, _){
+                        return NotificationListener<ScrollNotification>(
+                          onNotification: (ScrollNotification scrollInfo) {
+                            if(scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent){
+                              if(!up.isLoading && !up.isLastList){
+                                loadMore();
+                              }
+                            }
+
+                            return true;
+                          },
+                          child: SingleChildScrollView(
+                            child: Column(
+                                    children: [
+                                      Column(
+                                          children: up.serviceLogList.map((e) =>
+                                              ServiceItem(e)
+                                          ).toList()
+                                      ),
+                                      (up.isLoading) ?
+                                      Container(
+                                          width: MediaQuery.of(context).size.width,
+                                          height: 85,
+                                          child: Center(
+                                              child: CircularProgressIndicator(
+                                                  backgroundColor: mainColor,
+                                                  valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                                              )
+                                          )
+                                      ):
+                                          Column(
+                                            children: [
+                                              Container(),
+                                              (up.isLastList) ?
+                                              (page == 1) ?
+                                              Container(
+                                                  width: MediaQuery.of(context).size.width,
+                                                  height: 60,
+                                                  child: Center(
+                                                      child: Text(
+                                                          "이용내역 조회 결과가 없습니다.",
+                                                          style: TextStyle(
+                                                              fontSize: 14,
+                                                              fontFamily: 'noto',
+                                                              color: Color(0xFF333333)
+                                                          )
+                                                      )
+                                                  )
+                                              )
+                                                  :
+                                              Container(
+                                                  width: MediaQuery.of(context).size.width,
+                                                  height: 60,
+                                                  child: Center(
+                                                    child:Image.asset(
+                                                      "assets/icon/cashcook_logo.png",
+                                                      width: 180,
+                                                      height: 53.33,
+                                                    ),
+                                                  )
+                                              )
+                                                  :
+                                              Container()
+                                            ],
+                                          )
+                                    ]
+                                )
+                          ),
+                        );
+                      },
+                    )
                   ),
                 ),
                 widget.isHome ? CustomBottomNavBar(context, "pointmgmt") : Container(),

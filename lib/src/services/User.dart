@@ -8,9 +8,9 @@ import 'package:http/http.dart' as http;
 class UserService {
   http.Client client = http.Client();
 
-  Future<String> fetchServiceList() async {
+  Future<String> fetchServiceList(int page) async {
     print("cookURL : " + cookURL);
-    final response = await client.get(cookURL + "/users/me/service/list",
+    final response = await client.get(cookURL + "/users/me/service/list?page=$page",
         headers: {"Authorization": "BEARER ${dataStorage.token}"});
     return utf8.decode(response.bodyBytes);
   }
