@@ -48,7 +48,6 @@ class _limitDLState extends State<limitDL> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: appBarWidget,
       body: SingleChildScrollView(
@@ -74,6 +73,7 @@ class _limitDLState extends State<limitDL> {
                     onChanged: (val) {
                       setState(() {
                         limitState = val;
+                        limitQuantityCtrl.text = "";
                       });
                     },
                   )
@@ -102,7 +102,9 @@ class _limitDLState extends State<limitDL> {
                           height: 40,
                         ),
                         Flexible(
-                          child: TextFormField(
+                          child: limitState == false?
+                          TextFormField(enabled: false) :
+                          TextFormField(
                             textAlign: TextAlign.end,
                             style: TextStyle(
                               color:Color(0xFF333333),
@@ -114,7 +116,7 @@ class _limitDLState extends State<limitDL> {
                             keyboardType: TextInputType.number,
                             readOnly: !limitState,
                             decoration: InputDecoration(
-                              suffixText: "DL",
+                              suffixText: "DL %",
                               contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
                               border: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Color(0xffdddddd), width: 1.0),
@@ -137,12 +139,18 @@ class _limitDLState extends State<limitDL> {
                   child:RaisedButton(
                       color: mainColor,
                       onPressed: () async {
+                        print("limitState : $limitState");
+                        print("limitQuantityCtrl.text : ${limitQuantityCtrl.text}");
                         if(limitState && limitQuantityCtrl.text == "") {
                           showToast("결제한도를 입력해주세요.");
-
                           return;
                         }
-                        print(limitState);
+
+                        if(limitState && (int.parse(limitQuantityCtrl.text) < 1 || int.parse(limitQuantityCtrl.text) > 100)){
+                          showToast("결제한도는 1% ~ 100% 내로 설정 가능합니다.");
+                          return;
+                        }
+
                         await Provider.of<UserProvider>(context, listen: false).changeLimitDL(
                             limitState,
                             myStore.id.toString(),
