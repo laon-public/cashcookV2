@@ -7,12 +7,16 @@ import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:cashcook/src/screens/mypage/points/pointMgmtUser.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:cashcook/src/screens/mypage/info/serviceList.dart';
+import 'dart:core';
+import 'package:quiver/core.dart';
 
 // 선결제로 진행한 실시간 흥정 게임
 class BargainGame2 extends StatefulWidget {
@@ -34,7 +38,6 @@ class _BargainGame2 extends State<BargainGame2> {
   var discount;
   var dl;
   var carat;
-
 
   var list = ['10','20','30','40','50','60','70','80','90','100'];
   final random = new Random();
@@ -59,7 +62,7 @@ class _BargainGame2 extends State<BargainGame2> {
 
   @override
   void initState() {
-    print("BargainGame2 initState");
+    print("BargainGame initState");
     orderPayment = widget.orderPayment;
     print("orderPayment $orderPayment");
     DefaultCacheManager().emptyCache();
@@ -73,7 +76,7 @@ class _BargainGame2 extends State<BargainGame2> {
       if(isQuit) {
         await Provider.of<StoreServiceProvider>(context, listen: false).confirmGame(
             orderId: widget.orderId,
-            gameQuantity: double.parse(dl.toString()).round()
+            gameQuantity: dl
         );
 
         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
@@ -85,16 +88,13 @@ class _BargainGame2 extends State<BargainGame2> {
       }
 
       if(isReplay){
-        print("isReplay1");
         bool res = await Provider.of<StoreServiceProvider>(context, listen: false).replayGame(
             orderId: widget.orderId
         );
 
         if(res) {
-          print("isReplay2");
           setSendMessage();
         } else {
-          print("isReplay3");
           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
             isHome: true,
             afterGame : true,
@@ -176,9 +176,11 @@ class _BargainGame2 extends State<BargainGame2> {
     showToast("게임이 실행되는 중 입니다.");
     this._unityWidgetController = controller;
 
-    setState(() {
-      gameLoad = true;
-    });
+    if(this.mounted) {
+      setState(() {
+        gameLoad = true;
+      });
+    }
   }
 
   void onUnityUnloaded(controller){
@@ -192,7 +194,7 @@ class _BargainGame2 extends State<BargainGame2> {
     var randomPercentage = int.parse(randomDiscount).toDouble() * 0.01;
     print("randomPercentage : $randomPercentage");
 
-    dl = demicalFormat.format(widget.orderPayment * randomPercentage / 100);
+    dl = double.parse((widget.orderPayment * randomPercentage / 100).toString()).round();
     // rp = (widget.orderPayment / 100000).ceil() * 1000;
     carat = caratReword(widget.orderPayment);
     discount = demicalFormat.format(randomPercentage * 100);
@@ -214,7 +216,6 @@ class _BargainGame2 extends State<BargainGame2> {
   void onUnityMessage(controller, message) async {
     if(message.toString() == "quit"){ //나가기
       print("나가기");
-
       if(this.mounted){
         setState(() {
           isReplay = false;
@@ -225,7 +226,6 @@ class _BargainGame2 extends State<BargainGame2> {
 
     } else{ // 한번더하기
       print("한번더");
-
       if(this.mounted) {
         setState(() {
           isReplay = true;
