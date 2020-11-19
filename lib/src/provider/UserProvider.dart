@@ -47,6 +47,9 @@ class UserProvider with ChangeNotifier {
   List<ServiceLogListItem> serviceLogList = [];
   bool isLastList = false;
 
+  // Authentication Variable
+  String jsession;
+
   void fetchServiceList(int page) async {
     if(page == 1){
       serviceLogList.clear();
@@ -512,9 +515,4 @@ class UserProvider with ChangeNotifier {
     showToast(json['resultMsg']);
   }
 
-  Future<String> authCashcook(String id, String pw) async {
-    String response = await service.authCashcook(id, pw);
-
-    return response;
-  }
 }

@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:cashcook/src/services/API.dart';
 import 'package:cashcook/src/utils/datastorage.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class UserService {
@@ -186,17 +185,72 @@ class UserService {
     return utf8.decode(response.bodyBytes);
   }
 
-  Future<String> authCashcook(String id, String pw) async {
+
+
+
+  Future<String> authRequest() async {
+    http.Response response = await client.head(baseUrl + "oauth/authorize?client_id=cashcook&redirect_uri=" + loginSuccessUrl + "&response_type=code" );
+
+    return response.headers['set-cookie'];
+  }
+
+  Future<String> authCashcook(String id, String pw, String cookie) async {
     final response = await client.post(baseUrl+"users/login",body: {
       "username" : id,
       "password" : pw,
     }, headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
+      "Cookie" : cookie,
     });
 
-    print(response.headers['location']);
     print(response.headers.toString());
 
-    return response.headers['location'];
+    print(response.headers['location']);
+    if(response.headers['location'] == (baseUrl + "oauth/authorize?client_id=cashcook&redirect_uri=" + loginSuccessUrl + "&response_type=code")) {
+      String new_cookie = response.headers['set-cookie'];
+
+      await authSuccess(new_cookie.split(";")[0]);
+    }
+
+
+    print(utf8.decode(response.bodyBytes));
+
+    return utf8.decode(response.bodyBytes);
+  }
+
+  Future<String> authSuccess(String cookie) async {
+    print("로그인 성공");
+    http.Response response = await client.head("http://192.168.1.227/auth_api/oauth/authorize?client_id=cashcook&redirect_uri=http://192.168.1.227/auth_api/users/login/success&response_type=code",
+        headers: {
+          "Cookie": cookie,
+          "Referer": "http://192.168.1.227/auth_api/users/login",
+        }
+    );
+    print(response.headers.toString());
+
+    /*
+    JSESSION만 가지고 있으면 code 따기 가능.
+    response = await client.head("http://192.168.1.227/auth_api/oauth/authorize?client_id=cashcook&redirect_uri=http://192.168.1.227/auth_api/users/login/success&response_type=code",
+        headers: {
+          "Cookie": cookie,
+          "Referer": "http://192.168.1.227/auth_api/users/login",
+        }
+    );
+     */
+
+    String codeLink = response.headers['location'];
+    String code = codeLink.split("code=")[1];
+
+    print(code);
+
+    response = await client.post("$baseUrl/oauth/token", body: {
+      "client_id": "cashcook",
+      "client_secret": "Laonpp00..L",
+      "grant_type": "authorization_code",
+      "code": code,
+      "scope": "read write",
+      "redirect_uri": loginSuccessUrl
+    });
+
+    print(response.body.toString());
   }
 }
