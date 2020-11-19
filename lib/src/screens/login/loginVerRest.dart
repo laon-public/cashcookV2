@@ -3,6 +3,7 @@ import 'package:cashcook/src/provider/CenterProvider.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/center/appConfirm.dart';
+import 'package:cashcook/src/screens/login/register.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
@@ -56,9 +57,13 @@ class _LoginVerRest extends State<LoginVerRest> {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Stack(
-          children: [Center(
+          children: [
+            Center(
             child: Consumer<AuthProvider>(
               builder: (context, auth, _){
+                // if(auth.isSuccess) {
+                //   pageMove();
+                // }
                 return (auth.isLoading) ?
                 CircularProgressIndicator(
                     backgroundColor: mainColor,
@@ -199,7 +204,13 @@ class _LoginVerRest extends State<LoginVerRest> {
                                       height: 32,
                                       child: Center(
                                           child: InkWell(
-                                            onTap: () {},
+                                            onTap: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) => Register()
+                                                )
+                                              );
+                                            },
                                             child: Text("회원가입",
                                                 style: TextStyle(
                                                     fontSize: 12,
@@ -272,17 +283,18 @@ class _LoginVerRest extends State<LoginVerRest> {
                     )
                 )
                     :
-                (auth.isSuccess) ?
-                    Consumer<AuthProvider>(
-                      builder: (context, auth, _){
-                        pageMove();
-
-                        return Container();
-                      },
-                    )
-
-                    :
                     Container();
+              }
+            ),
+            Consumer<AuthProvider>(
+              builder: (context, auth, _){
+                WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                  if(!auth.isEnd && auth.isSuccess){
+                    pageMove();
+                  }
+                });
+
+                return Container();
               }
             )
           ]
@@ -292,6 +304,7 @@ class _LoginVerRest extends State<LoginVerRest> {
   }
 
   pageMove() async {
+    await Provider.of<AuthProvider>(context, listen: false).setEnd(true);
     await Provider.of<StoreProvider>(context, listen: false).clearMap();
     await Provider.of<CenterProvider>(context, listen: false).startLoading();
     await Provider.of<UserProvider>(context,listen: false).fetchMyInfo(context);

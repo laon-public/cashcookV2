@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cashcook/src/services/RestAuth.dart';
 import 'package:cashcook/src/utils/datastorage.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
 class AuthProvider with ChangeNotifier {
@@ -15,6 +16,22 @@ class AuthProvider with ChangeNotifier {
     bool isAuthing = false;
     bool isSuccess = false;
     bool isError = false;
+    bool isEnd = false;
+
+    // Register Store
+    Map<String, String> registerForm = {
+      "username" : "",
+      "password" : "",
+      "password_confirm" : "",
+      "name" : "",
+      "year" : "",
+      "month" : "",
+      "day" : "",
+      "csrf" : "",
+      "phone" : "",
+      "sex" : "MAN",
+      "clientId" : "CASHCOOK",
+    };
 
     void startLoading() {
       isLoading = true;
@@ -40,12 +57,28 @@ class AuthProvider with ChangeNotifier {
       notifyListeners();
     }
 
+    void setEnd(bool value) {
+      isEnd = value;
+
+      notifyListeners();
+    }
+
     void authRequest() async {
+      isSuccess = false;
+      isError = false;
       startLoading();
 
       cookie = await service.authRequest();
 
       stopLoading();
+    }
+
+    void changeFormValue(key,value) {
+      registerForm[key] = value;
+
+      print(registerForm.toString());
+
+      notifyListeners();
     }
 
     void authIn(String username, String password) async {
@@ -66,5 +99,15 @@ class AuthProvider with ChangeNotifier {
       isSuccess = true;
 
       stopAuthing();
+    }
+
+    void authRegister() async {
+
+      final response = await service.authRegister(registerForm, cookie);
+
+    }
+
+    void requestSms() async {
+      final response = await service.requestSms(registerForm["phone"], cookie);
     }
 }

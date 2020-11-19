@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cashcook/src/services/API.dart';
+import 'package:dio/dio.dart' as dio;
 import 'package:http/http.dart' as http;
 
 class RestAuthService {
@@ -46,6 +47,35 @@ class RestAuthService {
       "scope": "read write",
       "redirect_uri": loginSuccessUrl
     });
+
+    return utf8.decode(response.bodyBytes);
+  }
+
+    Future<http.Response> authRegister(Map<String, dynamic> formData, String cookie) async {
+    http.Response response = await client.post(baseUrl + "users/join/register",
+      body: formData,
+        headers: {
+          "Cookie" : cookie,
+          "Referer": "http://192.168.1.227/auth_api/users/join/info?",
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+    );
+
+    print(response.statusCode);
+    print(response.body.toString());
+    print(response.headers.toString());
+
+    return response;
+  }
+
+  Future<String> requestSms(String phone, String cookie) async {
+    http.Response response = await client.get(baseUrl + "api/users/request-sms?phone=$phone&pwFind=${false}",
+      headers: {
+        "Cookie" : cookie,
+      }
+    );
+
+    print(response.body.toString());
 
     return utf8.decode(response.bodyBytes);
   }

@@ -515,16 +515,4 @@ class UserProvider with ChangeNotifier {
     showToast(json['resultMsg']);
   }
 
-  Future<String> authRequest() async {
-    String cookies = await service.authRequest();
-
-    print(cookies);
-    jsession = cookies.split(";")[0];
-  }
-
-  Future<String> authCashcook(String id, String pw) async {
-    String response = await service.authCashcook(id, pw, jsession);
-
-    return response;
-  }
 }
