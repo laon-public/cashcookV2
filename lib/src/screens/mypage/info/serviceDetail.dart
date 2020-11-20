@@ -10,6 +10,8 @@ import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:cashcook/src/provider/UserProvider.dart';
+import 'package:provider/provider.dart';
 
 class ServiceDetail extends StatefulWidget {
   OrderLog ol;
@@ -23,6 +25,7 @@ class ServiceDetail extends StatefulWidget {
 class _ServiceDetail extends State<ServiceDetail> {
   @override
   Widget build(BuildContext context) {
+    Map<String, dynamic> pointMap =  Provider.of<UserProvider>(context, listen: false).pointMap;
     // TODO: implement build
     return Scaffold(
       backgroundColor: white,
@@ -186,11 +189,13 @@ class _ServiceDetail extends State<ServiceDetail> {
                           if(widget.ol.playGame){
                             showToast("게임을 이미 진행하였습니다.");
                           } else {
+                            print("CARAT : ${pointMap['CARAT']}");
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
                                     builder: (context) => BargainGame2(
                                       orderId: widget.ol.id,
                                       orderPayment: widget.ol.pay - (widget.ol.dl * 100),
+                                      totalCarat: pointMap['CARAT']
                                     ))
                                 , (route) => false);
                           }

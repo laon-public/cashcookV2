@@ -493,6 +493,7 @@ class _OrderMenu extends State<OrderMenu> {
   }
 
   showGameDialog() {
+    Map<String, dynamic> pointMap =  Provider.of<UserProvider>(context, listen: false).pointMap;
     showDialog( 
       context: context,
       builder: (context) =>
@@ -615,7 +616,8 @@ class _OrderMenu extends State<OrderMenu> {
                                       ssp.orderComplete();
 
                                       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => BargainGame2(
-                                        orderPayment: ssp.orderPay - (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text) * 100),)), (route) => false);
+                                        orderPayment: ssp.orderPay - (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text) * 100),
+                                          totalCarat: pointMap['CARAT'])), (route) => false);
                                     } else {  // 신용카드 결제
                                       Navigator.of(context).push(MaterialPageRoute(
                                           builder: (context) =>
