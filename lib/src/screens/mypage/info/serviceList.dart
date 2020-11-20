@@ -29,7 +29,9 @@ class _ServiceList extends State<ServiceList> {
   void initState() {
     // TODO: implement initState
     page = 1;
-    Provider.of<UserProvider>(context, listen: false).fetchServiceList(page);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<UserProvider>(context, listen: false).fetchServiceList(page);
+    });
   }
 
   void loadMore() async {
