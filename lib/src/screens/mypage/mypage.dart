@@ -337,6 +337,8 @@ class _MyPageState extends State<MyPage> {
                               Tabs(name: "서비스 문의", routesName: "/inquiry",),
                               Tabs(name: "약관 및 정책", routesName: "",),
                               Tabs(name: "앱정보", routesName: "/appinfomation",),
+
+
                               SizedBox(height: 40,),
                             ]
                         )
@@ -344,6 +346,7 @@ class _MyPageState extends State<MyPage> {
                     (!user.loginUser.isFran) ? Tabs2(name: "제휴매장 등록하기", routesName: "/store/apply1",img: "assets/icon/shop.png",): SizedBox(),
                     SizedBox(height: 12,),
                     Tabs2(name: "캐시링크 가기", routesName: "cashlink",img: "assets/icon/cashlink-icon.png",),
+                    SizedBox(height: 60,),
                   ]
               )
             ]

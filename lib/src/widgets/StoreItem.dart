@@ -5,6 +5,7 @@ import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/screens/main/storeDetail.dart';
 import 'package:cashcook/src/screens/main/storeDetail_2.dart';
+import 'package:cashcook/src/screens/main/storeDetail_3.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
@@ -259,6 +260,13 @@ Widget storeItem(StoreModel store, BuildContext context) {
           )
         )
       );
+      // Navigator.of(context).push(
+      //   MaterialPageRoute(
+      //     builder: (context) => StoreDetail3(
+      //       store:store
+      //     )
+      //   )
+      // );
     },
     child: Container(
       width: MediaQuery.of(context).size.width,

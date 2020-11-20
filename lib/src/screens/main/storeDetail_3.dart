@@ -1,74 +1,38 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cashcook/src/model/store.dart';
-import 'package:cashcook/src/model/store/menu.dart';
-import 'package:cashcook/src/model/usercheck.dart';
 import 'package:cashcook/src/provider/CarouselProvider.dart';
-import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
-import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/qr/qr.dart';
-import 'package:cashcook/src/screens/storemanagement/orderMenu.dart';
 import 'package:cashcook/src/utils/Share.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/StoreServiceItem.dart';
-import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:sticky_headers/sticky_headers.dart';
 
-class StoreDetail2 extends StatefulWidget {
-  final StoreModel store;
+class StoreDetail3 extends StatefulWidget {
+  StoreModel store;
 
-  StoreDetail2({this.store});
-
+  StoreDetail3({this.store});
   @override
-  _StoreDetail2 createState() => _StoreDetail2();
+  _StoreDetail3 createState() => _StoreDetail3();
 }
 
-class _StoreDetail2 extends State<StoreDetail2> {
-  ScrollController scrollController = ScrollController();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    Provider.of<StoreServiceProvider>(context, listen: false).clearOrderAmount();
-
-    scrollController.addListener(() {
-      if(scrollController.offset > 40.0) {
-          Provider.of<StoreProvider>(context, listen: false).setAppbar(true);
-      } else {
-          Provider.of<StoreProvider>(context, listen: false).setAppbar(false);
-      }
-
-      // 걸리는 ServiceMenu Logic
-      // if(scrollController.offset > 463.0) {
-      //     Provider.of<StoreServiceProvider>(context, listen: false).setServiceBar(true);
-      // } else {
-      //     Provider.of<StoreServiceProvider>(context, listen: false).setServiceBar(false);
-      // }
-
-      print(scrollController.offset);
-    });
-  }
+class _StoreDetail3 extends State<StoreDetail3> {
   @override
   Widget build(BuildContext context) {
-
-    // TODO: implement build
-    return Scaffold(
-      body: Stack(
-        children: [
-          Scaffold(
-              backgroundColor: white,
-              body: Container(
-                  padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-                  child:
-                  SingleChildScrollView(
-                      controller: scrollController,
-                      child: Column(
+    return Stack(
+      children: [
+        Scaffold (
+          backgroundColor: white,
+          body:
+            Container(
+                    child:ListView.builder(
+                      itemBuilder: (context, index) {
+                      return Column(
                         children: [
                           Container(
                             width:MediaQuery.of(context).size.width,
@@ -591,393 +555,140 @@ class _StoreDetail2 extends State<StoreDetail2> {
                           ),
                           whiteSpaceH(28.0),
                           Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: 6,
-                              color: Color(0xFFF2F2F2),
+                            width: MediaQuery.of(context).size.width,
+                            height: 6,
+                            color: Color(0xFFF2F2F2),
                           ),
-
                           Consumer<StoreServiceProvider>(
-
                             builder: (context, ss, _){
-                              return Container(
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child:InkWell(
-                                          onTap: () async {
-                                            await Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(0, widget.store.id);
-                                          },
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(vertical: 10.0),
-                                            child:Text(
-                                                "상품",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontFamily: 'noto',
-                                                    color: ss.serviceNum == 0 ?
-                                                    Color(0xFF333333)
-                                                        :
-                                                    Color(0xFF999999)
-                                                )
-                                            ),
-                                          )
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child:InkWell(
-                                        onTap: () {
-                                          Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(1, widget.store.id);
-                                        },
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(vertical: 10.0),
-                                          child:Text(
-                                              "정보",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  fontSize: 13,
-                                                  fontFamily: 'noto',
-                                                  color: ss.serviceNum == 1 ?
-                                                  Color(0xFF333333)
-                                                      :
-                                                  Color(0xFF999999)
-                                              )
+                              return StickyHeader(
+
+                                header: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      color: white,
+                                      height: 45,
+                                      child: Stack(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child:InkWell(
+                                                    onTap: () async {
+                                                      await Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(0, widget.store.id);
+                                                    },
+                                                    child: Container(
+                                                      padding: EdgeInsets.symmetric(vertical: 10.0),
+                                                      child:Text(
+                                                          "상품",
+                                                          textAlign: TextAlign.center,
+                                                          style: TextStyle(
+                                                              fontSize: 13,
+                                                              fontFamily: 'noto',
+                                                              color: ss.serviceNum == 0 ?
+                                                              Color(0xFF333333)
+                                                                  :
+                                                              Color(0xFF999999)
+                                                          )
+                                                      ),
+                                                    )
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child:InkWell(
+                                                  onTap: () {
+                                                    Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(1, widget.store.id);
+                                                  },
+                                                  child: Container(
+                                                    padding: EdgeInsets.symmetric(vertical: 10.0),
+                                                    child:Text(
+                                                        "정보",
+                                                        textAlign: TextAlign.center,
+                                                        style: TextStyle(
+                                                            fontSize: 13,
+                                                            fontFamily: 'noto',
+                                                            color: ss.serviceNum == 1 ?
+                                                            Color(0xFF333333)
+                                                                :
+                                                            Color(0xFF999999)
+                                                        )
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child:InkWell(
+                                                    onTap: () async {
+                                                      await Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(2, widget.store.id);
+                                                    },
+                                                    child: Container(
+                                                      padding: EdgeInsets.symmetric(vertical: 10.0),
+                                                      child: Text(
+                                                        "리뷰",
+                                                        textAlign: TextAlign.center,
+                                                        style: TextStyle(
+                                                            fontSize: 13,
+                                                            fontFamily: 'noto',
+                                                            color: ss.serviceNum == 2 ?
+                                                            Color(0xFF333333)
+                                                                :
+                                                            Color(0xFF999999)
+                                                        ),
+                                                      ),
+                                                    )
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child:InkWell(
-                                          onTap: () async {
-                                            await Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(2, widget.store.id);
-                                          },
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(vertical: 10.0),
-                                            child: Text(
-                                              "리뷰",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  fontSize: 13,
-                                                  fontFamily: 'noto',
-                                                  color: ss.serviceNum == 2 ?
-                                                  Color(0xFF333333)
-                                                      :
-                                                  Color(0xFF999999)
+                                          Positioned(
+                                            bottom: 0,
+                                            child: Container(
+                                              width: MediaQuery.of(context).size.width,
+                                              height: 1,
+                                              color: Color(0xFFF2F2F2),
+                                              child: Stack(
+                                                  children: [
+                                                    Consumer<StoreServiceProvider>(
+                                                      builder: (context, ssp, _){
+                                                        return AnimatedPositioned(
+                                                          left: (MediaQuery.of(context).size.width * 1 / 3) * (ssp.serviceNum),
+                                                          child: Container(
+                                                            width: MediaQuery.of(context).size.width * 1 / 3,
+                                                            height: 1,
+                                                            decoration: BoxDecoration(
+                                                              color: mainColor,
+                                                            ),
+                                                          ),
+                                                          duration: Duration(milliseconds: 450),
+                                                        );
+                                                      },
+                                                    )
+                                                  ]
                                               ),
                                             ),
-                                          )
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                          Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: 1,
-                              color: Color(0xFFF2F2F2),
-                              child: Stack(
-                                children: [
-                                  Consumer<StoreServiceProvider>(
-                                    builder: (context, ssp, _){
-                                      return AnimatedPositioned(
-                                        left: (MediaQuery.of(context).size.width * 1 / 3) * (ssp.serviceNum),
-                                        child: Container(
-                                          width: MediaQuery.of(context).size.width * 1 / 3,
-                                          height: 1,
-                                          decoration: BoxDecoration(
-                                            color: mainColor,
                                           ),
-                                        ),
-                                        duration: Duration(milliseconds: 450),
-                                      );
-                                    },
-                                  )
-
-                                ]
-                              ),
-                          ),
-                          whiteSpaceH(12.0),
-                          Consumer<StoreServiceProvider>(
-                            builder: (context, ss, _){
-                              return Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children:[
-                                    Consumer<StoreServiceProvider>(
-                                        builder: (context, ss, _) {
-                                          return
-                                            (ss.serviceNum == 0) ?
-                                          menuForm(context)
-                                              :
-                                          (ss.serviceNum == 1) ?
-                                          otherForm(context, widget.store)
-                                              :
-                                          reviewForm(context, widget.store);
-                                        }
-                                    )
-                                  ]
-                              );
-                            },
-                          ),
-                          whiteSpaceH(50.0)
-                        ],
-                      )
-                  )
-              )
-          ),
-          Consumer<StoreServiceProvider>(
-            builder: (context, ss, _){
-              return (ss.serviceNum == 0) ?
-              Positioned(
-                  bottom: 0,
-                  child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                      color: white,
-                      width: MediaQuery.of(context).size.width,
-                      height: 60,
-                      child:
-                      RaisedButton(
-                          color: mainColor,
-                          onPressed: () async {
-                            List<BigMenuModel> bigMenus = [];
-                            int orderPay = 0;
-
-                            ss.menuList.forEach((menu) {
-                              List<MenuModel> menus = menu.menuList.where((m) => m.isCheck).toList();
-
-                              if(menus != null && menus.length != 0) {
-                                menus.forEach((m) {
-                                  m.count = 1;
-                                  orderPay += m.price;
-                                });
-                                bigMenus.add(BigMenuModel(
-                                    id: menu.id,
-                                    name: menu.name,
-                                    menuList: menus
-                                ));
-                              }
-                            });
-
-                            if(bigMenus.length != 0) {
-                              await ss.setOrderMenu(bigMenus,orderPay);
-
-                              Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          OrderMenu(
-                                            name: Provider
-                                                .of<UserProvider>(
-                                                context,
-                                                listen: false)
-                                                .loginUser
-                                                .name,
-                                            store_id: widget.store.id.toString(),
-                                            store: widget.store,
-                                          )
-                                  )
-                              );
-                            } else {
-                              showToast("메뉴를 한가지 이상 선택해주세요.");
-                            }
-                          },
-                          elevation: 0.0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6.0),
-                          ),
-                          child: Text(
-                              "주문하기",
-                              style: TextStyle(
-                                  color: Colors.white
-                              )
-                          )
-                      )
-                  )
-              ) : Container();
-            },
-          ),
-          Consumer<StoreProvider>(
-            builder: (context, sp, _){
-              return (sp.lookAppbar) ?
-              Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
-                  margin: EdgeInsets.only(
-                      top: MediaQuery.of(context).padding.top
-                  ),
-                  width: MediaQuery.of(context).size.width,
-                  height: 55,
-                  child: Stack(
-                    children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 55,
-                          child: Row(
-                            children: [
-                              InkWell(
-                                  onTap: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child : Image.asset(
-                                      "assets/resource/public/prev.png",
-                                      width: 24,
-                                      height: 24,
-                                      color: Color(0xFF333333)
-                                  )
-                              ),
-                              Spacer(),
-                              InkWell(
-                                onTap: () {
-                                  onKakaoStoreShare(widget.store.store.name, widget.store.store.shop_img1, widget.store.store.short_description);
-                                },
-                                child: Image.asset(
-                                    "assets/icon/share_blue.png",
-                                    width: 24,
-                                    height: 24,
-                                    color: Color(0xFF333333)
-                                ),
-                              ),
-                              whiteSpaceW(12.0),
-                              Consumer<StoreServiceProvider>(
-                                builder: (context, ssp, _) {
-                                  return InkWell(
-                                    onTap: widget.store.scrap.scrap == "0" ? () {
-                                      ssp.doScrap(
-                                          widget.store.id.toString()
-                                      );
-                                    } : () {
-                                      ssp.cancleScrap(
-                                          widget.store.id
-                                      );
-                                    },
-                                    child: Image.asset(
-                                      "assets/resource/main/steam.png",
-                                      width: 24,
-                                      height: 24,
-                                      color: widget.store.scrap.scrap == "0" ? Color(0xFF333333) : mainColor,
+                                        ],
+                                      )
                                     ),
-                                  );
-                                },
-                              )
-                            ],
+                                content: Container(
+                                    child: (ss.serviceNum == 0) ?
+                                    menuForm(context)
+                                        :
+                                    (ss.serviceNum == 1) ?
+                                    otherForm(context, widget.store)
+                                        :
+                                    reviewForm(context, widget.store),
+                                ),
+                              );
+                            }
                           )
-                        ),
-                        Center(
-                          child: Text(widget.store.store.name,
-                              style: TextStyle(
-                                  fontSize: 13,
-                                  fontFamily: 'noto',
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xFF333333)
-                              )
-                          ),
-                        )
-                    ],
-                  ),
-                decoration: BoxDecoration(
-                  color: white,
-                  boxShadow: [
-                    BoxShadow(
-                      offset: Offset(0,0),
-                      blurRadius: 8,
-                      color: Color(0xff000000).withOpacity(0.15),
-                    ),
-                  ],
-                ),
+                        ],
+                      );
+                    },
+                      itemCount:  1,
+                    )
               )
-                  :
-              Container();
-            },
-          ),
-
-          // 걸리는 ServiceAppBar ProtoType (지우지 마세영!)
-          // Consumer<StoreServiceProvider>(
-          //   builder: (context, ss, _){
-          //     return (ss.lookServiceBar) ? Positioned(
-          //       top: 65,
-          //       child: Container(
-          //         width: MediaQuery.of(context).size.width,
-          //         color: white,
-          //         height: 55,
-          //         child: Row(
-          //           children: [
-          //             Expanded(
-          //               child:InkWell(
-          //                   onTap: () async {
-          //                     await Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(0, widget.store.id);
-          //                   },
-          //                   child: Container(
-          //                     padding: EdgeInsets.symmetric(vertical: 10.0),
-          //                     child:Text(
-          //                         "상품",
-          //                         textAlign: TextAlign.center,
-          //                         style: TextStyle(
-          //                             fontSize: 13,
-          //                             fontFamily: 'noto',
-          //                             color: ss.serviceNum == 0 ?
-          //                             Color(0xFF333333)
-          //                                 :
-          //                             Color(0xFF999999)
-          //                         )
-          //                     ),
-          //                   )
-          //               ),
-          //             ),
-          //             Expanded(
-          //               child:InkWell(
-          //                 onTap: () {
-          //                   Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(1, widget.store.id);
-          //                 },
-          //                 child: Container(
-          //                   padding: EdgeInsets.symmetric(vertical: 10.0),
-          //                   child:Text(
-          //                       "정보",
-          //                       textAlign: TextAlign.center,
-          //                       style: TextStyle(
-          //                           fontSize: 13,
-          //                           fontFamily: 'noto',
-          //                           color: ss.serviceNum == 1 ?
-          //                           Color(0xFF333333)
-          //                               :
-          //                           Color(0xFF999999)
-          //                       )
-          //                   ),
-          //                 ),
-          //               ),
-          //             ),
-          //             Expanded(
-          //               child:InkWell(
-          //                   onTap: () async {
-          //                     await Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(2, widget.store.id);
-          //                   },
-          //                   child: Container(
-          //                     padding: EdgeInsets.symmetric(vertical: 10.0),
-          //                     child: Text(
-          //                       "리뷰",
-          //                       textAlign: TextAlign.center,
-          //                       style: TextStyle(
-          //                           fontSize: 13,
-          //                           fontFamily: 'noto',
-          //                           color: ss.serviceNum == 2 ?
-          //                           Color(0xFF333333)
-          //                               :
-          //                           Color(0xFF999999)
-          //                       ),
-          //                     ),
-          //                   )
-          //               ),
-          //             ),
-          //           ],
-          //         ),
-          //       ),
-          //     )
-          //     :
-          //     Container();
-          //   },
-          // ),
-
-        ],
-      ),
+        )
+      ],
     );
   }
 }
