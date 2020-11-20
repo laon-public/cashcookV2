@@ -43,12 +43,19 @@ class _StoreDetail2 extends State<StoreDetail2> {
       } else {
           Provider.of<StoreProvider>(context, listen: false).setAppbar(false);
       }
+
+      // 걸리는 ServiceMenu Logic
+      // if(scrollController.offset > 463.0) {
+      //     Provider.of<StoreServiceProvider>(context, listen: false).setServiceBar(true);
+      // } else {
+      //     Provider.of<StoreServiceProvider>(context, listen: false).setServiceBar(false);
+      // }
+
+      print(scrollController.offset);
     });
   }
   @override
   Widget build(BuildContext context) {
-    UserCheck my = Provider.of<UserProvider>(context, listen: false).loginUser;
-    bool lookAppbar = Provider.of<StoreProvider>(context, listen:false).lookAppbar;
 
     // TODO: implement build
     return Scaffold(
@@ -588,7 +595,9 @@ class _StoreDetail2 extends State<StoreDetail2> {
                               height: 6,
                               color: Color(0xFFF2F2F2),
                           ),
+
                           Consumer<StoreServiceProvider>(
+
                             builder: (context, ss, _){
                               return Container(
                                 child: Row(
@@ -878,7 +887,93 @@ class _StoreDetail2 extends State<StoreDetail2> {
                   :
               Container();
             },
-          )
+          ),
+
+          // 걸리는 ServiceAppBar ProtoType (지우지 마세영!)
+          // Consumer<StoreServiceProvider>(
+          //   builder: (context, ss, _){
+          //     return (ss.lookServiceBar) ? Positioned(
+          //       top: 65,
+          //       child: Container(
+          //         width: MediaQuery.of(context).size.width,
+          //         color: white,
+          //         height: 55,
+          //         child: Row(
+          //           children: [
+          //             Expanded(
+          //               child:InkWell(
+          //                   onTap: () async {
+          //                     await Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(0, widget.store.id);
+          //                   },
+          //                   child: Container(
+          //                     padding: EdgeInsets.symmetric(vertical: 10.0),
+          //                     child:Text(
+          //                         "상품",
+          //                         textAlign: TextAlign.center,
+          //                         style: TextStyle(
+          //                             fontSize: 13,
+          //                             fontFamily: 'noto',
+          //                             color: ss.serviceNum == 0 ?
+          //                             Color(0xFF333333)
+          //                                 :
+          //                             Color(0xFF999999)
+          //                         )
+          //                     ),
+          //                   )
+          //               ),
+          //             ),
+          //             Expanded(
+          //               child:InkWell(
+          //                 onTap: () {
+          //                   Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(1, widget.store.id);
+          //                 },
+          //                 child: Container(
+          //                   padding: EdgeInsets.symmetric(vertical: 10.0),
+          //                   child:Text(
+          //                       "정보",
+          //                       textAlign: TextAlign.center,
+          //                       style: TextStyle(
+          //                           fontSize: 13,
+          //                           fontFamily: 'noto',
+          //                           color: ss.serviceNum == 1 ?
+          //                           Color(0xFF333333)
+          //                               :
+          //                           Color(0xFF999999)
+          //                       )
+          //                   ),
+          //                 ),
+          //               ),
+          //             ),
+          //             Expanded(
+          //               child:InkWell(
+          //                   onTap: () async {
+          //                     await Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(2, widget.store.id);
+          //                   },
+          //                   child: Container(
+          //                     padding: EdgeInsets.symmetric(vertical: 10.0),
+          //                     child: Text(
+          //                       "리뷰",
+          //                       textAlign: TextAlign.center,
+          //                       style: TextStyle(
+          //                           fontSize: 13,
+          //                           fontFamily: 'noto',
+          //                           color: ss.serviceNum == 2 ?
+          //                           Color(0xFF333333)
+          //                               :
+          //                           Color(0xFF999999)
+          //                       ),
+          //                     ),
+          //                   )
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //       ),
+          //     )
+          //     :
+          //     Container();
+          //   },
+          // ),
 
         ],
       ),

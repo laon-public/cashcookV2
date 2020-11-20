@@ -46,6 +46,7 @@ class StoreServiceProvider with ChangeNotifier {
   // main Service
   List<StoreModel> store = [];
   s.StoreService service_2 = s.StoreService();
+  bool lookServiceBar = false;
 
   // Cat Search Service;
   List<StoreMinify> storeMiniList = [];
@@ -59,6 +60,14 @@ class StoreServiceProvider with ChangeNotifier {
       );
 
       notifyListeners();
+  }
+
+  void setServiceBar(bool value) {
+    if(this.lookServiceBar.toString() != value.toString()) {
+      this.lookServiceBar = value;
+
+      notifyListeners();
+    }
   }
 
   void clearDlCtrl() {

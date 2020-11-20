@@ -298,98 +298,103 @@ class _Home extends State<Home> {
                 height: 170,
                 child: Stack(
                   children: [
-                    ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context,idx) {
-                        return Column(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                if (serviceName[idx]['code_name'] == '음식') {
-                                  print("음식");
-                                } else if (serviceName[idx]['code_name'] ==
-                                    '패션') {
-                                  print("패션");
-                                } else if (serviceName[idx]['code_name'] ==
-                                    '여행') {
-                                  print("여행");
-                                } else if (serviceName[idx]['code_name'] ==
-                                    '문화') {
-                                  print("문화");
-                                } else
-                                if (serviceName[idx]['code_name'] == '키즈') {
-                                  print("키즈");
-                                }
+                    Container(
+                      child: Center(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context,idx) {
+                            return Column(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    if (serviceName[idx]['code_name'] == '음식') {
+                                      print("음식");
+                                    } else if (serviceName[idx]['code_name'] ==
+                                        '패션') {
+                                      print("패션");
+                                    } else if (serviceName[idx]['code_name'] ==
+                                        '여행') {
+                                      print("여행");
+                                    } else if (serviceName[idx]['code_name'] ==
+                                        '문화') {
+                                      print("문화");
+                                    } else
+                                    if (serviceName[idx]['code_name'] == '키즈') {
+                                      print("키즈");
+                                    }
 
-                                setState(() {
-                                  viewType = 1;
-                                  this.idx = idx;
-                                });
-                              },
-                              child: Container(
-                                width: 72,
-                                height: 64,
-                                child: Center(
-                                    child : Column(
-                                      children: [
-                                        Image.asset(
-                                            serviceImage[idx],
-                                            width: 32,
-                                            height: 32
-                                        ),
-                                        whiteSpaceH(6),
-                                        Text(serviceName[idx]['code_name'],
-                                          style: TextStyle(
-                                              fontFamily: 'noto',
-                                              fontSize: 10,
-                                              color: Color(0xFF666666)),),
-                                      ],
-                                    )
+                                    setState(() {
+                                      viewType = 1;
+                                      this.idx = idx;
+                                    });
+                                  },
+                                  child: Container(
+                                    width: 72,
+                                    height: 64,
+                                    child: Center(
+                                        child : Column(
+                                          children: [
+                                            Image.asset(
+                                                serviceImage[idx],
+                                                width: 32,
+                                                height: 32
+                                            ),
+                                            whiteSpaceH(6),
+                                            Text(serviceName[idx]['code_name'],
+                                              style: TextStyle(
+                                                  fontFamily: 'noto',
+                                                  fontSize: 10,
+                                                  color: Color(0xFF666666)),),
+                                          ],
+                                        )
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            whiteSpaceH(12),
-                            InkWell(
-                              onTap: () {
-                                if (serviceName[idx + 5]['code_name'] == '가전') {
-                                  print("가전");
-                                } else if (serviceName[idx + 5]['code_name'] == '건강') {
-                                  print("건강");
-                                } else if (serviceName[idx + 5]['code_name']  == '레저') {
-                                  print("레저");
-                                } else if (serviceName[idx + 5]['code_name']  == '애완') {
-                                  print("애완");
-                                } else {
-                                  print("기타");
-                                }
+                                whiteSpaceH(12),
+                                InkWell(
+                                  onTap: () {
+                                    if (serviceName[idx + 5]['code_name'] == '가전') {
+                                      print("가전");
+                                    } else if (serviceName[idx + 5]['code_name'] == '건강') {
+                                      print("건강");
+                                    } else if (serviceName[idx + 5]['code_name']  == '레저') {
+                                      print("레저");
+                                    } else if (serviceName[idx + 5]['code_name']  == '애완') {
+                                      print("애완");
+                                    } else {
+                                      print("기타");
+                                    }
 
-                                setState(() {
-                                  viewType = 1;
-                                  this.idx = idx + 5;
-                                });
-                              },
-                              child: Center(
-                                  child : Column(
-                                    children: [
-                                      Image.asset(
-                                          serviceImage[idx+5],
-                                          width: 32,
-                                          height: 32
-                                      ),
-                                      whiteSpaceH(6),
-                                      Text(serviceName[idx+5]['code_name'],
-                                        style: TextStyle(
-                                            fontFamily: 'noto',
-                                            fontSize: 10,
-                                            color: Color(0xFF666666)),),
-                                    ],
-                                  )
-                              ),
-                            )
-                          ],
-                        );
-                      },
-                      itemCount: 5,
+                                    setState(() {
+                                      viewType = 1;
+                                      this.idx = idx + 5;
+                                    });
+                                  },
+                                  child: Center(
+                                      child : Column(
+                                        children: [
+                                          Image.asset(
+                                              serviceImage[idx+5],
+                                              width: 32,
+                                              height: 32
+                                          ),
+                                          whiteSpaceH(6),
+                                          Text(serviceName[idx+5]['code_name'],
+                                            style: TextStyle(
+                                                fontFamily: 'noto',
+                                                fontSize: 10,
+                                                color: Color(0xFF666666)),),
+                                        ],
+                                      )
+                                  ),
+                                )
+                              ],
+                            );
+                          },
+                          itemCount: 5,
+                        ),
+                ),
                     ),
                     Positioned(
                       right:0,
