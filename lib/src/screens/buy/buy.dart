@@ -149,10 +149,13 @@ class _Buy extends State<Buy> {
               }
             });
 
+            Map<String, dynamic> pointMap =  Provider.of<UserProvider>(context, listen: false).pointMap;
             if(widget.isPlayGame){
+              print("CARAT : ${pointMap['CARAT']}");
               Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
                 builder: (context) => BargainGame2(
                   orderPayment: widget.pay,
+                  totalCarat: pointMap['CARAT']
                 )
               ), (route) => false);
             } else {

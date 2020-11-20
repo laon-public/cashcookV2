@@ -355,8 +355,12 @@ class _QrPayment extends State<QrPayment> {
                                   onTap: () async {
                                     await qp.confirmPayment(true, qp.paymentModel.uuid);
 
+                                    Map<String, dynamic> pointMap =  Provider.of<UserProvider>(context, listen: false).pointMap;
+                                    print("CARAT : ${pointMap['CARAT']}");
+
                                     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => BargainGame2(
                                       orderPayment: int.parse(qp.paymentEditModel.priceCtrl.text),
+                                      totalCarat: pointMap['CARAT']
                                     )), (route) => false);
                                   },
                                   child: Container(

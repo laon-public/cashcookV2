@@ -1,29 +1,22 @@
 
 import 'dart:math';
-
-import 'package:cashcook/src/provider/QRProvider.dart';
-import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
-import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
-import 'package:cashcook/src/screens/mypage/points/pointMgmtUser.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:cashcook/src/screens/mypage/info/serviceList.dart';
 import 'dart:core';
-import 'package:quiver/core.dart';
 
 // 선결제로 진행한 실시간 흥정 게임
 class BargainGame2 extends StatefulWidget {
   int orderId;
   final dynamic orderPayment;
+  final dynamic totalCarat;
 
-  BargainGame2({this.orderId=0, this.orderPayment});
+  BargainGame2({this.orderId=0, this.orderPayment, this.totalCarat});
 
   @override
   _BargainGame2 createState() => _BargainGame2();
@@ -31,6 +24,7 @@ class BargainGame2 extends StatefulWidget {
 
 class _BargainGame2 extends State<BargainGame2> {
   dynamic orderPayment;
+  dynamic totalCarat;
 
   static final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   UnityWidgetController _unityWidgetController;
@@ -64,7 +58,9 @@ class _BargainGame2 extends State<BargainGame2> {
   void initState() {
     print("BargainGame initState");
     orderPayment = widget.orderPayment;
+    totalCarat = widget.totalCarat;
     print("orderPayment $orderPayment");
+    print("total_carat $totalCarat");
     DefaultCacheManager().emptyCache();
     _unityWidgetController = null;
     super.initState();
@@ -87,12 +83,20 @@ class _BargainGame2 extends State<BargainGame2> {
         return;
       }
 
+      // 다시하기를 고려해 캐럿값은 미리구함
+      carat = caratReword(widget.orderPayment);
+
       if(isReplay){
         bool res = await Provider.of<StoreServiceProvider>(context, listen: false).replayGame(
             orderId: widget.orderId
         );
 
         if(res) {
+          // 다시하기 할때마다 캐럿값의 최신화
+          print("replay carat : $carat");
+          print("replay totalCarat : $totalCarat");
+          totalCarat = totalCarat - carat;
+          print("replay2 totalCarat : $totalCarat");
           setSendMessage();
         } else {
           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
@@ -196,15 +200,15 @@ class _BargainGame2 extends State<BargainGame2> {
 
     dl = double.parse((widget.orderPayment * randomPercentage / 100).toString()).round();
     // rp = (widget.orderPayment / 100000).ceil() * 1000;
-    carat = caratReword(widget.orderPayment);
     discount = demicalFormat.format(randomPercentage * 100);
 
     print("orderPayment : ${widget.orderPayment}");
     print("discount : $discount");
     print("dl : $dl");
     print("carat : $carat");
+    print("total_carat : $totalCarat");
 
-    String message = widget.orderPayment.toString() + "/" + discount.toString() + "/" + dl.toString() + "/" + carat.toString();
+    String message = widget.orderPayment.toString() + "/" + discount.toString() + "/" + dl.toString() + "/" + carat.toString() + "/" + totalCarat.toString();
     _unityWidgetController.postMessage(
         'Main',
         'SetUserInfo_Pay',
@@ -254,4 +258,3 @@ class _BargainGame2 extends State<BargainGame2> {
   }
 
 }
-
