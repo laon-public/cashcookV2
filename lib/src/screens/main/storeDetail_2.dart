@@ -45,11 +45,11 @@ class _StoreDetail2 extends State<StoreDetail2> {
       }
 
       // 걸리는 ServiceMenu Logic
-      // if(scrollController.offset > 463.0) {
-      //     Provider.of<StoreServiceProvider>(context, listen: false).setServiceBar(true);
-      // } else {
-      //     Provider.of<StoreServiceProvider>(context, listen: false).setServiceBar(false);
-      // }
+      if(scrollController.offset > 485.0) {
+          Provider.of<StoreServiceProvider>(context, listen: false).setServiceBar(true);
+      } else {
+          Provider.of<StoreServiceProvider>(context, listen: false).setServiceBar(false);
+      }
 
       print(scrollController.offset);
     });
@@ -800,91 +800,180 @@ class _StoreDetail2 extends State<StoreDetail2> {
           Consumer<StoreProvider>(
             builder: (context, sp, _){
               return (sp.lookAppbar) ?
-              Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
-                  margin: EdgeInsets.only(
-                      top: MediaQuery.of(context).padding.top
-                  ),
-                  width: MediaQuery.of(context).size.width,
-                  height: 55,
-                  child: Stack(
+                  Column(
                     children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 55,
-                          child: Row(
-                            children: [
-                              InkWell(
-                                  onTap: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child : Image.asset(
-                                      "assets/resource/public/prev.png",
-                                      width: 24,
-                                      height: 24,
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        margin: EdgeInsets.only(
+                            top: MediaQuery.of(context).padding.top
+                        ),
+                        width: MediaQuery.of(context).size.width,
+                        height: 55,
+                        child: Stack(
+                          children: [
+                            Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 55,
+                                child: Row(
+                                  children: [
+                                    InkWell(
+                                        onTap: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child : Image.asset(
+                                            "assets/resource/public/prev.png",
+                                            width: 24,
+                                            height: 24,
+                                            color: Color(0xFF333333)
+                                        )
+                                    ),
+                                    Spacer(),
+                                    InkWell(
+                                      onTap: () {
+                                        onKakaoStoreShare(widget.store.store.name, widget.store.store.shop_img1, widget.store.store.short_description);
+                                      },
+                                      child: Image.asset(
+                                          "assets/icon/share_blue.png",
+                                          width: 24,
+                                          height: 24,
+                                          color: Color(0xFF333333)
+                                      ),
+                                    ),
+                                    whiteSpaceW(12.0),
+                                    Consumer<StoreServiceProvider>(
+                                      builder: (context, ssp, _) {
+                                        return InkWell(
+                                          onTap: widget.store.scrap.scrap == "0" ? () {
+                                            ssp.doScrap(
+                                                widget.store.id.toString()
+                                            );
+                                          } : () {
+                                            ssp.cancleScrap(
+                                                widget.store.id
+                                            );
+                                          },
+                                          child: Image.asset(
+                                            "assets/resource/main/steam.png",
+                                            width: 24,
+                                            height: 24,
+                                            color: widget.store.scrap.scrap == "0" ? Color(0xFF333333) : mainColor,
+                                          ),
+                                        );
+                                      },
+                                    )
+                                  ],
+                                )
+                            ),
+                            Center(
+                              child: Text(widget.store.store.name,
+                                  style: TextStyle(
+                                      fontSize: 13,
+                                      fontFamily: 'noto',
+                                      fontWeight: FontWeight.w600,
                                       color: Color(0xFF333333)
                                   )
                               ),
-                              Spacer(),
-                              InkWell(
-                                onTap: () {
-                                  onKakaoStoreShare(widget.store.store.name, widget.store.store.shop_img1, widget.store.store.short_description);
+                            )
+                          ],
+                        ),
+                        decoration: BoxDecoration(
+                          color: white,
+                          boxShadow: [
+                            BoxShadow(
+                              offset: Offset(0,0),
+                              blurRadius: 8,
+                              color: Color(0xff000000).withOpacity(0.15),
+                            ),
+                          ],
+                        ),
+                      ),
+              Consumer<StoreServiceProvider>(
+                builder: (context, ss, _){
+                  return (ss.lookServiceBar) ? Positioned(
+                    top: 65,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      color: white,
+                      height: 55,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child:InkWell(
+                                onTap: () async {
+                                  await Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(0, widget.store.id);
                                 },
-                                child: Image.asset(
-                                    "assets/icon/share_blue.png",
-                                    width: 24,
-                                    height: 24,
-                                    color: Color(0xFF333333)
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(vertical: 10.0),
+                                  child:Text(
+                                      "상품",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontFamily: 'noto',
+                                          color: ss.serviceNum == 0 ?
+                                          Color(0xFF333333)
+                                              :
+                                          Color(0xFF999999)
+                                      )
+                                  ),
+                                )
+                            ),
+                          ),
+                          Expanded(
+                            child:InkWell(
+                              onTap: () {
+                                Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(1, widget.store.id);
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(vertical: 10.0),
+                                child:Text(
+                                    "정보",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 13,
+                                        fontFamily: 'noto',
+                                        color: ss.serviceNum == 1 ?
+                                        Color(0xFF333333)
+                                            :
+                                        Color(0xFF999999)
+                                    )
                                 ),
                               ),
-                              whiteSpaceW(12.0),
-                              Consumer<StoreServiceProvider>(
-                                builder: (context, ssp, _) {
-                                  return InkWell(
-                                    onTap: widget.store.scrap.scrap == "0" ? () {
-                                      ssp.doScrap(
-                                          widget.store.id.toString()
-                                      );
-                                    } : () {
-                                      ssp.cancleScrap(
-                                          widget.store.id
-                                      );
-                                    },
-                                    child: Image.asset(
-                                      "assets/resource/main/steam.png",
-                                      width: 24,
-                                      height: 24,
-                                      color: widget.store.scrap.scrap == "0" ? Color(0xFF333333) : mainColor,
-                                    ),
-                                  );
-                                },
-                              )
-                            ],
-                          )
-                        ),
-                        Center(
-                          child: Text(widget.store.store.name,
-                              style: TextStyle(
-                                  fontSize: 13,
-                                  fontFamily: 'noto',
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xFF333333)
-                              )
+                            ),
                           ),
-                        )
-                    ],
-                  ),
-                decoration: BoxDecoration(
-                  color: white,
-                  boxShadow: [
-                    BoxShadow(
-                      offset: Offset(0,0),
-                      blurRadius: 8,
-                      color: Color(0xff000000).withOpacity(0.15),
+                          Expanded(
+                            child:InkWell(
+                                onTap: () async {
+                                  await Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(2, widget.store.id);
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(vertical: 10.0),
+                                  child: Text(
+                                    "리뷰",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 13,
+                                        fontFamily: 'noto',
+                                        color: ss.serviceNum == 2 ?
+                                        Color(0xFF333333)
+                                            :
+                                        Color(0xFF999999)
+                                    ),
+                                  ),
+                                )
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              )
+                  )
+                  :
+                  Container();
+                },
+              ),
+                    ]
+                  )
+
                   :
               Container();
             },
