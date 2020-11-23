@@ -18,14 +18,12 @@ class MenuService {
   }
 
   Future<String> getCategory() async {
-    print("cookURL : " + cookURL);
     final response = await client.get(cookURL + "/franchises/category",
         headers: {"Authorization": "BEARER ${dataStorage.token}"});
     return utf8.decode(response.bodyBytes);
   }
 
   Future<String> getSubCategory(String code) async {
-    print("cookURL : " + cookURL);
     final response = await client.get(cookURL + "/franchises/subCategory?code=$code",
         headers: {"Authorization": "BEARER ${dataStorage.token}"});
     return utf8.decode(response.bodyBytes);

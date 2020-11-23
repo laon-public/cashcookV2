@@ -47,7 +47,6 @@ class _BargainGame2 extends State<BargainGame2> {
   bool isShow = true;
 
 
-
   @override
   void dispose() {
     print("dispose");
@@ -194,7 +193,27 @@ class _BargainGame2 extends State<BargainGame2> {
 
   void setSendMessage() {
     final _random = new Random();
-    var randomDiscount = this.list[_random.nextInt(list.length)];
+
+    Map<String, int> percentageMap = {
+      "10" : 1,
+      "20" : 1,
+      "30" : 1,
+      "40" : 2,
+      "50" : 2,
+      "60" : 2,
+      "70" : 3,
+      "80" : 3,
+      "90" : 3,
+      "100" : 4,
+    };
+    String selRandom;
+    do {
+      selRandom = this.list[_random.nextInt(list.length)];
+
+      print("계산 값 : $selRandom");
+      percentageMap[selRandom]--;
+    } while(percentageMap[selRandom] != 0);
+    var randomDiscount = selRandom;
     print("randomDiscount : $randomDiscount");
     var randomPercentage = int.parse(randomDiscount).toDouble() * 0.01;
     print("randomPercentage : $randomPercentage");

@@ -67,11 +67,7 @@ class UserProvider with ChangeNotifier {
     for(var json in data['serviceList']) {
       String dateChk = DateFormat("yyyy.MM.dd").format(
           DateTime.parse(json['created_at'].toString()));
-      // dateChk가 이미 serviceLogList에 존재하는 date 일 때,
-      print("LogList Date Check");
       int existIdx = serviceLogList.indexWhere((log) => log.date == dateChk);
-      print(existIdx);
-      print("========================");
       if(existIdx != -1) {
         serviceLogList[existIdx].addfromJson(json);
       } else {
@@ -79,15 +75,6 @@ class UserProvider with ChangeNotifier {
             ServiceLogListItem.initFromJson(json)
         );
       }
-      // if(date != dateChk){
-      //   serviceLogList.add(
-      //     ServiceLogListItem.initFromJson(json)
-      //   );
-      //   idx++;
-      //   date = serviceLogList[idx].date;
-      // } else {
-      //   serviceLogList[idx].addfromJson(json);
-      // }
     }
 
     stopLoading();
@@ -309,7 +296,6 @@ class UserProvider with ChangeNotifier {
             });
             print(obj);
           } else {
-            print("여기겠지");
             obj["history"].add({
               "title": accountListModel.purpose,
               "type": accountListModel.amount.contains("-") ? "차감" : "충전",

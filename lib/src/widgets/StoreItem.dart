@@ -252,7 +252,6 @@ Widget storeItem(StoreModel store, BuildContext context) {
       // );
       await Provider.of<CarouselProvider>(context, listen:false).changePage(1);
       await Provider.of<StoreProvider>(context, listen: false).setAppbar(false);
-      await Provider.of<StoreServiceProvider>(context, listen: false).setScroll(false);
       // Navigator.of(context).push(
       //   MaterialPageRoute(
       //     builder: (context) => StoreDetail2(

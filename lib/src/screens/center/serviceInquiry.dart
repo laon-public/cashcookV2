@@ -119,7 +119,6 @@ class _Inquiry extends State<Inquiry> {
               print(isOpen);
               print(inquiryModel.status);
               if(inquiryModel.status == "ANSWER"){
-                print("답변이 달린 상태에서 여기에 오면 status의 변수의 값을 DONE으로 변경");
                 changeStatus(context, inquiryModel.id);
                 inquiryModel.status = "DONE";
               }

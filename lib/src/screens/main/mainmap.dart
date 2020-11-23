@@ -12,6 +12,7 @@ import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/search.dart';
 import 'package:cashcook/src/screens/main/storeDetail.dart';
 import 'package:cashcook/src/screens/main/storeDetail_2.dart';
+import 'package:cashcook/src/screens/main/storeDetail_3.dart';
 import 'package:cashcook/src/screens/mypage/points/pointMgmt.dart';
 import 'package:cashcook/src/screens/qr/qr.dart';
 import 'package:cashcook/src/screens/mypage/mypage.dart';
@@ -179,7 +180,7 @@ class _MainMap extends State<MainMap> {
                                     0, sp.selStore.id);
                                 Navigator.of(context).push(
                                     MaterialPageRoute(
-                                        builder: (context) => StoreDetail2(
+                                        builder: (context) => StoreDetail3(
                                           store: sp.selStore,
                                         )
                                     )
@@ -224,7 +225,7 @@ class _MainMap extends State<MainMap> {
                                       // );
                                       Navigator.of(context).push(
                                           MaterialPageRoute(
-                                              builder: (context) => StoreDetail2(
+                                              builder: (context) => StoreDetail3(
                                                 store: sp.selStore,
                                               )
                                           )

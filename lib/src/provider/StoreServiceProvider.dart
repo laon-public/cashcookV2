@@ -5,7 +5,6 @@ import 'package:cashcook/src/model/log/orderLog.dart';
 import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/model/store/menu.dart';
 import 'package:cashcook/src/model/store/review.dart';
-import 'package:cashcook/src/model/scrap.dart';
 import 'package:cashcook/src/services/Store.dart' as s;
 import 'package:cashcook/src/services/StoreService.dart ';
 import 'package:cashcook/src/utils/responseCheck.dart';
@@ -35,7 +34,6 @@ class StoreServiceProvider with ChangeNotifier {
   TextEditingController dlCtrl = TextEditingController();
   int pay = 0;
   BankInfo bankInfo;
-  bool isScroll = true;
   int lookIdx = -1;
 
   // reviewService
@@ -57,14 +55,6 @@ class StoreServiceProvider with ChangeNotifier {
 
   void setLookIdx(int idx) {
     lookIdx = idx;
-
-    notifyListeners();
-  }
-
-  void setScroll(bool value) {
-    isScroll = value;
-
-    print("isScroll ===> $isScroll");
 
     notifyListeners();
   }
@@ -152,12 +142,9 @@ class StoreServiceProvider with ChangeNotifier {
       );
     });
 
-    print(orderMap.toString());
-
     final response = await service.orderPayment(orderMap);
 
     Map<String, dynamic> json = jsonDecode(response);
-    print(json);
     if(!isResponse(json)){
       return Future.value(false);
     }
@@ -171,12 +158,9 @@ class StoreServiceProvider with ChangeNotifier {
     confirmGame['orderId'] = orderId;
     confirmGame['gameQuantity'] = gameQuantity;
 
-    print(confirmGame.toString());
-
     final response = await service.gameConfirm(confirmGame);
 
     Map<String, dynamic> json = jsonDecode(response);
-    print(json);
     if(!isResponse(json)){
       return Future.value(false);
     }
@@ -189,12 +173,9 @@ class StoreServiceProvider with ChangeNotifier {
     // OrderLog Mapping
     replayGame['orderId'] = orderId;
 
-    print(confirmGame.toString());
-
     final response = await service.gameReplay(replayGame);
 
     Map<String, dynamic> json = jsonDecode(response);
-    print(json);
     if(!isResponse(json)){
       showToast("RP가 부족합니다. 이전 결과로 출력됩니다.");
 
@@ -214,21 +195,17 @@ class StoreServiceProvider with ChangeNotifier {
   }
 
   void showView() {
-    print("Button Show");
     isView = true;
     notifyListeners();
   }
 
   void hideView() {
-    print("Button Hide");
     isView = false;
     notifyListeners();
   }
 
   void fetchMenu(int store_id) async {
     final response = await service.fetchMenu(store_id);
-
-    print(response);
 
     dynamic _bigMenuList = json.decode(response)['data']['list'];
 
@@ -247,13 +224,9 @@ class StoreServiceProvider with ChangeNotifier {
 
     reviewAvg = 0.0;
     reviewList.clear();
-
-    print("들어옹");
-    startLoading();
+    notifyListeners();
     if(num == 0){
       final response = await service.fetchMenu(store_id);
-
-      print(response);
 
       dynamic _bigMenuList = json.decode(response)['data']['list'];
 
@@ -272,7 +245,6 @@ class StoreServiceProvider with ChangeNotifier {
 
     } else if(num == 2){
       final response = await service.fetchReview(store_id);
-      print(response);
 
       dynamic _reviewList = json.decode(response)['data']['list'];
       reviewAvg = json.decode(response)['data']['avg'];
@@ -289,19 +261,12 @@ class StoreServiceProvider with ChangeNotifier {
 
   void reviewListSelect() async{
     final response = await service.fetchReviewList();
-    print(response);
 
     dynamic _reviewList = json.decode(response)['data']['avg'];
-    // dynamic _reviewList = json.decode(response)['data']['list'];
-    // reviewAvg = json.decode(response)['data']['avg'];
-
-    print("reviewListSelect1");
     if(_reviewList != null){
-      print("reviewListSelect2");
       for(var _review in _reviewList) {
         reviewList.add(ReviewModel.fromJsonScope(_review));
       }
-      print("reviewListSelect3");
     }
 
     stopLoading();
@@ -320,8 +285,6 @@ class StoreServiceProvider with ChangeNotifier {
     orderPay += orderList[bigIdx].menuList[idx].price;
     orderAmount += 1;
 
-    print(orderAmount);
-
     notifyListeners();
   }
 
@@ -330,28 +293,11 @@ class StoreServiceProvider with ChangeNotifier {
     orderPay -= orderList[bigIdx].menuList[idx].price;
     orderAmount -= 1;
 
-    print(orderAmount);
-
     notifyListeners();
-  }
-
-  Future<bool> orderMenu(int store_user, int pay, String type, int dl) async {
-    print('=============');
-    print(store_user);
-    print(pay);
-    print('=============');
-    print(123);
-    // final response = await service.orderPayment(pay, store_user, type, dl);
-    // print(response);
-    // if (isResponse(jsonDecode(response))) {
-    //   return true;
-    // }
-    // return false;
   }
 
   Future<bool> insertReview(int store_id, int scope, String contents) async {
     final response = await service.insertReview(store_id, scope, contents);
-    print(response);
     if (isResponse(jsonDecode(response))) {
       return true;
     }
@@ -360,7 +306,6 @@ class StoreServiceProvider with ChangeNotifier {
 
   Future<bool> patchReview(int idx,int review_id,String type, String subtype) async {
     final response = await service.patchReview(review_id, type, subtype);
-    print(response);
     if (isResponse(jsonDecode(response))) {
       showToast(json.decode(response)['data']['msg']);
 
@@ -400,7 +345,6 @@ class StoreServiceProvider with ChangeNotifier {
     selectSubCat_code = selSubCat[0].code;
 
     var response = await service.fetchStoreList(code, selectSubCat_code,start ,end);
-    print(response);
 
     dynamic _storeMiniList = json.decode(response)['data']['list'];
     for(var _storeMini in _storeMiniList) {
@@ -418,8 +362,6 @@ class StoreServiceProvider with ChangeNotifier {
 
     var response = await service.fetchSubCategory(code);
 
-    print(response);
-
     dynamic _subCatList = json.decode(response)['data']['list'];
     subCatList.add(SubCatModel(
         code: "000",
@@ -430,7 +372,6 @@ class StoreServiceProvider with ChangeNotifier {
     }
 
     response = await service.fetchStoreList(code, "000", start, end);
-    print(response);
 
     dynamic _storeMiniList = json.decode(response)['data']['list'];
     for(var _storeMini in _storeMiniList) {
@@ -447,12 +388,9 @@ class StoreServiceProvider with ChangeNotifier {
   void fetchNewCategory(String code_name) async {
     subCatList.clear();
 
-    print(code_name);
     List<CatModel> selCat = catList.where((e) => e.code_name == code_name).toList();
 
     var response = await service.fetchSubCategory(selCat[0].code);
-
-    print(response);
 
     dynamic _subCatList = json.decode(response)['data']['list'];
     for(var _subCat in _subCatList) {
@@ -469,8 +407,6 @@ class StoreServiceProvider with ChangeNotifier {
 
   void postMenu(List<Map<String, dynamic>> menuData) async {
     var response = await service.postMenu(menuData);
-
-    print(response);
   }
 
   void setSubCat(String code_name) {
@@ -488,8 +424,6 @@ class StoreServiceProvider with ChangeNotifier {
 
     var response = await service.fetchCategory();
 
-    print(response);
-
     dynamic _catList = json.decode(response)['data']['list'];
 
     for(var _cat in _catList) {
@@ -499,8 +433,6 @@ class StoreServiceProvider with ChangeNotifier {
     selectCat_code = catList[0].code;
     selectCat = catList[0].code_name;
     response = await service.fetchSubCategory(code);
-
-    print(response);
 
     dynamic _subCatList = json.decode(response)['data']['list'];
     for(var _subCat in _subCatList) {
@@ -519,8 +451,6 @@ class StoreServiceProvider with ChangeNotifier {
 
     var response = await service.fetchCategory();
 
-    print(response);
-
     dynamic _catList = json.decode(response)['data']['list'];
 
     for(var _cat in _catList) {
@@ -530,8 +460,6 @@ class StoreServiceProvider with ChangeNotifier {
 
     selectCat = (catList.where((cat) => cat.code == code).toList())[0].code_name;
     response = await service.fetchSubCategory(code);
-
-    print(response);
 
     dynamic _subCatList = json.decode(response)['data']['list'];
     for(var _subCat in _subCatList) {
@@ -545,14 +473,10 @@ class StoreServiceProvider with ChangeNotifier {
 
   void patchMenu(List<Map<String, dynamic>> menuData) async {
     var response = await service.patchMenu(menuData);
-
-    print(response);
   }
 
   void doScrap(String store_id) async {
     var response = await service.doScrap(store_id);
-
-    print(response);
 
     showToast(json.decode(response)['data']['msg']);
 
@@ -590,8 +514,6 @@ class StoreServiceProvider with ChangeNotifier {
 
     var response = await service.readScrap();
 
-    print(response);
-
     dynamic _scrapList = json.decode(response)['data']['list'];
 
     for(var scrap in _scrapList)
@@ -602,8 +524,6 @@ class StoreServiceProvider with ChangeNotifier {
 
   void cancleScrap(int store_id) async {
     var response = await service.cancleScrap(store_id);
-
-    print(response);
 
     if(json.decode(response)['data']['result'] == 0){
       showToast(json.decode(response)['data']['resultMsg']);
@@ -667,8 +587,6 @@ class StoreServiceProvider with ChangeNotifier {
 
     int cnt = 0;
     String response = await service_2.getStore(start, end);
-    print("=================");
-    print(response);
     Map<String, dynamic> mapJson = jsonDecode(response);
     if(isResponse(mapJson)){
       for(var storeList in mapJson['data']["list"]){

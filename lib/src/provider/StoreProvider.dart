@@ -1,14 +1,11 @@
 import 'dart:convert';
 import 'dart:math';
-import 'dart:typed_data';
-import 'dart:ui' as u;
 
 import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/model/store/menu.dart';
 import 'package:cashcook/src/model/store/menuedit.dart';
 import 'package:cashcook/src/model/store/review.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
-import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/services/Store.dart';
 import 'package:cashcook/src/services/StoreService.dart' as ss;
 import 'package:cashcook/src/utils/FromAsset.dart';
@@ -115,9 +112,6 @@ class StoreProvider with ChangeNotifier{
     ]);
 
     formData.fields.addAll(data.entries);
-
-    print("bak okay");
-    print(formData.fields.toString());
   }
 
   void bak_comment(String comment) {
@@ -162,8 +156,6 @@ class StoreProvider with ChangeNotifier{
       );
     }
 
-    print(_bigMenuList.toString());
-
     _bigMenuList.forEach((bm) {
       List<Map<String, String>> menuMapList = [];
 
@@ -180,9 +172,6 @@ class StoreProvider with ChangeNotifier{
       });
     });
 
-    print(menuData.toString());
-    print("bak_menu Okay");
-
     return true;
   }
 
@@ -193,8 +182,6 @@ class StoreProvider with ChangeNotifier{
 
     int cnt = 0;
     String response = await service.getStore(start, end);
-    print("=================");
-    print(response);
     Map<String, dynamic> mapJson = jsonDecode(response);
     if(isResponse(mapJson)){
       for(var storeList in mapJson['data']["list"]){
@@ -280,8 +267,6 @@ class StoreProvider with ChangeNotifier{
         }));
 
     // markers.removeWhere((element) => element.markerId === "selMarker")
-
-    print(markers.toString());
     notifyListeners();
   }
 
@@ -295,15 +280,11 @@ class StoreProvider with ChangeNotifier{
   }
 
   Future<bool> postStore() async {
-    print("post");
-
-    print(formData.fields.toString());
     bool isReturn = await service.postStore(formData);
     return isReturn;
   }
 
   Future<bool> patchStore(Map<String, String> data, String bn_uri, String shop1_uri, String shop2_uri, String shop3_uri) async {
-    print("patch");
     bool isReturn = await service.patchStore(data, bn_uri, shop1_uri, shop2_uri, shop3_uri);
     return isReturn;
   }
@@ -356,8 +337,6 @@ class StoreProvider with ChangeNotifier{
     menuList.clear();
 
     final response = await service_2.fetchMenu(store_id);
-
-    print(response);
 
     dynamic _bigMenuList = json.decode(response)['data']['list'];
 

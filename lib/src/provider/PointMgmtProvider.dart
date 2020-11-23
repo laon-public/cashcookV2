@@ -166,7 +166,6 @@ class PointMgmtProvider with ChangeNotifier {
               "description": history['description']
             });
           } else {
-            print("여기겠지");
             obj["history"].add({
               "title": pfmModel.type == "DILLING" ? numberFormat.format(double.parse(pfmModel.amount)) + " DL"
                   : numberFormat.format(double.parse(pfmModel.amount)) + " 원",
@@ -293,7 +292,6 @@ class PointMgmtProvider with ChangeNotifier {
               "description": history['description']
             });
           } else {
-            print("여기겠지");
             obj["history"].add({
               "title" : (pomModel.type == "DILLING") ?
               numberFormat.format(double.parse(pomModel.amount)) + " DL"

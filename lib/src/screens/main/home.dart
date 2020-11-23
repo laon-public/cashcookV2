@@ -98,6 +98,30 @@ class _Home extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      if(this.lat == null && this.lon == null){
+        var currentLocation =  await location.getLocation();
+
+        String start = (currentLocation.latitude + 0.04).toString() +
+            "," +
+            (currentLocation.longitude + 0.04).toString();
+        String end = (currentLocation.latitude - 0.04).toString() +
+            "," +
+            (currentLocation.longitude - 0.04).toString();
+
+        await P.Provider.of<StoreServiceProvider>(context, listen: false).getStore(start, end);
+      } else {
+        String start = (this.lat + 0.04).toString() +
+            "," +
+            (this.lon + 0.04).toString();
+        String end = (this.lat - 0.04).toString() +
+            "," +
+            (this.lon - 0.04).toString();
+
+        await P.Provider.of<StoreServiceProvider>(context, listen: false)
+            .getStore(start, end);
+      }
+    });
     return
       WillPopScope(
       onWillPop: _onBackPressed,
@@ -157,29 +181,6 @@ class _Home extends State<Home> {
   }
 
   Widget main() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      if(this.lat == null && this.lon == null){
-        var currentLocation =  await location.getLocation();
-
-        String start = (currentLocation.latitude + 0.04).toString() +
-            "," +
-            (currentLocation.longitude + 0.04).toString();
-        String end = (currentLocation.latitude - 0.04).toString() +
-            "," +
-            (currentLocation.longitude - 0.04).toString();
-
-        await P.Provider.of<StoreServiceProvider>(context, listen: false).getStore(start, end);
-      } else {
-        String start = (this.lat + 0.04).toString() +
-            "," +
-            (this.lon + 0.04).toString();
-        String end = (this.lat - 0.04).toString() +
-            "," +
-            (this.lon - 0.04).toString();
-
-        await P.Provider.of<StoreServiceProvider>(context, listen: false).getStore(start, end);
-      }
-    });
     return SingleChildScrollView(
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -488,7 +489,6 @@ class _Home extends State<Home> {
                   child:
                   Column(
                     children: ssp.store.map((e) {
-                      print(e.toString());
                       return storeItem(e, context);
                     }).toList() ,
                   ),

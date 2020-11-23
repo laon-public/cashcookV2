@@ -46,7 +46,6 @@ class PlaceProvider with ChangeNotifier {
     final response = await service.getStoreSearch(query, start, end);
     Map<String,dynamic> storeJson = jsonDecode(response);
 
-    print(response);
     for (var store in storeJson['data']['list']) {
       placeList.add(StoreMinify.fromJson(store));
     }

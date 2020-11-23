@@ -229,7 +229,6 @@ class History extends StatelessWidget {
   Widget historyList() {
     return Consumer<UserProvider>(
       builder: (context, users, _) {
-        print("여기임");
         print(users.result);
         return ListView.builder(
           controller: _scrollController,
