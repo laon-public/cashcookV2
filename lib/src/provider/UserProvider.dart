@@ -305,7 +305,6 @@ class UserProvider with ChangeNotifier {
             });
           }
         } catch (e) {
-          print("ㅋㅋ 에러났네");
           print(e.toString());
         }
       }

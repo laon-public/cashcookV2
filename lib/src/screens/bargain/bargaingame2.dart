@@ -1,8 +1,10 @@
 
 import 'dart:math';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
+import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
+import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
@@ -13,8 +15,8 @@ import 'dart:core';
 // 선결제로 진행한 실시간 흥정 게임
 class BargainGame2 extends StatefulWidget {
   int orderId;
-  final dynamic orderPayment;
-  final dynamic totalCarat;
+  final int orderPayment;
+  int totalCarat;
 
   BargainGame2({this.orderId=0, this.orderPayment, this.totalCarat});
 
@@ -23,29 +25,16 @@ class BargainGame2 extends StatefulWidget {
 }
 
 class _BargainGame2 extends State<BargainGame2> {
-  dynamic orderPayment;
-  dynamic totalCarat;
-
   static final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   UnityWidgetController _unityWidgetController;
-  var price;
-  var discount;
-  var dl;
-  var carat;
-
-  var list = ['10','20','30','40','50','60','70','80','90','100'];
-  final random = new Random();
-  var randomDiscount;
-  var randomPercentage;
-
-  double percentage;
+  int dl;
+  int carat;
 
   List<int> values = List.generate(10, (index) => index);
   bool gameLoad = false;
   bool isQuit = false;
   bool isReplay = false;
   bool isShow = true;
-
 
   @override
   void dispose() {
@@ -55,14 +44,13 @@ class _BargainGame2 extends State<BargainGame2> {
 
   @override
   void initState() {
+    super.initState();
     print("BargainGame initState");
-    orderPayment = widget.orderPayment;
-    totalCarat = widget.totalCarat;
-    print("orderPayment $orderPayment");
-    print("total_carat $totalCarat");
+    print("orderPayment ${widget.orderPayment}");
+    print("total_carat ${widget.totalCarat}");
     DefaultCacheManager().emptyCache();
     _unityWidgetController = null;
-    super.initState();
+    gameLoad = false;
   }
 
   @override
@@ -93,9 +81,9 @@ class _BargainGame2 extends State<BargainGame2> {
         if(res) {
           // 다시하기 할때마다 캐럿값의 최신화
           print("replay carat : $carat");
-          print("replay totalCarat : $totalCarat");
-          totalCarat = totalCarat - carat;
-          print("replay2 totalCarat : $totalCarat");
+          print("replay totalCarat : ${widget.totalCarat}");
+          widget.totalCarat = widget.totalCarat - carat;
+          print("replay2 totalCarat : ${widget.totalCarat}");
           setSendMessage();
         } else {
           _unityWidgetController.pause();
@@ -132,7 +120,7 @@ class _BargainGame2 extends State<BargainGame2> {
                 children: [
                   Positioned.fill(
                     child: Container(
-                    color: Colors.yellow,
+                    color: black,
                     child: UnityWidget(
                       onUnityViewCreated: onUnityCreated,
                       onUnityMessage: onUnityMessage,
@@ -141,33 +129,52 @@ class _BargainGame2 extends State<BargainGame2> {
                     ),
                   ),
                   ),
-                  // Positioned.fill(
-                  //   child: Opacity(
-                  //     opacity: 0.7,
-                  //     child: Container(
-                  //       color: Colors.black,
-                  //     ),
-                  //   )
-                  // ),
-                  // Center(
-                  //           child: Container(
-                  //               width: MediaQuery.of(context).size.width * 3/4,
-                  //               height: MediaQuery.of(context).size.height * 2/4,
-                  //               child: Center(
-                  //                   child: CircularProgressIndicator(
-                  //                       backgroundColor: mainColor,
-                  //                       valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
-                  //                   )
-                  //               ),
-                  //             decoration: BoxDecoration(
-                  //                 color: Colors.white,
-                  //               borderRadius: BorderRadius.all(
-                  //                 Radius.circular(20.0)
-                  //               )
-                  //             ),
-                  //
+                  // (!gameLoad) ? Positioned.fill(
+                  //     child: Opacity(
+                  //       opacity: 0.7,
+                  //       child: Container(
+                  //           width: MediaQuery.of(context).size.width,
+                  //           height: MediaQuery.of(context).size.height,
+                  //           color: black
+                  //       ),
                   //     )
-                  // )
+                  // ) : Container(),
+                  // (!gameLoad) ? Center(
+                  //   child: Container(
+                  //       width: MediaQuery.of(context).size.width * 3/4,
+                  //       height: MediaQuery.of(context).size.height * 2/4,
+                  //       decoration: BoxDecoration(
+                  //         borderRadius: BorderRadius.all(
+                  //           Radius.circular(20.0)
+                  //         ),
+                  //         color: white,
+                  //       ),
+                  //       child: Center(
+                  //         child: Column(
+                  //           mainAxisAlignment: MainAxisAlignment.center,
+                  //           crossAxisAlignment: CrossAxisAlignment.center,
+                  //           children: [
+                  //             Image.asset(
+                  //               "assets/icon/study_payment.png",
+                  //               width: 100,
+                  //               height: 100,
+                  //               fit: BoxFit.fill,
+                  //             ),
+                  //             whiteSpaceH(16.0),
+                  //             Text("게임이 켜지는 중 입니다.\n"
+                  //                 "잠시만 기다려주세요.",
+                  //                 style: TextStyle(
+                  //                   fontSize: 14,
+                  //                   fontFamily: 'noto',
+                  //                   color: Color(0xFF333333),
+                  //                 ),
+                  //               textAlign: TextAlign.center,
+                  //             )
+                  //           ],
+                  //         )
+                  //       ),
+                  //   ),
+                  // ) : Container()
                 ],
               )
             )
@@ -191,9 +198,9 @@ class _BargainGame2 extends State<BargainGame2> {
     this._unityWidgetController = null;
   }
 
-  void setSendMessage() {
-    final _random = new Random();
-
+  void setSendMessage() async {
+    final Random random = new Random();
+    List<String> list = ['10','20','30','40','50','60','70','80','90','100'];
     Map<String, int> percentageMap = {
       "10" : 1,
       "20" : 1,
@@ -208,27 +215,27 @@ class _BargainGame2 extends State<BargainGame2> {
     };
     String selRandom;
     do {
-      selRandom = this.list[_random.nextInt(list.length)];
+      selRandom = list[random.nextInt(list.length)];
 
       print("계산 값 : $selRandom");
       percentageMap[selRandom]--;
     } while(percentageMap[selRandom] != 0);
-    var randomDiscount = selRandom;
+    String randomDiscount = selRandom;
     print("randomDiscount : $randomDiscount");
-    var randomPercentage = int.parse(randomDiscount).toDouble() * 0.01;
+    double randomPercentage = int.parse(randomDiscount).toDouble() * 0.01;
     print("randomPercentage : $randomPercentage");
 
     dl = double.parse((widget.orderPayment * randomPercentage / 100).toString()).round();
     // rp = (widget.orderPayment / 100000).ceil() * 1000;
-    discount = demicalFormat.format(randomPercentage * 100);
+    // discount = demicalFormat.format(randomPercentage * 100);
 
     print("orderPayment : ${widget.orderPayment}");
-    print("discount : $discount");
+    print("discount : $randomDiscount");
     print("dl : $dl");
     print("carat : $carat");
-    print("total_carat : $totalCarat");
+    print("total_carat : ${widget.totalCarat}");
 
-    String message = widget.orderPayment.toString() + "/" + discount.toString() + "/" + dl.toString() + "/" + carat.toString() + "/" + totalCarat.toString();
+    String message = widget.orderPayment.toString() + "/" + randomDiscount.toString() + "/" + dl.toString() + "/" + carat.toString() + "/" + widget.totalCarat.toString();
     _unityWidgetController.postMessage(
         'Main',
         'SetUserInfo_Pay',

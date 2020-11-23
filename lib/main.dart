@@ -55,7 +55,7 @@ class CashCook extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => AuthProvider(),
-        )
+        ),
       ],
       child: MaterialApp(
         title: 'Cash Cook',

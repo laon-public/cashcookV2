@@ -25,7 +25,7 @@ class _BargainGame extends State<BargainGame> {
 
   static final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   UnityWidgetController _unityWidgetController;
-  var price;
+  int price;
   var discount;
   var dl;
   var carat;

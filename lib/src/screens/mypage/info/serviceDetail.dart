@@ -311,6 +311,9 @@ class _ServiceDetail extends State<ServiceDetail> {
                     ),
                     Spacer(),
                     Text(widget.ol.playGame ?
+                        widget.ol.pay == widget.ol.dl * 100 ?
+                            "DL 결제는 실시간 흥정이 제공되지 않습니다."
+                            :
                         "${numberFormat.format(widget.ol.gameQuantity)}DL 적립"
                         :
                         "아직 게임을 진행하지 않았습니다.",
