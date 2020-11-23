@@ -7,7 +7,6 @@ import 'package:cashcook/src/screens/main/storeDetail.dart';
 import 'package:cashcook/src/screens/main/storeDetail_2.dart';
 import 'package:cashcook/src/screens/main/storeDetail_3.dart';
 import 'package:cashcook/src/utils/colors.dart';
-import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -253,20 +252,21 @@ Widget storeItem(StoreModel store, BuildContext context) {
       // );
       await Provider.of<CarouselProvider>(context, listen:false).changePage(1);
       await Provider.of<StoreProvider>(context, listen: false).setAppbar(false);
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => StoreDetail2(
-            store: store,
-          )
-        )
-      );
+      await Provider.of<StoreServiceProvider>(context, listen: false).setScroll(false);
       // Navigator.of(context).push(
       //   MaterialPageRoute(
-      //     builder: (context) => StoreDetail3(
-      //       store:store
+      //     builder: (context) => StoreDetail2(
+      //       store: store,
       //     )
       //   )
       // );
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => StoreDetail3(
+            store:store
+          )
+        )
+      );
     },
     child: Container(
       width: MediaQuery.of(context).size.width,

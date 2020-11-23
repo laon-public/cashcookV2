@@ -11,6 +11,7 @@ import 'package:circular_check_box/circular_check_box.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:sticky_headers/sticky_headers.dart';
 
 Widget menuForm(BuildContext context) {
   int bigIdx = 0;
@@ -18,7 +19,8 @@ Widget menuForm(BuildContext context) {
       builder: (context, ss, __) {
         return
           Container(
-            
+              transform: Matrix4.translationValues(0.0, -40.0, 0.0),
+              margin: EdgeInsets.only(bottom: 10.0),
               width: MediaQuery.of(context).size.width,
               child:
               Column(
@@ -26,7 +28,6 @@ Widget menuForm(BuildContext context) {
                   ss.menuList.map((e) =>
                       BigMenuItem(bigIdx++,e, context)
                   ).toList()
-
               )
           );
       }
@@ -41,38 +42,43 @@ Widget BigMenuItem(int bigIdx,BigMenuModel bmm, BuildContext context){
       Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children:[
-            Padding(
-              padding: EdgeInsets.only(left: 25.0, top: 10.0, bottom: 10.0),
-              child:Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(bmm.name,
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'noto',
-                          color: Color(0xFF444444),
-                          fontWeight: FontWeight.w600
+            Consumer<StoreServiceProvider>(
+              builder: (context, ssp, _){
+                return StickyHeaderBuilder(
+                  builder: (BuildContext context, double stuckAmount) {
+                    stuckAmount = 1.0 - stuckAmount.clamp(0.0, 1.0);
+                    return Container(
+                      margin: EdgeInsets.only(top: 45),
+                      padding: EdgeInsets.only(top: 10, bottom: 10, left: 20.0),
+                      child:
+                      Text(bmm.name,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'noto',
+                            color: Color(0xFF444444),
+                            fontWeight: FontWeight.w600
+                        ),
+                        textAlign: TextAlign.start,
                       ),
-                      textAlign: TextAlign.start,
-                    ),
-                  ]
-              ),
-            ),
-            Padding(
-                padding: EdgeInsets.only(right: 20.0,bottom: 10.0),
-                child:Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children:
-                    bmm.menuList.map((e) =>
-                        MenuItem(bigIdx,idx++,e, context)
-                    ).toList()
-                )
-            ),
-            Container(
-                width: MediaQuery.of(context).size.width,
-                height:  1,
-                color: Color(0xFFEEEEEE)
-            ),
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: Color.lerp(white, Color(0xFFF2F2F2), stuckAmount),
+                      ),
+                    );
+                  },
+                  content: Padding(
+                      padding: EdgeInsets.only(right: 20.0),
+                      child:Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children:
+                          bmm.menuList.map((e) =>
+                              MenuItem(bigIdx,idx++,e, context)
+                          ).toList()
+                      )
+                  ),
+                );
+              },
+            )
           ]
       )
   );

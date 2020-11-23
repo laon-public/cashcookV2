@@ -1,12 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cashcook/src/model/store.dart';
+import 'package:cashcook/src/model/store/menu.dart';
 import 'package:cashcook/src/provider/CarouselProvider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
+import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/qr/qr.dart';
+import 'package:cashcook/src/screens/storemanagement/orderMenu.dart';
 import 'package:cashcook/src/utils/Share.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/StoreServiceItem.dart';
+import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -37,15 +41,6 @@ class _StoreDetail3 extends State<StoreDetail3> {
       } else {
         Provider.of<StoreProvider>(context, listen: false).setAppbar(false);
       }
-
-      // 걸리는 ServiceMenu Logic
-      if(scrollController.offset > 485.0) {
-        Provider.of<StoreServiceProvider>(context, listen: false).setServiceBar(true);
-      } else {
-        Provider.of<StoreServiceProvider>(context, listen: false).setServiceBar(false);
-      }
-
-      print(scrollController.offset);
     });
   }
 
@@ -56,21 +51,14 @@ class _StoreDetail3 extends State<StoreDetail3> {
         Consumer<StoreProvider>(
           builder: (context, sp, _){
             return Scaffold (
-
                 backgroundColor: white,
                 appBar: (sp.lookAppbar) ? AppBar(
-
-
                   elevation: 0.0,
                   titleSpacing: 0.0,
                   automaticallyImplyLeading: false,
                   title: Container(
                     padding: EdgeInsets.symmetric(horizontal: 16.0),
-                    margin: EdgeInsets.only(
-                        top: MediaQuery.of(context).padding.top
-                    ),
                     width: MediaQuery.of(context).size.width,
-                    height: 55,
                     child: Stack(
                       children: [
                         Container(
@@ -78,7 +66,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                             height: 55,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 InkWell(
                                     onTap: () {
@@ -133,7 +121,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                               height: 55,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(widget.store.store.name,
                                       style: TextStyle(
@@ -687,7 +675,6 @@ class _StoreDetail3 extends State<StoreDetail3> {
                             Consumer<StoreServiceProvider>(
                                 builder: (context, ss, _){
                                   return StickyHeader(
-
                                     header: Container(
                                         width: MediaQuery.of(context).size.width,
                                         color: white,
@@ -783,7 +770,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                                 color: mainColor,
                                                               ),
                                                             ),
-                                                            duration: Duration(milliseconds: 450),
+                                                            duration: Duration(milliseconds: 350),
                                                           );
                                                         },
                                                       )
@@ -802,6 +789,10 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                       otherForm(context, widget.store)
                                           :
                                       reviewForm(context, widget.store),
+                                      constraints: BoxConstraints(
+                                        minHeight: MediaQuery.of(context).size.height,
+                                        minWidth: MediaQuery.of(context).size.width,
+                                      ),
                                     ),
                                   );
                                 }
@@ -814,8 +805,77 @@ class _StoreDetail3 extends State<StoreDetail3> {
                 )
             );
           },
-        )
+        ),
+        Consumer<StoreServiceProvider>(
+          builder: (context, ss, _){
+            return (ss.serviceNum == 0) ?
+            Positioned(
+                bottom: 0,
+                child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    color: white,
+                    width: MediaQuery.of(context).size.width,
+                    height: 60,
+                    child:
+                    RaisedButton(
+                        color: mainColor,
+                        onPressed: () async {
+                          List<BigMenuModel> bigMenus = [];
+                          int orderPay = 0;
 
+                          ss.menuList.forEach((menu) {
+                            List<MenuModel> menus = menu.menuList.where((m) => m.isCheck).toList();
+
+                            if(menus != null && menus.length != 0) {
+                              menus.forEach((m) {
+                                m.count = 1;
+                                orderPay += m.price;
+                              });
+                              bigMenus.add(BigMenuModel(
+                                  id: menu.id,
+                                  name: menu.name,
+                                  menuList: menus
+                              ));
+                            }
+                          });
+
+                          if(bigMenus.length != 0) {
+                            await ss.setOrderMenu(bigMenus,orderPay);
+
+                            Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        OrderMenu(
+                                          name: Provider
+                                              .of<UserProvider>(
+                                              context,
+                                              listen: false)
+                                              .loginUser
+                                              .name,
+                                          store_id: widget.store.id.toString(),
+                                          store: widget.store,
+                                        )
+                                )
+                            );
+                          } else {
+                            showToast("메뉴를 한가지 이상 선택해주세요.");
+                          }
+                        },
+                        elevation: 0.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.0),
+                        ),
+                        child: Text(
+                            "주문하기",
+                            style: TextStyle(
+                                color: Colors.white
+                            )
+                        )
+                    )
+                )
+            ) : Container();
+          },
+        ),
       ],
     );
   }
