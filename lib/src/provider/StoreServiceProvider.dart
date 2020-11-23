@@ -35,6 +35,8 @@ class StoreServiceProvider with ChangeNotifier {
   TextEditingController dlCtrl = TextEditingController();
   int pay = 0;
   BankInfo bankInfo;
+  bool isScroll = true;
+  int lookIdx = -1;
 
   // reviewService
   List<ReviewModel> reviewList = [];
@@ -52,6 +54,20 @@ class StoreServiceProvider with ChangeNotifier {
   List<StoreMinify> storeMiniList = [];
   List<StoreModel> searchStore = [];
   int count = 0;
+
+  void setLookIdx(int idx) {
+    lookIdx = idx;
+
+    notifyListeners();
+  }
+
+  void setScroll(bool value) {
+    isScroll = value;
+
+    print("isScroll ===> $isScroll");
+
+    notifyListeners();
+  }
 
   void setBankInfo(String cardName, String cardNumber) {
       bankInfo = BankInfo(
