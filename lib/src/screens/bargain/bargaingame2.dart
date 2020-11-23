@@ -99,6 +99,7 @@ class _BargainGame2 extends State<BargainGame2> {
           print("replay2 totalCarat : $totalCarat");
           setSendMessage();
         } else {
+          _unityWidgetController.pause();
           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
             isHome: true,
             afterGame : true,
@@ -226,9 +227,9 @@ class _BargainGame2 extends State<BargainGame2> {
           isQuit = true;
         });
       }
-
-
-    } else{ // 한번더하기
+    } else if(message.toString() == "Recharge") { // 캐럿 부족
+      print("캐럿 부족");
+    } else { // 한번더하기
       print("한번더");
       if(this.mounted) {
         setState(() {
