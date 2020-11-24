@@ -19,7 +19,7 @@ Widget menuForm(BuildContext context) {
       builder: (context, ss, __) {
         return
           Container(
-              transform: Matrix4.translationValues(0.0, -40.0, 0.0),
+              transform: Matrix4.translationValues(0.0, -85.0, 0.0),
               margin: EdgeInsets.only(bottom: 10.0),
               width: MediaQuery.of(context).size.width,
               child:
@@ -48,7 +48,7 @@ Widget BigMenuItem(int bigIdx,BigMenuModel bmm, BuildContext context){
                   builder: (BuildContext context, double stuckAmount) {
                     stuckAmount = 1.0 - stuckAmount.clamp(0.0, 1.0);
                     return Container(
-                      margin: EdgeInsets.only(top: 45),
+                      margin: EdgeInsets.only(top: 85),
                       padding: EdgeInsets.only(top: 10, bottom: 10, left: 20.0),
                       child:
                       Text(bmm.name,
@@ -62,7 +62,7 @@ Widget BigMenuItem(int bigIdx,BigMenuModel bmm, BuildContext context){
                       ),
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                        color: Color.lerp(white, Color(0xFFF2F2F2), stuckAmount),
+                        color: Color.lerp(white, Color(0xFFF7F7F7), stuckAmount),
                       ),
                     );
                   },

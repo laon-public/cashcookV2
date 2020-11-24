@@ -17,6 +17,8 @@ class CenterProvider with ChangeNotifier{
   List<InquiryModel> inquiry = [];
   String phoneVersion = "";
   String appVersion = "";
+  String hojoFunds = "";
+  int limitGamePercentage = 0;
   Pageing pageing = null;
 
   bool isLoading = false;
@@ -117,5 +119,29 @@ class CenterProvider with ChangeNotifier{
     print(phoneVersion);
 
     stopLoading();
+  }
+
+  Future<void> getFunds(int orderPayment) async {
+    final response = await service.getFunds();
+
+    print(response);
+    hojoFunds = json.decode(response)['data']['policy']['value'];
+
+    print("HOJOFunds Is $hojoFunds");
+
+    for(int per=10; per<=100;per += 10){
+      int getDl = ((orderPayment * per / 100) / 100).round();
+      int getDiscount = getDl * 100;
+
+      print("Percentage 당 얻는 dl 수 ==> $getDl");
+      print("Percentage 당 얻는 할인양 ==> $getDiscount");
+      if(getDiscount > int.parse(hojoFunds)){
+        limitGamePercentage = per-10;
+        break;
+      }
+    }
+
+    print("게임 Percentage 한도 ==> $limitGamePercentage");
+    notifyListeners();
   }
 }
