@@ -150,11 +150,17 @@ class _Home extends State<Home> {
                       padding: EdgeInsets.all(15.0),
                       child: Row(
                         children: [
+                          Image.asset(
+                            "assets/icon/my_place.png",
+                            width: 16,
+                            height: 16
+                          ),
+                          whiteSpaceW(4),
                           Text(this.filterAddress,
                             style: TextStyle(
                               fontSize: 13,
                               fontFamily: 'noto',
-                              color: Color(0xFF333333)
+                              color: Color(0xFF666666)
                             ),
                             textAlign: TextAlign.end,
                           ),
@@ -441,7 +447,7 @@ class _Home extends State<Home> {
                         Text("우리 동네 맛집",
                           style: TextStyle(
                               fontFamily: 'noto',
-                              fontSize: 14,
+                              fontSize: 15,
                               color: black,
                               fontWeight: FontWeight.w600),),
                         InkWell(
@@ -453,12 +459,18 @@ class _Home extends State<Home> {
                           },
                           child: Row(
                             children: [
-                              Text("지도로 보기"),
-                              whiteSpaceW(4.0),
                               Image.asset(
                                 "assets/resource/main/go-map.png",
                                 width: 24,
                                 height: 24,
+                              ),
+                              whiteSpaceW(4.0),
+                              Text("지도로 보기",
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontFamily: 'noto',
+                                  color: Color(0xFF666666)
+                                )
                               ),
                             ],
                           ),
@@ -624,7 +636,13 @@ class _Home extends State<Home> {
                           Container(
                             width: MediaQuery.of(context).size.width,
                             height: 40,
-                            child:ListView.builder(
+                            child: ssp.isLoading ?
+                            LinearProgressIndicator(
+                              backgroundColor: Colors.transparent,
+                              valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFFF7F7F7)),
+                            )
+                                :
+                            ListView.builder(
                                 itemBuilder: (context, idx) {
                                   return InkWell(
                                     onTap: () async {
