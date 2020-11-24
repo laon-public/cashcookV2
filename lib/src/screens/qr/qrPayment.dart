@@ -1,15 +1,14 @@
-import 'package:cashcook/src/model/payment.dart';
 import 'package:cashcook/src/provider/QRProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/bargain/bargaingame2.dart';
 import 'package:cashcook/src/screens/mypage/info/serviceList.dart';
 import 'package:cashcook/src/utils/colors.dart';
-import 'package:cashcook/src/widgets/dialog.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 
 class QrPayment extends StatefulWidget {
   final String storeName;
@@ -29,12 +28,7 @@ class _QrPayment extends State<QrPayment> {
     AppBar appBar = AppBar(
           centerTitle: true,
           title: Text("${widget.storeName} 결제",
-              style: TextStyle(
-                  fontSize: 14,
-                  fontFamily: 'noto',
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF333333)
-              )
+              style: appBarDefaultText
           ),
           leading: IconButton(
             onPressed: () {

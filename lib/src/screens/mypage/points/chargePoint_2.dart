@@ -7,6 +7,7 @@ import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 
 class ChargePoint2 extends StatefulWidget {
   final String pointType;
@@ -51,12 +52,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("포인트 충전",
-          style: TextStyle(
-            color: Color(0xFF444444),
-            fontSize: 14,
-            fontFamily: 'noto',
-            fontWeight: FontWeight.w600
-          )
+          style: appBarDefaultText
         ),
         centerTitle: true,
         elevation: 1.0,

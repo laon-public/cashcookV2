@@ -3,6 +3,7 @@ import 'package:cashcook/src/provider/CenterProvider.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 
 class Notice extends StatelessWidget {
   ScrollController _scrollController = ScrollController();
@@ -32,11 +33,7 @@ class Notice extends StatelessWidget {
       backgroundColor: white,
       appBar: AppBar(
         title: Text("공지사항",
-        style: TextStyle(
-        color: Color(0xFF333333),
-    fontSize: 14,
-    fontFamily: 'noto',
-    fontWeight: FontWeight.w600)),
+        style: appBarDefaultText,),
         centerTitle: true,
         elevation: 1.0,
       ),

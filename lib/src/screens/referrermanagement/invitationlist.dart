@@ -1,26 +1,13 @@
-import 'dart:io';
-import 'dart:math';
-
 import 'package:cashcook/src/model/phone.dart';
-import 'package:cashcook/src/model/reco.dart';
 import 'package:cashcook/src/provider/PhoneProvider.dart';
-import 'package:cashcook/src/screens/referrermanagement/invitation.dart';
-//import 'package:cashcook/src/provider/ContactProvider.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
-import 'package:share/share.dart';
-import 'package:cashcook/src/utils/colors.dart';
-import 'package:contacts_service/contacts_service.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:cashcook/src/provider/RecoProvider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:provider/provider.dart';
-import 'package:cashcook/src/services/Reco.dart';
-import 'package:cashcook/src/provider/RecoProvider.dart';
 
 class InvitationList extends StatefulWidget {
   @override
@@ -44,11 +31,7 @@ class _InvitationList extends State<InvitationList> {
         backgroundColor: white,
         title: Text(
           "추천회원 초대하기",
-          style: TextStyle(
-              color: black,
-              fontSize: 14,
-              fontFamily: 'noto',
-              fontWeight: FontWeight.w600),
+          style: appBarDefaultText,
         ),
         elevation: 1.5,
         leading: IconButton(

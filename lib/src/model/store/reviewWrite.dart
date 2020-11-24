@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 
 class ReviewWrite extends StatefulWidget {
   final int store_id;
@@ -36,12 +37,7 @@ class _ReviewWrite extends State<ReviewWrite> {
       backgroundColor: white,
       appBar: AppBar(
         title: Text("리뷰 작성",
-          style: TextStyle(
-            color: Color(0xFF333333),
-            fontSize: 14,
-            fontFamily: 'noto',
-            fontWeight: FontWeight.w600
-          ),
+          style: appBarDefaultText,
         ),
         elevation: 0.5,
         centerTitle: true,

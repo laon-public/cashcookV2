@@ -6,6 +6,7 @@ import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 
 class Inquiry extends StatefulWidget {
   @override
@@ -48,11 +49,8 @@ class _Inquiry extends State<Inquiry> {
       backgroundColor: white,
       appBar: AppBar(
         title: Text("서비스 문의",
-        style: TextStyle(
-        color: Color(0xFF333333),
-    fontSize: 14,
-    fontFamily: 'noto',
-    fontWeight: FontWeight.w600)),
+        style: appBarDefaultText
+        ),
         centerTitle: true,
         elevation: 1.0,
         actions: [

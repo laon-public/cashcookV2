@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 
 class ServiceList extends StatefulWidget {
   bool isHome;
@@ -52,12 +53,7 @@ class _ServiceList extends State<ServiceList> {
               centerTitle: true,
               title: Text(
                 "서비스 이용내역",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'noto',
-                    color: Color(0xFF333333),
-                    fontWeight: FontWeight.w600
-                ),
+                style: appBarDefaultText,
               ),
               leading: widget.afterGame ? IconButton(
                 onPressed: () {

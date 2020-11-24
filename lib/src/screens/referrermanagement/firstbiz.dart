@@ -1,17 +1,13 @@
-import 'dart:math';
-
 import 'package:cashcook/src/screens/main/home.dart';
-import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/screens/referrermanagement/firstBizSelect.dart';
 import 'package:cashcook/src/utils/colors.dart';
-import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 
 import '../../provider/UserProvider.dart';
 import '../../widgets/showToast.dart';
-import '../../widgets/whitespace.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'firstrecommendation.dart';
 import 'package:cashcook/src/screens/mypage/store/store.dart';
 
@@ -39,11 +35,7 @@ class _FirstBiz extends State<FirstBiz> {
           centerTitle: true,
           title: Text(
             "회원등급 선택",
-            style: TextStyle(
-                color: black,
-                fontFamily: 'noto',
-                fontSize: 14,
-                fontWeight: FontWeight.w600),
+            style: appBarDefaultText,
           ),
           automaticallyImplyLeading: false,
         ),

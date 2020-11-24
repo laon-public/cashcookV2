@@ -3,16 +3,12 @@ import 'dart:io';
 import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
-import 'package:cashcook/src/screens/main/mainmap.dart';
-import 'package:cashcook/src/screens/storemanagement/storemanagement.dart';
 import 'package:cashcook/src/utils/colors.dart';
-import 'package:cashcook/src/widgets/TextFieldWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:cashcook/src/widgets/TextFieldsWidget.dart';
-import 'package:cashcook/src/widgets/TextFieldssWidget.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 
 
 class ModifyBusiness extends StatefulWidget {
@@ -74,11 +70,7 @@ class _ModifyBusiness extends State<ModifyBusiness> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("사업자정보 수정",
-          style: TextStyle(
-            color: Color(0xFF444444),
-            fontSize: 14,
-            fontFamily: 'noto'
-          )),
+          style: appBarDefaultText),
         centerTitle: true,
         elevation: 0.5,
       ),

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:cashcook/src/model/usercheck.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
-import 'package:cashcook/src/screens/login/login.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/services/API.dart';
 import 'package:cashcook/src/utils/colors.dart';
@@ -11,6 +10,7 @@ import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart' as P;
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 
 
 class MyUpdate extends StatefulWidget {
@@ -63,7 +63,9 @@ class _MyUpdate extends State<MyUpdate> {
           },
           icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24,),
         ),
-        title: Text("회원정보 수정"),
+        title: Text("회원정보 수정",
+          style: appBarDefaultText
+        ),
         centerTitle: true,
         elevation: 0.0,
       ),

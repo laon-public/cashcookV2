@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:cashcook/src/utils/FromAsset.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/utils/geocoder.dart';
-import 'package:flutter/foundation.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -111,12 +111,8 @@ class _FindAddressState extends State<FindAddress> {
     args = ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     return Scaffold(
       appBar: AppBar(
-        title: Text("주소찾기", style: TextStyle(
-          color: black,
-          fontSize: 14,
-          fontFamily: 'noto',
-          fontWeight: FontWeight.w600
-        )),
+        title: Text("주소찾기",
+            style: appBarDefaultText),
         centerTitle: true,
         elevation: 0.5,
       ),

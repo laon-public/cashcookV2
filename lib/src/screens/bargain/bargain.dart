@@ -7,7 +7,6 @@ import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:cashcook/src/utils/slot/roll_slot.dart';
 import 'package:cashcook/src/utils/slot/roll_slot_controller.dart';

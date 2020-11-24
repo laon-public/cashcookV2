@@ -2,6 +2,7 @@ import 'package:cashcook/src/model/usercheck.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 
 class UserState extends StatefulWidget{
   @override
@@ -26,7 +27,9 @@ class _UserState extends State<UserState> {
             },
             icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24,),
           ),
-          title: Text("회원정보 수정"),
+          title: Text("회원정보 수정",
+            style: appBarDefaultText
+          ),
           centerTitle: true,
           elevation: 0.0,
         ),

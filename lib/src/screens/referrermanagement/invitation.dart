@@ -2,6 +2,7 @@ import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:cashcook/src/screens/referrermanagement/invitationlist.dart';
 import 'package:flutter/material.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 
 class Invitation extends StatefulWidget {
   @override
@@ -17,11 +18,7 @@ class _Invitation extends State {
         backgroundColor: white,
         title: Text(
           "추천회원 초대하기",
-          style: TextStyle(
-              color: black,
-              fontSize: 14,
-              fontFamily: 'noto',
-              fontWeight: FontWeight.w600),
+          style: appBarDefaultText,
         ),
         centerTitle: true,
         elevation: 2.0,

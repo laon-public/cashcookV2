@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cashcook/src/model/account.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
-//import 'package:cashcook/src/provider/provider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/screens/dl/dlsell.dart';
 import 'package:cashcook/src/screens/qr/qrcreate.dart';
 import 'package:cashcook/src/utils/colors.dart';
@@ -64,11 +64,7 @@ class _StoreManagement extends State<StoreManagement> {
         centerTitle: true,
         title: Text(
           "나의 매장관리",
-          style: TextStyle(
-              fontSize: 14,
-              fontFamily: 'noto',
-              color: black,
-              fontWeight: FontWeight.w600),
+          style: appBarDefaultText,
         ),
       ),
       backgroundColor: white,

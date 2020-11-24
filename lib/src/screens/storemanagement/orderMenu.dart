@@ -13,6 +13,7 @@ import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 
 class OrderMenu extends StatefulWidget {
   final String name;
@@ -52,12 +53,7 @@ class _OrderMenu extends State<OrderMenu> {
             backgroundColor: Colors.white,
             centerTitle: true,
             title: Text("주문서",
-                style: TextStyle(
-                  fontSize: 14,
-                  fontFamily: 'noto',
-                  color: Color(0xFF444444),
-                  fontWeight: FontWeight.w600,
-                )
+                style: appBarDefaultText
             )
         ),
         backgroundColor: Colors.white,

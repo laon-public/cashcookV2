@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cashcook/src/model/category.dart';
 import 'package:cashcook/src/model/log/orderLog.dart';
 import 'package:cashcook/src/model/store/reviewWrite.dart';
 import 'package:cashcook/src/screens/bargain/bargaingame2.dart';
@@ -12,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:provider/provider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 
 class ServiceDetail extends StatefulWidget {
   OrderLog ol;
@@ -33,12 +33,7 @@ class _ServiceDetail extends State<ServiceDetail> {
         elevation: 0.5,
         title: Text(
           "${widget.ol.storeName} 이용내역",
-          style: TextStyle(
-            fontFamily: 'noto',
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF333333)
-          )
+          style: appBarDefaultText,
         ),
         centerTitle: true,
       ),

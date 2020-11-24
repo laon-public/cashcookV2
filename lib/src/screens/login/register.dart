@@ -4,6 +4,7 @@ import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -18,12 +19,7 @@ class _Register extends State<Register> {
       appBar: AppBar(
         centerTitle: true,
         title: Text("회원가입",
-          style: TextStyle(
-            fontSize: 14,
-            fontFamily: 'noto',
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF333333)
-          )
+          style: appBarDefaultText
         ),
         leading: IconButton(
           onPressed: () {

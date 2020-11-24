@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 
 class SearchPage extends StatefulWidget {
   bool isHome;
@@ -25,7 +26,7 @@ class _SearchPage extends State<SearchPage> {
   TextEditingController queryCtrl = TextEditingController();
 
   Timer _debounce;
-  int _debouncetime = 800;
+  int _debouncetime = 700;
 
   PlaceDetail placeDetail;
 
@@ -48,7 +49,6 @@ class _SearchPage extends State<SearchPage> {
   _onSearchChanged() {
     if(_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(Duration(milliseconds: _debouncetime), () {
-      print("끝남");
       if(queryCtrl.text != "") {
         print("검색어 있움");
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
@@ -185,6 +185,10 @@ class _SearchPage extends State<SearchPage> {
               height: 24,
             ),
           ),
+          title: Text("검색",
+            style: appBarDefaultText,
+          ),
+          centerTitle: true,
         ),
         body: body(context),
     );

@@ -1,18 +1,10 @@
-
-import 'dart:math';
-
 import 'package:cashcook/src/provider/QRProvider.dart';
-import 'package:cashcook/src/screens/bargain/bargainresult.dart';
-import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/screens/mypage/info/serviceList.dart';
-import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
-import 'package:cashcook/src/screens/mypage/points/pointMgmtUser.dart';
-import 'package:cashcook/src/screens/qr/qr.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 // QR코드로 진행한 실시간 흥정 게임

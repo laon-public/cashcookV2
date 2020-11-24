@@ -7,6 +7,7 @@ import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 
 class DlSell extends StatefulWidget {
   @override
@@ -53,11 +54,7 @@ class _DlSell extends State<DlSell> {
         ),
         title: Text(
           "DL 판매하기",
-          style: TextStyle(
-              fontFamily: 'noto',
-              fontSize: 14,
-              color: black,
-              fontWeight: FontWeight.w600),
+          style: appBarDefaultText,
         ),
       ),
       resizeToAvoidBottomInset: true,

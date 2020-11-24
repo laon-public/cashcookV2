@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:cashcook/src/screens/bargain/bargaingame2.dart';
 import 'package:cashcook/src/screens/mypage/info/serviceList.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 
 class Buy extends StatefulWidget {
 
@@ -80,9 +81,9 @@ class _Buy extends State<Buy> {
         ),
         centerTitle: true,
         elevation: 1.0,
-        title: Text("결제하기", style: TextStyle(
-          fontSize: 14, fontFamily: 'noto', fontWeight: FontWeight.w600, color: black
-        ),),
+        title: Text("결제하기",
+            style: appBarDefaultText
+        ),
       ),
       initialChild: Container(
         width: MediaQuery.of(context).size.width,

@@ -6,6 +6,7 @@ import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 
 class History extends StatelessWidget {
   String point;
@@ -55,11 +56,7 @@ class History extends StatelessWidget {
       appBar: AppBar(
         // title: Text("${point == "DL" ? "DL" : point} 적립 / 사용 내역",
         title: Text("${point == "DL" ? "DL" : point == "CARAT" ? "CARAT" : "CP"} 적립 / 사용 내역",
-          style: TextStyle(
-            fontSize: 14,
-            fontFamily: 'noto',
-            fontWeight: FontWeight.w600
-          )),
+          style: appBarDefaultText),
         centerTitle: true,
         elevation: 1,
       ),

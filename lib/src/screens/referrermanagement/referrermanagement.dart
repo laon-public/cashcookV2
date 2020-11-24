@@ -1,13 +1,12 @@
-import 'package:cashcook/src/model/referrer/referrer.dart';
 import 'package:cashcook/src/provider/RecoProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/referrermanagement/invitation.dart';
-import 'package:cashcook/src/screens/referrermanagement/recommendation.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 
 class ReferrerManagement extends StatefulWidget {
   @override
@@ -71,11 +70,7 @@ class _ReferrerManagement extends State {
         elevation: 1,
         title: Text(
           "추천인 관리",
-          style: TextStyle(
-              color: black,
-              fontSize: 14,
-              fontFamily: 'noto',
-              fontWeight: FontWeight.w600),
+          style: appBarDefaultText,
         ),
       ),
       body: SingleChildScrollView(

@@ -1,24 +1,13 @@
-import 'dart:convert';
-
-import 'package:cashcook/src/model/usercheck.dart';
-import 'package:cashcook/src/provider/RecoProvider.dart';
-import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/screens/mypage/store/storeApply.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
-import 'package:cashcook/src/model/recomemberlist.dart';
-import 'dart:math';
 
 import '../../provider/UserProvider.dart';
-import '../../provider/UserProvider.dart';
-import '../../provider/UserProvider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import '../../widgets/showToast.dart';
-import 'firstrecommendation.dart';
 
 class FranBizSelect extends StatefulWidget {
   @override
@@ -45,11 +34,7 @@ class _FranBizSelect extends State<FranBizSelect> {
         centerTitle: true,
         title: Text(
           "총판 입력",
-          style: TextStyle(
-              color: black,
-              fontFamily: 'noto',
-              fontSize: 14,
-              fontWeight: FontWeight.w600),
+          style: appBarDefaultText,
         ),
         automaticallyImplyLeading: false,
       ),

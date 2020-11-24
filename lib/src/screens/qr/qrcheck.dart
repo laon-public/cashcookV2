@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cashcook/src/model/usercheck.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
@@ -56,11 +56,7 @@ class _QrCheck extends State<QrCheck> {
           elevation: 0,
           title: Text(
             "QR 확인",
-            style: TextStyle(
-                fontFamily: 'noto',
-                fontSize: 14,
-                color: black,
-                fontWeight: FontWeight.w600),
+            style: appBarDefaultText,
           ),
           centerTitle: true,
           leading: IconButton(

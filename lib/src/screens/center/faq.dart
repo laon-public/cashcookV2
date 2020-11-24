@@ -4,6 +4,7 @@ import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 
 class Faq extends StatelessWidget {
   ScrollController _scrollController = ScrollController();
@@ -32,12 +33,7 @@ class Faq extends StatelessWidget {
       backgroundColor: white,
       appBar: AppBar(
         title: Text("FAQ",
-          style: TextStyle(
-            color: Color(0xFF333333),
-            fontSize: 14,
-            fontFamily: 'noto',
-            fontWeight: FontWeight.w600
-          ),
+          style: appBarDefaultText,
         ),
         centerTitle: true,
         elevation: 1.0,

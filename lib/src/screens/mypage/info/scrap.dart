@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 
 class Scrap extends StatefulWidget {
   bool isHome;
@@ -24,12 +25,7 @@ class _Scrap extends State<Scrap> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("찜한매장",
-            style: TextStyle(
-              fontSize: 14,
-              fontFamily: 'noto',
-              color: black,
-              fontWeight: FontWeight.w600
-            )),
+            style: appBarDefaultText),
         leading: widget.isHome ? null : IconButton(
           onPressed: () {
             Navigator.of(context).pop();

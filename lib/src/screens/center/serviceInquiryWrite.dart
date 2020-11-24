@@ -17,7 +17,6 @@ class InquiryWrite extends StatelessWidget {
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: Text(""),
         centerTitle: true,
         elevation: 0.0,
         actions: [

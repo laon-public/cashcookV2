@@ -6,6 +6,7 @@ import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 
 class limitDL extends StatefulWidget {
   @override
@@ -16,12 +17,7 @@ class _limitDLState extends State<limitDL> {
   AppBar appBarWidget = AppBar(
     centerTitle: true,
     title: Text("DL 결제 한도 설정",
-        style: TextStyle(
-            color: Color(0xFF333333),
-            fontSize: 14,
-            fontFamily: 'noto',
-            fontWeight: FontWeight.w600
-        )
+        style: appBarDefaultText
     ),
   );
 

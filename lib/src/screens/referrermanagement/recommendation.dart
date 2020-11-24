@@ -1,13 +1,8 @@
-import 'dart:convert';
-
-import 'package:cashcook/src/provider/RecoProvider.dart';
-import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 
 class Recommendation extends StatefulWidget {
   @override
@@ -32,11 +27,7 @@ class _Recommendation extends State<Recommendation> {
         centerTitle: true,
         title: Text(
           "추천인 등록하기",
-          style: TextStyle(
-              color: black,
-              fontFamily: 'noto',
-              fontSize: 16,
-              fontWeight: FontWeight.w600),
+          style: appBarDefaultText,
         ),
         leading: IconButton(
           onPressed: () {

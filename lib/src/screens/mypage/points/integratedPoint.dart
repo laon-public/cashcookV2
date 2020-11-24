@@ -1,11 +1,10 @@
-import 'package:cashcook/src/model/point.dart';
 import 'package:cashcook/src/provider/PointMgmtProvider.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 
 class IntegratedPoint extends StatefulWidget {
   @override
@@ -38,12 +37,7 @@ class _IntegratedPoint extends State<IntegratedPoint> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text("$username 활동현황",
-        style: TextStyle(
-          color: white,
-          fontSize: 14,
-          fontFamily: 'noto',
-          fontWeight: FontWeight.w600
-        )),
+        style: appBarDefaultText),
         centerTitle: true,
         elevation: 0.0,
         backgroundColor: mainColor,

@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:kakao_flutter_sdk/all.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:provider/provider.dart';
 
 
@@ -106,11 +106,7 @@ class _ModifyStoreState extends State<ModifyStore> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("매장정보 수정",
-          style: TextStyle(
-            color: Color(0xFF444444),
-            fontSize: 14,
-            fontFamily: 'noto'
-          )
+          style: appBarDefaultText
         ),
         centerTitle: true,
         elevation: 0.0,

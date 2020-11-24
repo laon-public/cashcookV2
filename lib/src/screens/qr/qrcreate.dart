@@ -1,11 +1,9 @@
 import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/provider/QRProvider.dart';
-import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/qr/qrcheck.dart';
 import 'package:cashcook/src/utils/colors.dart';
-import 'package:cashcook/src/widgets/TextFieldWidget.dart';
-import 'package:cashcook/src/widgets/showToast.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -46,11 +44,7 @@ class _QrCreate extends State<QrCreate> {
         ),
         title: Text(
           "현장 결제",
-          style: TextStyle(
-              fontFamily: 'noto',
-              fontSize: 14,
-              color: black,
-              fontWeight: FontWeight.w600),
+          style: appBarDefaultText,
         ),
       ),
       body: SingleChildScrollView(
