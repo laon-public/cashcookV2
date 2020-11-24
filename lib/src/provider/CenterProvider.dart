@@ -129,7 +129,8 @@ class CenterProvider with ChangeNotifier{
 
     print("HOJOFunds Is $hojoFunds");
 
-    for(int per=10; per<=100;per += 10){
+    int per;
+    for(per=10; per<=100;per += 10){
       int getDl = ((orderPayment * per / 100) / 100).round();
       int getDiscount = getDl * 100;
 
@@ -139,6 +140,10 @@ class CenterProvider with ChangeNotifier{
         limitGamePercentage = per-10;
         break;
       }
+    }
+
+    if(per == 110) {
+      limitGamePercentage = per-10;
     }
 
     print("게임 Percentage 한도 ==> $limitGamePercentage");

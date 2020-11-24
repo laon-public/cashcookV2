@@ -236,8 +236,9 @@ class _BargainGame2 extends State<BargainGame2> {
     final Random random = new Random();
     List<String> list = [];
     int limitPercentage = Provider.of<CenterProvider>(context, listen: false).limitGamePercentage;
+    print("limitPercentage : $limitPercentage");
     Map<String, int> percentageMap = {};
-    for(int per=10; per<100; per += 10){
+    for(int per=10; per<=100; per += 10){
       if(per <= limitPercentage) {
         percentageMap.addAll({
           "$per": (((per - 1) / 30).floor()) + 1
@@ -247,7 +248,7 @@ class _BargainGame2 extends State<BargainGame2> {
         break;
       }
     }
-
+    print("percentageMap.toString");
     print(percentageMap.toString());
 
     String selRandom;
