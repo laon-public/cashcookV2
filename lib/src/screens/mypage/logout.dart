@@ -30,8 +30,11 @@ class _Logout extends State<Logout>{
     print("initState");
     flutterWebviewPlugin.onUrlChanged.listen((String s) async {
       print("flutterWebviewPlugin.onUrlChanged");
-      webViewController.clearCache();
-      webViewController.loadUrl(baseUrl + "users/logout");
+
+      if(webViewController != null) {
+        webViewController.clearCache();
+        webViewController.loadUrl(baseUrl + "users/logout");
+      }
 //        await provider.authToken().then((value) async {
 //            dynamic authToken = null;
 //            dataStorage.token = authToken['access_token'];

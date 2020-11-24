@@ -89,13 +89,16 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
 
                           await Provider.of<StoreProvider>(context, listen: false).clearSuccess();
 
-                          if(Provider.of<UserProvider>(context, listen: false).loginUser.userGrade == "NORMAL") {
-                            Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context) => FranBizSelect()));
-                          } else {
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(builder: (context) => StoreApplyState()), (route) => false);
-                          }
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(builder: (context) => StoreApplyState()), (route) => false);
+
+                          // if(Provider.of<UserProvider>(context, listen: false).loginUser.userGrade == "NORMAL") {
+                          //   Navigator.of(context).push(
+                          //       MaterialPageRoute(builder: (context) => FranBizSelect()));
+                          // } else {
+                          //   Navigator.of(context).pushAndRemoveUntil(
+                          //       MaterialPageRoute(builder: (context) => StoreApplyState()), (route) => false);
+                          // }
 
                         },
                         child: Text("완료",

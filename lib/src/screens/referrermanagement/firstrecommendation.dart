@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/model/recomemberlist.dart';
 import 'dart:math';
+import 'package:cashcook/src/screens/mypage/store/store.dart';
 
 class FirstRecommendation extends StatefulWidget {
   final String type;
@@ -239,9 +240,9 @@ class _FirstRecommendation extends State<FirstRecommendation> {
     if (userProviders.recomemberList.length > 2 && _selectedValue == '선택해주세요.') {
       Fluttertoast.showToast(msg: "추천회원을 선택해 주세요.");
     } else {
-      if(widget.type != null && widget.type == "AGENCY"){
-        await Provider.of<UserProvider>(context, listen: false).insertDis();
-      }
+      // if(widget.type != null && widget.type == "AGENCY"){
+      //   await Provider.of<UserProvider>(context, listen: false).insertDis();
+      // }
       String response = await Provider.of<UserProvider>(context, listen: false).recomemberinsert(selectedmember, widget.type); // 나를 추천한 사람을 선택 후 저장
 
       if(response == "true"){
@@ -250,8 +251,16 @@ class _FirstRecommendation extends State<FirstRecommendation> {
         Fluttertoast.showToast(msg: response);
       }
 
-     Navigator.of(context).pushAndRemoveUntil(
-         MaterialPageRoute(builder: (context) => Home()), (route) => false);
+
+
+      if(widget.type == "AGENCY"){
+        Navigator.of(context)
+            .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => StoreApplyFirstStep()), (route) => false);
+      } else {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => Home()), (route) => false);
+      }
+
     }
   }
 

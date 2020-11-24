@@ -13,6 +13,7 @@ import '../../provider/UserProvider.dart';
 import '../../widgets/showToast.dart';
 import '../../widgets/whitespace.dart';
 import 'firstrecommendation.dart';
+import 'package:cashcook/src/screens/mypage/store/store.dart';
 
 class FirstBiz extends StatefulWidget {
   @override
@@ -98,7 +99,7 @@ class _FirstBiz extends State<FirstBiz> {
                         }
                         );
                       },
-                      child: whiteBox("일반","assets/icon/maru.png"),
+                      child: whiteBox("일반"),
                     )
                 ),
                 Container(
@@ -111,27 +112,19 @@ class _FirstBiz extends State<FirstBiz> {
                           showToast("추천자가 없습니다."),
                           await Provider.of<UserProvider>(context, listen: false).withoutRecoDis(),
 
+                          // Navigator.of(context)
+                          //     .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Home()), (route) => false),
                           Navigator.of(context)
-                              .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Home()), (route) => false),
+                                .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => StoreApplyFirstStep()), (route) => false),
                         } else {
                           Navigator.of(context)
-                              .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => FirstRecommendation(type:"DISTRIBUTOR")), (route) => false),
+                              .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => FirstRecommendation(type:"AGENCY")), (route) => false),
                         }
                       }
                       );
                     },
-                    child: whiteBox("총판","assets/resource/public/payment.png"),
+                    child: whiteBox("제휴업체"),
                   ),
-                ),
-                Container(
-                    height: 88,
-                    child:InkWell(
-                      onTap: () async {
-                        Navigator.of(context)
-                            .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => FirstBizSelect()), (route) => false);
-                      },
-                      child: whiteBox("대리점","assets/icon/cookie.png"),
-                    )
                 ),
               ]
           ),
@@ -140,24 +133,13 @@ class _FirstBiz extends State<FirstBiz> {
     );
   }
 
-  Widget whiteBox(text, imagePath) {
+  Widget whiteBox(text) {
     return Container(
       margin: EdgeInsets.only(bottom: 12.0),
           width: MediaQuery.of(context).size.width,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Container(
-                width: 84,
-                height: 84,
-                margin: EdgeInsets.only(top: 4.0, left: 4.0, bottom: 4.0, right: 12.0),
-                child: Image.asset(
-                  imagePath,
-                  width: 80,
-                  height: 80,
-                  fit: BoxFit.contain,
-                ),
-              ),
               Text(
                 text,
                 style: TextStyle(
