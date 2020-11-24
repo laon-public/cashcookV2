@@ -3,7 +3,6 @@ import 'package:cashcook/src/screens/main/search.dart';
 import 'package:cashcook/src/screens/mypage/info/scrap.dart';
 import 'package:cashcook/src/screens/mypage/info/serviceList.dart';
 import 'package:cashcook/src/screens/mypage/mypage.dart';
-import 'package:cashcook/src/screens/mypage/points/pointMgmtUser.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/utils/pageMoving.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
@@ -22,9 +21,11 @@ Widget CustomBottomNavBar(BuildContext context, String pageName) {
             Expanded(
               child: InkWell(
                 onTap: () {
-                  replaceSlideMove(Scrap(
-                    isHome: true,
-                  ), context, 1);
+                  if(pageName != "scrap") {
+                    replaceSlideMove(Scrap(
+                      isHome: true,
+                    ), context, 1);
+                  }
                 },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -51,7 +52,9 @@ Widget CustomBottomNavBar(BuildContext context, String pageName) {
             Expanded(
               child: InkWell(
                 onTap: () {
-                  pushSlideMove(SearchPage(), context, 1);
+                  if(pageName != "search") {
+                    pushSlideMove(SearchPage(), context, 1);
+                  }
                 },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -91,7 +94,9 @@ Widget CustomBottomNavBar(BuildContext context, String pageName) {
                 ),
                 child: InkWell(
                   onTap: () {
-                    replaceSlideMove(Home(), context, 1);
+                    if(pageName != "home") {
+                      replaceSlideMove(Home(), context, 1);
+                    }
                   },
                   child: Stack(
                     children: [
@@ -120,9 +125,11 @@ Widget CustomBottomNavBar(BuildContext context, String pageName) {
             Expanded(
               child: InkWell(
                 onTap: () {
-                  replaceSlideMove(ServiceList(
-                    isHome: true,
-                  ), context, 1);
+                  if(pageName != "pointmgmt") {
+                    replaceSlideMove(ServiceList(
+                      isHome: true,
+                    ), context, 1);
+                  }
                 },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -149,9 +156,11 @@ Widget CustomBottomNavBar(BuildContext context, String pageName) {
             Expanded(
               child: InkWell(
                 onTap: () {
-                  replaceSlideMove(MyPage(
-                    isHome: true,
-                  ), context, 1);
+                  if(pageName != "mypage") {
+                    replaceSlideMove(MyPage(
+                      isHome: true,
+                    ), context, 1);
+                  }
                 },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

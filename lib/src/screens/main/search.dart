@@ -26,7 +26,7 @@ class _SearchPage extends State<SearchPage> {
   TextEditingController queryCtrl = TextEditingController();
 
   Timer _debounce;
-  int _debouncetime = 700;
+  int _debouncetime = 750;
 
   PlaceDetail placeDetail;
 

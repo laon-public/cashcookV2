@@ -4,6 +4,7 @@ import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cashcook/src/utils/colors.dart';
 
 class SearchDetail extends StatefulWidget {
   final String filter;
@@ -50,6 +51,13 @@ class _SearchDetail extends State<SearchDetail> {
                                 width: 24,
                                 height: 24,
                               ),
+                            ),
+                            whiteSpaceW(8),
+                            Image.asset(
+                              "assets/resource/main/search_blue.png",
+                              width: 24,
+                              height: 24,
+                              color: mainColor,
                             ),
                             whiteSpaceW(8),
                             Text(

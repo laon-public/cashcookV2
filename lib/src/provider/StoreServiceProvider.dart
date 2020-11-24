@@ -358,7 +358,7 @@ class StoreServiceProvider with ChangeNotifier {
   void fetchSubCategory(String code,String start, String end) async {
     subCatList.clear();
     searchStore.clear();
-    notifyListeners();
+    startLoading();
 
     var response = await service.fetchSubCategory(code);
 
@@ -382,7 +382,7 @@ class StoreServiceProvider with ChangeNotifier {
     selectSubCat = subCatList[0].code_name;
     selectSubCat_code = subCatList[0].code;
 
-    notifyListeners();
+    stopLoading();
   }
 
   void fetchNewCategory(String code_name) async {
@@ -575,7 +575,10 @@ class StoreServiceProvider with ChangeNotifier {
 
     print(response);
     for (var store in storeJson['data']['list']) {
-        searchStore.add(StoreModel.fromJson(store));
+      StoreModel tmp = StoreModel.fromJson(store);
+      if(searchStore.where((element) => element.id == tmp.id).toList().length == 0) {
+        searchStore.add(tmp);
+      }
     }
 
     stopLoading();
