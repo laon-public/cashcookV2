@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:cashcook/src/utils/datastorage.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 
 import 'API.dart';
 import 'package:http/http.dart';
@@ -54,6 +53,14 @@ class CenterService{
        headers: {
          "Authorization": "BEARER ${dataStorage.token}"
        });
+   return utf8.decode(response.bodyBytes);
+ }
+
+ Future<String> getFunds() async {
+   final response = await client.get(cookURL+"/policy/funds",
+      headers:  {
+        "Authorization": "BEARER ${dataStorage.token}"
+      });
    return utf8.decode(response.bodyBytes);
  }
 }

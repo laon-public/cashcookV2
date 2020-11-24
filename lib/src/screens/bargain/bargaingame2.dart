@@ -1,5 +1,6 @@
 
 import 'dart:math';
+import 'package:cashcook/src/provider/CenterProvider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
@@ -93,10 +94,13 @@ class _BargainGame2 extends State<BargainGame2> {
           )), (route) => false);
         }
 
+        await Provider.of<CenterProvider>(context, listen: false).getFunds(widget.orderPayment);
+
         return;
       }
 
       if(gameLoad) {
+        await Provider.of<CenterProvider>(context, listen: false).getFunds(widget.orderPayment);
         print("gameLoad Start");
         setSendMessage();
         return;
@@ -128,6 +132,38 @@ class _BargainGame2 extends State<BargainGame2> {
                       safeMode: true,
                     ),
                   ),
+                  ),
+                  Consumer<CenterProvider>(
+                    builder: (context, cp, _){
+                      return Positioned(
+                        top: 0,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Center(
+                            child: Container(
+                              padding: EdgeInsets.all(16.0),
+                              child: Text(
+                                "오늘의 재원 ${cp.hojoFunds}원\n"
+                                    "재원한도 퍼센트 ${cp.limitGamePercentage}%",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontFamily: 'noto',
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xFF333333)
+                                ),
+                              ),
+                              decoration: BoxDecoration(
+                                  color: white,
+                                  borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(20.0),
+                                    bottomRight: Radius.circular(20.0),
+                                  )
+                              ),
+                            ),
+                          )
+                        ),
+                      );
+                    },
                   ),
                   // (!gameLoad) ? Positioned.fill(
                   //     child: Opacity(
@@ -200,19 +236,22 @@ class _BargainGame2 extends State<BargainGame2> {
 
   void setSendMessage() async {
     final Random random = new Random();
-    List<String> list = ['10','20','30','40','50','60','70','80','90','100'];
-    Map<String, int> percentageMap = {
-      "10" : 1,
-      "20" : 1,
-      "30" : 1,
-      "40" : 2,
-      "50" : 2,
-      "60" : 2,
-      "70" : 3,
-      "80" : 3,
-      "90" : 3,
-      "100" : 4,
-    };
+    List<String> list = [];
+    int limitPercentage = Provider.of<CenterProvider>(context, listen: false).limitGamePercentage;
+    Map<String, int> percentageMap = {};
+    for(int per=10; per<100; per += 10){
+      if(per <= limitPercentage) {
+        percentageMap.addAll({
+          "$per": (((per - 1) / 30).floor()) + 1
+        });
+        list.add("$per");
+      } else {
+        break;
+      }
+    }
+
+    print(percentageMap.toString());
+
     String selRandom;
     do {
       selRandom = list[random.nextInt(list.length)];
