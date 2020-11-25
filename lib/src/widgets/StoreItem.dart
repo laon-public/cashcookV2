@@ -311,7 +311,7 @@ Widget storeItem(StoreModel store, BuildContext context) {
                     Image.asset("assets/icon/star_full_color.png",
                       width: 12,
                       height: 12,
-                      color: mainColor
+                      color: primary
                     ),
                     whiteSpaceW(2.0),
                     Text(
@@ -323,7 +323,7 @@ Widget storeItem(StoreModel store, BuildContext context) {
                     ),
                     Text(
                       "DL ",
-                      style: Caption.apply(color: mainColor),
+                      style: Caption.apply(color: primary, fontWeightDelta: 1),
                     ),
                     Text(
                       (store.store.limitDL == null) ? " 결제한도가 없습니다." : "${store.store.limitDL}%",

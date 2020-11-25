@@ -129,8 +129,8 @@ class _QrCheck extends State<QrCheck> {
                   },
                   elevation: 0.0,
                   child: Center(
-                    child: Text('완료', style: TextStyle(
-                      color: white, fontSize: 14, fontFamily: 'noto'
+                    child: Text('완료', style: Body1.apply(
+                      color: white,
                     ),),
                   ),
                 ),

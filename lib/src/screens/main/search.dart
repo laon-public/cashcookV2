@@ -72,7 +72,6 @@ class _SearchPage extends State<SearchPage> {
   Widget body(BuildContext context) {
     return SingleChildScrollView(
         child:  Container(
-          padding: EdgeInsets.only(left: 15.0, right: 15.0),
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           child:
@@ -149,17 +148,20 @@ class _SearchPage extends State<SearchPage> {
                         )
                     )
                     :
-                            Column(
-                              children:
+                        Container(
+                          padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                          child: Column(
+                            children:
                             pp.searchStore.length == 0 ?
-                              [
-                                Text("검색어를 입력해주세요.")
-                              ]
+                            [
+                              Text("검색어를 입력해주세요.")
+                            ]
                                 :
-                              pp.searchStore.map((e) =>
+                            pp.searchStore.map((e) =>
                                 PlaceItem(e)
-                              ).toList(),
-                            );
+                            ).toList(),
+                          ),
+                        );
                 },
               ),
             ],
@@ -228,11 +230,8 @@ class _SearchPage extends State<SearchPage> {
                     child: Text(
                         place.store.name,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            color: Color(0xFF333333),
-                            fontSize: 14,
-                            fontFamily: 'noto',
-                            fontWeight: FontWeight.w500
+                        style: Body1.apply(
+                          fontWeightDelta: -1
                         )
                     ),
                   ),

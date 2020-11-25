@@ -1,5 +1,6 @@
 import 'package:cashcook/src/provider/CenterProvider.dart';
 import 'package:cashcook/src/screens/main/home.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
@@ -71,11 +72,9 @@ class _AppConfirm extends State<AppConfirm> {
                 child: Text(
                     "Copyright ⓒ 2020 CashCook Inc. All Rights Reserved.",
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontFamily: 'noto',
-                        fontSize: 11,
-                        color: white,
-                        fontWeight: FontWeight.w400
+                    style: Caption.apply(
+                      color: white,
+                      fontWeightDelta: -1
                     )
                 ),
               ),

@@ -55,12 +55,7 @@ class _ReviewWrite extends State<ReviewWrite> {
                     whiteSpaceH(15),
                     Text(
                       "평가 및 리뷰",
-                      style: TextStyle(
-                          color: Color(0xFF333333),
-                          fontFamily: 'noto',
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14
-                      ),
+                      style: Body1,
                     ),
                     whiteSpaceH(15.0),
                     Row(
@@ -79,11 +74,7 @@ class _ReviewWrite extends State<ReviewWrite> {
                           whiteSpaceW(5.0),
                           Text(
                               "리뷰내용",
-                              style: TextStyle(
-                                color: Color(0xFF999999),
-                                fontSize: 12,
-                                fontFamily: 'noto',
-                              )
+                              style: Body2
                           )
                         ]
                     ),
@@ -92,11 +83,7 @@ class _ReviewWrite extends State<ReviewWrite> {
                       autofocus: false,
                       maxLines: 6,
                       controller: contentsController,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: 'noto',
-                      ),
+                      style: Subtitle2.apply(fontWeightDelta: -1),
                       decoration: InputDecoration(
                           hintText: '리뷰를 적어주세요!',
                           border: OutlineInputBorder(
@@ -131,10 +118,9 @@ class _ReviewWrite extends State<ReviewWrite> {
                               showToast("리뷰를 등록했습니다.");
                             },
                             child: Text("완료",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: 'noto',
+                                style: Body1.apply(
                                   color: white,
+                                  fontWeightDelta: -1
                                 ))
                         )
                     )

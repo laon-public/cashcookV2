@@ -1,4 +1,5 @@
 import 'package:cashcook/src/provider/CenterProvider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,12 @@ class InquiryWrite extends StatelessWidget {
                         .inputInquiry(titleCtrl.text, contentCtrl.text, context);
                   }
                 },
-                child: Text("보내기",style: TextStyle(fontSize: 14, color: primary,decoration: TextDecoration.underline),),
+                child: Text("보내기",style: Body1.apply(
+                  color: primary,
+                  decoration: TextDecoration.underline,
+                  fontWeightDelta: -1
+                )
+                ),
               ),
             ),
           ),
@@ -91,7 +97,7 @@ class InquiryWrite extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(top:5.0),
-            child: Align(child: Text("제목",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+            child: Align(child: Text("제목",style: Body2,),alignment: Alignment.centerLeft,),
           ),
           TextFormField(
             focusNode: moveOne,
@@ -122,7 +128,7 @@ class InquiryWrite extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(top:5.0),
-            child: Align(child: Text("내용",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+            child: Align(child: Text("내용",style: Body2,),alignment: Alignment.centerLeft,),
           ),
           TextFormField(
             focusNode: moveTwo,
@@ -183,11 +189,7 @@ class InquiryWrite extends StatelessWidget {
         // return object of type Dialog
         return AlertDialog(
           title: new Text("${ titleCtrl.text == "" ? "제목을 입력해 주세요." :"내용을 입력해 주세요."}",
-            style: TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.w600,
-              color: Color(0xff444444),
-            ),),
+            style: Subtitle2,),
           actions: <Widget>[
             new FlatButton(
               child: new Text("Close"),

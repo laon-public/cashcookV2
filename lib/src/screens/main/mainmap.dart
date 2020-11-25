@@ -18,6 +18,7 @@ import 'package:cashcook/src/screens/qr/qr.dart';
 import 'package:cashcook/src/screens/mypage/mypage.dart';
 import 'package:cashcook/src/services/Search.dart';
 import 'package:cashcook/src/utils/Share.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/utils/datastorage.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
@@ -146,19 +147,16 @@ class _MainMap extends State<MainMap> {
                           children: [
                             Text(
                               "내 위치에서의 거리",
-                              style: TextStyle(
-                                  color: Color(0xFF888888),
-                                  fontFamily: 'noto',
-                                  fontSize: 12),
+                              style: Body2,
                             ),
                             whiteSpaceW(8),
                             Text(
                               "${sp.distance.toStringAsFixed(1)}km",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: 'noto',
-                                  color: mainColor),
-                            )
+                              style: Body1.apply(
+                                color: primary,
+                                fontWeightDelta: -1
+                              )
+                            ),
                           ],
                         ),
                       ),
@@ -280,11 +278,7 @@ class _MainMap extends State<MainMap> {
                                                   children: <Widget>[
                                                     Text(
                                                       sp.selStore.store.name,
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.w600,
-                                                          fontSize: 14,
-                                                          color: Color(0xFF444444),
-                                                          fontFamily: 'noto'),
+                                                      style: Body1,
                                                     ),
                                                     whiteSpaceW(20),
                                                     Text(
@@ -300,10 +294,7 @@ class _MainMap extends State<MainMap> {
                                                 whiteSpaceH(5),
                                                 Text(
                                                   sp.selStore.address.address,
-                                                  style: TextStyle(
-                                                      fontFamily: 'noto',
-                                                      color: Color(0xFF888888),
-                                                      fontSize: 12),
+                                                  style: Body2,
                                                 ),
                                                 whiteSpaceH(12),
                                                 my.id.toString() == sp.selStore.user_id ?
@@ -325,11 +316,15 @@ class _MainMap extends State<MainMap> {
                                                     Image.asset("assets/icon/DL 2.png",height: 30, fit: BoxFit.contain,),
                                                     Text(
                                                       "  ${demicalFormat.format(pointMap['DL'])}",
-                                                      style: TextStyle(
-                                                          fontFamily: 'noto',
-                                                          color: black,
-                                                          fontWeight: FontWeight.bold,
-                                                          fontSize: 12),
+                                                      style: Body2.apply(
+                                                        fontWeightDelta: 1,
+                                                        color: black
+                                                      )
+                                                      // style: TextStyle(
+                                                      //     fontFamily: 'noto',
+                                                      //     color: black,
+                                                      //     fontWeight: FontWeight.bold,
+                                                      //     fontSize: 12),
                                                     )
                                                   ],
                                                 ) : Row(),
@@ -350,7 +345,7 @@ class _MainMap extends State<MainMap> {
                                                   )),);
                                           },
                                           child: Image.asset(
-                                            "assets/resource/map/qr.png",
+                                            "assets/icon/qr_scan.png",
                                             width: 24,
                                             height: 24,
                                             fit: BoxFit.contain,

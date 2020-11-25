@@ -12,6 +12,12 @@ final TextStyle appBarDefaultText = TextStyle(
   색깔 변경은
   Headline.apply(color: Colors.red)
   와 같이 추가해서 쓰면 됩니다.
+
+  FontWeight 변경은
+  w600으로 고정되어 있는 것들은
+  fontWeightDelta: -1 ( 무게 낮추기 )
+  w500으로 고정되어 있는 것들은
+  fontWeightDelta: 1 ( 무게 올리기 )
  */
 TextStyle Headline = const TextStyle(
   fontSize: 24,
@@ -40,15 +46,18 @@ TextStyle Body1 = const TextStyle(
 TextStyle Body2 = const TextStyle(
   fontSize: 12,
   fontFamily: 'noto',
+  fontWeight: FontWeight.w500,
   color : Color(0xFF999999)
 );
 TextStyle Caption = const TextStyle(
     fontSize: 11,
     fontFamily: 'noto',
+    fontWeight: FontWeight.w500,
     color: Color(0xFF999999)
 );
 TextStyle TabsTagsStyle = const TextStyle(
     fontSize: 10,
     fontFamily: 'noto',
+    fontWeight: FontWeight.w500,
     color: Color(0xFF999999)
 );

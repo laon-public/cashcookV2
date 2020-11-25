@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-final black = const Color(0xff444444);
+final black = const Color(0xff333333);
 final white = const Color(0xffffffff);
 final mainColor = const Color(0xFFFF641E);
 final subBlue = const Color(0xFFFFF9C4);

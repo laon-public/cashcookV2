@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/TextFieldWidget.dart';
 import 'package:cashcook/src/widgets/TextFieldsWidget.dart';
@@ -41,12 +42,7 @@ class _StoreApplyFirstStep extends State<StoreApplyFirstStep> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("사업자 정보",
-          style: TextStyle(
-            fontSize: 14,
-            fontFamily: 'noto',
-            color: black,
-            fontWeight: FontWeight.w600,
-          )),
+          style: appBarDefaultText),
         centerTitle: true,
         elevation: 0.0,
       ),
@@ -74,19 +70,17 @@ class _StoreApplyFirstStep extends State<StoreApplyFirstStep> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Align(child: Text("연락처",
-                    style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
+                    style: Body2,),
                     alignment: Alignment.centerLeft,),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Expanded(
                             child: textFieldss(telCtrl1, TextInputType.phone)),
-                        Text("-", style: TextStyle(
-                            fontSize: 12, color: Color(0xff888888)),),
+                        Text("-", style: Body2,),
                         Expanded(
                             child: textFields(telCtrl2, TextInputType.phone)),
-                        Text("-", style: TextStyle(
-                            fontSize: 12, color: Color(0xff888888)),),
+                        Text("-", style: Body2,),
                         Expanded(
                             child: textFields(telCtrl3, TextInputType.phone)),
                       ]
@@ -123,7 +117,7 @@ class _StoreApplyFirstStep extends State<StoreApplyFirstStep> {
           Padding(
             padding: const EdgeInsets.only(top: 5.0),
             child: Align(child: Text("계좌정보",
-              style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
+              style: Body2,),
               alignment: Alignment.centerLeft,),
           ),
           DropdownButton(
@@ -260,7 +254,7 @@ class _BusinessNumberState extends State<BusinessNumber> {
         children: [
           Padding(
             padding: const EdgeInsets.only(top:5.0,bottom: 5.0),
-            child: Align(child: Text("사업자등록증",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+            child: Align(child: Text("사업자등록증",style: Body2,),alignment: Alignment.centerLeft,),
           ),
           Container(
             height: 40,
@@ -297,7 +291,7 @@ class _BusinessNumberState extends State<BusinessNumber> {
           ),
           Padding(
             padding: const EdgeInsets.only(top:5.0),
-            child: Align(child: Text("저해상도의 경우 승인 거부의 사유가 될 수 있습니다.",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerRight,),
+            child: Align(child: Text("저해상도의 경우 승인 거부의 사유가 될 수 있습니다.",style: Body2,),alignment: Alignment.centerRight,),
           )
         ],
       ),

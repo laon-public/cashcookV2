@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/screens/login/loginVerRest.dart';
 import 'package:cashcook/src/utils/colors.dart';
-import 'package:cashcook/src/widgets/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

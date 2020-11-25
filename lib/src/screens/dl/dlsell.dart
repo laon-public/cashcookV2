@@ -78,11 +78,7 @@ class _DlSell extends State<DlSell> {
                     children: [
                       Text(
                         "보유 DL",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: black,
-                            fontSize: 20,
-                            fontFamily: 'noto'),
+                        style: Subtitle1,
                       ),
                       whiteSpaceH(4),
                       Row(
@@ -95,8 +91,7 @@ class _DlSell extends State<DlSell> {
                           whiteSpaceW(12),
                           Text(
                             "${numberFormat.format(double.parse(quantity))} DL",
-                            style: TextStyle(
-                                fontFamily: 'noto', fontSize: 12, color: black),
+                            style: Body2,
                           )
                         ],
                       )
@@ -118,10 +113,9 @@ class _DlSell extends State<DlSell> {
                 children: [
                   Text(
                     "판매수량",
-                    style: TextStyle(
-                        color: Color(0xFF888888),
-                        fontSize: 12,
-                        fontFamily: 'noto'),
+                    style: Body2.apply(
+                      color: secondary
+                    ),
                   ),
                   whiteSpaceH(4),
                   Row(
@@ -137,10 +131,9 @@ class _DlSell extends State<DlSell> {
                             textInputAction: TextInputAction.done,
                             keyboardType: TextInputType.number,
                             controller: dlController,
-                            style: TextStyle(
-                                fontFamily: 'noto',
-                                color: black,
-                                fontSize: 16),
+                            style: Subtitle2.apply(
+                              fontWeightDelta: -1
+                            ),
                             inputFormatters: <TextInputFormatter>[
                               WhitelistingTextInputFormatter.digitsOnly
                             ],
@@ -153,10 +146,9 @@ class _DlSell extends State<DlSell> {
                             decoration: InputDecoration(
                                 filled: true,
                                 suffixText: "DL",
-                                suffixStyle: TextStyle(
-                                    fontFamily: 'noto',
-                                    color: black,
-                                    fontSize: 16),
+                                suffixStyle: Subtitle2.apply(
+
+                                ),
                                 fillColor: white,
                                 enabledBorder: UnderlineInputBorder(
                                     borderRadius:
@@ -186,10 +178,7 @@ class _DlSell extends State<DlSell> {
                     width: MediaQuery.of(context).size.width,
                     child: Text(
                       "= ${numberFormat.format(dlController.text != "" ? int.parse(dlController.text) * 50 : 0 * 50)} 원\n1 DL = 50 원",
-                      style: TextStyle(
-                          color: Color(0xFF888888),
-                          fontSize: 12,
-                          fontFamily: 'noto'),
+                      style: Body2,
                       textAlign: TextAlign.end,
                     ),
                   )
@@ -208,8 +197,9 @@ class _DlSell extends State<DlSell> {
                     Text(
                       "24시간 이내로\n가입 시 입력한 계좌로 입금됩니다.",
                       textAlign: TextAlign.end,
-                      style: TextStyle(
-                          fontFamily: 'noto', fontSize: 14, color: black),
+                      style: Body1.apply(
+                        fontWeightDelta: -1
+                      ),
                     ),
                     whiteSpaceW(12),
                     Container(
@@ -235,8 +225,10 @@ class _DlSell extends State<DlSell> {
                   child: Center(
                     child: Text(
                       "판매하기",
-                      style: TextStyle(
-                          color: white, fontSize: 14, fontFamily: 'noto'),
+                      style: Body1.apply(
+                        color: white,
+                        fontWeightDelta: -1
+                      )
                     ),
                   ),
                 ),
