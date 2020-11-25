@@ -500,4 +500,15 @@ class UserProvider with ChangeNotifier {
     showToast(json['resultMsg']);
   }
 
+  Future<int> selectMyAgency() async {
+    print("UserProvider selectMyAgency");
+    final response = await service.selectMyAgency();
+    Map<String, dynamic> json = jsonDecode(response);
+    print("json 실행");
+    print(json);
+    print(isResponse(json));
+
+    return json['resultMsg']['cnt'];
+  }
+
 }

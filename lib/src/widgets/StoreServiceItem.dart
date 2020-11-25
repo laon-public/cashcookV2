@@ -91,95 +91,95 @@ Widget BigMenuItem(int bigIdx,BigMenuModel bmm, BuildContext context){
 Widget MenuItem(int bigIdx,int idx,MenuModel mm, BuildContext context) {
   StoreServiceProvider ssp = Provider.of<StoreServiceProvider>(context, listen: false);
   return Container(
-      padding: EdgeInsets.only(left: 16.0),
-      width: MediaQuery.of(context).size.width,
-      height: 80,
-      child: Row(
-          children: [
-            InkWell(
-              onTap: () {
-                ssp.setCheck(bigIdx,idx, !mm.isCheck);
-              },
-              child: Container(
-                width: 48,
-                height: 48,
-                child: Stack(
-                  children: [
-                    Center(
-                        child: Image.asset(
-                            "assets/icon/cashcook_logo.png"
+    padding: EdgeInsets.only(left: 16.0),
+    width: MediaQuery.of(context).size.width,
+    height: 80,
+    child: Row(
+        children: [
+          InkWell(
+            onTap: () {
+              ssp.setCheck(bigIdx,idx, !mm.isCheck);
+            },
+            child: Container(
+              width: 48,
+              height: 48,
+              child: Stack(
+                children: [
+                  Center(
+                    child: Image.asset(
+                        "assets/icon/cashcook_logo.png"
+                    ),
+                  ),
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Container(
+                      transform: Matrix4.translationValues(2.0, -2.0, 0.0),
+                      width:12,
+                      height: 12,
+                      child: Transform.scale(scale: 0.6,
+                        child: CircularCheckBox(
+                          value: mm.isCheck,
+                          activeColor: Color(0xFFFF0000),
+                          inactiveColor: Color(0xFFDDDDDD),
+                          onChanged: (value) {
+                            ssp.setCheck(bigIdx,idx, value);
+                          },
                         ),
                       ),
-                    Positioned(
-                      top: 0,
-                      right: 0,
-                      child: Container(
-                        transform: Matrix4.translationValues(2.0, -2.0, 0.0),
-                        width:12,
-                        height: 12,
-                        child: Transform.scale(scale: 0.6,
-                          child: CircularCheckBox(
-                            value: mm.isCheck,
-                            activeColor: Color(0xFFFF0000),
-                            inactiveColor: Color(0xFFDDDDDD),
-                            onChanged: (value) {
-                              ssp.setCheck(bigIdx,idx, value);
-                            },
-                          ),
-                        ),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color(0xFFDDDDDD),
-                        ),
-                        // Checkbox(
-                        //   activeColor: mainColor,
-                        //   checkColor: mainColor,
-                        //   value: mm.isCheck,
-                        //   onChanged: (value) {
-                        //     ssp.setCheck(bigIdx,idx, value);
-                        //   },
-                        // ),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(0xFFDDDDDD),
                       ),
-                    )
-                  ],
-                ),
-                decoration: BoxDecoration(
+                      // Checkbox(
+                      //   activeColor: mainColor,
+                      //   checkColor: mainColor,
+                      //   value: mm.isCheck,
+                      //   onChanged: (value) {
+                      //     ssp.setCheck(bigIdx,idx, value);
+                      //   },
+                      // ),
+                    ),
+                  )
+                ],
+              ),
+              decoration: BoxDecoration(
                   border: Border.all(
-                    color: Color(0xFFDDDDDD),
-                    width: 1
+                      color: Color(0xFFDDDDDD),
+                      width: 1
                   ),
                   borderRadius: BorderRadius.all(
-                    Radius.circular(12.0)
-                  )
-                ),
-              ),
-            ),
-            whiteSpaceW(16.0),
-            Expanded(
-              child: Text("${mm.name}",
-                  maxLines: 1,
-                  softWrap: false,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'noto',
-                      color: Color(0xFF333333)
+                      Radius.circular(12.0)
                   )
               ),
             ),
-            Text("${numberFormat.format(mm.price)} 원",
-              maxLines: 1,
-              softWrap: false,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  color: Color(0xFF444444),
-                  fontSize: 14,
-                  fontFamily: 'noto'
-              ),
-              textAlign: TextAlign.end,
-            )
-          ]
-      ),
+          ),
+          whiteSpaceW(16.0),
+          Expanded(
+            child: Text("${mm.name}",
+                maxLines: 1,
+                softWrap: false,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    fontSize: 14,
+                    fontFamily: 'noto',
+                    color: Color(0xFF333333)
+                )
+            ),
+          ),
+          Text("${numberFormat.format(mm.price)} 원",
+            maxLines: 1,
+            softWrap: false,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+                color: Color(0xFF444444),
+                fontSize: 14,
+                fontFamily: 'noto'
+            ),
+            textAlign: TextAlign.end,
+          )
+        ]
+    ),
   );
 }
 
@@ -198,56 +198,56 @@ Widget reviewForm(BuildContext context, StoreModel store) {
                     child:Column(
                         children: [
                           Container(
-                            height: 74,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                colors: [
-                                  mainColor,
-                                  subColor,
-                                ]
-                              )
-                            ),
+                              height: 74,
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                      colors: [
+                                        mainColor,
+                                        subColor,
+                                      ]
+                                  )
+                              ),
                               padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
                               child:
+                              Row(
+                                children: [
+                                  Text("고객평점",
+                                      style:
+                                      TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: 'noto',
+                                          color: Color(0xFF333333)
+                                      )
+                                  ),
+                                  Spacer(),
                                   Row(
-                                    children: [
-                                      Text("고객평점",
-                                        style:
-                                          TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w600,
-                                            fontFamily: 'noto',
-                                            color: Color(0xFF333333)
-                                          )
-                                      ),
-                                      Spacer(),
-                                      Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            starImage(ss.reviewAvg,1),
-                                            starImage(ss.reviewAvg,2),
-                                            starImage(ss.reviewAvg,3),
-                                            starImage(ss.reviewAvg,4),
-                                            starImage(ss.reviewAvg,5),
-                                          ]
-                                      ),
-                                      whiteSpaceW(8.0),
-                                      Text("${NumberFormat("#.#").format(ss.reviewAvg)}",
-                                          style: TextStyle(
-                                              fontFamily: 'noto',
-                                              fontSize: 13,
-                                              color: white,
-                                          )),
-                                      Text(" | 5.0",
-                                          style: TextStyle(
-                                              fontFamily: 'noto',
-                                              fontSize: 13,
-                                              color: Color(0xFFFFDD88),
-                                          )),
-                                    ],
-                                  )
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        starImage(ss.reviewAvg,1),
+                                        starImage(ss.reviewAvg,2),
+                                        starImage(ss.reviewAvg,3),
+                                        starImage(ss.reviewAvg,4),
+                                        starImage(ss.reviewAvg,5),
+                                      ]
+                                  ),
+                                  whiteSpaceW(8.0),
+                                  Text("${NumberFormat("#.#").format(ss.reviewAvg)}",
+                                      style: TextStyle(
+                                        fontFamily: 'noto',
+                                        fontSize: 13,
+                                        color: white,
+                                      )),
+                                  Text(" | 5.0",
+                                      style: TextStyle(
+                                        fontFamily: 'noto',
+                                        fontSize: 13,
+                                        color: Color(0xFFFFDD88),
+                                      )),
+                                ],
+                              )
                           ),
                           Container(
                               width: MediaQuery.of(context).size.width,
@@ -263,35 +263,35 @@ Widget reviewForm(BuildContext context, StoreModel store) {
                                   )
                               )
                           )
-                          :
+                              :
                           Container(
                               child:Column(
                                 children: [
                                   Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    padding: EdgeInsets.symmetric(horizontal: 16.0),
-                                    height: 42,
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: [
-                                        Text("리뷰  ",
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            fontFamily: 'noto',
-                                            fontWeight: FontWeight.w600,
-                                            color: Color(0xFF333333)
+                                      width: MediaQuery.of(context).size.width,
+                                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                      height: 42,
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        children: [
+                                          Text("리뷰  ",
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontFamily: 'noto',
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Color(0xFF333333)
+                                              )
+                                          ),
+                                          Text("${ss.reviewList.length} 개",
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontFamily: 'noto',
+                                                  fontWeight: FontWeight.w600,
+                                                  color: mainColor
+                                              )
                                           )
-                                        ),
-                                        Text("${ss.reviewList.length} 개",
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                fontFamily: 'noto',
-                                                fontWeight: FontWeight.w600,
-                                                color: mainColor
-                                            )
-                                        )
-                                      ],
-                                    )
+                                        ],
+                                      )
                                   ),
                                   ListView.builder(
                                     shrinkWrap: true,
@@ -491,16 +491,16 @@ Widget otherForm(BuildContext context, StoreModel store) {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 16.0),
-                  width: MediaQuery.of(context).size.width,
-                  height: 192,
-                  child:
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                    width: MediaQuery.of(context).size.width,
+                    height: 192,
+                    child:
                     Stack(
                       children: [
                         Text(
                             store.store.comment == null ? "매장 정보가 없습니다" : store.store.comment,
                             style: Body1.apply(
-                              color: secondary
+                                color: secondary
                             )
                         ),
                         Positioned(
@@ -519,14 +519,14 @@ Widget otherForm(BuildContext context, StoreModel store) {
                             },
                             blendMode: BlendMode.dstIn,
                             child: Container(
-                                color: white,
-                                width: MediaQuery.of(context).size.width,
-                                height: 40,
+                              color: white,
+                              width: MediaQuery.of(context).size.width,
+                              height: 40,
                             ),
                           ),
                         )
-                    ],
-                  )
+                      ],
+                    )
 
                 ),
               ],

@@ -32,6 +32,16 @@ class _FranBizSelect extends State<FranBizSelect> {
         backgroundColor: white,
         elevation: 0.5,
         centerTitle: true,
+        leading: IconButton(
+          icon: Image.asset(
+            "assets/resource/public/prev.png",
+            width: 24,
+            height: 24,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
         title: Text(
           "총판 입력",
           style: appBarDefaultText,

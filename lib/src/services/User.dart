@@ -152,4 +152,10 @@ class UserService {
     return utf8.decode(response.bodyBytes);
   }
 
+  Future<String> selectMyAgency() async {
+    final response = await client.get(cookURL+"/users/me/gradeReco/myAgency",
+      headers: {"Authorization": "BEARER ${dataStorage.token}","Content-Type": "application/json",},);
+    return utf8.decode(response.bodyBytes);
+  }
+
 }

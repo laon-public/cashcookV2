@@ -102,8 +102,9 @@ class _FirstBiz extends State<FirstBiz> {
                       {
                         if(value == 0){
                           showToast("추천자가 없습니다."),
-                          await Provider.of<UserProvider>(context, listen: false).withoutRecoDis(),
+                          // await Provider.of<UserProvider>(context, listen: false).withoutRecoDis(),
 
+                          await Provider.of<UserProvider>(context, listen: false).withoutReco(),
                           // Navigator.of(context)
                           //     .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Home()), (route) => false),
                           Navigator.of(context)

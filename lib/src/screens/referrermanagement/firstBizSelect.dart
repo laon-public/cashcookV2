@@ -31,165 +31,165 @@ class _FirstBizSelect extends State<FirstBizSelect> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<UserProvider>(context,listen: false).selectDis();
     });
-    
+
     return Scaffold(
-      backgroundColor: white,
-      resizeToAvoidBottomInset: true,
-      appBar: appBar = AppBar(
         backgroundColor: white,
-        elevation: 0.5,
-        centerTitle: true,
-        title: Text(
-          "총판 입력",
-          style: appBarDefaultText,
+        resizeToAvoidBottomInset: true,
+        appBar: appBar = AppBar(
+          backgroundColor: white,
+          elevation: 0.5,
+          centerTitle: true,
+          title: Text(
+            "총판 입력",
+            style: appBarDefaultText,
+          ),
+          automaticallyImplyLeading: false,
         ),
-        automaticallyImplyLeading: false,
-      ),
-      body:
+        body:
 
-      Consumer<UserProvider>(
-        builder: (context, user, _) {
-          return (user.isLoading) ?
-          Center(
-              child: CircularProgressIndicator(
-                  valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
+        Consumer<UserProvider>(
+            builder: (context, user, _) {
+              return (user.isLoading) ?
+              Center(
+                  child: CircularProgressIndicator(
+                      valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
+                  )
               )
-          )
-              :
-          SingleChildScrollView(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom - appBar.preferredSize.height,
-              child: Padding(
-                padding: EdgeInsets.only(top: 10,left: 16, right: 16, bottom: 16),
-                child:
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    whiteSpaceH(24),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 72,
-                      padding: EdgeInsets.only(top: 12, bottom: 12),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            "현재 매장의\n상위총판을 선택해주세요.",
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                                fontFamily: 'noto', fontSize: 16, color: Color(0xFF222222)),
+                  :
+              SingleChildScrollView(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom - appBar.preferredSize.height,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 10,left: 16, right: 16, bottom: 16),
+                    child:
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        whiteSpaceH(24),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 72,
+                          padding: EdgeInsets.only(top: 12, bottom: 12),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                "현재 매장의\n상위총판을 선택해주세요.",
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    fontFamily: 'noto', fontSize: 16, color: Color(0xFF222222)),
+                              ),
+                              whiteSpaceW(12),
+                              Container(
+                                child: Image.asset(
+                                  "assets/icon/left_payment.png",
+                                  width: 48,
+                                  height: 48,
+                                ),
+                              )
+                            ],
                           ),
-                          whiteSpaceW(12),
-                          Container(
-                            child: Image.asset(
-                              "assets/icon/left_payment.png",
-                              width: 48,
-                              height: 48,
+                        ),
+                        whiteSpaceH(10),
+                        SizedBox(
+                          child: DropdownButton(
+                            isExpanded: true,
+                            icon: Icon(Icons.arrow_drop_down),
+                            iconSize: 24,
+                            elevation: 16,
+                            underline: Container(
+                                height: 2,
+                                color: mainColor
                             ),
-                          )
-                        ],
-                      ),
-                    ),
-                    whiteSpaceH(10),
-                    SizedBox(
-                      child: DropdownButton(
-                        isExpanded: true,
-                        icon: Icon(Icons.arrow_drop_down),
-                        iconSize: 24,
-                        elevation: 16,
-                        underline: Container(
-                            height: 2,
-                            color: mainColor
-                        ),
-                        value: user.disSelected ,
-                        items: user.disList.map(
-                                (value) {
-                              return DropdownMenuItem(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }
-                        ).toList(),
-                        onChanged: (value){
-                            Provider.of<UserProvider>(context, listen: false).setDisSelected(value);
-                        },
-                      ),
-                    ),
-                    whiteSpaceH(8),
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            '상위 총판을 선택해주세요.',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                                fontFamily: 'noto', fontSize: 12, color: Color(0xFF888888)),
-                          ),
-                          whiteSpaceW(12),
-                        ],
-                      ),
-                    ),
-                    Spacer(),
-                    whiteSpaceH(24),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 40,
-                      child: RaisedButton(
-                        onPressed: () async {
-                          if(user.disSelected == "총판") {
-                            showToast("총판을 선택해주세요.");
-                            return;
-                          } else {
-                            await Provider.of<UserProvider>(
-                                context, listen: false)
-                                .recognitionSelect()
-                                .then((value) async =>
-                            {
-                              if(value == 0){
-                                await Provider.of<UserProvider>(context, listen: false).insertDis(),
-                                showToast("추천자가 없습니다."),
-                                await Provider.of<UserProvider>(
-                                    context, listen: false).withoutRecoAge(),
-
-                                Navigator.of(context)
-                                    .pushAndRemoveUntil(MaterialPageRoute(
-                                    builder: (context) => MainMap()), (
-                                    route) => false),
-                              } else
-                                {
-                                  Navigator.of(context)
-                                      .pushAndRemoveUntil(MaterialPageRoute(
-                                      builder: (context) => FirstRecommendation(
-                                          type: "AGENCY")), (route) => false),
+                            value: user.disSelected ,
+                            items: user.disList.map(
+                                    (value) {
+                                  return DropdownMenuItem(
+                                    value: value,
+                                    child: Text(value),
+                                  );
                                 }
-                            }
-                            );
-                          }
-                        },
-                        elevation: 0.0,
-                        color: mainColor,
-                        child: Center(
-                          child: Text(
-                            "확인",
-                            style: TextStyle(
-                                color: white,
-                                fontSize: 14,
-                                fontFamily: 'noto',),
+                            ).toList(),
+                            onChanged: (value){
+                              Provider.of<UserProvider>(context, listen: false).setDisSelected(value);
+                            },
                           ),
                         ),
-                      ),
+                        whiteSpaceH(8),
+                        Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                '상위 총판을 선택해주세요.',
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    fontFamily: 'noto', fontSize: 12, color: Color(0xFF888888)),
+                              ),
+                              whiteSpaceW(12),
+                            ],
+                          ),
+                        ),
+                        Spacer(),
+                        whiteSpaceH(24),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 40,
+                          child: RaisedButton(
+                            onPressed: () async {
+                              if(user.disSelected == "총판") {
+                                showToast("총판을 선택해주세요.");
+                                return;
+                              } else {
+                                await Provider.of<UserProvider>(
+                                    context, listen: false)
+                                    .recognitionSelect()
+                                    .then((value) async =>
+                                {
+                                  if(value == 0){
+                                    await Provider.of<UserProvider>(context, listen: false).insertDis(),
+                                    showToast("추천자가 없습니다."),
+                                    await Provider.of<UserProvider>(
+                                        context, listen: false).withoutRecoAge(),
+
+                                    Navigator.of(context)
+                                        .pushAndRemoveUntil(MaterialPageRoute(
+                                        builder: (context) => MainMap()), (
+                                        route) => false),
+                                  } else
+                                    {
+                                      Navigator.of(context)
+                                          .pushAndRemoveUntil(MaterialPageRoute(
+                                          builder: (context) => FirstRecommendation(
+                                              type: "AGENCY")), (route) => false),
+                                    }
+                                }
+                                );
+                              }
+                            },
+                            elevation: 0.0,
+                            color: mainColor,
+                            child: Center(
+                              child: Text(
+                                "확인",
+                                style: TextStyle(
+                                  color: white,
+                                  fontSize: 14,
+                                  fontFamily: 'noto',),
+                              ),
+                            ),
+                          ),
+                        ),
+                        whiteSpaceH(40)
+                      ],
                     ),
-                    whiteSpaceH(40)
-                  ],
+                  ),
                 ),
-              ),
-            ),
-          );
-        }
-      )
+              );
+            }
+        )
     );
   }
 }

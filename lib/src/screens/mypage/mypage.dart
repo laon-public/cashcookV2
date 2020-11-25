@@ -13,12 +13,14 @@ import 'package:cashcook/src/utils/CustomBottomNavBar.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/dialog.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
+import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cashcook/src/screens/mypage/info/scrap.dart';
+import 'package:cashcook/src/screens/referrermanagement/franBizSelect.dart';
 
 class MyPage extends StatefulWidget {
   bool isHome;
@@ -94,107 +96,107 @@ class _MyPageState extends State<MyPage> {
 
     return
       Scaffold(
-        appBar: AppBar(
-          backgroundColor: white,
-          elevation: 2.0,
-          leading: widget.isHome ? null : IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: Image.asset(
-              "assets/resource/public/close.png",
-              width: 24,
-              height: 24,
-            ),
-          ),
-          actions: [
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-              child: Row(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      if(view != "My") {
-                        setState(() {
-                          view = "My";
-                        });
-                      }
-                    },
-                    child: (view == "My") ?
-                    Text("마이", style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600, color: Color(0xFF333333)),)
-                        :
-                    Text("마이", style: TextStyle(fontSize: 14, color: Color(0xFF333333)),),
-                  ),
-                  whiteSpaceW(20.0),
-                  InkWell(
-                    onTap: () {
-                      if(!userCheck.isFran)
-                        _showDialog();
-                      else {
-                        if(view != "Store"){
-                          setState(() {
-                            view = "Store";
-                          });
-                        }
-                      }
-                    },
-                    child: (view == "Store") ?
-                    Text("매장", style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600, color: Color(0xFF333333)),)
-                        :
-                    Text("매장", style: TextStyle(fontSize: 14, color: Color(0xFF333333)),),
-                  ),
-                  whiteSpaceW(20.0),
-                  (userCheck.userGrade == "DISTRIBUTOR" || userCheck.userGrade == "AGENCY") ? InkWell(
-                    onTap: () {
-                      if(view != "Agecy"){
-                        setState(() {
-                          view = "Agecy";
-                        });
-                      }
-                    },
-                    child: (view == "Agecy") ?
-                    Text("대리점", style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600, color: Color(0xFF333333)),)
-                        :
-                    Text("대리점", style: TextStyle(fontSize: 14, color: Color(0xFF333333)),),
-                  ) : SizedBox()
-                ],
-              )
-            )
-          ],
-        ),
-        body: Stack(
-          children: [
-            Positioned.fill(child:
-            SingleChildScrollView(
-              child:Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 0),
-                      child: Container(
-                        color: white,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            (view == "My") ? myPageForm()
-                                : (view == "Store") ? storeForm()
-                                : agencyForm(),
-                          ],
-                        ),
-                      )
-                  ),
-
-                ],
+          appBar: AppBar(
+            backgroundColor: white,
+            elevation: 2.0,
+            leading: widget.isHome ? null : IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: Image.asset(
+                "assets/resource/public/close.png",
+                width: 24,
+                height: 24,
               ),
             ),
-            ),
-            widget.isHome ? CustomBottomNavBar(context, "mypage") : Container(),
-          ],
-        )
+            actions: [
+              Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                  child: Row(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          if(view != "My") {
+                            setState(() {
+                              view = "My";
+                            });
+                          }
+                        },
+                        child: (view == "My") ?
+                        Text("마이", style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600, color: Color(0xFF333333)),)
+                            :
+                        Text("마이", style: TextStyle(fontSize: 14, color: Color(0xFF333333)),),
+                      ),
+                      whiteSpaceW(20.0),
+                      InkWell(
+                        onTap: () {
+                          if(!userCheck.isFran)
+                            _showDialog();
+                          else {
+                            if(view != "Store"){
+                              setState(() {
+                                view = "Store";
+                              });
+                            }
+                          }
+                        },
+                        child: (view == "Store") ?
+                        Text("매장", style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600, color: Color(0xFF333333)),)
+                            :
+                        Text("매장", style: TextStyle(fontSize: 14, color: Color(0xFF333333)),),
+                      ),
+                      whiteSpaceW(20.0),
+                      (userCheck.userGrade == "DISTRIBUTOR" || userCheck.userGrade == "AGENCY") ? InkWell(
+                        onTap: () {
+                          if(view != "Agecy"){
+                            setState(() {
+                              view = "Agecy";
+                            });
+                          }
+                        },
+                        child: (view == "Agecy") ?
+                        Text("대리점", style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600, color: Color(0xFF333333)),)
+                            :
+                        Text("대리점", style: TextStyle(fontSize: 14, color: Color(0xFF333333)),),
+                      ) : SizedBox()
+                    ],
+                  )
+              )
+            ],
+          ),
+          body: Stack(
+            children: [
+              Positioned.fill(child:
+              SingleChildScrollView(
+                child:Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 0),
+                        child: Container(
+                          color: white,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              (view == "My") ? myPageForm()
+                                  : (view == "Store") ? storeForm()
+                                  : agencyForm(),
+                            ],
+                          ),
+                        )
+                    ),
+
+                  ],
+                ),
+              ),
+              ),
+              widget.isHome ? CustomBottomNavBar(context, "mypage") : Container(),
+            ],
+          )
       );
   }
 
@@ -203,154 +205,154 @@ class _MyPageState extends State<MyPage> {
       Provider.of<UserProvider>(context, listen:false).fetchMyInfo(context);
     });
     return Consumer<UserProvider>(
-      builder: (context, user, _){
-        return (user.isLoading) ?
-        Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height - 53 - 50,
-          decoration: BoxDecoration(
-            color: Colors.white,
-          ),
-          child: Center(
-              child: CircularProgressIndicator(
-                  valueColor: new AlwaysStoppedAnimation<Color>(primary)
-              )
-          ),
-        )
-            :
-        Column(
-            children: [
-              Container(
-                  padding: const EdgeInsets.only(top: 30.0, left: 12.0, right: 12.0, bottom: 10),
-                  decoration: BoxDecoration(
-                    color: white,
-                  ),
-                  child: InkWell(
-                    onTap: () async{
-                      await Navigator.pushNamed(context, "/userState");
-                    },
-                    child:
-                    Container(
-                      child: Column(
-                        children: [
-                          Row(
-                              children: [
-                                RichText(
-                                  text: TextSpan(
-                                      style: TextStyle(fontSize:16, fontWeight: FontWeight.w600, color: Color(0xFF333333)),
-                                      children: [
-                                        TextSpan(text:"${user.loginUser.name}", style: TextStyle(fontSize: 25, color: Color(0xFF333333))),
-                                        TextSpan(text:" 님\n"),
-                                        TextSpan(text:"반갑습니다.")
-                                      ]
-                                  ),
-                                ),
-                                Spacer(),
-                                Icon(Icons.arrow_forward_ios, size: 24,color: Color(0xFF333333),),
-                              ]
-                          ),
-                          whiteSpaceH(40),
-                          Row(
-                              children: [
-                                InkWell(
-                                  onTap: (){
-                                    Map<String, dynamic> args = {
-                                      "point":"RP",
-                                      "pointImg":"assets/icon/c_point.png"
-                                    };
-                                    Navigator.of(context).pushNamed("/point/history", arguments: args);
-                                  },
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Image.asset("assets/icon/c_point.png",height: 24, fit: BoxFit.contain,),
-                                      whiteSpaceW(5),
-                                      Text("${demicalFormat.format(user.pointMap['RP'])} CP",style: TextStyle(fontSize: 12, color: Color(0xFF333333)),),
-                                      Icon(Icons.arrow_forward_ios, color: Color(0xFF333333), size: 12,),
-                                    ],
-                                  ),
-                                ),
-                                whiteSpaceW(20),
-                                InkWell(
-                                  onTap: (){
-                                    Map<String, dynamic> args = {
-                                      "point":"DL",
-                                      "pointImg":"assets/icon/DL 2.png"
-                                    };
-                                    Navigator.of(context).pushNamed("/point/history", arguments: args);
-                                  },
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Image.asset("assets/icon/DL 2.png",height: 24, fit: BoxFit.contain,),
-                                      whiteSpaceW(5),
-                                      Text("${demicalFormat.format(user.pointMap['DL'])} DL",style: TextStyle(fontSize: 12, color: Color(0xFF333333)),),
-                                      Icon(Icons.arrow_forward_ios, color: Color(0xFF333333), size: 12,),
-                                    ],
-                                  ),
-                                ),
-                                whiteSpaceW(20),
-                                InkWell(
-                                  onTap: (){
-                                    Map<String, dynamic> args = {
-                                      "point":"CARAT",
-                                      "pointImg":"assets/icon/carat.jpg"
-                                    };
-                                    Navigator.of(context).pushNamed("/point/history", arguments: args);
-                                  },
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Image.asset("assets/icon/carat.jpg",height: 24, fit: BoxFit.contain,),
-                                      whiteSpaceW(5),
-                                      Text("${demicalFormat.format(user.pointMap['CARAT'])} CR",style: TextStyle(fontSize: 12, color: Color(0xFF333333)),),
-                                      Icon(Icons.arrow_forward_ios, color: Color(0xFF333333), size: 12,),
-                                    ],
-                                  ),
-                                ),
-                              ]
-                          ),
-                        ],
-                      ),
+        builder: (context, user, _){
+          return (user.isLoading) ?
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height - 53 - 50,
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
+            child: Center(
+                child: CircularProgressIndicator(
+                    valueColor: new AlwaysStoppedAnimation<Color>(primary)
+                )
+            ),
+          )
+              :
+          Column(
+              children: [
+                Container(
+                    padding: const EdgeInsets.only(top: 30.0, left: 12.0, right: 12.0, bottom: 10),
+                    decoration: BoxDecoration(
+                      color: white,
                     ),
-                  )
-              ),
-              Column(
-                  children:[
-                    SizedBox(height: 24,),
-                    Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: InkWell(
+                      onTap: () async{
+                        await Navigator.pushNamed(context, "/userState");
+                      },
+                      child:
+                      Container(
                         child: Column(
-                            children: [
-                              HistoryCard(),
-                              RecoCard(),
-                              easyPayCard(),
-                              scrapCard(),
-                              SizedBox(height: 16,),
-                              Tabs(name: "공지사항", routesName: "/notice",),
-                              // CustomerCenter(),
-                              Tabs(name: "FAQ", routesName: "/faq",),
-                              Tabs(name: "서비스 문의", routesName: "/inquiry",),
-                              Tabs(name: "약관 및 정책", routesName: "",),
-                              Tabs(name: "앱정보", routesName: "/appinfomation",),
+                          children: [
+                            Row(
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                        style: TextStyle(fontSize:16, fontWeight: FontWeight.w600, color: Color(0xFF333333)),
+                                        children: [
+                                          TextSpan(text:"${user.loginUser.name}", style: TextStyle(fontSize: 25, color: Color(0xFF333333))),
+                                          TextSpan(text:" 님\n"),
+                                          TextSpan(text:"반갑습니다.")
+                                        ]
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Icon(Icons.arrow_forward_ios, size: 24,color: Color(0xFF333333),),
+                                ]
+                            ),
+                            whiteSpaceH(40),
+                            Row(
+                                children: [
+                                  InkWell(
+                                    onTap: (){
+                                      Map<String, dynamic> args = {
+                                        "point":"RP",
+                                        "pointImg":"assets/icon/c_point.png"
+                                      };
+                                      Navigator.of(context).pushNamed("/point/history", arguments: args);
+                                    },
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Image.asset("assets/icon/c_point.png",height: 24, fit: BoxFit.contain,),
+                                        whiteSpaceW(5),
+                                        Text("${demicalFormat.format(user.pointMap['RP'])} CP",style: TextStyle(fontSize: 12, color: Color(0xFF333333)),),
+                                        Icon(Icons.arrow_forward_ios, color: Color(0xFF333333), size: 12,),
+                                      ],
+                                    ),
+                                  ),
+                                  whiteSpaceW(20),
+                                  InkWell(
+                                    onTap: (){
+                                      Map<String, dynamic> args = {
+                                        "point":"DL",
+                                        "pointImg":"assets/icon/DL 2.png"
+                                      };
+                                      Navigator.of(context).pushNamed("/point/history", arguments: args);
+                                    },
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Image.asset("assets/icon/DL 2.png",height: 24, fit: BoxFit.contain,),
+                                        whiteSpaceW(5),
+                                        Text("${demicalFormat.format(user.pointMap['DL'])} DL",style: TextStyle(fontSize: 12, color: Color(0xFF333333)),),
+                                        Icon(Icons.arrow_forward_ios, color: Color(0xFF333333), size: 12,),
+                                      ],
+                                    ),
+                                  ),
+                                  whiteSpaceW(20),
+                                  InkWell(
+                                    onTap: (){
+                                      Map<String, dynamic> args = {
+                                        "point":"CARAT",
+                                        "pointImg":"assets/icon/carat.jpg"
+                                      };
+                                      Navigator.of(context).pushNamed("/point/history", arguments: args);
+                                    },
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Image.asset("assets/icon/carat.jpg",height: 24, fit: BoxFit.contain,),
+                                        whiteSpaceW(5),
+                                        Text("${demicalFormat.format(user.pointMap['CARAT'])} CR",style: TextStyle(fontSize: 12, color: Color(0xFF333333)),),
+                                        Icon(Icons.arrow_forward_ios, color: Color(0xFF333333), size: 12,),
+                                      ],
+                                    ),
+                                  ),
+                                ]
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                ),
+                Column(
+                    children:[
+                      SizedBox(height: 24,),
+                      Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Column(
+                              children: [
+                                HistoryCard(),
+                                RecoCard(),
+                                easyPayCard(),
+                                scrapCard(),
+                                SizedBox(height: 16,),
+                                Tabs(name: "공지사항", routesName: "/notice",),
+                                // CustomerCenter(),
+                                Tabs(name: "FAQ", routesName: "/faq",),
+                                Tabs(name: "서비스 문의", routesName: "/inquiry",),
+                                Tabs(name: "약관 및 정책", routesName: "",),
+                                Tabs(name: "앱정보", routesName: "/appinfomation",),
 
 
-                              SizedBox(height: 40,),
-                            ]
-                        )
-                    ),
-                    (!user.loginUser.isFran) ? Tabs2(name: "제휴매장 등록하기", routesName: "/store/apply1",img: "assets/icon/shop.png",): SizedBox(),
-                    SizedBox(height: 12,),
-                    Tabs2(name: "캐시링크 가기", routesName: "cashlink",img: "assets/icon/cashlink-icon.png",),
-                    SizedBox(height: 60,),
-                  ]
-              )
-            ]
-        );
-      }
+                                SizedBox(height: 40,),
+                              ]
+                          )
+                      ),
+                      (!user.loginUser.isFran) ? Tabs2(name: "제휴매장 등록하기", routesName: "/store/apply1",img: "assets/icon/shop.png",): SizedBox(),
+                      SizedBox(height: 12,),
+                      Tabs2(name: "캐시링크 가기", routesName: "cashlink",img: "assets/icon/cashlink-icon.png",),
+                      SizedBox(height: 60,),
+                    ]
+                )
+              ]
+          );
+        }
     );
   }
 
@@ -374,8 +376,8 @@ class _MyPageState extends State<MyPage> {
                       children: [
                         Text("${user.username}  ",
                             style: TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.w600,
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600,
                               color: Color(0xFF333333),
                             )),
                         Text("${user.phone}",
@@ -394,116 +396,116 @@ class _MyPageState extends State<MyPage> {
           Padding(
             padding: const EdgeInsets.only(left: 16.0, right: 16.0),
             child: Container(
-                transform: Matrix4.translationValues(0.0, -30.0, 0.0),
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: primary,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(16),
-                  ),
-
+              transform: Matrix4.translationValues(0.0, -30.0, 0.0),
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                color: primary,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(16),
                 ),
-                child:
-                  Consumer<RecoProvider>(
+
+              ),
+              child:
+              Consumer<RecoProvider>(
                   builder: (context, reco, _){
-                  return Row(
-                      children: [
-                        Expanded(
-                          flex: 4,
-                          child:
-                          Padding(
-                            padding: const EdgeInsets.only(top: 15.0, left: 12.0, right: 12.0, bottom: 15.0),
-                            child:Column(
-                              children: [
-                                Text("ADP 리워드",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: white,
-                                    )),
-                                whiteSpaceH(5),
-                                Text("${numberFormat.format(reco.adp)} ADP",
-                                    style: TextStyle(
+                    return Row(
+                        children: [
+                          Expanded(
+                            flex: 4,
+                            child:
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15.0, left: 12.0, right: 12.0, bottom: 15.0),
+                              child:Column(
+                                children: [
+                                  Text("ADP 리워드",
+                                      style: TextStyle(
                                         fontSize: 12,
                                         color: white,
-                                        fontWeight: FontWeight.w600
-                                    )),
-                              ],
+                                      )),
+                                  whiteSpaceH(5),
+                                  Text("${numberFormat.format(reco.adp)} ADP",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: white,
+                                          fontWeight: FontWeight.w600
+                                      )),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 4,
-                          child:
-                          Padding(
-                            padding: const EdgeInsets.only(top: 15.0, left: 12.0, right: 12.0, bottom: 15.0),
-                            child:Column(
-                              children: [
-                                Text("현금리워드",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: white,
-                                    )),
-                                whiteSpaceH(5),
-                                Text("${numberFormat.format(reco.pay)}원",
-                                    style: TextStyle(
+                          Expanded(
+                            flex: 4,
+                            child:
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15.0, left: 12.0, right: 12.0, bottom: 15.0),
+                              child:Column(
+                                children: [
+                                  Text("현금리워드",
+                                      style: TextStyle(
                                         fontSize: 12,
                                         color: white,
-                                        fontWeight: FontWeight.w600
-                                    )),
-                              ],
+                                      )),
+                                  whiteSpaceH(5),
+                                  Text("${numberFormat.format(reco.pay)}원",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: white,
+                                          fontWeight: FontWeight.w600
+                                      )),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child:
-                          Padding(
-                            padding: const EdgeInsets.only(top: 15.0, left: 12.0, right: 12.0, bottom: 15.0),
-                            child:Column(
-                              children: [
-                                Text("대리점 수",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: white,
-                                    )),
-                                whiteSpaceH(5),
-                                Text("${user.userGrade == "DISTRIBUTOR" ? numberFormat.format(reco.ageAmount) : 0} 개",
-                                    style: TextStyle(
+                          Expanded(
+                            flex: 3,
+                            child:
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15.0, left: 12.0, right: 12.0, bottom: 15.0),
+                              child:Column(
+                                children: [
+                                  Text("대리점 수",
+                                      style: TextStyle(
                                         fontSize: 12,
                                         color: white,
-                                        fontWeight: FontWeight.w600
-                                    )),
-                              ],
+                                      )),
+                                  whiteSpaceH(5),
+                                  Text("${user.userGrade == "DISTRIBUTOR" ? numberFormat.format(reco.ageAmount) : 0} 개",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: white,
+                                          fontWeight: FontWeight.w600
+                                      )),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child:
-                          Padding(
-                            padding: const EdgeInsets.only(top: 15.0, left: 12.0, right: 12.0, bottom: 15.0),
-                            child:Column(
-                              children: [
-                                Text("가맹점 수",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: white,
-                                    )),
-                                whiteSpaceH(5),
-                                Text("${user.userGrade == "DISTRIBUTOR" ? numberFormat.format(reco.franAmount) : numberFormat.format(reco.ageAmount)}개",
-                                    style: TextStyle(
+                          Expanded(
+                            flex: 3,
+                            child:
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15.0, left: 12.0, right: 12.0, bottom: 15.0),
+                              child:Column(
+                                children: [
+                                  Text("가맹점 수",
+                                      style: TextStyle(
                                         fontSize: 12,
                                         color: white,
-                                        fontWeight: FontWeight.w600
-                                    )),
-                              ],
+                                      )),
+                                  whiteSpaceH(5),
+                                  Text("${user.userGrade == "DISTRIBUTOR" ? numberFormat.format(reco.franAmount) : numberFormat.format(reco.ageAmount)}개",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: white,
+                                          fontWeight: FontWeight.w600
+                                      )),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ]
-                  );
+                        ]
+                    );
                   }
-                  ),
+              ),
             ),
           ),
           Padding(
@@ -522,20 +524,20 @@ class _MyPageState extends State<MyPage> {
                       children: [
                         InkWell(
                           onTap:() {
-                              setState(() {
-                                ageView = "History";
-                              });
+                            setState(() {
+                              ageView = "History";
+                            });
                           },
                           child: (ageView == "History") ?
-                              Container(
+                          Container(
                               child:Text("대리점/가맹점 내역", style: TextStyle(fontSize: 16, color: primary, fontWeight: FontWeight.w600)),
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border(bottom: BorderSide(color: primary, width: 3)
-                                      )
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border(bottom: BorderSide(color: primary, width: 3)
                                   )
                               )
-                          :
+                          )
+                              :
                           Text("대리점/가맹점 내역", style: TextStyle(fontSize: 16)),
                         ),
                         whiteSpaceW(20.0),
@@ -547,16 +549,16 @@ class _MyPageState extends State<MyPage> {
                             });
                           },
                           child: (ageView == "Reward") ?
-                              Container(
+                          Container(
                               child:Text("리워드 내역", style: TextStyle(fontSize: 16, color: primary, fontWeight: FontWeight.w600)),
                               decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border(bottom: BorderSide(color: primary, width: 3)
+                                  color: Colors.white,
+                                  border: Border(bottom: BorderSide(color: primary, width: 3)
+                                  )
                               )
-                              )
-                              )
+                          )
 
-                            :
+                              :
                           Text("리워드 내역", style: TextStyle(fontSize: 16),),
                         ),
                         whiteSpaceW(20.0),
@@ -572,17 +574,17 @@ class _MyPageState extends State<MyPage> {
             ),
           ),
           (ageView == "History") ?
-              GradeRecoForm()
-                :
-              RewardForm(),
+          GradeRecoForm()
+              :
+          RewardForm(),
         ]
-    );  
+    );
   }
 
   Widget GradeRecoForm() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<RecoProvider>(context, listen: false).fetchGradeReco(
-        Provider.of<UserProvider>(context, listen: false).loginUser
+          Provider.of<UserProvider>(context, listen: false).loginUser
       );
     });
     return Consumer<RecoProvider>(
@@ -590,23 +592,23 @@ class _MyPageState extends State<MyPage> {
         print(reco.gradeReferrer);
         return
           Container(
-            height: 300,
-            child:
-            ListView.builder(
-              itemBuilder: (context, idx) {
-                if (idx < reco.gradeReferrer.length) {
-                  return RecoItem(reco.gradeReferrer[idx]);
-                }
-                return Center(
-                    child: CircularProgressIndicator(
-                        valueColor: new AlwaysStoppedAnimation<Color>(primary)
-                    )
-                );
-              },
-              itemCount: reco.gradeReferrer.length,
-              shrinkWrap: true,
-              physics: AlwaysScrollableScrollPhysics(),
-            )
+              height: 300,
+              child:
+              ListView.builder(
+                itemBuilder: (context, idx) {
+                  if (idx < reco.gradeReferrer.length) {
+                    return RecoItem(reco.gradeReferrer[idx]);
+                  }
+                  return Center(
+                      child: CircularProgressIndicator(
+                          valueColor: new AlwaysStoppedAnimation<Color>(primary)
+                      )
+                  );
+                },
+                itemCount: reco.gradeReferrer.length,
+                shrinkWrap: true,
+                physics: AlwaysScrollableScrollPhysics(),
+              )
           );
       },
     );
@@ -631,24 +633,24 @@ class _MyPageState extends State<MyPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              children: [
-                Text(
-                  data.name,
-                  style: TextStyle(
-                      fontFamily: 'noto',
-                      fontSize: 14,
-                      color: black,
-                      fontWeight: FontWeight.w600),
-                ),
-                Text(
-                  (data.type == 1) ? " (가맹점)" : " (대리점)",
-                  style: TextStyle(
-                      fontFamily: 'noto',
-                      fontSize: 14,
-                      color: (data.type == 1) ? primary : Colors.amberAccent,
-                      fontWeight: FontWeight.w600),
-                ),
-              ]
+                children: [
+                  Text(
+                    data.name,
+                    style: TextStyle(
+                        fontFamily: 'noto',
+                        fontSize: 14,
+                        color: black,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  Text(
+                    (data.type == 1) ? " (가맹점)" : " (대리점)",
+                    style: TextStyle(
+                        fontFamily: 'noto',
+                        fontSize: 14,
+                        color: (data.type == 1) ? primary : Colors.amberAccent,
+                        fontWeight: FontWeight.w600),
+                  ),
+                ]
             ),
             Text(
               data.phone,
@@ -664,22 +666,22 @@ class _MyPageState extends State<MyPage> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             InkWell(
-              onTap: () async {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (context) => IntegratedPoint(),
-                      settings: RouteSettings(
-                          arguments : {
-                            "username" : data.name,
-                            "phone": data.phone,
-                          }
-                      )),);
-              },
-              child:Text(
-                "활동현황",
-                style: TextStyle(
-                    fontSize: 12, fontFamily: 'noto', color: primary, decoration: TextDecoration.underline),
-              )
+                onTap: () async {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => IntegratedPoint(),
+                        settings: RouteSettings(
+                            arguments : {
+                              "username" : data.name,
+                              "phone": data.phone,
+                            }
+                        )),);
+                },
+                child:Text(
+                  "활동현황",
+                  style: TextStyle(
+                      fontSize: 12, fontFamily: 'noto', color: primary, decoration: TextDecoration.underline),
+                )
             ),
             data.type == 1
                 ? Text(
@@ -701,65 +703,65 @@ class _MyPageState extends State<MyPage> {
       await Provider.of<PointMgmtProvider>(context, listen: false).fetchBizMgmt(viewType);
     });
     return Column(
-      children: [
-        Padding(
-            padding: const EdgeInsets.only(left: 32.0, right: 32.0),
-            child:
-            Container(
-                transform: Matrix4.translationValues(0.0, -20.0, 0.0),
-                width: MediaQuery.of(context).size.width,
-                child:
-                Row(
-                    children: [
-                      RaisedButton(
-                        onPressed: (viewType == "month") ? null : () {
-                          setState(() {
-                            viewType = "month";
-                          });
-                        },
-                        color: white,
-                        disabledColor: primary,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                            side: BorderSide(color: primary)
-                        ),
-                        child:
-                        Text(
-                          "월간",
-                          style: TextStyle(
-                              fontSize: 12,
-                              color: (viewType == "month") ? Colors.white : Colors.black
+        children: [
+          Padding(
+              padding: const EdgeInsets.only(left: 32.0, right: 32.0),
+              child:
+              Container(
+                  transform: Matrix4.translationValues(0.0, -20.0, 0.0),
+                  width: MediaQuery.of(context).size.width,
+                  child:
+                  Row(
+                      children: [
+                        RaisedButton(
+                          onPressed: (viewType == "month") ? null : () {
+                            setState(() {
+                              viewType = "month";
+                            });
+                          },
+                          color: white,
+                          disabledColor: primary,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              side: BorderSide(color: primary)
+                          ),
+                          child:
+                          Text(
+                            "월간",
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: (viewType == "month") ? Colors.white : Colors.black
+                            ),
                           ),
                         ),
-                      ),
-                      whiteSpaceW(10),
-                      RaisedButton(
-                        onPressed: (viewType == "year") ? null : () {
-                          setState(() {
-                            viewType = "year";
-                          });
-                        },
-                        color: white,
-                        disabledColor: primary,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                            side: BorderSide(color: primary)
-                        ),
-                        child:
-                        Text(
-                          "연간",
-                          style: TextStyle(
-                              fontSize: 12,
-                              color: (viewType == "year") ? Colors.white : Colors.black
+                        whiteSpaceW(10),
+                        RaisedButton(
+                          onPressed: (viewType == "year") ? null : () {
+                            setState(() {
+                              viewType = "year";
+                            });
+                          },
+                          color: white,
+                          disabledColor: primary,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              side: BorderSide(color: primary)
+                          ),
+                          child:
+                          Text(
+                            "연간",
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: (viewType == "year") ? Colors.white : Colors.black
+                            ),
                           ),
                         ),
-                      ),
-                    ]
-                )
-            )
-        ),
-        ReportList()
-      ]
+                      ]
+                  )
+              )
+          ),
+          ReportList()
+        ]
     );
   }
 
@@ -767,23 +769,23 @@ class _MyPageState extends State<MyPage> {
     return Consumer<PointMgmtProvider>(
       builder: (context, pm, _) {
         return
-              Container(
-                  height: 300,
-                  child:
-                  ListView.builder(
-                    itemBuilder: (context, idx) {
-                      if (idx < pm.pbmList.length) {
-                        return ReportItem(pm.pbmList[idx]);
-                      }
-                    },
-                    itemCount: pm.pbmList.length,
-                    shrinkWrap: true,
-                    physics: AlwaysScrollableScrollPhysics(),
-                  )
-              );
-          },
-        );
-      }
+          Container(
+              height: 300,
+              child:
+              ListView.builder(
+                itemBuilder: (context, idx) {
+                  if (idx < pm.pbmList.length) {
+                    return ReportItem(pm.pbmList[idx]);
+                  }
+                },
+                itemCount: pm.pbmList.length,
+                shrinkWrap: true,
+                physics: AlwaysScrollableScrollPhysics(),
+              )
+          );
+      },
+    );
+  }
 
 
   Widget ReportItem(PointReportModel data) {
@@ -855,7 +857,7 @@ class _MyPageState extends State<MyPage> {
       ],
     );
   }
-  
+
   Widget storeForm(){
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<UserProvider>(context, listen:false).fetchMyInfo(context);
@@ -897,21 +899,21 @@ class _MyPageState extends State<MyPage> {
                                 children: [
                                   Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Center(
-                                            child: Text("${user.storeModel.store.name}", style: TextStyle(fontSize: 25, color: Color(0xFF333333), fontWeight: FontWeight.w600))
-                                          ),
-                                          whiteSpaceW(10),
-                                          Icon(Icons.arrow_forward_ios, size: 24,color: Color(0xFF333333),),
-                                        ]
-                                      ),
-                                      whiteSpaceH(8.0),
-                                      Text("${user.storeModel.store.tel}\n", style: TextStyle(fontSize: 20,color: Color(0xFF333333), fontWeight: FontWeight.w600)),
-                                    ]
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Center(
+                                                  child: Text("${user.storeModel.store.name}", style: TextStyle(fontSize: 25, color: Color(0xFF333333), fontWeight: FontWeight.w600))
+                                              ),
+                                              whiteSpaceW(10),
+                                              Icon(Icons.arrow_forward_ios, size: 24,color: Color(0xFF333333),),
+                                            ]
+                                        ),
+                                        whiteSpaceH(8.0),
+                                        Text("${user.storeModel.store.tel}\n", style: TextStyle(fontSize: 20,color: Color(0xFF333333), fontWeight: FontWeight.w600)),
+                                      ]
                                   ),
                                   Spacer(),
                                   CachedNetworkImage(
@@ -959,29 +961,30 @@ class _MyPageState extends State<MyPage> {
                     )
                 ),
                 Container(
-                      color: white,
-                      child:Column(
-                          children:[
-                            SizedBox(height: 24,),
-                            Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16),
-                                child: Column(
-                                    children: [
-                                      QrCard(),
-                                      HistoryCard(),
-                                      sellDlCard(),
-                                      whiteSpaceH(16.0),
-                                      Tabs(name: "알림", routesName: "/store/modify/business",),
-                                      Tabs(name: "사업자정보 수정", routesName: "/store/modify/business",),
-                                      Tabs(name: "매장정보 수정", routesName: "/store/modify/store",),
-                                      Tabs(name: "DL 결제 한도 설정", routesName: "/store/modify/limitDL",),
-                                      CustomerCenter(),
-                                    ]
-                                )
-                            ),
-                          ]
-                      ),
+                  color: white,
+                  child:Column(
+                      children:[
+                        SizedBox(height: 24,),
+                        Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Column(
+                                children: [
+                                  BizSelect(),
+                                  QrCard(),
+                                  HistoryCard(),
+                                  sellDlCard(),
+                                  whiteSpaceH(16.0),
+                                  Tabs(name: "알림", routesName: "/store/modify/business",),
+                                  Tabs(name: "사업자정보 수정", routesName: "/store/modify/business",),
+                                  Tabs(name: "매장정보 수정", routesName: "/store/modify/store",),
+                                  Tabs(name: "DL 결제 한도 설정", routesName: "/store/modify/limitDL",),
+                                  CustomerCenter(),
+                                ]
+                            )
+                        ),
+                      ]
                   ),
+                ),
               ]
           );
         }
@@ -994,7 +997,7 @@ class _MyPageState extends State<MyPage> {
       onTap: (){
         if(view == "My"){
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => pointMgmtUser()
+              builder: (context) => pointMgmtUser()
           ));
         } else {
           Navigator.of(context).push(MaterialPageRoute(
@@ -1047,6 +1050,43 @@ class _MyPageState extends State<MyPage> {
               Image.asset("assets/icon/card_blue.png", height: 42, fit: BoxFit.contain,),
               SizedBox(width: 12,),
               Text("간편결제 관리",style: TextStyle(fontSize: 16,color: Color(0xff444444), fontWeight: FontWeight.w600)),
+              Spacer(),
+              Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 24,),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget BizSelect(){
+    return InkWell(
+      onTap: () async{
+        int agencyCheck = await Provider.of<UserProvider>(context, listen: false).selectMyAgency();
+        print("agencyCheck : $agencyCheck");
+
+        if(agencyCheck != 1){
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => FranBizSelect()
+          ));
+        } else {
+          showToast("이미 총판이 등록되어있습니다.");
+        }
+
+      },
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: white,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset("assets/icon/left_payment.png", height: 42, fit: BoxFit.contain,),
+              SizedBox(width: 12,),
+              Text("총판 입력",style: TextStyle(fontSize: 16,color: Color(0xff444444), fontWeight: FontWeight.w600)),
               Spacer(),
               Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 24,),
             ],
@@ -1192,24 +1232,24 @@ class _MyPageState extends State<MyPage> {
           isCheck = !isCheck;
         });
       },
-        child: Container(
-          height: 48,
-          child: Row(
-            children: [
-              Text("알림", style: TextStyle(fontSize: 14,color: Colors.black),),
-              Spacer(),
-              Switch(
-                onChanged: (bool value){
-                  setState(() {
-                    isCheck = value;
-                  });
-                },
-                value: isCheck,
-                  activeColor: mainColor,
-              ),
-            ],
-      ),
+      child: Container(
+        height: 48,
+        child: Row(
+          children: [
+            Text("알림", style: TextStyle(fontSize: 14,color: Colors.black),),
+            Spacer(),
+            Switch(
+              onChanged: (bool value){
+                setState(() {
+                  isCheck = value;
+                });
+              },
+              value: isCheck,
+              activeColor: mainColor,
+            ),
+          ],
         ),
+      ),
     );
   }
 
@@ -1219,19 +1259,19 @@ class _MyPageState extends State<MyPage> {
       onTap: ()async {
         await launch("tel://15001500");
       },
-          child: Container(
-            height: 48,
-            color: white,
-            child: Row(
-              children: [
-                Text("문의하기",style: TextStyle(fontSize: 14, color: Color(0xff444444)),),
-                Spacer(),
-                Text("HOJOGroup",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600, color: Color(0xff444444)),),
-                SizedBox(width: 12,),
-                Text("1500-1500",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600, color: Color(0xffffcc00)),)
-              ],
+      child: Container(
+        height: 48,
+        color: white,
+        child: Row(
+          children: [
+            Text("문의하기",style: TextStyle(fontSize: 14, color: Color(0xff444444)),),
+            Spacer(),
+            Text("HOJOGroup",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600, color: Color(0xff444444)),),
+            SizedBox(width: 12,),
+            Text("1500-1500",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600, color: Color(0xffffcc00)),)
+          ],
+        ),
       ),
-          ),
     );
   }
 
@@ -1240,27 +1280,27 @@ class _MyPageState extends State<MyPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("아직 매장등록을 안하셨군요!\n매장등록을 하시고,\n여러가지 포인트 혜택을 누려보세요!",
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: Color(0xff444444),
-              ),),
-            actions: <Widget>[
-              FlatButton(
-                child: new Text("예"),
-                onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.of(context).pushNamed("/store/apply1");
-                }
-              ),
-              FlatButton(
-                child: new Text("아니요"),
-                onPressed: () {
-                  Navigator.pop(context);
-                }
-              ),
-            ]
+              title: Text("아직 매장등록을 안하셨군요!\n매장등록을 하시고,\n여러가지 포인트 혜택을 누려보세요!",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff444444),
+                ),),
+              actions: <Widget>[
+                FlatButton(
+                    child: new Text("예"),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).pushNamed("/store/apply1");
+                    }
+                ),
+                FlatButton(
+                    child: new Text("아니요"),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    }
+                ),
+              ]
           );
         }
     );
@@ -1320,21 +1360,21 @@ class Tabs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-        onTap: (){
-          Navigator.of(context).pushNamed(routesName);
-        },
-        enableFeedback:false,
-          child: Container(
-            height: 48,
-            color: white,
-            child: Row(
-              children: [
-                Text(name,style: TextStyle(fontSize: 14,color: Color(0xff444444)),),
-                Spacer(),
-                Icon(Icons.arrow_forward_ios, size: 24, color: Color(0xff444444),)
-              ],
+      onTap: (){
+        Navigator.of(context).pushNamed(routesName);
+      },
+      enableFeedback:false,
+      child: Container(
+        height: 48,
+        color: white,
+        child: Row(
+          children: [
+            Text(name,style: TextStyle(fontSize: 14,color: Color(0xff444444)),),
+            Spacer(),
+            Icon(Icons.arrow_forward_ios, size: 24, color: Color(0xff444444),)
+          ],
         ),
-          ),
+      ),
     );
   }
 }
@@ -1349,25 +1389,25 @@ class Tabs2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: Color(0xFFEEEEEE),
-        padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 16),
-        child: InkWell(
-          onTap: () async{
-            if(routesName == "cashlink"){
-              await launch("http://cashlink.kr");
-            }else {
-              Navigator.of(context).pushNamed(routesName);
-            }
+      color: Color(0xFFEEEEEE),
+      padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 16),
+      child: InkWell(
+        onTap: () async{
+          if(routesName == "cashlink"){
+            await launch("http://cashlink.kr");
+          }else {
+            Navigator.of(context).pushNamed(routesName);
+          }
 
-          },
-          child: Row(
-            children: [
-              Text(name,style: TextStyle(fontSize: 14,color: Color(0xff444444)),),
-              Spacer(),
-              Image.asset(img,width: 48, fit: BoxFit.contain,),
-            ],
-          ),
+        },
+        child: Row(
+          children: [
+            Text(name,style: TextStyle(fontSize: 14,color: Color(0xff444444)),),
+            Spacer(),
+            Image.asset(img,width: 48, fit: BoxFit.contain,),
+          ],
         ),
+      ),
     );
   }
 }
