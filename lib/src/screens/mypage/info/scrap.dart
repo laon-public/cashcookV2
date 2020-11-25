@@ -1,5 +1,5 @@
 import 'package:cashcook/src/model/store.dart';
-import 'package:cashcook/src/screens/main/storeDetail_2.dart';
+import 'package:cashcook/src/screens/main/storeDetail_3.dart';
 import 'package:cashcook/src/utils/CustomBottomNavBar.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:flutter/material.dart';
@@ -57,8 +57,7 @@ class _Scrap extends State<Scrap> {
                       return (sp.isLoading) ?
                       Center(
                           child: CircularProgressIndicator(
-                              backgroundColor: mainColor,
-                              valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                              valueColor: new AlwaysStoppedAnimation<Color>(primary)
                           )
                       )
                           :
@@ -88,7 +87,7 @@ class _Scrap extends State<Scrap> {
             context, listen: false).setServiceNum(
             0, scrap.id);
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => StoreDetail2(
+          builder: (context) => StoreDetail3(
             store: scrap,
           )
         ));
@@ -121,28 +120,19 @@ class _Scrap extends State<Scrap> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(scrap.store.name,
-                              style: TextStyle(
-                                color: Color(0xFF444444),
-                                fontSize: 14,
-                                fontFamily: 'noto',
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style: Body1,
                             ),
                             whiteSpaceW(10),
                             Text(scrap.store.category_name + "/" + scrap.store.category_sub_name,
-                              style: TextStyle(
-                                  color: mainColor,
-                                  fontSize: 12,
-                                  fontFamily: 'noto'
+                              style: Caption.apply(
+                                color: primary
                               ),
                             ),
                           ],
                         ),
                         Text(scrap.store.short_description,
-                            style: TextStyle(
-                                fontFamily: 'noto',
-                                fontSize: 12,
-                                color: Color(0xFF888888)
+                            style: Body2.apply(
+                              color: secondary
                             )
                         )
                       ],

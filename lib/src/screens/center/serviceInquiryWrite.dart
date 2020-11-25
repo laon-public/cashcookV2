@@ -39,7 +39,7 @@ class InquiryWrite extends StatelessWidget {
                         .inputInquiry(titleCtrl.text, contentCtrl.text, context);
                   }
                 },
-                child: Text("보내기",style: TextStyle(fontSize: 14, color: mainColor,decoration: TextDecoration.underline),),
+                child: Text("보내기",style: TextStyle(fontSize: 14, color: primary,decoration: TextDecoration.underline),),
               ),
             ),
           ),
@@ -102,11 +102,11 @@ class InquiryWrite extends StatelessWidget {
               floatingLabelBehavior: FloatingLabelBehavior.always,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(0.0),
-                borderSide: BorderSide(color: mainColor, width: 2.0),
+                borderSide: BorderSide(color: primary, width: 2.0),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(0.0),
-                borderSide: BorderSide(color: mainColor, width: 2.0),
+                borderSide: BorderSide(color: primary, width: 2.0),
               ),
             ),
           ),
@@ -138,7 +138,7 @@ class InquiryWrite extends StatelessWidget {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(0.0),
-                borderSide: BorderSide(color: mainColor, width: 2.0),
+                borderSide: BorderSide(color: primary, width: 2.0),
               ),
             ),
           ),
@@ -154,7 +154,7 @@ class InquiryWrite extends StatelessWidget {
       child: RaisedButton(
         child: Text("보내기"),
         textColor: Colors.white,
-        color: mainColor,
+        color: primary,
         onPressed: ( titleCtrl.text != "" && contentCtrl.text != "")? () async {
 
           if( titleCtrl.text == "" || contentCtrl.text == ""){

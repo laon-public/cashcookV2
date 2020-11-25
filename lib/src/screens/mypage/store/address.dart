@@ -168,7 +168,7 @@ class _FindAddressState extends State<FindAddress> {
                       ),
                     ],
                   ),
-                  child: Center(child: Text("선택", style: TextStyle(fontSize: 14, color: mainColor,fontWeight: FontWeight.bold),),),
+                  child: Center(child: Text("선택", style: TextStyle(fontSize: 14, color: primary,fontWeight: FontWeight.bold),),),
                 ),
               ),
         ),

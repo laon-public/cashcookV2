@@ -330,8 +330,7 @@ class _pointMgmtState extends State<pointMgmt> {
         return (pm.isLoading) ?
         Center(
             child: CircularProgressIndicator(
-                backgroundColor: mainColor,
-                valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
             )
         )
             :
@@ -346,8 +345,7 @@ class _pointMgmtState extends State<pointMgmt> {
                   }
                   return Center(
                       child: CircularProgressIndicator(
-                          backgroundColor: mainColor,
-                          valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                          valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
                       )
                   );
                 },
@@ -449,8 +447,7 @@ class _pointMgmtState extends State<pointMgmt> {
                       child: Opacity(
                           opacity: pm.isLoading ? 1.0 : 0.0,
                           child:CircularProgressIndicator(
-                              backgroundColor: mainColor,
-                              valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                              valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
                           )
                       )
                   );

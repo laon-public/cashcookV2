@@ -105,8 +105,7 @@ class _ServiceList extends State<ServiceList> {
                                           height: 85,
                                           child: Center(
                                               child: CircularProgressIndicator(
-                                                  backgroundColor: mainColor,
-                                                  valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                                                  valueColor: new AlwaysStoppedAnimation<Color>(primary)
                                               )
                                           )
                                       ):
@@ -277,7 +276,7 @@ class _ServiceList extends State<ServiceList> {
                                 fontSize: 20,
                                 fontFamily: 'noto',
                                 fontWeight: FontWeight.w600,
-                                color: mainColor
+                                color: primary
                             )
                         ),
                       ],
@@ -312,7 +311,7 @@ class _ServiceList extends State<ServiceList> {
               style: TextStyle(
                   fontFamily: 'noto',
                   fontSize: 14,
-                  color: mainColor
+                  color: primary
               ),
             ),
             onPressed: () => Navigator.pop(context, true), ),
@@ -321,7 +320,7 @@ class _ServiceList extends State<ServiceList> {
               style: TextStyle(
                   fontFamily: 'noto',
                   fontSize: 14,
-                  color: subColor
+                  color: primary
               ),
             ),
             onPressed: () => Navigator.pop(context, false), ), ], ), ) ?? false;

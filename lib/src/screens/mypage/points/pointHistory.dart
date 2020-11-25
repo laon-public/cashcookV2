@@ -243,8 +243,7 @@ class History extends StatelessWidget {
                 child: Opacity(
                   opacity: users.isLoading ? 1.0 : 0.0,
                   child:CircularProgressIndicator(
-                      backgroundColor: mainColor,
-                      valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                      valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
                   )
                 )
             );

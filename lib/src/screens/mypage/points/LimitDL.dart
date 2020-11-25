@@ -64,7 +64,7 @@ class _limitDLState extends State<limitDL> {
                   ),
                   Spacer(),
                   Switch(
-                    activeColor: mainColor,
+                    activeColor: primary,
                     value: limitState,
                     onChanged: (val) {
                       setState(() {
@@ -118,7 +118,7 @@ class _limitDLState extends State<limitDL> {
                                 borderSide: BorderSide(color: Color(0xffdddddd), width: 1.0),
                               ),
                               focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: mainColor, width: 1.0),
+                                borderSide: BorderSide(color: primary, width: 1.0),
                               ),
                             ),
                           ),
@@ -133,7 +133,7 @@ class _limitDLState extends State<limitDL> {
                   width: MediaQuery.of(context).size.width,
                   height: 40,
                   child:RaisedButton(
-                      color: mainColor,
+                      color: primary,
                       onPressed: () async {
                         print("limitState : $limitState");
                         print("limitQuantityCtrl.text : ${limitQuantityCtrl.text}");

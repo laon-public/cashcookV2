@@ -52,8 +52,7 @@ class _FirstBizSelect extends State<FirstBizSelect> {
           return (user.isLoading) ?
           Center(
               child: CircularProgressIndicator(
-                  backgroundColor: mainColor,
-                  valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                  valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
               )
           )
               :

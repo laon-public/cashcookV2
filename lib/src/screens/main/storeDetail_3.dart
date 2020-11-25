@@ -8,6 +8,7 @@ import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/qr/qr.dart';
 import 'package:cashcook/src/screens/storemanagement/orderMenu.dart';
 import 'package:cashcook/src/utils/Share.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/StoreServiceItem.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
@@ -315,12 +316,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                       child: Column(
                                         children: [
                                           Text("${widget.store.store.name}",
-                                              style: TextStyle(
-                                                fontSize: 17,
-                                                fontFamily: 'noto',
-                                                color: Color(0xFF333333),
-                                                fontWeight: FontWeight.w700,
-                                              )
+                                              style: Subtitle2
                                           ),
                                           whiteSpaceH(12.0),
                                           Row(
@@ -335,11 +331,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                     ),
                                                     whiteSpaceW(4.0),
                                                     Text("${NumberFormat("#.#").format(widget.store.store.scope)}",
-                                                      style: TextStyle(
-                                                        color: Color(0xFF666666),
-                                                        fontSize: 13,
-                                                        fontFamily: 'noto',
-                                                      ),
+                                                      style: Body1.apply(color: secondary),
                                                       textAlign: TextAlign.center,
                                                     )
                                                   ],
@@ -365,11 +357,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                     ),
                                                     whiteSpaceW(4.0),
                                                     Text("${widget.store.store.limitDL == null ? "100" : widget.store.store.limitDL }%",
-                                                      style: TextStyle(
-                                                        color: Color(0xFF666666),
-                                                        fontSize: 13,
-                                                        fontFamily: 'noto',
-                                                      ),
+                                                      style: Body1.apply(color: secondary),
                                                       textAlign: TextAlign.center,
                                                     )
                                                   ],
@@ -405,11 +393,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                       ),
                                                       whiteSpaceW(4.0),
                                                       Text("QR 스캔",
-                                                        style: TextStyle(
-                                                          color: Color(0xFF666666),
-                                                          fontSize: 13,
-                                                          fontFamily: 'noto',
-                                                        ),
+                                                        style: Body1.apply(color: secondary),
                                                         textAlign: TextAlign.center,
                                                       )
                                                     ],
@@ -437,22 +421,14 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                   flex:1,
                                                   child:Text(
                                                     "업종",
-                                                    style: TextStyle(
-                                                        fontWeight: FontWeight.w100,
-                                                        fontSize: 13,
-                                                        color: Color(0xFF999999),
-                                                        fontFamily: 'noto'),
+                                                    style: Body1.apply(color: third)
                                                   ),
                                                 ),
                                                 Expanded(
                                                   flex:3,
                                                   child:Text(
                                                     "${widget.store.store.category_name} / ${widget.store.store.category_sub_name}",
-                                                    style: TextStyle(
-                                                        fontWeight: FontWeight.w500,
-                                                        fontSize: 13,
-                                                        color: mainColor,
-                                                        fontFamily: 'noto'),
+                                                    style: Body1.apply(color: mainColor),
                                                   ),
                                                 )
                                               ],
@@ -464,11 +440,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                   flex:1,
                                                   child:Text(
                                                     "배달",
-                                                    style: TextStyle(
-                                                        fontWeight: FontWeight.w100,
-                                                        fontSize: 13,
-                                                        color: Color(0xFF999999),
-                                                        fontFamily: 'noto'),
+                                                    style: Body1.apply(color: third),
                                                   ),
                                                 ),
                                                 Image.asset(
@@ -483,19 +455,11 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                       children: [
                                                         Text(
                                                           "${widget.store.store.deliveryTime == null ? "배달 X" : widget.store.store.deliveryTime}",
-                                                          style: TextStyle(
-                                                              fontWeight: FontWeight.w500,
-                                                              fontSize: 13,
-                                                              color: Color(0xFF666666),
-                                                              fontFamily: 'noto'),
+                                                          style: Body1.apply(color: secondary),
                                                         ),
                                                         Text(
                                                           " ㆍ ",
-                                                          style: TextStyle(
-                                                              fontWeight: FontWeight.w500,
-                                                              fontSize: 13,
-                                                              color: Color(0xFF666666),
-                                                              fontFamily: 'noto'),
+                                                          style: Body1.apply(color: secondary),
                                                         ),
                                                         Text(
                                                           "최소주문 ${widget.store.store.minOrderAmount == null ?
@@ -503,11 +467,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                               :
                                                           widget.store.store.minOrderAmount + "원"
                                                           }",
-                                                          style: TextStyle(
-                                                              fontWeight: FontWeight.w500,
-                                                              fontSize: 13,
-                                                              color: Color(0xFF666666),
-                                                              fontFamily: 'noto'),
+                                                          style: Body1.apply(color: secondary),
                                                         ),
                                                       ]
                                                   ),
@@ -521,11 +481,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                   flex:1,
                                                   child:Text(
                                                     "연락처",
-                                                    style: TextStyle(
-                                                        fontWeight: FontWeight.w100,
-                                                        fontSize: 13,
-                                                        color: Color(0xFF999999),
-                                                        fontFamily: 'noto'),
+                                                    style: Body1.apply(color: third),
                                                   ),
                                                 ),
                                                 Expanded(
@@ -536,11 +492,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                             widget.store.store.tel.substring(3,7) + "-" +
                                                             widget.store.store.tel.substring(7,widget.store.store.tel.length)
                                                     }",
-                                                    style: TextStyle(
-                                                        fontWeight: FontWeight.w200,
-                                                        fontSize: 13,
-                                                        color: Color(0xFF666666),
-                                                        fontFamily: 'noto'),
+                                                    style: Body1.apply(color: secondary),
                                                   ),
                                                 )
                                               ],
@@ -552,22 +504,14 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                   flex:1,
                                                   child:Text(
                                                     "영업시간",
-                                                    style: TextStyle(
-                                                        fontWeight: FontWeight.w100,
-                                                        fontSize: 13,
-                                                        color: Color(0xFF999999),
-                                                        fontFamily: 'noto'),
+                                                    style: Body1.apply(color: third)
                                                   ),
                                                 ),
                                                 Expanded(
                                                   flex:3,
                                                   child:Text(
                                                     widget.store.store.store_time,
-                                                    style: TextStyle(
-                                                        fontWeight: FontWeight.w200,
-                                                        fontSize: 12,
-                                                        color: Color(0xFF666666),
-                                                        fontFamily: 'noto'),
+                                                    style: Body1.apply(color: secondary),
                                                   ),
                                                 )
                                               ],
@@ -580,22 +524,14 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                   flex:1,
                                                   child:Text(
                                                     "주소",
-                                                    style: TextStyle(
-                                                        fontWeight: FontWeight.w100,
-                                                        fontSize: 12,
-                                                        color: Color(0xFF888888),
-                                                        fontFamily: 'noto'),
+                                                    style: Body1.apply(color: third),
                                                   ),
                                                 ),
                                                 Expanded(
                                                   flex:3,
                                                   child:Text(
                                                     "${widget.store.address.address},\n${widget.store.address.detail}",
-                                                    style: TextStyle(
-                                                        fontWeight: FontWeight.w200,
-                                                        fontSize: 12,
-                                                        color: black,
-                                                        fontFamily: 'noto'),
+                                                    style: Body1.apply(color: secondary),
                                                   ),
                                                 )
                                               ],
@@ -615,7 +551,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                 ),
                                                 width: MediaQuery.of(context).size.width,
                                                 color: white,
-                                                height: 45,
+                                                height: 55,
                                                 child: Stack(
                                                   children: [
                                                     Column(
@@ -638,7 +574,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                                         "상품",
                                                                         textAlign: TextAlign.center,
                                                                         style: TextStyle(
-                                                                            fontSize: 13,
+                                                                            fontSize: 14,
                                                                             fontFamily: 'noto',
                                                                             color: ss.serviceNum == 0 ?
                                                                             Color(0xFF333333)
@@ -660,7 +596,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                                       "정보",
                                                                       textAlign: TextAlign.center,
                                                                       style: TextStyle(
-                                                                          fontSize: 13,
+                                                                          fontSize: 14,
                                                                           fontFamily: 'noto',
                                                                           color: ss.serviceNum == 1 ?
                                                                           Color(0xFF333333)
@@ -682,7 +618,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                                       "리뷰",
                                                                       textAlign: TextAlign.center,
                                                                       style: TextStyle(
-                                                                          fontSize: 13,
+                                                                          fontSize: 14,
                                                                           fontFamily: 'noto',
                                                                           color: ss.serviceNum == 2 ?
                                                                           Color(0xFF333333)
@@ -702,7 +638,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                       bottom: 0,
                                                       child: Container(
                                                         width: MediaQuery.of(context).size.width,
-                                                        height: 1,
+                                                        height: 2,
                                                         color: Color(0xFFF2F2F2),
                                                         child: Stack(
                                                             children: [
@@ -738,7 +674,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                 :
                                             reviewForm(context, widget.store),
                                             constraints: BoxConstraints(
-                                              minHeight: MediaQuery.of(context).size.height,
+                                              minHeight: MediaQuery.of(context).size.height - 85,
                                               minWidth: MediaQuery.of(context).size.width,
                                             ),
                                           ),

@@ -39,7 +39,7 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
         appBar: AppBar(
           centerTitle: true,
           elevation: 0,
-          backgroundColor: mainColor,
+          backgroundColor: primary,
           leading: widget.isHome ? null : IconButton(
             onPressed: () {
               if(widget.afterGame){
@@ -74,7 +74,7 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                             width: MediaQuery.of(context).size.width,
                             padding: const EdgeInsets.only(top: 30.0, left: 12.0, right: 12.0, bottom: 50.0),
                             decoration: BoxDecoration(
-                              color: mainColor,
+                              color: primary,
                             ),
                             child: Row(
                               children: [
@@ -198,10 +198,10 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                                             });
                                           },
                                           color: white,
-                                          disabledColor: mainColor,
+                                          disabledColor: primary,
                                           shape: RoundedRectangleBorder(
                                               borderRadius: BorderRadius.circular(20.0),
-                                              side: BorderSide(color: mainColor)
+                                              side: BorderSide(color: primary)
                                           ),
                                           child:
                                           Text(
@@ -220,10 +220,10 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                                             });
                                           },
                                           color: white,
-                                          disabledColor: mainColor,
+                                          disabledColor: primary,
                                           shape: RoundedRectangleBorder(
                                               borderRadius: BorderRadius.circular(20.0),
-                                              side: BorderSide(color: mainColor)
+                                              side: BorderSide(color: primary)
                                           ),
                                           child:
                                           Text(
@@ -282,8 +282,7 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
         return (pm.isLoading) ?
         Center(
             child: CircularProgressIndicator(
-                backgroundColor: mainColor,
-                valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
             )
         )
             :
@@ -300,8 +299,7 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                 }
                 return Center(
                     child: CircularProgressIndicator(
-                        backgroundColor: mainColor,
-                        valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                        valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
                     )
                 );
               },
@@ -380,8 +378,7 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
         return (pm.isLoading) ?
         Center(
             child: CircularProgressIndicator(
-                backgroundColor: mainColor,
-                valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
             )
         )
             :

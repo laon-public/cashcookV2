@@ -6,9 +6,11 @@ import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/screens/main/storeDetail.dart';
 import 'package:cashcook/src/screens/main/storeDetail_2.dart';
 import 'package:cashcook/src/screens/main/storeDetail_3.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -46,12 +48,7 @@ Widget storeMiniItem(StoreMinify store, BuildContext context) {
               Row(
                 children: [
                   Text(store.store_name,
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: 'noto',
-                        color: Color(0xFF333333),
-                      )
+                      style: Body1,
                   ),
                   whiteSpaceW(5),
                   store.deliveryStatus ?
@@ -62,7 +59,7 @@ Widget storeMiniItem(StoreMinify store, BuildContext context) {
                       child:Text("포장",
                         style: TextStyle(
                             fontWeight: FontWeight.w100,
-                            fontSize: 8,
+                            fontSize: 10,
                             color: white),
                       ),
                     ),
@@ -85,6 +82,7 @@ Widget storeMiniItem(StoreMinify store, BuildContext context) {
                           "assets/resource/main/steam-color.png",
                           width: 20,
                           height: 20,
+                          color: mainColor
                         ),
                       )
                           :
@@ -109,39 +107,23 @@ Widget storeMiniItem(StoreMinify store, BuildContext context) {
                   Image.asset("assets/icon/star_full_color.png",
                     width: 12,
                     height: 12,
+                    color: mainColor,
                   ),
                   whiteSpaceW(2.0),
                   Text(
                     "${NumberFormat("#.#").format(store.store_scope)}",
-                    style: TextStyle(
-                        fontSize: 11,
-                        fontFamily: 'noto',
-                        color: Color(0xFF666666)
-                    ),
+                    style: Caption
                   ),
                   Text(" · ",
-                      style: TextStyle(
-                          fontSize: 10,
-                          fontFamily: 'noto',
-                          color: Color(0xFF666666)
-                      )
+                      style: Caption
                   ),
                   Text(
                     "DL ",
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontFamily: 'noto',
-                      color: Color(0xFFFFBC2C),
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: Caption
                   ),
                   Text(
                     (store.store_dl == 0) ? " 결제한도가 없습니다." : "${store.store_dl}%",
-                    style: TextStyle(
-                        fontSize: 11,
-                        fontFamily: 'noto',
-                        color: Color(0xFF666666)
-                    ),
+                    style: Caption.apply(color: secondary),
                   ),
                 ],
               ),
@@ -149,11 +131,7 @@ Widget storeMiniItem(StoreMinify store, BuildContext context) {
               Row(
                 children: [
                   Text(store.store_description,
-                    style: TextStyle(
-                        fontSize: 11,
-                        fontFamily: 'noto',
-                        color: Color(0xFF666666)
-                    ),),
+                    style: Body2,),
                 ],
               ),
               whiteSpaceH(4.0),
@@ -162,12 +140,7 @@ Widget storeMiniItem(StoreMinify store, BuildContext context) {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("${store.store_cat} / ${store.store_sub_cat} ",
-                    style: TextStyle(
-                        fontSize: 10,
-                        fontFamily: 'noto',
-                        color: Color(0xFFFFAA00),
-                        fontWeight: FontWeight.w600
-                    ),),
+                    style: Caption.apply(color: mainColor),),
                   whiteSpaceW(10.0),
                   store.deliveryStatus ?
                   Row(
@@ -175,11 +148,7 @@ Widget storeMiniItem(StoreMinify store, BuildContext context) {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text("배달 ",
-                          style: TextStyle(
-                              fontSize: 10,
-                              fontFamily: 'noto',
-                              color: Color(0xFF666666)
-                          )
+                          style: Caption.apply(color: secondary)
                       ),
                       Image.asset(
                         "assets/icon/time-dark.png",
@@ -187,44 +156,24 @@ Widget storeMiniItem(StoreMinify store, BuildContext context) {
                         height: 12,
                       ),
                       Text("${store.deliveryTime}",
-                          style: TextStyle(
-                              fontSize: 10,
-                              fontFamily: 'noto',
-                              color: Color(0xFF666666)
-                          )
+                          style: Caption.apply(color: secondary)
                       )
                     ],
                   )
                   :
                   Text("배달없음",
-                      style: TextStyle(
-                          fontSize: 10,
-                          fontFamily: 'noto',
-                          color: Color(0xFF666666)
-                      )
+                      style: Caption.apply(color: secondary)
                   ),
                   Text(" · ",
-                      style: TextStyle(
-                          fontSize: 10,
-                          fontFamily: 'noto',
-                          color: Color(0xFF666666)
-                      )
+                      style: Caption.apply(color: secondary)
                   ),
                   (store.minOrderAmount == null) ?
                   Text("최소주문금액 없음",
-                      style: TextStyle(
-                          fontSize: 10,
-                          fontFamily: 'noto',
-                          color: Color(0xFF666666)
-                      )
+                      style: Caption.apply(color: secondary)
                   )
                       :
                   Text("최소주문 ${store.minOrderAmount}원",
-                      style: TextStyle(
-                          fontSize: 10,
-                          fontFamily: 'noto',
-                          color: Color(0xFF666666)
-                      )
+                      style: Caption.apply(color: secondary)
                   )
                   ,
                 ],
@@ -304,12 +253,7 @@ Widget storeItem(StoreModel store, BuildContext context) {
                 Row(
                   children: [
                     Text(store.store.name,
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          fontFamily: 'noto',
-                          color: Color(0xFF333333),
-                        )
+                        style: Body1
                     ),
                     whiteSpaceW(5),
                     store.store.deliveryStatus == "1" ?
@@ -367,39 +311,23 @@ Widget storeItem(StoreModel store, BuildContext context) {
                     Image.asset("assets/icon/star_full_color.png",
                       width: 12,
                       height: 12,
+                      color: mainColor
                     ),
                     whiteSpaceW(2.0),
                     Text(
                       "${NumberFormat("#.#").format(store.store.scope)}",
-                      style: TextStyle(
-                          fontSize: 11,
-                          fontFamily: 'noto',
-                          color: Color(0xFF666666)
-                      ),
+                      style: Caption.apply(color: secondary),
                     ),
                     Text(" · ",
-                        style: TextStyle(
-                            fontSize: 10,
-                            fontFamily: 'noto',
-                            color: Color(0xFF666666)
-                        )
+                        style: Caption.apply(color: secondary)
                     ),
                     Text(
                       "DL ",
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontFamily: 'noto',
-                        color: Color(0xFFFFBC2C),
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: Caption.apply(color: mainColor),
                     ),
                     Text(
                       (store.store.limitDL == null) ? " 결제한도가 없습니다." : "${store.store.limitDL}%",
-                      style: TextStyle(
-                          fontSize: 11,
-                          fontFamily: 'noto',
-                          color: Color(0xFF666666)
-                      ),
+                      style: Caption.apply(color: secondary),
                     ),
                   ],
                 ),
@@ -407,11 +335,7 @@ Widget storeItem(StoreModel store, BuildContext context) {
                 Row(
                   children: [
                     Text(store.store.short_description,
-                      style: TextStyle(
-                          fontSize: 11,
-                          fontFamily: 'noto',
-                          color: Color(0xFF666666)
-                      ),),
+                      style: Caption,),
                   ],
                 ),
                 whiteSpaceH(4.0),
@@ -420,20 +344,11 @@ Widget storeItem(StoreModel store, BuildContext context) {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("${store.store.category_name} / ${store.store.category_sub_name}",
-                      style: TextStyle(
-                          fontSize: 10,
-                          fontFamily: 'noto',
-                          color: Color(0xFFFFAA00),
-                          fontWeight: FontWeight.w600
-                      ),),
+                      style: Caption.apply(color: mainColor),),
                     whiteSpaceW(10.0),
                     (store.store.deliveryTime == null) ?
                     Text("배달없음",
-                        style: TextStyle(
-                            fontSize: 10,
-                            fontFamily: 'noto',
-                            color: Color(0xFF666666)
-                        )
+                        style: Caption.apply(color: secondary)
                     )
                         :
                     Row(
@@ -441,11 +356,7 @@ Widget storeItem(StoreModel store, BuildContext context) {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text("배달 ",
-                            style: TextStyle(
-                                fontSize: 10,
-                                fontFamily: 'noto',
-                                color: Color(0xFF666666)
-                            )
+                            style: Caption.apply(color: secondary)
                         ),
                         Image.asset(
                           "assets/icon/time-dark.png",
@@ -453,36 +364,20 @@ Widget storeItem(StoreModel store, BuildContext context) {
                           height: 12,
                         ),
                         Text("${store.store.deliveryTime}",
-                            style: TextStyle(
-                                fontSize: 10,
-                                fontFamily: 'noto',
-                                color: Color(0xFF666666)
-                            )
+                            style: Caption.apply(color: secondary)
                         )
                       ],
                     ),
                     Text(" · ",
-                        style: TextStyle(
-                            fontSize: 10,
-                            fontFamily: 'noto',
-                            color: Color(0xFF666666)
-                        )
+                        style: Caption.apply(color: secondary)
                     ),
                     (store.store.minOrderAmount == null) ?
                     Text("최소주문금액 없음",
-                        style: TextStyle(
-                            fontSize: 10,
-                            fontFamily: 'noto',
-                            color: Color(0xFF666666)
-                        )
+                        style: Caption.apply(color: secondary)
                     )
                         :
                     Text("최소주문 ${store.store.minOrderAmount}원",
-                        style: TextStyle(
-                            fontSize: 10,
-                            fontFamily: 'noto',
-                            color: Color(0xFF666666)
-                        )
+                        style: Caption.apply(color: secondary)
                     )
                     ,
                   ],

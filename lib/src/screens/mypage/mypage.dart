@@ -73,7 +73,7 @@ class _MyPageState extends State<MyPage> {
               style: TextStyle(
                   fontFamily: 'noto',
                   fontSize: 14,
-                  color: mainColor
+                  color: primary
               ),
             ),
             onPressed: () => Navigator.pop(context, true), ),
@@ -213,8 +213,7 @@ class _MyPageState extends State<MyPage> {
           ),
           child: Center(
               child: CircularProgressIndicator(
-                  backgroundColor: mainColor,
-                  valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                  valueColor: new AlwaysStoppedAnimation<Color>(primary)
               )
           ),
         )
@@ -398,7 +397,7 @@ class _MyPageState extends State<MyPage> {
                 transform: Matrix4.translationValues(0.0, -30.0, 0.0),
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                  color: mainColor,
+                  color: primary,
                   borderRadius: BorderRadius.all(
                     Radius.circular(16),
                   ),
@@ -529,10 +528,10 @@ class _MyPageState extends State<MyPage> {
                           },
                           child: (ageView == "History") ?
                               Container(
-                              child:Text("대리점/가맹점 내역", style: TextStyle(fontSize: 16, color: mainColor, fontWeight: FontWeight.w600)),
+                              child:Text("대리점/가맹점 내역", style: TextStyle(fontSize: 16, color: primary, fontWeight: FontWeight.w600)),
                                   decoration: BoxDecoration(
                                       color: Colors.white,
-                                      border: Border(bottom: BorderSide(color: mainColor, width: 3)
+                                      border: Border(bottom: BorderSide(color: primary, width: 3)
                                       )
                                   )
                               )
@@ -549,10 +548,10 @@ class _MyPageState extends State<MyPage> {
                           },
                           child: (ageView == "Reward") ?
                               Container(
-                              child:Text("리워드 내역", style: TextStyle(fontSize: 16, color: mainColor, fontWeight: FontWeight.w600)),
+                              child:Text("리워드 내역", style: TextStyle(fontSize: 16, color: primary, fontWeight: FontWeight.w600)),
                               decoration: BoxDecoration(
                               color: Colors.white,
-                              border: Border(bottom: BorderSide(color: mainColor, width: 3)
+                              border: Border(bottom: BorderSide(color: primary, width: 3)
                               )
                               )
                               )
@@ -600,8 +599,7 @@ class _MyPageState extends State<MyPage> {
                 }
                 return Center(
                     child: CircularProgressIndicator(
-                        backgroundColor: mainColor,
-                        valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                        valueColor: new AlwaysStoppedAnimation<Color>(primary)
                     )
                 );
               },
@@ -647,7 +645,7 @@ class _MyPageState extends State<MyPage> {
                   style: TextStyle(
                       fontFamily: 'noto',
                       fontSize: 14,
-                      color: (data.type == 1) ? mainColor : Colors.amberAccent,
+                      color: (data.type == 1) ? primary : Colors.amberAccent,
                       fontWeight: FontWeight.w600),
                 ),
               ]
@@ -680,7 +678,7 @@ class _MyPageState extends State<MyPage> {
               child:Text(
                 "활동현황",
                 style: TextStyle(
-                    fontSize: 12, fontFamily: 'noto', color: mainColor, decoration: TextDecoration.underline),
+                    fontSize: 12, fontFamily: 'noto', color: primary, decoration: TextDecoration.underline),
               )
             ),
             data.type == 1
@@ -720,10 +718,10 @@ class _MyPageState extends State<MyPage> {
                           });
                         },
                         color: white,
-                        disabledColor: mainColor,
+                        disabledColor: primary,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
-                            side: BorderSide(color: mainColor)
+                            side: BorderSide(color: primary)
                         ),
                         child:
                         Text(
@@ -742,10 +740,10 @@ class _MyPageState extends State<MyPage> {
                           });
                         },
                         color: white,
-                        disabledColor: mainColor,
+                        disabledColor: primary,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
-                            side: BorderSide(color: mainColor)
+                            side: BorderSide(color: primary)
                         ),
                         child:
                         Text(
@@ -825,7 +823,7 @@ class _MyPageState extends State<MyPage> {
                               fontFamily: 'noto',
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
-                              color: mainColor))
+                              color: primary))
                   ),
                 ),
                 Expanded(
@@ -873,8 +871,7 @@ class _MyPageState extends State<MyPage> {
             ),
             child: Center(
                 child: CircularProgressIndicator(
-                    backgroundColor: mainColor,
-                    valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                    valueColor: new AlwaysStoppedAnimation<Color>(primary)
                 )
             ),
           )

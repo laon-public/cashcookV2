@@ -4,6 +4,7 @@ import 'package:cashcook/src/model/store/menu.dart';
 import 'package:cashcook/src/model/store/reviewWrite.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
@@ -19,7 +20,7 @@ Widget menuForm(BuildContext context) {
       builder: (context, ss, __) {
         return
           Container(
-              transform: Matrix4.translationValues(0.0, -85.0, 0.0),
+              transform: Matrix4.translationValues(0.0, -95.0, 0.0),
               margin: EdgeInsets.only(bottom: 10.0),
               width: MediaQuery.of(context).size.width,
               child:
@@ -44,37 +45,40 @@ Widget BigMenuItem(int bigIdx,BigMenuModel bmm, BuildContext context){
           children:[
             Consumer<StoreServiceProvider>(
               builder: (context, ssp, _){
-                return StickyHeaderBuilder(
-                  builder: (BuildContext context, double stuckAmount) {
-                    stuckAmount = 1.0 - stuckAmount.clamp(0.0, 1.0);
-                    return Container(
-                      margin: EdgeInsets.only(top: 85),
-                      padding: EdgeInsets.only(top: 10, bottom: 10, left: 20.0),
-                      child:
-                      Text(bmm.name,
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: 'noto',
-                            color: Color(0xFF444444),
-                            fontWeight: FontWeight.w600
+                return Container(
+                  transform: Matrix4.translationValues(0.0, bigIdx == 0 ? 0.0 : -95.0, 0.0),
+                  child: StickyHeaderBuilder(
+                    builder: (BuildContext context, double stuckAmount) {
+                      stuckAmount = 1.0 - stuckAmount.clamp(0.0, 1.0);
+                      return Container(
+                        margin: EdgeInsets.only(top: 95),
+                        padding: EdgeInsets.only(top: 10, bottom: 10, left: 20.0),
+                        child:
+                        Text(bmm.name,
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'noto',
+                              color: Color(0xFF444444),
+                              fontWeight: FontWeight.w600
+                          ),
+                          textAlign: TextAlign.start,
                         ),
-                        textAlign: TextAlign.start,
-                      ),
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        color: Color.lerp(white, Color(0xFFF7F7F7), stuckAmount),
-                      ),
-                    );
-                  },
-                  content: Padding(
-                      padding: EdgeInsets.only(right: 20.0),
-                      child:Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children:
-                          bmm.menuList.map((e) =>
-                              MenuItem(bigIdx,idx++,e, context)
-                          ).toList()
-                      )
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: Color.lerp(white, Color(0xFFF7F7F7), stuckAmount),
+                        ),
+                      );
+                    },
+                    content: Padding(
+                        padding: EdgeInsets.only(right: 20.0),
+                        child:Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children:
+                            bmm.menuList.map((e) =>
+                                MenuItem(bigIdx,idx++,e, context)
+                            ).toList()
+                        )
+                    ),
                   ),
                 );
               },
@@ -255,8 +259,7 @@ Widget reviewForm(BuildContext context, StoreModel store) {
                               padding: EdgeInsets.all(10),
                               child:Center(
                                   child: CircularProgressIndicator(
-                                      backgroundColor: mainColor,
-                                      valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                                      valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
                                   )
                               )
                           )
@@ -495,11 +498,9 @@ Widget otherForm(BuildContext context, StoreModel store) {
                     Stack(
                       children: [
                         Text(
-                            store.store.comment,
-                            style: TextStyle(
-                                fontSize: 13,
-                                color: Color(0xFF666666),
-                                fontFamily: 'noto'
+                            store.store.comment == null ? "매장 정보가 없습니다" : store.store.comment,
+                            style: Body1.apply(
+                              color: secondary
                             )
                         ),
                         Positioned(

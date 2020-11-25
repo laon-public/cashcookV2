@@ -64,7 +64,7 @@ class _Inquiry extends State<Inquiry> {
                     inquiryInit();
                   });
                 },
-                child: Text("작성하기",style: TextStyle(fontSize: 14, color: mainColor,decoration: TextDecoration.underline),),
+                child: Text("작성하기",style: TextStyle(fontSize: 14, color: primary,decoration: TextDecoration.underline),),
               ),
             ),
           ),

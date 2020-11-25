@@ -263,7 +263,7 @@ class _ServiceDetail extends State<ServiceDetail> {
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         fontFamily: 'noto',
-                        color: mainColor
+                        color: primary
                       )
                     ),
                   ],

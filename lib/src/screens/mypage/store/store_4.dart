@@ -73,7 +73,7 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
                       ),
                       focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                              color:mainColor
+                              color:primary
                           )
                       )
                   ),
@@ -83,7 +83,7 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
                     width: MediaQuery.of(context).size.width,
                     height: 40,
                     child:RaisedButton(
-                        color: mainColor,
+                        color: primary,
                         onPressed: () async {
                           await Provider.of<StoreProvider>(context, listen: false).bak_comment(commentController.text);
 

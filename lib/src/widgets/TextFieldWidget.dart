@@ -20,7 +20,7 @@ Widget textField(title, msg, ctrl, TextInputType textType) {
               borderSide: BorderSide(color: Color(0xffdddddd), width: 2.0),
             ),
             focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: mainColor, width: 2.0),
+              borderSide: BorderSide(color: primary, width: 2.0),
             ),
           ),
         ),

@@ -106,7 +106,7 @@ class _OrderMenu extends State<OrderMenu> {
                                     style: TextStyle(
                                         fontFamily: 'noto',
                                         fontSize: 18,
-                                        color: mainColor,
+                                        color: primary,
                                         fontWeight: FontWeight.w600
                                     ),
                                     textAlign: TextAlign.end,
@@ -136,7 +136,7 @@ class _OrderMenu extends State<OrderMenu> {
                                 style: TextStyle(
                                     fontSize: 12,
                                     fontFamily: 'noto',
-                                    color: mainColor,
+                                    color: primary,
                                     fontWeight: FontWeight.w600
                                 )),
                             whiteSpaceW(5),
@@ -148,7 +148,7 @@ class _OrderMenu extends State<OrderMenu> {
                                 style: TextStyle(
                                     fontSize: 10,
                                     fontFamily: 'noto',
-                                    color: mainColor,
+                                    color: primary,
                                     fontWeight: FontWeight.w600
                                 )),
                           ],
@@ -251,7 +251,7 @@ class _OrderMenu extends State<OrderMenu> {
                                                           child: Text(
                                                             "${numberFormat.format(int.parse(ssp.dlCtrl.text))}DL",
                                                             style: TextStyle(
-                                                                color: mainColor,
+                                                                color: primary,
                                                                 fontSize: 12,
                                                                 fontFamily: 'noto',
                                                                 fontWeight: FontWeight.w600
@@ -310,7 +310,7 @@ class _OrderMenu extends State<OrderMenu> {
                                           style: TextStyle(
                                               fontFamily: 'noto',
                                               fontSize: 18,
-                                              color: mainColor,
+                                              color: primary,
                                               fontWeight: FontWeight.w600
                                           ),
                                           textAlign: TextAlign.end,
@@ -337,7 +337,7 @@ class _OrderMenu extends State<OrderMenu> {
                                   style: TextStyle(
                                       fontFamily: 'noto',
                                       fontSize: (ssp.orderPay > (int.parse(ssp.dlCtrl.text) * 100)) ? 14 : 16,
-                                      color: (ssp.orderPay > (int.parse(ssp.dlCtrl.text) * 100)) ? Colors.black : mainColor,
+                                      color: (ssp.orderPay > (int.parse(ssp.dlCtrl.text) * 100)) ? Colors.black : primary,
                                       fontWeight: FontWeight.w600
                                   ),
                                   textAlign: (ssp.orderPay > (int.parse(ssp.dlCtrl.text) * 100)) ? TextAlign.start : TextAlign.center,
@@ -371,7 +371,7 @@ class _OrderMenu extends State<OrderMenu> {
                       whiteSpaceH(15),
                       DropdownButton(
                         isExpanded: true,
-                        icon: Icon(Icons.arrow_drop_down, color: mainColor,),
+                        icon: Icon(Icons.arrow_drop_down, color: primary,),
                         iconSize: 24,
                         elevation: 16,
                         underline: Container(
@@ -404,7 +404,7 @@ class _OrderMenu extends State<OrderMenu> {
                         height: 16,
                         child: Checkbox(
                           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          activeColor: mainColor,
+                          activeColor: primary,
                           value: isAgreeCheck,
                           onChanged: (value){
                             setState(() {

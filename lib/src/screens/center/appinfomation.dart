@@ -41,7 +41,7 @@ class AppInfomation extends StatelessWidget {
                 child: Text("공유",style:
                   TextStyle(
                       fontSize: 14,
-                      color: mainColor,
+                      color: primary,
                       fontFamily: 'noto',
                       decoration: TextDecoration.underline),), //오른쪽 상단에 텍스트 출력
               ),
@@ -101,7 +101,7 @@ class AppInfomation extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 14,
                                 fontFamily: 'noto',
-                                color: mainColor,
+                                color: primary,
                                 fontWeight: FontWeight.w600,
                               ),)
                           ],
@@ -117,7 +117,7 @@ class AppInfomation extends StatelessWidget {
                           child: Text("업데이트",style:
                           TextStyle(
                           fontSize: 14,
-                          color: mainColor,
+                          color: primary,
                           fontFamily: 'noto',
                           decoration: TextDecoration.underline),))
                     :

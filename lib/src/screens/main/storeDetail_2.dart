@@ -320,7 +320,7 @@ class _StoreDetail2 extends State<StoreDetail2> {
                                             whiteSpaceW(4.0),
                                             Text("${NumberFormat("#.#").format(widget.store.store.scope)}",
                                               style: TextStyle(
-                                                color: Color(0xFF666666),
+                                                color: secondary,
                                                 fontSize: 13,
                                                 fontFamily: 'noto',
                                               ),
@@ -350,7 +350,7 @@ class _StoreDetail2 extends State<StoreDetail2> {
                                             whiteSpaceW(4.0),
                                             Text("${widget.store.store.limitDL == null ? "100" : widget.store.store.limitDL }%",
                                               style: TextStyle(
-                                                color: Color(0xFF666666),
+                                                color: secondary,
                                                 fontSize: 13,
                                                 fontFamily: 'noto',
                                               ),

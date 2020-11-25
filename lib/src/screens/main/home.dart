@@ -2,6 +2,7 @@ import 'package:cashcook/src/provider/CarouselProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/CustomBottomNavBar.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/widgets/StoreItem.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
@@ -157,11 +158,7 @@ class _Home extends State<Home> {
                           ),
                           whiteSpaceW(4),
                           Text(this.filterAddress,
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontFamily: 'noto',
-                              color: Color(0xFF666666)
-                            ),
+                            style: Body1.apply(color: secondary),
                             textAlign: TextAlign.end,
                           ),
                           Icon(Icons.arrow_drop_down,color: Color(0xFF333333)),
@@ -349,10 +346,7 @@ class _Home extends State<Home> {
                                             ),
                                             whiteSpaceH(6),
                                             Text(serviceName[idx]['code_name'],
-                                              style: TextStyle(
-                                                  fontFamily: 'noto',
-                                                  fontSize: 10,
-                                                  color: Color(0xFF666666)),),
+                                              style: Caption.apply(color: secondary),),
                                           ],
                                         )
                                     ),
@@ -388,10 +382,7 @@ class _Home extends State<Home> {
                                           ),
                                           whiteSpaceH(6),
                                           Text(serviceName[idx+5]['code_name'],
-                                            style: TextStyle(
-                                                fontFamily: 'noto',
-                                                fontSize: 10,
-                                                color: Color(0xFF666666)),),
+                                            style: Caption.apply(color: secondary),),
                                         ],
                                       )
                                   ),
@@ -445,11 +436,7 @@ class _Home extends State<Home> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text("우리 동네 맛집",
-                          style: TextStyle(
-                              fontFamily: 'noto',
-                              fontSize: 15,
-                              color: black,
-                              fontWeight: FontWeight.w600),),
+                          style: Subtitle2,),
                         InkWell(
                           onTap: () async {
                             await P.Provider.of<StoreProvider>(context, listen: false).clearMap();
@@ -466,11 +453,7 @@ class _Home extends State<Home> {
                               ),
                               whiteSpaceW(4.0),
                               Text("지도로 보기",
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  fontFamily: 'noto',
-                                  color: Color(0xFF666666)
-                                )
+                                style: Body2.apply(color: secondary)
                               ),
                             ],
                           ),
@@ -490,8 +473,7 @@ class _Home extends State<Home> {
                     child:
                     Center(
                         child: CircularProgressIndicator(
-                            backgroundColor: mainColor,
-                            valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                            valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
                         )
                     )
                 )
@@ -675,7 +657,7 @@ class _Home extends State<Home> {
                                           style: TextStyle(
                                               fontFamily: 'noto',
                                               fontSize: 13,
-                                              color: Color(0xFF666666)),
+                                              color: secondary),
                                         ),
                                       ),
                                       decoration: BoxDecoration(
@@ -736,8 +718,7 @@ class _Home extends State<Home> {
                               child:
                               Center(
                                   child: CircularProgressIndicator(
-                                      backgroundColor: mainColor,
-                                      valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                                      valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
                                   )
                               )
                           )
@@ -837,6 +818,19 @@ class _Home extends State<Home> {
                 SingleChildScrollView(
                   child: Column(
                     children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: Text(
+                          "카테고리",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontFamily: 'noto',
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFF333333)
+                          )
+                        ),
+                      ),
+                      whiteSpaceH(20),
                       Row(
                         children: [0,1,2,3].map((e) =>
                             Expanded(
@@ -856,7 +850,7 @@ class _Home extends State<Home> {
                                     ),
                                     Text(serviceName[e]['code_name'],
                                       style: TextStyle(
-                                          color: Color(0xFF666666),
+                                          color: secondary,
                                           fontFamily: 'noto',
                                           fontSize: 10,
                                           fontWeight: FontWeight.w400
@@ -888,7 +882,7 @@ class _Home extends State<Home> {
                                     ),
                                     Text(serviceName[e]['code_name'],
                                       style: TextStyle(
-                                          color: Color(0xFF666666),
+                                          color: secondary,
                                           fontFamily: 'noto',
                                           fontSize: 10,
                                           fontWeight: FontWeight.w400
@@ -920,7 +914,7 @@ class _Home extends State<Home> {
                                     ),
                                     Text(serviceName[e]['code_name'],
                                       style: TextStyle(
-                                          color: Color(0xFF666666),
+                                          color: secondary,
                                           fontFamily: 'noto',
                                           fontSize: 10,
                                           fontWeight: FontWeight.w400

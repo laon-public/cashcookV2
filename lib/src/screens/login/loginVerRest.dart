@@ -66,8 +66,7 @@ class _LoginVerRest extends State<LoginVerRest> {
                 // }
                 return (auth.isLoading) ?
                 CircularProgressIndicator(
-                    backgroundColor: mainColor,
-                    valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                    valueColor: new AlwaysStoppedAnimation<Color>(primary)
                 )
                     :
                 Container(
@@ -98,7 +97,7 @@ class _LoginVerRest extends State<LoginVerRest> {
                                 borderSide: BorderSide(color: Color(0xffCCCCCC), width: 1.0),
                               ),
                               focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: mainColor, width: 1.0),
+                                borderSide: BorderSide(color: primary, width: 1.0),
                               ),
                             ),
                           ),
@@ -119,7 +118,7 @@ class _LoginVerRest extends State<LoginVerRest> {
                                 borderSide: BorderSide(color: Color(0xffCCCCCC), width: 1.0),
                               ),
                               focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: mainColor, width: 1.0),
+                                borderSide: BorderSide(color: primary, width: 1.0),
                               ),
                             ),
                           ),
@@ -134,7 +133,7 @@ class _LoginVerRest extends State<LoginVerRest> {
                                         Radius.circular(6.0)
                                     )
                                 ),
-                                color: mainColor,
+                                color: primary,
                                 onPressed: () {
                                   if(usernameCtrl.text == "" || passwordCtrl.text == "") {
                                     showToast("계정정보를 모두 입력해주세요!");
@@ -263,8 +262,7 @@ class _LoginVerRest extends State<LoginVerRest> {
                                       width: 50,
                                       height: 50,
                                       child: CircularProgressIndicator(
-                                          backgroundColor: mainColor,
-                                          valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                                          valueColor: new AlwaysStoppedAnimation<Color>(primary)
                                       ),
                                     ),
                                     whiteSpaceH(20),

@@ -2,6 +2,7 @@ import 'package:cashcook/src/model/account.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/buy/buy.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
@@ -249,10 +250,8 @@ class _PaymentMethodState extends State<PaymentMethod> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("* 최소 충전금액은 500,000원 입니다.",
-                style: TextStyle(
-                  color: Color(0xFF666666),
-                  fontSize: 14,
-                  fontFamily: 'noto'
+                style: Body1.apply(
+                  color: secondary
                 ),
                 textAlign: TextAlign.start,
               ),

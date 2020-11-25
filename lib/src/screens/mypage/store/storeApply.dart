@@ -62,8 +62,7 @@ class _StoreApplyState extends State<StoreApplyState>{
                 width: MediaQuery.of(context).size.width / 0.5,
                 height: MediaQuery.of(context).size.height / 1.5,
                 child:CircularProgressIndicator(
-                  backgroundColor: subBlue,
-                  valueColor: new AlwaysStoppedAnimation<Color>(mainColor),
+                    valueColor: new AlwaysStoppedAnimation<Color>(primary)
                 )
             ),
           ),
@@ -82,7 +81,7 @@ class _StoreApplyState extends State<StoreApplyState>{
                         ),
                         Text("매장 등록을 진행 중 입니다.",
                             style: TextStyle(
-                              color: mainColor,
+                              color: primary,
                               fontSize: 20,
                               fontFamily: 'noto',
                             )),
@@ -102,8 +101,7 @@ class _StoreApplyState extends State<StoreApplyState>{
                 width: MediaQuery.of(context).size.width / 0.5,
                 height: MediaQuery.of(context).size.height / 1.5,
                 child:CircularProgressIndicator(
-                  backgroundColor: subBlue,
-                  valueColor: new AlwaysStoppedAnimation<Color>(mainColor),
+                    valueColor: new AlwaysStoppedAnimation<Color>(primary)
                 )
             ),
           ),
@@ -116,13 +114,13 @@ class _StoreApplyState extends State<StoreApplyState>{
                       children: [
                         Text("거의 완료 되었습니다!",
                             style: TextStyle(
-                              color: mainColor,
+                              color: primary,
                               fontSize: 20,
                               fontFamily: 'noto',
                             )),
                         Text("조금만 더 기다려주세요!",
                             style: TextStyle(
-                              color: mainColor,
+                              color: primary,
                               fontSize: 20,
                               fontFamily: 'noto',
                             )),
@@ -134,7 +132,7 @@ class _StoreApplyState extends State<StoreApplyState>{
                         ),
                         Text("메뉴 등록을 진행 중 입니다.",
                             style: TextStyle(
-                              color: mainColor,
+                              color: primary,
                               fontSize: 20,
                               fontFamily: 'noto',
                             )),
@@ -158,7 +156,7 @@ class _StoreApplyState extends State<StoreApplyState>{
                       children: [
                         Text("매장 등록에 성공 했습니다!",
                             style: TextStyle(
-                              color: mainColor,
+                              color: primary,
                               fontSize: 20,
                               fontFamily: 'noto',
                             )),
@@ -180,7 +178,7 @@ class _StoreApplyState extends State<StoreApplyState>{
                                 MaterialPageRoute(builder: (context) => MainMap()),
                                     (route) => false);
                           },
-                          color: mainColor,
+                          color: primary,
                           child: Text(
                             "메인으로 돌아가기",
                             style: TextStyle(

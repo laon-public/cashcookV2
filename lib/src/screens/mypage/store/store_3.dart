@@ -113,7 +113,7 @@ class _StoreApplyThirdStepState extends State<StoreApplyThirdStep> {
                 height: 40,
               child:
               RaisedButton(
-                color: mainColor,
+                color: primary,
                 onPressed: () async {
                   bool result = await Provider.of<StoreProvider>(context, listen: false).bak_menu();
 
@@ -176,7 +176,7 @@ class _StoreApplyThirdStepState extends State<StoreApplyThirdStep> {
                     ),
                     focusedBorder: UnderlineInputBorder(
                       borderSide:
-                      BorderSide(color: mainColor, width: 3.0),
+                      BorderSide(color: primary, width: 3.0),
                     ),
                   ),
                 ),
@@ -254,7 +254,7 @@ class _StoreApplyThirdStepState extends State<StoreApplyThirdStep> {
                 ),
                 focusedBorder:
                 OutlineInputBorder(
-                  borderSide: BorderSide(color: mainColor, width: 2.0),
+                  borderSide: BorderSide(color:primary, width: 2.0),
                 ),
               ),
             ),
@@ -279,7 +279,7 @@ class _StoreApplyThirdStepState extends State<StoreApplyThirdStep> {
                 ),
                 focusedBorder:
                 OutlineInputBorder(
-                  borderSide: BorderSide(color: mainColor, width: 2.0),
+                  borderSide: BorderSide(color: primary, width: 2.0),
                 ),
               ),
             ),

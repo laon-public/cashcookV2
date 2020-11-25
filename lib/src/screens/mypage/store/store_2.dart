@@ -134,7 +134,7 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
                             flex: 1,
                             child:DropdownButton(
                               isExpanded: true,
-                              icon: Icon(Icons.arrow_drop_down, color: mainColor,),
+                              icon: Icon(Icons.arrow_drop_down, color: primary,),
                               iconSize: 24,
                               elevation: 16,
                               underline: Container(
@@ -159,7 +159,7 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
                           flex: 1,
                           child: DropdownButton(
                             isExpanded: true,
-                            icon: Icon(Icons.arrow_drop_down, color: mainColor,),
+                            icon: Icon(Icons.arrow_drop_down, color: primary,),
                             iconSize: 24,
                             elevation: 16,
                             underline: Container(
@@ -212,7 +212,7 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
                   ),
                   focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                          color:mainColor
+                          color:primary
                       )
                   )
               ),
@@ -280,7 +280,7 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
   TextStyle _decorationStyleOf(BuildContext context) {
     final theme = Theme.of(context);
     return theme.textTheme.subhead
-        .copyWith(fontSize: 14, color: mainColor);
+        .copyWith(fontSize: 14, color: primary);
   }
 
   void getData(address, lat, lon){
@@ -317,7 +317,7 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
                 borderSide: BorderSide(color: Color(0xffdddddd), width: 2.0),
               ),
               focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: mainColor, width: 2.0),
+                borderSide: BorderSide(color: primary, width: 2.0),
               ),
             ),
           ),
@@ -353,7 +353,7 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
                       },
                       child: Text("지도찾기")),
                   suffixStyle:
-                      TextStyle(fontSize: 14, color: mainColor),
+                      TextStyle(fontSize: 14, color: primary),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   border: UnderlineInputBorder(
                     borderSide:
@@ -361,7 +361,7 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
                   ),
                   focusedBorder: UnderlineInputBorder(
                     borderSide:
-                        BorderSide(color: mainColor, width: 2.0),
+                        BorderSide(color: primary, width: 2.0),
                   ),
                 ),
               ),
@@ -443,7 +443,7 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
               },
               child: Text("다음"),
               textColor: Colors.white,
-              color: mainColor,
+              color: primary,
             ),
           );
         },
@@ -503,7 +503,7 @@ class _PicturesState extends State<Pictures> {
                 InkWell(
                   child: Container(
                     width: 90,
-                    color: mainColor,
+                    color: primary,
                     child: Center(child: Text("파일첨부", style:
                     TextStyle(
                         color: white,

@@ -377,10 +377,8 @@ class _ChargePoint2State extends State<ChargePoint2> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text("* 최소 충전금액은 ${numberFormat.format(payLimit * rate)}원 입니다.",
-                          style: TextStyle(
-                            color: Color(0xFF666666),
-                            fontSize: 14,
-                            fontFamily: 'noto'
+                          style: Body1.apply(
+                            color: secondary
                           )
                         ),
                         (widget.pointType == "CARAT") ?

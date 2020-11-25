@@ -3,6 +3,7 @@ import 'package:cashcook/src/screens/main/search.dart';
 import 'package:cashcook/src/screens/mypage/info/scrap.dart';
 import 'package:cashcook/src/screens/mypage/info/serviceList.dart';
 import 'package:cashcook/src/screens/mypage/mypage.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/utils/pageMoving.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
@@ -39,11 +40,7 @@ Widget CustomBottomNavBar(BuildContext context, String pageName) {
                     whiteSpaceH(4),
                     Text(
                       "찜",
-                      style: TextStyle(
-                          fontSize: 10,
-                          fontFamily: 'noto',
-                          color: Color(0xFF999999)
-                      ),
+                      style: Caption,
                     )
                   ],
                 ),
@@ -67,11 +64,7 @@ Widget CustomBottomNavBar(BuildContext context, String pageName) {
                     whiteSpaceH(4),
                     Text(
                       "검색",
-                      style: TextStyle(
-                          fontSize: 10,
-                          fontFamily: 'noto',
-                          color: Color(0xFF999999)
-                      ),
+                      style: Caption,
                     )
                   ],
                 ),
@@ -143,11 +136,7 @@ Widget CustomBottomNavBar(BuildContext context, String pageName) {
                     whiteSpaceH(4),
                     Text(
                       "이용내역",
-                      style: TextStyle(
-                          fontSize: 10,
-                          fontFamily: 'noto',
-                          color: Color(0xFF999999)
-                      ),
+                      style: Caption,
                     )
                   ],
                 ),
@@ -174,11 +163,7 @@ Widget CustomBottomNavBar(BuildContext context, String pageName) {
                     whiteSpaceH(4),
                     Text(
                       "마이",
-                      style: TextStyle(
-                          fontSize: 10,
-                          fontFamily: 'noto',
-                          color: Color(0xFF999999)
-                      ),
+                      style: Caption,
                     )
                   ],
                 ),

@@ -92,7 +92,7 @@ class _FirstRecommendation extends State<FirstRecommendation> {
                 whiteSpaceH(24),
                 Text('추천회원',
                   style: TextStyle(
-                      fontFamily: 'noto', fontSize: 12, color: mainColor),
+                      fontFamily: 'noto', fontSize: 12, color: primary),
                 ),
                 whiteSpaceH(4),
                 Consumer<UserProvider>(
@@ -106,13 +106,13 @@ class _FirstRecommendation extends State<FirstRecommendation> {
                       child: DropdownButton(
                         isExpanded: true,
                         icon: Icon(Icons.arrow_drop_down,
-                          color: mainColor,
+                          color: primary,
                         ),
                         iconSize: 24,
                         elevation: 16,
                         underline: Container(
                             height: 2,
-                            color: mainColor
+                            color: primary
                         ),
                         value: (user.recomemberList.length < 2) ? _unSelectedValue : _selectedValue ,
                         items: user.recomemberList.map(
@@ -172,7 +172,7 @@ class _FirstRecommendation extends State<FirstRecommendation> {
                       apply(userProvider.loginUser);
                     },
                     elevation: 0.0,
-                    color: mainColor,
+                    color: primary,
                     shape:
                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                     child: Center(

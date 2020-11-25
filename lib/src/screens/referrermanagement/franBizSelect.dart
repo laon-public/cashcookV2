@@ -45,8 +45,7 @@ class _FranBizSelect extends State<FranBizSelect> {
           return (user.isLoading) ?
           Center(
               child: CircularProgressIndicator(
-                  backgroundColor: mainColor,
-                  valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                  valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
               )
           )
               :

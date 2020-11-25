@@ -74,7 +74,7 @@ class _Register extends State<Register> {
                                     textAlign: TextAlign.center,
                                   ),
                                   decoration: BoxDecoration(
-                                      color: auth.registerForm['sex'] == "MAN" ? mainColor : white,
+                                      color: auth.registerForm['sex'] == "MAN" ? primary : white,
                                       border: Border.all(
                                           color: Color(0xFFCCCCCC),
                                           width: 1
@@ -99,7 +99,7 @@ class _Register extends State<Register> {
                                     textAlign: TextAlign.center,
                                   ),
                                   decoration: BoxDecoration(
-                                      color: auth.registerForm['sex'] == "WOMAN" ? mainColor : white,
+                                      color: auth.registerForm['sex'] == "WOMAN" ? primary : white,
                                       border: Border.all(
                                           color: Color(0xFFCCCCCC),
                                           width: 1
@@ -168,7 +168,7 @@ class _Register extends State<Register> {
                               borderSide: BorderSide(color: Color(0xffCCCCCC), width: 1.0),
                             ),
                             focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: mainColor, width: 1.0),
+                              borderSide: BorderSide(color: primary, width: 1.0),
                             ),
                           ),
                         ),
@@ -185,7 +185,7 @@ class _Register extends State<Register> {
                           elevation: 0.0,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(6)),
-                          color: mainColor,
+                          color: primary,
                           onPressed: () async {
                             await auth.authRegister();
                           },
@@ -251,7 +251,7 @@ class _Register extends State<Register> {
                           borderSide: BorderSide(color: Color(0xffCCCCCC), width: 1.0),
                         ),
                         focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: mainColor, width: 1.0),
+                          borderSide: BorderSide(color: primary, width: 1.0),
                         ),
                       ),
                     ),
@@ -260,7 +260,7 @@ class _Register extends State<Register> {
                   height: 40,
                   child: RaisedButton(
                     elevation: 0.0,
-                    color: mainColor,
+                    color: primary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(
                           Radius.circular(0)
@@ -324,7 +324,7 @@ class _Register extends State<Register> {
                 borderSide: BorderSide(color: Color(0xffCCCCCC), width: 1.0),
               ),
               focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: mainColor, width: 1.0),
+                borderSide: BorderSide(color: primary, width: 1.0),
               ),
             ),
           ),

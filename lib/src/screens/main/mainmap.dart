@@ -1227,8 +1227,7 @@ class _MainMap extends State<MainMap> {
                             padding: EdgeInsets.all(10),
                             child:Center(
                                 child: CircularProgressIndicator(
-                                    backgroundColor: mainColor,
-                                    valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                                    valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
                                 )
                             )
                         )

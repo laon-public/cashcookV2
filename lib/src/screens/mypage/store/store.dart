@@ -128,7 +128,7 @@ class _StoreApplyFirstStep extends State<StoreApplyFirstStep> {
           ),
           DropdownButton(
               isExpanded: true,
-              icon: Icon(Icons.arrow_drop_down, color: mainColor,),
+              icon: Icon(Icons.arrow_drop_down, color: primary,),
               iconSize: 24,
               elevation: 16,
               underline: Container(
@@ -160,7 +160,7 @@ class _StoreApplyFirstStep extends State<StoreApplyFirstStep> {
                 borderSide: BorderSide(color: Color(0xffdddddd), width: 2.0),
               ),
               focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: mainColor, width: 2.0),
+                borderSide: BorderSide(color: primary, width: 2.0),
               ),
             ),
           ),
@@ -218,7 +218,7 @@ class _StoreApplyFirstStep extends State<StoreApplyFirstStep> {
         },
         child: Text("다음"),
         textColor: Colors.white,
-        color: mainColor,
+        color: primary,
       ),
     );
   }
@@ -280,7 +280,7 @@ class _BusinessNumberState extends State<BusinessNumber> {
                 InkWell(
                   child: Container(
                     width: 90,
-                    color: mainColor,
+                    color: primary,
                     child: Center(child: Text("파일첨부", style:
                       TextStyle(
                         color: white,

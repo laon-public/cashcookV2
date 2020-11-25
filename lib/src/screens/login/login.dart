@@ -332,7 +332,7 @@ class _Login extends State<Login> {
                     color: white,
                     child: Center(
                       child: SpinKitFadingCircle(
-                        color: mainColor,
+                        color: primary,
                         size: 80.0,
                       ),
                     ),

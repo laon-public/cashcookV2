@@ -51,8 +51,7 @@ class _InvitationList extends State<InvitationList> {
               return (phoneProvider.isLoading) ?
                 Center(
                     child: CircularProgressIndicator(
-                      backgroundColor: mainColor,
-                      valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                        valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
                     )
                 )
                   :

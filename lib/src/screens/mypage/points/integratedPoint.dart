@@ -224,8 +224,7 @@ class _IntegratedPoint extends State<IntegratedPoint> {
         return (pm.isLoading) ?
         Center(
             child: CircularProgressIndicator(
-                backgroundColor: mainColor,
-                valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
             )
         )
             :

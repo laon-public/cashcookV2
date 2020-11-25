@@ -95,8 +95,7 @@ class _Buy extends State<Buy> {
           child: ispOn
               ? Center(
                     child: CircularProgressIndicator(
-                        backgroundColor: mainColor,
-                        valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
+                        valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
                     )
                 )
               : Container(),

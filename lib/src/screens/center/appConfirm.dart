@@ -28,7 +28,7 @@ class _AppConfirm extends State<AppConfirm> {
     return Consumer<CenterProvider>(
       builder: (context, cp, _){
         return Scaffold(
-            backgroundColor: cp.isLoading? white : (cp.phoneVersion == cp.appVersion) ? white : mainColor,
+            backgroundColor: cp.isLoading? white : (cp.phoneVersion == cp.appVersion) ? white : primary,
             body: cp.isLoading ?
               Container()
                 :
@@ -48,7 +48,7 @@ class _AppConfirm extends State<AppConfirm> {
     return Stack(
       children: [
         Container(
-            color: mainColor,
+            color: primary,
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
         ),
@@ -253,7 +253,7 @@ class _AppConfirm extends State<AppConfirm> {
                                 height: 84,
                                 child: RaisedButton(
                                   elevation: 0.0,
-                                  color: mainColor,
+                                  color: primary,
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(100)
