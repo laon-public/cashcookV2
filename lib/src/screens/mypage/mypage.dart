@@ -21,6 +21,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cashcook/src/screens/mypage/info/scrap.dart';
 import 'package:cashcook/src/screens/referrermanagement/franBizSelect.dart';
+import 'package:cashcook/src/screens/referrermanagement/franBizInfo.dart';
 
 class MyPage extends StatefulWidget {
   bool isHome;
@@ -41,6 +42,7 @@ class _MyPageState extends State<MyPage> {
   String ageView = "History";
   String selectUser = "";
   String viewType = "day";
+  int agencyCheck;
 
   @override
   void initState() {
@@ -859,11 +861,14 @@ class _MyPageState extends State<MyPage> {
   }
 
   Widget storeForm(){
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       Provider.of<UserProvider>(context, listen:false).fetchMyInfo(context);
+      agencyCheck = await Provider.of<UserProvider>(context, listen: false).selectMyAgency();
     });
     return Consumer<UserProvider>(
         builder: (context, user, _) {
+
+
           return (user.isLoading) ?
           Container(
             width: MediaQuery.of(context).size.width,
@@ -969,7 +974,7 @@ class _MyPageState extends State<MyPage> {
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Column(
                                 children: [
-                                  BizSelect(),
+                                  agencyCheck == 1 ? BizInfo() : BizSelect(),
                                   QrCard(),
                                   HistoryCard(),
                                   sellDlCard(),
@@ -1062,17 +1067,7 @@ class _MyPageState extends State<MyPage> {
   Widget BizSelect(){
     return InkWell(
       onTap: () async{
-        int agencyCheck = await Provider.of<UserProvider>(context, listen: false).selectMyAgency();
-        print("agencyCheck : $agencyCheck");
-
-        if(agencyCheck != 1){
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => FranBizSelect()
-          ));
-        } else {
-          showToast("이미 총판이 등록되어있습니다.");
-        }
-
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => FranBizSelect()));
       },
       child: Container(
         width: double.infinity,
@@ -1086,7 +1081,7 @@ class _MyPageState extends State<MyPage> {
             children: [
               Image.asset("assets/icon/left_payment.png", height: 42, fit: BoxFit.contain,),
               SizedBox(width: 12,),
-              Text("총판 입력",style: TextStyle(fontSize: 16,color: Color(0xff444444), fontWeight: FontWeight.w600)),
+              Text("총판 등록",style: TextStyle(fontSize: 16,color: Color(0xff444444), fontWeight: FontWeight.w600)),
               Spacer(),
               Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 24,),
             ],
@@ -1096,6 +1091,33 @@ class _MyPageState extends State<MyPage> {
     );
   }
 
+  Widget BizInfo(){
+    return InkWell(
+      onTap: () async{
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => FranBizInfo()));
+      },
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: white,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset("assets/icon/left_payment.png", height: 42, fit: BoxFit.contain,),
+              SizedBox(width: 12,),
+              Text("총판 정보",style: TextStyle(fontSize: 16,color: Color(0xff444444), fontWeight: FontWeight.w600)),
+              Spacer(),
+              Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 24,),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+  
   Widget QrCard(){
     return InkWell(
       onTap: (){
