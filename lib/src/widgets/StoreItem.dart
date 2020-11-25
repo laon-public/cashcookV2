@@ -220,10 +220,8 @@ Widget storeItem(StoreModel store, BuildContext context) {
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.all(16.0),
       height: 120,
-      decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(color: Color(0xFFEEEEEE), width: 1))
-      ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           CachedNetworkImage(
             imageUrl: store.store.shop_img1,
@@ -311,7 +309,7 @@ Widget storeItem(StoreModel store, BuildContext context) {
                     Image.asset("assets/icon/star_full_color.png",
                       width: 12,
                       height: 12,
-                      color: primary
+                      color: etcYellow
                     ),
                     whiteSpaceW(2.0),
                     Text(
@@ -323,7 +321,7 @@ Widget storeItem(StoreModel store, BuildContext context) {
                     ),
                     Text(
                       "DL ",
-                      style: Caption.apply(color: primary, fontWeightDelta: 1),
+                      style: Caption.apply(color: etcYellow, fontWeightDelta: 1),
                     ),
                     Text(
                       (store.store.limitDL == null) ? " 결제한도가 없습니다." : "${store.store.limitDL}%",
@@ -335,7 +333,7 @@ Widget storeItem(StoreModel store, BuildContext context) {
                 Row(
                   children: [
                     Text(store.store.short_description,
-                      style: Caption,),
+                      style: Body2,),
                   ],
                 ),
                 whiteSpaceH(4.0),
@@ -362,8 +360,9 @@ Widget storeItem(StoreModel store, BuildContext context) {
                           "assets/icon/time-dark.png",
                           width: 12,
                           height: 12,
+                          color: secondary
                         ),
-                        Text("${store.store.deliveryTime}",
+                        Text("  ${store.store.deliveryTime}",
                             style: Caption.apply(color: secondary)
                         )
                       ],

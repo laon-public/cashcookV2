@@ -224,7 +224,7 @@ class StoreServiceProvider with ChangeNotifier {
 
     reviewAvg = 0.0;
     reviewList.clear();
-    notifyListeners();
+    startLoading();
     if(num == 0){
       final response = await service.fetchMenu(store_id);
 

@@ -158,10 +158,10 @@ class _Home extends State<Home> {
                           ),
                           whiteSpaceW(4),
                           Text(this.filterAddress,
-                            style: Body1.apply(color: secondary),
+                            style: Body2.apply(color: secondary),
                             textAlign: TextAlign.end,
                           ),
-                          Icon(Icons.arrow_drop_down,color: Color(0xFF333333)),
+                          Icon(Icons.arrow_drop_down,color: black),
                         ]
                       )
                   ),
@@ -448,8 +448,8 @@ class _Home extends State<Home> {
                             children: [
                               Image.asset(
                                 "assets/resource/main/go-map.png",
-                                width: 24,
-                                height: 24,
+                                width: 16,
+                                height: 16,
                               ),
                               whiteSpaceW(4.0),
                               Text("지도로 보기",
@@ -567,12 +567,7 @@ class _Home extends State<Home> {
                               whiteSpaceW(8),
                               Text(
                                 serviceName[idx]['code_name'],
-                                style: TextStyle(
-                                    color: Color(0xFF333333),
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: 'noto'
-                                ),
+                                style: Body1,
                               ),
                               Icon(Icons.arrow_drop_down,color: Color(0xFF333333)),
                             ],
@@ -654,10 +649,13 @@ class _Home extends State<Home> {
                                       margin: EdgeInsets.symmetric(horizontal: 16),
                                       child: Center(
                                         child: Text(ssp.subCatList[idx].code_name,
-                                          style: TextStyle(
-                                              fontFamily: 'noto',
-                                              fontSize: 13,
-                                              color: secondary),
+                                          style: Body1.apply(
+                                            fontWeightDelta: -1,
+                                            color: ssp.selectSubCat_code == ssp.subCatList[idx].code ?
+                                                black
+                                                :
+                                                third
+                                          ),
                                         ),
                                       ),
                                       decoration: BoxDecoration(
@@ -731,20 +729,18 @@ class _Home extends State<Home> {
                                 child: Row(
                                   children: [
                                     Text("${ssp.count}",
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontFamily: 'noto',
-                                            color: mainColor,
-                                            fontWeight: FontWeight.bold
+                                        style: Subtitle2.apply(
+                                          color: primary
                                         )
                                     ),
                                     Text("개 매장",
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontFamily: 'noto',
-                                            color: Color(0xFF333333),
-                                            fontWeight: FontWeight.bold
-                                        )
+                                        style: Subtitle2
+                                    ),
+                                    whiteSpaceW(8.0),
+                                    Image.asset(
+                                      "assets/resource/main/go-map.png",
+                                      width: 20,
+                                      height: 20,
                                     ),
                                   ],
                                 ),
@@ -813,6 +809,7 @@ class _Home extends State<Home> {
         context: context,
         child: Flexible(
           child: Container(
+              height: MediaQuery.of(context).size.height * 1/2,
               padding: EdgeInsets.only(right: 20, left: 20),
               child:
                 SingleChildScrollView(
@@ -822,12 +819,7 @@ class _Home extends State<Home> {
                         width: MediaQuery.of(context).size.width,
                         child: Text(
                           "카테고리",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontFamily: 'noto',
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xFF333333)
-                          )
+                          style: Subtitle2
                         ),
                       ),
                       whiteSpaceH(20),
@@ -849,11 +841,8 @@ class _Home extends State<Home> {
                                         height: 36
                                     ),
                                     Text(serviceName[e]['code_name'],
-                                      style: TextStyle(
-                                          color: secondary,
-                                          fontFamily: 'noto',
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w400
+                                      style: Caption.apply(
+                                        color: secondary
                                       ),
                                     )
                                   ],
@@ -881,11 +870,8 @@ class _Home extends State<Home> {
                                         height: 36
                                     ),
                                     Text(serviceName[e]['code_name'],
-                                      style: TextStyle(
-                                          color: secondary,
-                                          fontFamily: 'noto',
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w400
+                                      style: Caption.apply(
+                                          color: secondary
                                       ),
                                     )
                                   ],

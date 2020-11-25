@@ -331,7 +331,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                   ),
                                                   whiteSpaceW(4.0),
                                                   Text("${NumberFormat("#.#").format(widget.store.store.scope)}",
-                                                    style: Body1.apply(color: secondary),
+                                                    style: Body1.apply(color: secondary, fontWeightDelta: -1),
                                                     textAlign: TextAlign.center,
                                                   )
                                                 ],
@@ -347,17 +347,14 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                             Expanded(
                                               child: Row(
                                                 children: [
-                                                  Text("DL",
-                                                      style: TextStyle(
-                                                          fontSize: 15,
-                                                          fontFamily: 'noto',
-                                                          color: mainColor,
-                                                          fontWeight: FontWeight.w700
+                                                  Text("DL ",
+                                                      style: Body1.apply(
+                                                        color: primary
                                                       )
                                                   ),
                                                   whiteSpaceW(4.0),
                                                   Text("${widget.store.store.limitDL == null ? "100" : widget.store.store.limitDL }%",
-                                                    style: Body1.apply(color: secondary),
+                                                    style: Body1.apply(color: secondary, fontWeightDelta: -1),
                                                     textAlign: TextAlign.center,
                                                   )
                                                 ],
@@ -393,7 +390,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                     ),
                                                     whiteSpaceW(4.0),
                                                     Text("QR 스캔",
-                                                      style: Body1.apply(color: secondary),
+                                                      style: Body1.apply(color: secondary, fontWeightDelta: -1),
                                                       textAlign: TextAlign.center,
                                                     )
                                                   ],
@@ -573,13 +570,12 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                                   child:Text(
                                                                       "상품",
                                                                       textAlign: TextAlign.center,
-                                                                      style: TextStyle(
-                                                                          fontSize: 14,
-                                                                          fontFamily: 'noto',
-                                                                          color: ss.serviceNum == 0 ?
-                                                                          Color(0xFF333333)
-                                                                              :
-                                                                          Color(0xFF999999)
+                                                                      style: Body1.apply(
+                                                                        fontWeightDelta: -1,
+                                                                        color: ss.serviceNum == 0 ?
+                                                                            black
+                                                                            :
+                                                                            third
                                                                       )
                                                                   ),
                                                                 )
@@ -595,13 +591,12 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                                 child:Text(
                                                                     "정보",
                                                                     textAlign: TextAlign.center,
-                                                                    style: TextStyle(
-                                                                        fontSize: 14,
-                                                                        fontFamily: 'noto',
+                                                                    style: Body1.apply(
+                                                                        fontWeightDelta: -1,
                                                                         color: ss.serviceNum == 1 ?
-                                                                        Color(0xFF333333)
+                                                                        black
                                                                             :
-                                                                        Color(0xFF999999)
+                                                                        third
                                                                     )
                                                                 ),
                                                               ),
@@ -617,14 +612,13 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                                   child: Text(
                                                                     "리뷰",
                                                                     textAlign: TextAlign.center,
-                                                                    style: TextStyle(
-                                                                        fontSize: 14,
-                                                                        fontFamily: 'noto',
+                                                                    style: Body1.apply(
+                                                                        fontWeightDelta: -1,
                                                                         color: ss.serviceNum == 2 ?
-                                                                        Color(0xFF333333)
+                                                                        black
                                                                             :
-                                                                        Color(0xFF999999)
-                                                                    ),
+                                                                        third
+                                                                    )
                                                                   ),
                                                                 )
                                                             ),

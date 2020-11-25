@@ -29,7 +29,7 @@ class _MenuSlideDialog extends State<MenuSlideDialog> {
 
     return AnimatedPadding(
       padding: MediaQuery.of(context).viewInsets +
-          EdgeInsets.only(top: deviceHeight / 1.7 + _currentPosition),
+          EdgeInsets.only(top: deviceHeight / 2.0 + _currentPosition),
       duration: Duration(milliseconds: 100),
       curve: Curves.decelerate,
       child: MediaQuery.removeViewInsets(

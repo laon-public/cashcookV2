@@ -21,13 +21,13 @@ final TextStyle appBarDefaultText = TextStyle(
  */
 TextStyle Headline = const TextStyle(
   fontSize: 24,
-  fontWeight: FontWeight.w600,
+  fontWeight: FontWeight.w500,
   fontFamily: 'noto',
   color: Color(0xFF333333)
 );
 TextStyle Subtitle1 = const TextStyle(
     fontSize: 20,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w500,
     fontFamily: 'noto',
     color: Color(0xFF333333)
 );
@@ -39,25 +39,25 @@ TextStyle Subtitle2 = const TextStyle(
 );
 TextStyle Body1 = const TextStyle(
     fontSize: 14,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w400,
     fontFamily: 'noto',
     color: Color(0xFF444444)
 );
 TextStyle Body2 = const TextStyle(
   fontSize: 12,
   fontFamily: 'noto',
-  fontWeight: FontWeight.w500,
+  fontWeight: FontWeight.w400,
   color : Color(0xFF999999)
 );
 TextStyle Caption = const TextStyle(
     fontSize: 11,
     fontFamily: 'noto',
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w400,
     color: Color(0xFF999999)
 );
 TextStyle TabsTagsStyle = const TextStyle(
     fontSize: 10,
     fontFamily: 'noto',
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w400,
     color: Color(0xFF999999)
 );

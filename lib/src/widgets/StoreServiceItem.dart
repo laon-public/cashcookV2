@@ -55,12 +55,7 @@ Widget BigMenuItem(int bigIdx,BigMenuModel bmm, BuildContext context){
                         padding: EdgeInsets.only(top: 10, bottom: 10, left: 20.0),
                         child:
                         Text(bmm.name,
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: 'noto',
-                              color: Color(0xFF444444),
-                              fontWeight: FontWeight.w600
-                          ),
+                          style: Subtitle2,
                           textAlign: TextAlign.start,
                         ),
                         width: MediaQuery.of(context).size.width,
@@ -160,10 +155,9 @@ Widget MenuItem(int bigIdx,int idx,MenuModel mm, BuildContext context) {
                 maxLines: 1,
                 softWrap: false,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'noto',
-                    color: Color(0xFF333333)
+                style: Body1.apply(
+                  color: black,
+                  fontWeightDelta: -1
                 )
             ),
           ),
@@ -171,10 +165,9 @@ Widget MenuItem(int bigIdx,int idx,MenuModel mm, BuildContext context) {
             maxLines: 1,
             softWrap: false,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-                color: Color(0xFF444444),
-                fontSize: 14,
-                fontFamily: 'noto'
+            style: Body1.apply(
+                color: secondary,
+                fontWeightDelta: -1
             ),
             textAlign: TextAlign.end,
           )
@@ -204,8 +197,10 @@ Widget reviewForm(BuildContext context, StoreModel store) {
                                       begin: Alignment.centerLeft,
                                       end: Alignment.centerRight,
                                       colors: [
-                                        mainColor,
-                                        subColor,
+                                        primary,
+                                        primary,
+                                        primary,
+                                        Color(0xFFFF4800)
                                       ]
                                   )
                               ),
@@ -215,11 +210,8 @@ Widget reviewForm(BuildContext context, StoreModel store) {
                                 children: [
                                   Text("고객평점",
                                       style:
-                                      TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                          fontFamily: 'noto',
-                                          color: Color(0xFF333333)
+                                      Subtitle2.apply(
+                                        color: white
                                       )
                                   ),
                                   Spacer(),
@@ -234,17 +226,9 @@ Widget reviewForm(BuildContext context, StoreModel store) {
                                       ]
                                   ),
                                   whiteSpaceW(8.0),
-                                  Text("${NumberFormat("#.#").format(ss.reviewAvg)}",
-                                      style: TextStyle(
-                                        fontFamily: 'noto',
-                                        fontSize: 13,
-                                        color: white,
-                                      )),
-                                  Text(" | 5.0",
-                                      style: TextStyle(
-                                        fontFamily: 'noto',
-                                        fontSize: 13,
-                                        color: Color(0xFFFFDD88),
+                                  Text("${NumberFormat("#.#").format(ss.reviewAvg)} | 5.0",
+                                      style: Body2.apply(
+                                        color: white
                                       )),
                                 ],
                               )
@@ -275,19 +259,11 @@ Widget reviewForm(BuildContext context, StoreModel store) {
                                         crossAxisAlignment: CrossAxisAlignment.end,
                                         children: [
                                           Text("리뷰  ",
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontFamily: 'noto',
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Color(0xFF333333)
-                                              )
+                                              style: Subtitle2
                                           ),
-                                          Text("${ss.reviewList.length} 개",
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontFamily: 'noto',
-                                                  fontWeight: FontWeight.w600,
-                                                  color: mainColor
+                                          Text("${ss.reviewList.length}개",
+                                              style: Subtitle2.apply(
+                                                color: primary
                                               )
                                           )
                                         ],
@@ -316,36 +292,30 @@ Widget reviewForm(BuildContext context, StoreModel store) {
 Widget reviewListItem(idx,review, BuildContext context) {
   return Container(
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.all(16),
+      padding: EdgeInsets.only(left: 16, right: 16, top: 16),
       child:
       Column(
           children: [
             Row(
                 children: [
                   Text("${review.username}",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'noto',
-                          fontWeight: FontWeight.w600
+                      style: Body1.apply(
+                        fontWeightDelta: -1,
+                        color: black
                       )),
-                  whiteSpaceW(15),
-                  Text("${review.date.split("T").first}",
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontFamily: 'noto',
-                          color: Color(0xFF888888)
-                      )),
+                  whiteSpaceW(8.0),
+                  Text("${DateFormat("yy.MM.dd").format(DateTime.parse(review.date))}",
+                      style: Caption),
                   Spacer(),
                   Image.asset(
                     "assets/icon/review/star_full_color.png",
-                    width: 14,
-                    height: 14,
+                    width: 16,
+                    height: 16,
                   ),
+                  whiteSpaceW(4.0),
                   Text("${review.scope}",
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontFamily: 'noto',
-                          color: Color(0xFF888888)
+                      style: Body2.apply(
+                        color: black
                       ))
                 ]),
             whiteSpaceH(5),
@@ -354,10 +324,8 @@ Widget reviewListItem(idx,review, BuildContext context) {
                 child:Text(
                     "${review.contents}",
                     softWrap: true,
-                    style: TextStyle(
-                        fontSize: 12,
-                        fontFamily: 'noto',
-                        color: Color(0xFF888888)
+                    style: Body2.apply(
+                      color: secondary
                     )
                 )
             ),
@@ -365,25 +333,17 @@ Widget reviewListItem(idx,review, BuildContext context) {
             Row(
                 children: [
                   likeImage(idx,review.id,review.isLike, context),
-                  whiteSpaceW(10),
+                  whiteSpaceW(2),
                   Text(
                       "${review.like}",
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontFamily: 'noto',
-                          color: Color(0xFF888888)
-                      )
+                      style: Body2
                   ),
-                  whiteSpaceW(20),
+                  whiteSpaceW(12),
                   hateImage(idx,review.id, review.isHate, context),
-                  whiteSpaceW(10),
+                  whiteSpaceW(2),
                   Text(
                       "${review.hate}",
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontFamily: 'noto',
-                          color: Color(0xFF888888)
-                      )
+                      style: Body2
                   )
                 ]
             ),
@@ -403,8 +363,9 @@ Widget hateImage(idx,review_id,isHate,BuildContext context) {
       },
       child:Image.asset(
         "assets/icon/dislike_grey.png",
-        width: 18,
-        height: 18,
+        width: 16,
+        height: 16,
+        color: secondary
       )
   )
       :
@@ -415,9 +376,9 @@ Widget hateImage(idx,review_id,isHate,BuildContext context) {
       },
       child:Image.asset(
           "assets/icon/hate_color.png",
-          width: 18,
-          height: 18,
-          color: mainColor
+          width: 16,
+          height: 16,
+          color: primary
       )
   );
 }
@@ -432,8 +393,9 @@ Widget likeImage(idx,review_id,isLike, BuildContext context) {
       },
       child:Image.asset(
         "assets/icon/like_grey.png",
-        width: 18,
-        height: 18,
+        width: 16,
+        height: 16,
+        color: secondary
       )
   )
       :
@@ -444,9 +406,9 @@ Widget likeImage(idx,review_id,isLike, BuildContext context) {
       },
       child:Image.asset(
         "assets/icon/like_color.png",
-        width: 18,
-        height: 18,
-        color: mainColor,
+        width: 16,
+        height: 16,
+        color: primary,
       )
   );
 }
@@ -455,15 +417,15 @@ Widget starImage(avg,idx) {
   return (avg >= idx) ?
   Image.asset(
     "assets/icon/star_full_color.png",
-    width: 14,
-    height: 14,
+    width: 16,
+    height: 16,
     color: white,
   )
       :
   Image.asset(
     "assets/icon/star_color.png",
-    width: 14,
-    height: 14,
+    width: 16,
+    height: 16,
     color: white,
   );
 }
@@ -482,12 +444,7 @@ Widget otherForm(BuildContext context, StoreModel store) {
                   padding: EdgeInsets.symmetric(vertical: 10.0),
                   width: MediaQuery.of(context).size.width,
                   child: Text("매장 정보",
-                      style: TextStyle(
-                          color: Color(0xFF333333),
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                          fontFamily: 'noto'
-                      )
+                      style: Subtitle2
                   ),
                 ),
                 Container(
@@ -500,7 +457,8 @@ Widget otherForm(BuildContext context, StoreModel store) {
                         Text(
                             store.store.comment == null ? "매장 정보가 없습니다" : store.store.comment,
                             style: Body1.apply(
-                                color: secondary
+                                color: secondary,
+                              fontWeightDelta: -1
                             )
                         ),
                         Positioned(

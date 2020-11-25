@@ -40,7 +40,7 @@ Widget CustomBottomNavBar(BuildContext context, String pageName) {
                     whiteSpaceH(4),
                     Text(
                       "찜",
-                      style: Caption,
+                      style: TabsTagsStyle,
                     )
                   ],
                 ),
@@ -64,7 +64,7 @@ Widget CustomBottomNavBar(BuildContext context, String pageName) {
                     whiteSpaceH(4),
                     Text(
                       "검색",
-                      style: Caption,
+                      style: TabsTagsStyle,
                     )
                   ],
                 ),
@@ -136,7 +136,7 @@ Widget CustomBottomNavBar(BuildContext context, String pageName) {
                     whiteSpaceH(4),
                     Text(
                       "이용내역",
-                      style: Caption,
+                      style: TabsTagsStyle,
                     )
                   ],
                 ),
@@ -163,7 +163,7 @@ Widget CustomBottomNavBar(BuildContext context, String pageName) {
                     whiteSpaceH(4),
                     Text(
                       "마이",
-                      style: Caption,
+                      style: TabsTagsStyle,
                     )
                   ],
                 ),

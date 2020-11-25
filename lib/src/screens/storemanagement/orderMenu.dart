@@ -65,25 +65,14 @@ class _OrderMenu extends State<OrderMenu> {
                 children: [
                   whiteSpaceH(8),
                   Text("주문내역",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'noto',
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600
-                      )),
-                  whiteSpaceH(16),
+                      style: Subtitle2),
+                  whiteSpaceH(26),
                   Consumer<StoreServiceProvider>(
                       builder: (context, ss, _) {
                         return orderList(ss.orderList);
                       }
                   ),
-                  whiteSpaceH(16),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 1,
-                    color: Color(0xFFDDDDDD),
-                  ),
-                  whiteSpaceH(8),
+                  whiteSpaceH(24),
                   Consumer<StoreServiceProvider>(
                       builder: (context, ss, _){
                         return Row(
@@ -91,11 +80,9 @@ class _OrderMenu extends State<OrderMenu> {
                               Expanded(
                                   child: Text(
                                     "총 주문 금액",
-                                    style: TextStyle(
-                                        fontFamily: 'noto',
-                                        fontSize: 16,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w600
+                                    style: Body1.apply(
+                                      color: secondary,
+                                      fontWeightDelta: -1
                                     ),
                                     textAlign: TextAlign.start,
                                   )
@@ -103,11 +90,9 @@ class _OrderMenu extends State<OrderMenu> {
                               Expanded(
                                   child: Text(
                                     "${numberFormat.format(ss.orderPay)}원",
-                                    style: TextStyle(
-                                        fontFamily: 'noto',
-                                        fontSize: 18,
+                                    style: Body1.apply(
                                         color: primary,
-                                        fontWeight: FontWeight.w600
+                                        fontWeightDelta: -1
                                     ),
                                     textAlign: TextAlign.end,
                                   )
@@ -116,7 +101,13 @@ class _OrderMenu extends State<OrderMenu> {
                         );
                       }
                   ),
-                  whiteSpaceH(50),
+                  whiteSpaceH(24),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 1,
+                    color: Color(0xFFDDDDDD),
+                  ),
+                  whiteSpaceH(24),
                   Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -167,76 +158,33 @@ class _OrderMenu extends State<OrderMenu> {
                                           child: Row(
                                               children: [
                                                 Expanded(
-                                                  child:Text(
-                                                      "총 주문 금액",
-                                                      style: TextStyle(
-                                                          fontSize: 12,
-                                                          fontFamily: 'noto',
-                                                          color: Color(0xFF444444)
-                                                      )
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child:Text(
-                                                    "${numberFormat.format(ssp.orderPay)}원",
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        fontFamily: 'noto',
-                                                        color: Color(0xFF444444)
-                                                    ),
-                                                    textAlign: TextAlign.end,
-                                                  ),
-                                                ),
-                                              ]
-                                          )
-                                      ),
-                                    ]
-                                ),
-                              );
-                          },
-                        ),
-                        Consumer<StoreServiceProvider>(
-                          builder: (context, ssp, _){
-                            return
-                              Padding(
-                                padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                          flex: 4,
-                                          child: Row(
-                                              children: [
-                                                Expanded(
                                                   flex: 3,
                                                   child:
                                                   Row(
                                                       children: [
                                                         Text(
                                                             "DL 결제 수량",
-                                                            style: TextStyle(
-                                                                fontSize: 12,
-                                                                fontFamily: 'noto',
-                                                                color: Color(0xFF444444)
+                                                            style: Body1.apply(
+                                                              color: black,
+                                                              fontWeightDelta: -1
                                                             )
                                                         ),
                                                         whiteSpaceW(5.0),
                                                         RaisedButton(
-                                                          color: white,
+                                                          color: ssp.dlCtrl.text == "" || ssp.dlCtrl.text == "0" ? white : primary,
                                                           onPressed: () {
                                                             showDLDialog();
                                                           },
                                                           child: Text(
-                                                            "DL 사용",
-                                                            style: TextStyle(
-                                                              color: Color(0xFF444444),
-                                                              fontSize: 12,
-                                                              fontFamily: 'noto',
-                                                            ),
+                                                            "${ssp.dlCtrl.text == "" || ssp.dlCtrl.text == "0" ? "DL 사용" : "${numberFormat.format(int.parse(ssp.dlCtrl.text))}DL"}",
+                                                            style: Body1.apply(
+                                                              color : ssp.dlCtrl.text == "" || ssp.dlCtrl.text == "0" ? secondary : white,
+                                                              fontWeightDelta: -1,
+                                                            )
                                                           ),
                                                           elevation: 0.0,
                                                           shape: Border.all(
-                                                              color: Color(0xFFDDDDDD)
+                                                              color: ssp.dlCtrl.text == "" || ssp.dlCtrl.text == "0" ? Color(0xFFDDDDDD) : primary
                                                           ),
                                                         )
                                                       ]
@@ -249,23 +197,9 @@ class _OrderMenu extends State<OrderMenu> {
                                                       children: [
                                                         Expanded(
                                                           child: Text(
-                                                            "${numberFormat.format(int.parse(ssp.dlCtrl.text))}DL",
-                                                            style: TextStyle(
-                                                                color: primary,
-                                                                fontSize: 12,
-                                                                fontFamily: 'noto',
-                                                                fontWeight: FontWeight.w600
-                                                            ),
-
-                                                          ),
-                                                        ),
-                                                        Expanded(
-                                                          child: Text(
                                                             "-${numberFormat.format(int.parse(ssp.dlCtrl.text) * 100)}원",
-                                                            style: TextStyle(
-                                                                fontSize: 12,
-                                                                fontFamily: 'noto',
-                                                                color: Color(0xFF444444)
+                                                            style: Body2.apply(
+
                                                             ),
                                                             textAlign: TextAlign.end,
                                                           ),
@@ -281,13 +215,7 @@ class _OrderMenu extends State<OrderMenu> {
                               );
                           },
                         ),
-                        whiteSpaceH(16),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 1,
-                          color: Color(0xFFDDDDDD),
-                        ),
-                        whiteSpaceH(8),
+                        whiteSpaceH(24),
                         Consumer<StoreServiceProvider>(
                             builder: (context, ss, _){
                               return Row(
@@ -682,11 +610,7 @@ class _OrderMenu extends State<OrderMenu> {
           Padding(
               padding: EdgeInsets.symmetric(vertical: 10.0),
               child:Text(bmm.name,
-                style: TextStyle(
-                    fontSize: 12,
-                    color: Color(0xFF888888),
-                    fontFamily: 'noto'
-                ),
+                style: Body2,
                 textAlign: TextAlign.start,
               )
           ),
@@ -714,113 +638,111 @@ class _OrderMenu extends State<OrderMenu> {
                     child: Row(
                         children: [
                           Expanded(
-                            child:Text(
-                                "${mm.name}",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    fontFamily: 'noto',
-                                    color: Color(0xFF444444)
-                                )
-                            ),
-                          ),
-                          Expanded(
-                            child:Text(
-                                "${numberFormat.format(mm.price)}원",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    fontFamily: 'noto',
-                                    color: Color(0xFF444444)
-                                )
-                            ),
+                            child:Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                    "${mm.name}",
+                                    style: Body1.apply(
+                                      color: black,
+                                      fontWeightDelta: -1
+                                    )
+                                ),
+                                Text(
+                                    "${numberFormat.format(mm.price)}원",
+                                    style: Body1.apply(
+                                        color: third,
+                                        fontWeightDelta: -1
+                                    )
+                                ),
+                              ],
+                            )
                           ),
                         ]
                     )
                 ),
                 Expanded(
                     flex: 2,
-                    child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              width: 24,
-                              height: 24,
-                              child: RaisedButton(
-                                  onPressed: () {
-                                    ssp.decreaseCount(bigIdx,idx);
-                                  },
-                                  elevation: 0.0,
-                                  color: Color(0xFFEEEEEE),
-                                  padding: EdgeInsets.zero,
-                                  shape:Border.all(
-                                      color: Color(0xFFDDDDDD)
-                                  ),
-                                  child: Center(
-                                      child: Text(
-                                        "-",
-                                        style: TextStyle(
-                                            fontFamily: 'noto',
-                                            color: Colors.black,
-                                            fontSize: 14
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      )
-                                  )
-                              ),
-                            ),
-                          ),
-                          whiteSpaceW(4),
-                          Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(color: Color(0xFFDDDDDD), width: 1)
+                        )
+                      ),
+                      child: Row(
+                          children: [
+                            Expanded(
                               child: Container(
                                 width: 24,
                                 height: 24,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border.all(
-                                        color: Color(0xFFDDDDDD)
-                                    )
-                                ),
-                                child: Center(
-                                    child: Text(
-                                        "${mm.count}",
-                                        style: TextStyle(
-                                            fontFamily: 'noto',
-                                            color: Colors.black,
-                                            fontSize: 14
+                                child: RaisedButton(
+                                    onPressed: () {
+                                      ssp.decreaseCount(bigIdx,idx);
+                                    },
+                                    elevation: 0.0,
+                                    color: Colors.transparent,
+                                    padding: EdgeInsets.zero,
+                                    child: Center(
+                                        child: Text(
+                                          "-",
+                                          style: TextStyle(
+                                              fontFamily: 'noto',
+                                              color: Colors.black,
+                                              fontSize: 14
+                                          ),
+                                          textAlign: TextAlign.center,
                                         )
                                     )
                                 ),
-                              )
-                          ),
-                          whiteSpaceW(4),
-                          Expanded(
-                            child: Container(
-                              width: 24,
-                              height: 24,
-                              child: RaisedButton(
-                                  onPressed: () {
-                                    ssp.increaseCount(bigIdx,idx);
-                                  },
-                                  elevation: 0.0,
-                                  color: Color(0xFFEEEEEE),
-                                  padding: EdgeInsets.zero,
-                                  shape:Border.all(
-                                      color: Color(0xFFDDDDDD)
-                                  ),
-                                  child: Center(
-                                      child: Text(
-                                        "+",
-                                        style: TextStyle(
-                                            fontFamily: 'noto',
-                                            color: Colors.black,
-                                            fontSize: 14
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      )
-                                  )
                               ),
                             ),
-                          ),
-                        ]
+                            whiteSpaceW(4),
+                            Expanded(
+                                child: Container(
+                                  width: 24,
+                                  height: 24,
+                                  color: Colors.transparent,
+                                  child: Center(
+                                      child: Text(
+                                          "${mm.count}",
+                                          style: TextStyle(
+                                              fontFamily: 'noto',
+                                              color: Colors.black,
+                                              fontSize: 14
+                                          )
+                                      )
+                                  ),
+                                )
+                            ),
+                            whiteSpaceW(4),
+                            Expanded(
+                              child: Container(
+                                width: 24,
+                                height: 24,
+                                child: RaisedButton(
+                                    onPressed: () {
+                                      ssp.increaseCount(bigIdx,idx);
+                                    },
+                                    elevation: 0.0,
+                                    color: Colors.transparent,
+                                    padding: EdgeInsets.zero,
+                                    child: Center(
+                                        child: Text(
+                                          "+",
+                                          style: TextStyle(
+                                              fontFamily: 'noto',
+                                              color: black,
+                                              fontSize: 14
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        )
+                                    )
+                                ),
+                              ),
+                            ),
+                          ]
+                      ),
                     )
                 ),
                 Expanded(
@@ -831,10 +753,9 @@ class _OrderMenu extends State<OrderMenu> {
                             "${numberFormat.format(mm.price *
                                 mm.count)}원",
                             textAlign: TextAlign.end,
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 12,
-                                fontFamily: 'noto'
+                            style: Body1.apply(
+                              color: secondary,
+                              fontWeightDelta: -1
                             )
                         )
                     )

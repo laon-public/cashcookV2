@@ -164,7 +164,6 @@ class _MainMap extends State<MainMap> {
                         : Container(),
                     sp.detailView
                         ?
-
                     Positioned(
                         bottom: sp.position,
                         child: GestureDetector(
@@ -283,11 +282,9 @@ class _MainMap extends State<MainMap> {
                                                     whiteSpaceW(20),
                                                     Text(
                                                       "${sp.selStore.store.category_name} / ${sp.selStore.store.category_sub_name}",
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.w100,
-                                                          fontSize: 12,
-                                                          color: mainColor,
-                                                          fontFamily: 'noto'),
+                                                      style: Body2.apply(
+                                                        color: primary
+                                                      )
                                                     )
                                                   ],
                                                 ),

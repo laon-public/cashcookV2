@@ -81,12 +81,7 @@ class _SearchPage extends State<SearchPage> {
                 builder: (context, pp, _) {
                   return TextField(
                     cursorColor: Color(0xff000000),
-                    style: TextStyle(
-                        color: Color(0xFF333333),
-                        fontSize: 16,
-                        fontFamily: 'noto',
-                        fontWeight: FontWeight.bold
-                    ),
+                    style: Subtitle2,
                     controller: queryCtrl,
                     autofocus: false,
                     onSubmitted: (value) async {
