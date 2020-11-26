@@ -75,8 +75,9 @@ class _FirstRecommendation extends State<FirstRecommendation> {
                       Text(
                         "캐시쿡을 추천해준\n친구를 선택해주세요.",
                         textAlign: TextAlign.start,
-                        style: TextStyle(
-                            fontFamily: 'noto', fontSize: 16, color: Color(0xFF222222)),
+                        style: Subtitle2.apply(
+                          fontWeightDelta: -1
+                        ),
                       ),
                       whiteSpaceW(12),
                       Container(
@@ -91,8 +92,9 @@ class _FirstRecommendation extends State<FirstRecommendation> {
                 ),
                 whiteSpaceH(24),
                 Text('추천회원',
-                  style: TextStyle(
-                      fontFamily: 'noto', fontSize: 12, color: primary),
+                  style: Body2.apply(
+                    color: primary
+                  ),
                 ),
                 whiteSpaceH(4),
                 Consumer<UserProvider>(
@@ -151,8 +153,7 @@ class _FirstRecommendation extends State<FirstRecommendation> {
                       Text(
                         '$memb',
                         textAlign: TextAlign.start,
-                        style: TextStyle(
-                            fontFamily: 'noto', fontSize: 12, color: Color(0xFF888888)),
+                        style: Body2,
                       ),
                       whiteSpaceW(12),
                     ],
@@ -178,11 +179,10 @@ class _FirstRecommendation extends State<FirstRecommendation> {
                     child: Center(
                       child: Text(
                         "확인",
-                        style: TextStyle(
-                            color: white,
-                            fontSize: 14,
-                            fontFamily: 'noto',
-                            fontWeight: FontWeight.w600),
+                        style: Body1.apply(
+                          color:white,
+                          fontWeightDelta: 1
+                        )
                       ),
                     ),
                   ),

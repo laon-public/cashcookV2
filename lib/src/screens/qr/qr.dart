@@ -1,13 +1,11 @@
 import 'package:cashcook/src/provider/QRProvider.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
-import 'package:cashcook/src/screens/bargain/bargain.dart';
 import 'package:cashcook/src/screens/bargain/bargaingame.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/screens/mypage/info/serviceList.dart';
 import 'package:cashcook/src/screens/qr/qrPayment.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
-import 'package:cashcook/src/widgets/dialog.dart';
-import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_qr_bar_scanner/qr_bar_scanner_camera.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -117,8 +115,9 @@ class _Qr extends State<Qr> {
               child: Text(
                 "위 영역 안에 제공된\nQR코드를 스캔해주세요.",
                 textAlign: TextAlign.center,
-                style:
-                TextStyle(color: white, fontFamily: 'noto', fontSize: 14),
+                style: Body1.apply(
+                  color: white
+                ),
               ),
             ),
             Positioned(
@@ -149,11 +148,8 @@ class _Qr extends State<Qr> {
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     child: Text(storeName,
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontFamily: 'noto',
-                        fontWeight: FontWeight.w700,
-                        color: white,
+                      style: appBarDefaultText.apply(
+                        color: white
                       ),
                       textAlign: TextAlign.center,
                     ),

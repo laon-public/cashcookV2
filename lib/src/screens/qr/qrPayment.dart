@@ -56,30 +56,19 @@ class _QrPayment extends State<QrPayment> {
               children: [
                 whiteSpaceH(31.0),
                 Text("${widget.storeName} 결제금액",
-                  style: TextStyle(
-                      fontFamily: 'noto',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xFF333333)
-                  ),
+                  style: Body1.apply(
+                    fontWeightDelta: 1
+                  )
                 ),
-                Text("${numberFormat.format(qp.paymentModel.price)} KRW",
-                  style: TextStyle(
-                      fontFamily: 'noto',
-                      fontSize: 20,
-                      color: Color(0xFF333333)
-                  ),
+                Text("${numberFormat.format(qp.paymentModel.price)} 원",
+                  style: Subtitle2
                 ),
                 whiteSpaceH(20.0),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text("현금결제 금액",
-                        style: TextStyle(
-                            color: Color(0xFF999999),
-                            fontSize: 12,
-                            fontFamily: 'noto'
-                        )
+                        style: Body2
                     ),
                   ],
                 ),
@@ -94,21 +83,17 @@ class _QrPayment extends State<QrPayment> {
                     Flexible(
                       child: TextFormField(
                         textAlign: TextAlign.end,
-                        style: TextStyle(
-                          color:Color(0xFF333333),
-                          fontFamily: 'noto',
-                          fontSize: 16,
+                        style: Subtitle2.apply(
+                          fontWeightDelta: -1
                         ),
                         readOnly: true,
                         controller: qp.paymentEditModel.priceCtrl,
                         cursorColor: Color(0xff000000),
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                          suffixText: " KRW",
-                          suffixStyle: TextStyle(
-                              color: Color(0xFF333333),
-                              fontSize: 16,
-                              fontFamily: 'noto'
+                          suffixText: " 원",
+                          suffixStyle: Subtitle2.apply(
+                              fontWeightDelta: -1
                           ),
                           border: UnderlineInputBorder(
                             borderSide: BorderSide(color: Color(0xffdddddd), width: 1.0),
@@ -125,11 +110,7 @@ class _QrPayment extends State<QrPayment> {
                 Container(
                     width: MediaQuery.of(context).size.width,
                     child:Text("현금으로 결제할 금액을 입력해주세요.",
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontFamily: 'noto',
-                          color: Color(0xFF999999)
-                      ),
+                      style: Body2,
                       textAlign: TextAlign.end,
                     )
                 ),
@@ -137,19 +118,13 @@ class _QrPayment extends State<QrPayment> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text("결제 DL",
-                        style: TextStyle(
-                            color: Color(0xFF999999),
-                            fontSize: 12,
-                            fontFamily: 'noto'
-                        )
+                        style: Body2
                     ),
                     whiteSpaceW(5.0),
                     Text("* ${numberFormat.format(pointMap['DL'])} DL 보유 중",
-                        style: TextStyle(
-                            fontSize: 10,
-                            fontFamily: 'noto',
-                            color: mainColor,
-                            fontWeight: FontWeight.w600
+                        style: TabsTagsStyle.apply(
+                          color: primary,
+                          fontWeightDelta: 1
                         )
                     )
                   ],
@@ -165,10 +140,8 @@ class _QrPayment extends State<QrPayment> {
                         Flexible(
                           child: TextFormField(
                             textAlign: TextAlign.end,
-                            style: TextStyle(
-                              color:Color(0xFF333333),
-                              fontFamily: 'noto',
-                              fontSize: 16,
+                            style: Subtitle2.apply(
+                              fontWeightDelta: -1
                             ),
                             onChanged: (value) {
                               qp.changeDl();
@@ -178,10 +151,8 @@ class _QrPayment extends State<QrPayment> {
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                               suffixText: " DL",
-                              suffixStyle: TextStyle(
-                                  color: Color(0xFF333333),
-                                  fontSize: 16,
-                                  fontFamily: 'noto'
+                              suffixStyle: Subtitle2.apply(
+                                  fontWeightDelta: -1
                               ),
                               contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
                               border: UnderlineInputBorder(
@@ -203,11 +174,8 @@ class _QrPayment extends State<QrPayment> {
                       "* 결제한도가 없는 매장 입니다."
                           :
                       "* 해당매장의 결제한도는 ${qp.store.store.limitDL}% DL 입니다.",
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontFamily: 'noto',
-                          color: mainColor,
-                          fontWeight: FontWeight.w600
+                      style: Body2.apply(
+                        color: primary
                       ),
                     textAlign: TextAlign.end,
                   ),
@@ -228,10 +196,8 @@ class _QrPayment extends State<QrPayment> {
                           },
                       color: mainColor,
                       child: Text("결제하기",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: 'noto',
-                              color: white
+                          style: Body1.apply(
+                            color: white
                           )
                       )
                   ),
@@ -251,11 +217,8 @@ class _QrPayment extends State<QrPayment> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20)),
             title: Text("결제안내",
-              style: TextStyle(
-                color: Color(0xFF444444),
-                fontSize: 14,
-                fontFamily: 'noto',
-                fontWeight: FontWeight.w600,
+              style: Body1.apply(
+                fontWeightDelta: 1
               ),
               textAlign: TextAlign.center,
             ),
@@ -269,20 +232,15 @@ class _QrPayment extends State<QrPayment> {
                         Text("${qp.store.store.name}에서 ${numberFormat.format(qp.paymentModel.price)}원을\n"
                             "${numberFormat.format(int.parse(qp.paymentEditModel.priceCtrl.text))}원과 "
                             "${numberFormat.format(int.parse(qp.paymentEditModel.dlCtrl.text))}DL로 각각 결제합니다.",
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontFamily: 'noto',
-                            color: Color(0xFF333333)
+                          style: Body2.apply(
+                            color: black
                           ),
                           textAlign: TextAlign.center,
                         ),
                         whiteSpaceH(22),
                         Text("결제 후 게임하기를 진행하시겠습니까?",
-                          style: TextStyle(
-                            fontSize: 10,
-                            fontFamily: 'noto',
-                            decoration: TextDecoration.underline,
-                            color: Color(0xFFCCCCCC)
+                          style: TabsTagsStyle.apply(
+                            decoration: TextDecoration.underline
                           )
                         ),
                         whiteSpaceH(22),
@@ -301,10 +259,8 @@ class _QrPayment extends State<QrPayment> {
                                     height: 64,
                                     child: Center(
                                       child: Text("취소",
-                                        style: TextStyle(
-                                          color: white,
-                                          fontSize: 14,
-                                          fontFamily: 'noto',
+                                        style: Body1.apply(
+                                          color: white
                                         )
                                       ),
                                     ),
@@ -330,10 +286,8 @@ class _QrPayment extends State<QrPayment> {
                                     height: 64,
                                     child: Center(
                                       child: Text("나중에",
-                                          style: TextStyle(
-                                            color: white,
-                                            fontSize: 14,
-                                            fontFamily: 'noto',
+                                          style: Body1.apply(
+                                            color: white
                                           )
                                       ),
                                     ),
@@ -362,10 +316,8 @@ class _QrPayment extends State<QrPayment> {
                                     height: 64,
                                     child: Center(
                                       child: Text("확인",
-                                          style: TextStyle(
-                                            color: white,
-                                            fontSize: 14,
-                                            fontFamily: 'noto',
+                                          style: Body1.apply(
+                                            color: white
                                           )
                                       ),
                                     ),

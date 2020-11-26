@@ -120,11 +120,7 @@ class _ServiceList extends State<ServiceList> {
                                                   child: Center(
                                                       child: Text(
                                                           "이용내역 조회 결과가 없습니다.",
-                                                          style: TextStyle(
-                                                              fontSize: 14,
-                                                              fontFamily: 'noto',
-                                                              color: Color(0xFF333333)
-                                                          )
+                                                          style: Body1
                                                       )
                                                   )
                                               )
@@ -163,12 +159,7 @@ class _ServiceList extends State<ServiceList> {
           width: MediaQuery.of(context).size.width,
           child: Text(
             sll.date,
-            style: TextStyle(
-              fontSize: 12,
-              color: Color(0xFF999999),
-              fontFamily: 'noto',
-              fontWeight: FontWeight.w400
-            ),
+            style: Body2,
           ),
         ),
         Column(
@@ -223,30 +214,19 @@ class _ServiceList extends State<ServiceList> {
                       Row(
                         children: [
                           Text(ol.storeName,
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'noto',
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFF333333),
+                              style: Body1.apply(
+                                fontWeightDelta: 1
                               ),
                               overflow: TextOverflow.ellipsis,
                             ),
                           whiteSpaceW(12),
                           Text(DateFormat('kk:mm').format(ol.createdAt),
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontFamily: 'noto',
-                                  color: Color(0xFF999999)
-                              )
+                              style: Body2
                           ),
                         ],
                       ),
                       Text(ol.content,
-                          style:TextStyle(
-                              fontSize: 12,
-                              fontFamily: 'noto',
-                              color: Color(0xFF999999)
-                          ),
+                          style:Body2,
                           overflow: TextOverflow.ellipsis,
                         ),
                     ],
@@ -261,28 +241,20 @@ class _ServiceList extends State<ServiceList> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text("-${numberFormat.format(ol.pay)} 원",
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontFamily: 'noto',
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFF999999)
-                            )
+                            style: Subtitle1
                         ),
                         (ol.dl == 0) ?
                         Container()
                         :
                         Text("-${numberFormat.format(ol.dl)} DL",
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontFamily: 'noto',
-                                fontWeight: FontWeight.w600,
-                                color: primary
+                            style: Subtitle1.apply(
+                              color: primary
                             )
                         ),
                       ],
                     ),
                     whiteSpaceW(12.0),
-                    Icon(Icons.arrow_forward_ios, size: 16, color: Color(0xff999999),)
+                    Icon(Icons.arrow_forward_ios, size: 16, color: black,)
                   ],
                 ),
               )
@@ -296,11 +268,8 @@ class _ServiceList extends State<ServiceList> {
     return showDialog( context: context,
       builder: (context) => AlertDialog( content: Container(
           child: Text("앱을 종료하시겠습니까?",
-            style: TextStyle(
-                fontFamily: 'noto',
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFF333333)
+            style: Body1.apply(
+              fontWeightDelta: 1
             ),
             textAlign: TextAlign.center,
           )
@@ -308,20 +277,18 @@ class _ServiceList extends State<ServiceList> {
         actions: <Widget>[
           FlatButton(
             child: Text("예",
-              style: TextStyle(
-                  fontFamily: 'noto',
-                  fontSize: 14,
-                  color: primary
+              style: Body1.apply(
+                  fontWeightDelta: 1,
+                color: primary
               ),
             ),
             onPressed: () => Navigator.pop(context, true), ),
           FlatButton(
             child: Text("아니요",
-              style: TextStyle(
-                  fontFamily: 'noto',
-                  fontSize: 14,
-                  color: primary
-              ),
+              style: Body1.apply(
+                  fontWeightDelta: 1,
+                  color: etcYellow
+              )
             ),
             onPressed: () => Navigator.pop(context, false), ), ], ), ) ?? false;
 

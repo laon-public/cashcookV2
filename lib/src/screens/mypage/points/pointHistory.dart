@@ -5,6 +5,7 @@ import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 
@@ -59,6 +60,12 @@ class History extends StatelessWidget {
           style: appBarDefaultText),
         centerTitle: true,
         elevation: 1,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24, color: black,),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -91,7 +98,9 @@ class History extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 8.0),
             // child: Text("현재 보유 ${point == "DL" ? "DL" : point}",
               child: Text("현재 보유 ${point == "DL" ? "DL" : point == "CARAT" ? "CARAT" : "CP"}",
-              style: TextStyle(fontSize: 14, color: mainColor),),
+              style: Body1.apply(
+                color: primary
+              ),),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -102,13 +111,10 @@ class History extends StatelessWidget {
                 builder: (context, user, _){
                   return RichText(
                     text: TextSpan(
-                        style: TextStyle(fontSize: 24,
-                            color: Color(0xff444444),
-                            fontWeight: FontWeight.w600),
+                        style: Headline,
                         children: [
-                          TextSpan(text: "${demicalFormat.format(user.nowPoint)}"),
-                          // TextSpan(text: "${point == "DL" ? "DL" : point}", style: TextStyle(fontSize: 14))
-                          TextSpan(text: "${point == "DL" ? "DL" : point == "CARAT" ? "CARAT" : "CP"}", style: TextStyle(fontSize: 14))
+                          TextSpan(text: "${demicalFormat.format(user.nowPoint)} "),
+                          TextSpan(text: "${point == "DL" ? "DL" : point == "CARAT" ? "CARAT" : "CP"}", style: Body1)
                         ]
                     ),
                   );
@@ -146,7 +152,7 @@ class History extends StatelessWidget {
             )
           );
         },
-        child: Text("충전하기", style: TextStyle(fontSize: 14),),
+        child: Text("충전하기", style: Body1,),
         padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -170,7 +176,7 @@ class History extends StatelessWidget {
 
               await Navigator.of(context).pushNamed("/point/$path", arguments: args);
             },
-            child: Text("DL 구매", style: TextStyle(fontSize: 14),),
+            child: Text("DL 구매", style: Body1,),
             padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -201,7 +207,7 @@ class History extends StatelessWidget {
                   )
               );
             },
-            child: Text("충전하기", style: TextStyle(fontSize: 14),),
+            child: Text("충전하기", style: Body1,),
             padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -226,7 +232,6 @@ class History extends StatelessWidget {
   Widget historyList() {
     return Consumer<UserProvider>(
       builder: (context, users, _) {
-        print(users.result);
         return ListView.builder(
           controller: _scrollController,
           itemBuilder: (context, idx) {
@@ -263,12 +268,9 @@ class History extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.only(bottom: 12.0),
-          child: Text(data['date'],
-            style: TextStyle(
-              color: Color(0xFF888888),
-              fontSize: 12,
-              fontFamily: 'noto'
-            )
+          child: Text(DateFormat("yy.MM.dd").format(
+              DateTime.parse( data['date'].toString())),
+            style: Body2
           ),
         ),
         Column(
@@ -288,7 +290,7 @@ class History extends StatelessWidget {
                   Expanded(
                     flex: 3,
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Expanded(
                           flex:2,
@@ -297,13 +299,14 @@ class History extends StatelessWidget {
                             children: [
                               Text("${e['title']}  ",
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                      color: Color(0xff444444))),
+                                  style: Body1.apply(
+                                    fontWeightDelta: 1
+                                  )
+                              ),
                               Text(e['type'],
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(fontSize: 12,
-                                      color: Color(0xff888888))),
+                                  style: Caption
+                              ),
                             ],
                           ),
                         ),
@@ -314,8 +317,7 @@ class History extends StatelessWidget {
                            children: [
                              Text("${e['time']}\n",
                                overflow: TextOverflow.ellipsis,
-                               style: TextStyle(fontSize: 12,
-                                   color: Color(0xff888888)),
+                               style: Body2,
                                textAlign: TextAlign.start,),
                            ],
                           )
@@ -325,10 +327,13 @@ class History extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 3,
-                    child: Text("${e['price']} ${point == "DL" ? "DL" : point == "CARAT" ? "CR" : "CP"}", style: TextStyle(fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: e['type'] == "충전" ? mainColor : Color(
-                            0xff888888)),
+                    child: Text("${e['price']} ${point == "DL" ? "DL" : point == "CARAT" ? "CR" : "CP"}",
+                      style: Subtitle1.apply(
+                          color: e['type'] == "충전" ?
+                          mainColor
+                              :
+                          third
+                      ),
                         textAlign: TextAlign.end,),
                   )
                 ],

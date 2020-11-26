@@ -2,11 +2,8 @@ import 'dart:io';
 
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
-import 'package:cashcook/src/provider/UserProvider.dart';
-import 'package:cashcook/src/screens/main/mainmap.dart';
-import 'package:cashcook/src/screens/referrermanagement/franBizSelect.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
-import 'package:cashcook/src/utils/geocoder.dart';
 import 'package:cashcook/src/widgets/TextFieldWidget.dart';
 import 'package:cashcook/src/widgets/TextFieldssWidget.dart';
 import 'package:cashcook/src/widgets/TextFieldsWidget.dart';
@@ -98,13 +95,7 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("매장 정보 1/3", style:
-          TextStyle(
-            color: black,
-            fontSize: 14,
-            fontFamily: 'noto',
-            fontWeight: FontWeight.w600,
-          )),
+        title: Text("매장 정보 1/3", style:appBarDefaultText),
         centerTitle: true,
         elevation: 0.5,
       ),
@@ -122,7 +113,7 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
           children: [
             Padding(
               padding: const EdgeInsets.only(top:5.0),
-              child: Align(child: Text("업종",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+              child: Align(child: Text("업종",style: Body2,),alignment: Alignment.centerLeft,),
             ),
             Consumer<StoreServiceProvider>(
               builder: (context, ssp, _) {
@@ -186,23 +177,21 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
             ),
             Padding(
               padding: const EdgeInsets.only(top:5.0),
-              child: Align(child: Text("고객에게 보여질 업종을 선택해주세요.",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerRight,),
+              child: Align(child: Text("고객에게 보여질 업종을 선택해주세요.",style: Body2,),alignment: Alignment.centerRight,),
             ),
             textField("매장명", "사업자등록증의 상호명을 입력해주세요.", nameCtrl,TextInputType.text),
             textField("매장요약", "20자 내외로 입력해주세요.", descSrtCtrl,TextInputType.text),
             Padding(
               padding: const EdgeInsets.only(top:5.0),
-              child: Align(child: Text("매장설명",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+              child: Align(child: Text("매장설명",style: Body2,),alignment: Alignment.centerLeft,),
             ),
             whiteSpaceH(5),
             TextFormField(
               autofocus: false,
               maxLines: 4,
               controller: descCtrl,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-                fontFamily: 'noto',
+              style: Subtitle2.apply(
+                fontWeightDelta: -2
               ),
               decoration: InputDecoration(
                   border: OutlineInputBorder(
@@ -219,23 +208,23 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
             ),
             Padding(
               padding: const EdgeInsets.only(top:5.0),
-              child: Align(child: Text("100자 내외로 입력해주세요.",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerRight,),
+              child: Align(child: Text("100자 내외로 입력해주세요.",style: Body2,),alignment: Alignment.centerRight,),
             ),
             Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Align(child: Text("매장 연락처",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+                  Align(child: Text("매장 연락처",style: Body2,),alignment: Alignment.centerLeft,),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Expanded(
                             child: textFieldss( timeCtrl1,TextInputType.phone)
                         ),
-                        Text("-",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
+                        Text("-",style: Body2,),
                         Expanded(
                             child: textFields( timeCtrl2,TextInputType.phone)
                         ),
-                        Text("-",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
+                        Text("-",style: Body2,),
                         Expanded(
                             child: textFields( timeCtrl3,TextInputType.phone)
                         ),
@@ -243,7 +232,7 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top:5.0),
-                    child: Align(child: Text("연락가능한 연락처를 입력하여주세요",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerRight,),
+                    child: Align(child: Text("연락가능한 연락처를 입력하여주세요",style: Body2,),alignment: Alignment.centerRight,),
                   ),
 
                 ]
@@ -255,7 +244,7 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
               child: Align(
                 child: Text(
                   "매장사진",
-                  style: TextStyle(fontSize: 12, color: Color(0xff888888)),
+                  style: Body2,
                 ),
                 alignment: Alignment.centerLeft,
               ),
@@ -301,7 +290,7 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
             child: Align(
               child: Text(
                 "매장주소",
-                style: TextStyle(fontSize: 12, color: Color(0xff888888)),
+                style: Body2,
               ),
               alignment: Alignment.centerLeft,
             ),
@@ -353,7 +342,9 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
                       },
                       child: Text("지도찾기")),
                   suffixStyle:
-                      TextStyle(fontSize: 14, color: primary),
+                      Body1.apply(
+                        color: primary
+                      ),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   border: UnderlineInputBorder(
                     borderSide:
@@ -372,7 +363,7 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
             child: Align(
               child: Text(
                 "지도에서 매장의 위치를 지정해주세요.",
-                style: TextStyle(fontSize: 12, color: Color(0xff888888)),
+                style: Body2,
               ),
               alignment: Alignment.centerRight,
             ),
@@ -504,12 +495,10 @@ class _PicturesState extends State<Pictures> {
                   child: Container(
                     width: 90,
                     color: primary,
-                    child: Center(child: Text("파일첨부", style:
-                    TextStyle(
-                        color: white,
-                        fontSize: 12,
-                        fontFamily: 'noto'
-                    )),),
+                    child: Center(child: Text("파일첨부",
+                        style: Body2.apply(
+                          color: white
+                        )),),
                   ),
                   onTap: () {
                     getImage();

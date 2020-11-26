@@ -97,11 +97,11 @@ class _SearchPage extends State<SearchPage> {
                     decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                        color: mainColor),
+                        color: primary),
                       ),
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                            color: mainColor),
+                            color: primary),
                       ),
                       prefixIcon: InkWell(
                         onTap: () {},
@@ -111,7 +111,7 @@ class _SearchPage extends State<SearchPage> {
                             "assets/resource/main/search_blue.png",
                             width: 24,
                             height: 24,
-                            color: mainColor,
+                            color: primary,
                           ),
                         ),
                       ),
@@ -149,7 +149,11 @@ class _SearchPage extends State<SearchPage> {
                             children:
                             pp.searchStore.length == 0 ?
                             [
-                              Text("검색어를 입력해주세요.")
+                              Text("검색어를 입력해주세요.",
+                                style: Body2.apply(
+                                  color: black
+                                )
+                              )
                             ]
                                 :
                             pp.searchStore.map((e) =>

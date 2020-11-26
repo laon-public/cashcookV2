@@ -56,11 +56,7 @@ class _limitDLState extends State<limitDL> {
               Row(
                 children: [
                   Text("DL 결제 한도 설정",
-                    style: TextStyle(
-                      color: Color(0xFF333333),
-                      fontSize: 16,
-                      fontFamily: 'noto',
-                    ),
+                    style: Subtitle2,
                   ),
                   Spacer(),
                   Switch(
@@ -83,11 +79,7 @@ class _limitDLState extends State<limitDL> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("최대 결제 DL",
-                      style: TextStyle(
-                        color: Color(0xFF999999),
-                        fontSize: 12,
-                        fontFamily: 'noto'
-                      )
+                      style: Body2
                     ),
                     Spacer(),
                     Row(
@@ -102,11 +94,7 @@ class _limitDLState extends State<limitDL> {
                           TextFormField(enabled: false) :
                           TextFormField(
                             textAlign: TextAlign.end,
-                            style: TextStyle(
-                              color:Color(0xFF333333),
-                              fontFamily: 'noto',
-                              fontSize: 16,
-                            ),
+                            style: Subtitle2,
                             cursorColor: Color(0xff000000),
                             controller: limitQuantityCtrl,
                             keyboardType: TextInputType.number,
@@ -134,6 +122,7 @@ class _limitDLState extends State<limitDL> {
                   height: 40,
                   child:RaisedButton(
                       color: primary,
+                      elevation: 0.0,
                       onPressed: () async {
                         print("limitState : $limitState");
                         print("limitQuantityCtrl.text : ${limitQuantityCtrl.text}");
@@ -157,10 +146,8 @@ class _limitDLState extends State<limitDL> {
                         await Provider.of<StoreProvider>(context, listen: false).clearMap();
                       },
                       child: Text("완료",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: 'noto',
-                            color: white,
+                          style: Body1.apply(
+                            color: white
                           ))
                   )
               )

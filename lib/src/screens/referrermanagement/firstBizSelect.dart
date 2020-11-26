@@ -1,7 +1,3 @@
-import 'dart:convert';
-
-import 'package:cashcook/src/model/usercheck.dart';
-import 'package:cashcook/src/provider/RecoProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
@@ -78,8 +74,9 @@ class _FirstBizSelect extends State<FirstBizSelect> {
                               Text(
                                 "현재 매장의\n상위총판을 선택해주세요.",
                                 textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    fontFamily: 'noto', fontSize: 16, color: Color(0xFF222222)),
+                                style: Subtitle2.apply(
+                                  fontWeightDelta: -1
+                                )
                               ),
                               whiteSpaceW(12),
                               Container(
@@ -125,8 +122,7 @@ class _FirstBizSelect extends State<FirstBizSelect> {
                               Text(
                                 '상위 총판을 선택해주세요.',
                                 textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    fontFamily: 'noto', fontSize: 12, color: Color(0xFF888888)),
+                                style: Body2
                               ),
                               whiteSpaceW(12),
                             ],
@@ -174,10 +170,9 @@ class _FirstBizSelect extends State<FirstBizSelect> {
                             child: Center(
                               child: Text(
                                 "확인",
-                                style: TextStyle(
-                                  color: white,
-                                  fontSize: 14,
-                                  fontFamily: 'noto',),
+                                style: Body1.apply(
+                                  color: white
+                                )
                               ),
                             ),
                           ),

@@ -1,4 +1,5 @@
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/widgets/StoreItem.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
@@ -62,11 +63,8 @@ class _SearchDetail extends State<SearchDetail> {
                             whiteSpaceW(8),
                             Text(
                               widget.filter,
-                              style: TextStyle(
-                                  color: Color(0xFF333333),
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: 'noto'
+                              style: Body1.apply(
+                                fontWeightDelta: 2
                               ),
                             )
                           ],

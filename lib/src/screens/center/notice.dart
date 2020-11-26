@@ -112,10 +112,9 @@ class _NoticeItemState extends State<NoticeItem> {
             children: [
               TextSpan(
                   text: "${widget.noticeModel.title}\n",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xff444444))),
+                  style: Body1.apply(
+                      fontWeightDelta: 2
+                  )),
               TextSpan(
                   text: widget.noticeModel.created_at.split("T").first,
                   style: TextStyle(fontSize: 12, color: Color(0xff888888))),
@@ -135,7 +134,9 @@ class _NoticeItemState extends State<NoticeItem> {
             const EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 24),
         child: Text(
           widget.noticeModel.contents,
-          style: TextStyle(fontSize: 12, color: Color(0xff444444)),
+          style: Body2.apply(
+              color: black
+          ),
         ),
       ),
     );

@@ -71,8 +71,7 @@ class _QrCreate extends State<QrCreate> {
                     Text(
                       "현장결제의 경우, 반드시\n결제를 완료한 이후 진행 바랍니다.",
                       textAlign: TextAlign.start,
-                      style: TextStyle(
-                          fontFamily: 'noto', fontSize: 14, color: Color(0xFF222222)),
+                      style: Body1
                     ),
                     whiteSpaceW(12),
                     Container(
@@ -87,8 +86,7 @@ class _QrCreate extends State<QrCreate> {
               ),
               Text(
                 "결제금액",
-                style: TextStyle(
-                    color: Color(0xFF888888), fontSize: 12, fontFamily: 'noto'),
+                style: Body2
               ),
               whiteSpaceH(4),
               Row(
@@ -105,8 +103,7 @@ class _QrCreate extends State<QrCreate> {
                         textInputAction: TextInputAction.done,
                         keyboardType: TextInputType.number,
                         controller: payController,
-                        style: TextStyle(
-                            fontFamily: 'noto', color: Color(0xFF333333), fontSize: 14),
+                        style: Body1,
                         inputFormatters: <TextInputFormatter>[
                           WhitelistingTextInputFormatter.digitsOnly
                         ],
@@ -122,9 +119,8 @@ class _QrCreate extends State<QrCreate> {
                         textAlign: TextAlign.end,
                         decoration: InputDecoration(
                             filled: true,
-                            suffixText: " KRW",
-                            suffixStyle: TextStyle(
-                                fontFamily: 'noto', color: Color(0xFF333333), fontSize: 14),
+                            suffixText: " 원",
+                            suffixStyle: Body1,
                             fillColor: white,
                             enabledBorder: UnderlineInputBorder(
                                 borderRadius: BorderRadius.circular(0),
@@ -149,10 +145,7 @@ class _QrCreate extends State<QrCreate> {
                 width: MediaQuery.of(context).size.width,
                 child: Text(
                   "고객이 결제한 금액을 입력해주세요.",
-                  style: TextStyle(
-                      color: Color(0xFF999999),
-                      fontSize: 12,
-                      fontFamily: 'noto'),
+                  style: Body2,
                   textAlign: TextAlign.end,
                 ),
               ),
@@ -204,8 +197,9 @@ class _QrCreate extends State<QrCreate> {
                   child: Center(
                     child: Text(
                       "QR코드 생성",
-                      style: TextStyle(
-                          color: white, fontSize: 14, fontFamily: 'noto'),
+                      style: Body1.apply(
+                        color: white
+                      ),
                     ),
                   ),
                 ),
@@ -224,20 +218,14 @@ class _QrCreate extends State<QrCreate> {
         // return object of type Dialog
         return AlertDialog(
           title: Text("결제 금액은 1000원 단위로 해주세요.",
-            style: TextStyle(
-            fontSize: 14,
-            color: Color(0xff333333),
-              fontFamily: 'noto'
-          ),),
+            style: Body1,),
 
           actions: <Widget>[
             FlatButton(
               color: mainColor,
               child: new Text("Close",
-                style: TextStyle(
-                  color: white,
-                  fontSize: 12,
-                  fontFamily: 'noto'
+                style: Body2.apply(
+                  color: white
                 ),
               ),
               onPressed: () {

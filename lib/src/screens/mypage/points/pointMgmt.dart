@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cashcook/src/model/point.dart';
 import 'package:cashcook/src/provider/PointMgmtProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class pointMgmt extends StatefulWidget {
@@ -65,24 +67,21 @@ class _pointMgmtState extends State<pointMgmt> {
                         child: Row(
                           children: [
                             Column (
-                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 (Provider.of<UserProvider>(context, listen: false).loginUser.userGrade == "NORMAL") ?
                                 pm.disMap != null ?
                                 Row(
                                   children: [
                                     Text("${pm.disMap['username']}   ",
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xFF333333),
-                                        )),
-                                    Text("${pm.disMap['phone']}",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xFF333333),
-                                        )),
+                                        style: Subtitle2
+                                    ),
+                                    Text("${pm.disMap['phone'].toString().substring(0,3)}-"
+                                        "${pm.disMap['phone'].toString().substring(3,7)}-"
+                                        "${pm.disMap['phone'].toString().substring(7,11)}",
+                                        style: Body2.apply(
+                                          fontWeightDelta: 1
+                                        )
+                                    ),
                                   ],
                                 ) : Row()
                                     : whiteSpaceH(1),
@@ -92,17 +91,15 @@ class _pointMgmtState extends State<pointMgmt> {
                                 Row(
                                   children: [
                                     Text("${pm.ageMap['username']}   ",
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xFF333333),
-                                        )),
-                                    Text("${pm.ageMap['phone']}",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xFF333333),
-                                        )),
+                                        style: Subtitle2
+                                    ),
+                                    Text("${pm.disMap['phone'].toString().substring(0,3)}-"
+                                        "${pm.disMap['phone'].toString().substring(3,7)}-"
+                                        "${pm.disMap['phone'].toString().substring(7,11)}",
+                                        style: Body2.apply(
+                                            fontWeightDelta: 1
+                                        )
+                                    ),
                                   ],
                                 ) : Row()
                                     : whiteSpaceH(1),
@@ -110,16 +107,13 @@ class _pointMgmtState extends State<pointMgmt> {
                                 Row(
                                   children: [
                                     Text("${Provider.of<UserProvider>(context, listen:false).storeModel.store.name}   ",
-                                        style: TextStyle(
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xFF333333),
-                                        )),
-                                    Text("${Provider.of<UserProvider>(context, listen:false).storeModel.store.tel}",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xFF333333),
+                                        style: Headline
+                                    ),
+                                    Text("${Provider.of<UserProvider>(context, listen:false).storeModel.store.tel.substring(0,3)}-"
+                                        "${Provider.of<UserProvider>(context, listen:false).storeModel.store.tel.substring(3,7)}-"
+                                        "${Provider.of<UserProvider>(context, listen:false).storeModel.store.tel.substring(7,11)}-",
+                                        style: Body2.apply(
+                                            fontWeightDelta: 1
                                         )),
                                   ],
                                 ),
@@ -171,17 +165,17 @@ class _pointMgmtState extends State<pointMgmt> {
                                       child:Column(
                                         children: [
                                           Text("광고주 포인트",
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: white,
-                                              )),
+                                              style: Caption.apply(
+                                                color: white
+                                              )
+                                          ),
                                           whiteSpaceH(5),
                                           Text("${numberFormat.format(pm.adp)} ADP",
-                                              style: TextStyle(
-                                                  fontSize: 12,
+                                              style: Caption.apply(
                                                   color: white,
-                                                  fontWeight: FontWeight.w600
-                                              )),
+                                                fontWeightDelta: 1
+                                              )
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -194,17 +188,17 @@ class _pointMgmtState extends State<pointMgmt> {
                                       child:Column(
                                         children: [
                                           Text("총 현장결제",
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: white,
-                                              )),
+                                              style: Caption.apply(
+                                                  color: white
+                                              )
+                                          ),
                                           whiteSpaceH(5),
                                           Text("${numberFormat.format(pm.pay)}원",
-                                              style: TextStyle(
-                                                  fontSize: 12,
+                                              style: Caption.apply(
                                                   color: white,
-                                                  fontWeight: FontWeight.w600
-                                              )),
+                                                fontWeightDelta: 1
+                                              )
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -217,17 +211,17 @@ class _pointMgmtState extends State<pointMgmt> {
                                       child:Column(
                                         children: [
                                           Text("총 DL 결제",
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: white,
-                                              )),
+                                              style: Caption.apply(
+                                                  color: white
+                                              )
+                                          ),
                                           whiteSpaceH(5),
                                           Text("${numberFormat.format(pm.dl)} DL",
-                                              style: TextStyle(
-                                                  fontSize: 12,
+                                              style: Caption.apply(
                                                   color: white,
-                                                  fontWeight: FontWeight.w600
-                                              )),
+                                                fontWeightDelta: 1
+                                              )
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -260,10 +254,9 @@ class _pointMgmtState extends State<pointMgmt> {
                                       child:
                                       Text(
                                         "일간",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: (viewType == "day") ? Colors.white : Colors.black
-                                        ),
+                                        style: Body2.apply(
+                                            color: (viewType == "day") ? Colors.white : black
+                                        )
                                       ),
                                     ),
                                     whiteSpaceW(10),
@@ -282,10 +275,9 @@ class _pointMgmtState extends State<pointMgmt> {
                                       child:
                                       Text(
                                         "월간",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: (viewType == "month") ? Colors.white : Colors.black
-                                        ),
+                                          style: Body2.apply(
+                                              color: (viewType == "month") ? Colors.white : black
+                                          )
                                       ),
                                     ),
                                     whiteSpaceW(10),
@@ -304,10 +296,9 @@ class _pointMgmtState extends State<pointMgmt> {
                                       child:
                                       Text(
                                         "연간",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: (viewType == "year") ? Colors.white : Colors.black
-                                        ),
+                                          style: Body2.apply(
+                                              color: (viewType == "year") ? Colors.white : black
+                                          )
                                       ),
                                     ),
                                   ]
@@ -367,11 +358,10 @@ class _pointMgmtState extends State<pointMgmt> {
         Padding(
           padding: const EdgeInsets.only(bottom: 20.0, right: 12.0, left: 12.0),
           child: Text("${data.base_mday} ${(viewType == "month") ? "월" : "년"}",
-              style: TextStyle(
-                  fontFamily: 'noto',
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xff888888))),
+              style: Body1.apply(
+                fontWeightDelta: -1
+              )
+          ),
         ),
         Container(
           padding: const EdgeInsets.only(right:12.0, left:12.0),
@@ -389,11 +379,10 @@ class _pointMgmtState extends State<pointMgmt> {
                       child:
                       Text("  ${numberFormat.format(double.parse(data.base_amount))} 원",
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontFamily: 'noto',
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                              color:Color(0xFFFF6622)))
+                          style: Subtitle1.apply(
+                            color: primary
+                          )
+                      )
                   ),
                 ),
                 Expanded(
@@ -407,11 +396,10 @@ class _pointMgmtState extends State<pointMgmt> {
                       child:
                       Text("  ${numberFormat.format(double.parse(data.sub_amount))} DL",
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontFamily: 'noto',
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xffBE1833)))
+                          style: Subtitle1.apply(
+                              color: etcYellow
+                          )
+                      )
                   ),
                 ),
               ]
@@ -470,12 +458,10 @@ class _pointMgmtState extends State<pointMgmt> {
       children: [
         Padding(
           padding: const EdgeInsets.only(bottom: 5.0, right: 12.0, left: 12.0),
-          child: Text(data['date'],
-              style: TextStyle(
-                  fontFamily: 'noto',
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xff888888))),
+          child: Text(DateFormat("yy.MM.dd").format(
+              DateTime.parse( data['date'].toString())),
+              style: Body2
+          ),
         ),
         Column(
           children: histories.map((e) {
@@ -498,10 +484,7 @@ class _pointMgmtState extends State<pointMgmt> {
                             child:
                             Text(
                                 "    ${e['title']}  ",
-                                style: TextStyle(
-                                    fontFamily: 'noto',
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
+                                style: Subtitle1.apply(
                                     color: (e['title'].toString().contains("DL")) ? Color(0xffBE1833)
                                         : Color(0xFFFF6622))
                             )
@@ -513,11 +496,8 @@ class _pointMgmtState extends State<pointMgmt> {
                               alignment: Alignment.centerRight,
                               padding: EdgeInsets.only(top: 15.0, right: 13.0),
                               child:Text(
-                                  "${e['time']}\n",
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: 'noto',
-                                      color: Color(0xff888888))
+                                  "${e['time'].toString().split(":")[0]}:${e['time'].toString().split(":")[1]}",
+                                  style: Body2
                               )
                           )
                       )

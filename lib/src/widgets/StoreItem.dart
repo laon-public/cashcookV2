@@ -221,7 +221,7 @@ Widget storeItem(StoreModel store, BuildContext context) {
       padding: EdgeInsets.all(16.0),
       height: 120,
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CachedNetworkImage(
             imageUrl: store.store.shop_img1,
@@ -231,7 +231,7 @@ Widget storeItem(StoreModel store, BuildContext context) {
                 decoration: BoxDecoration(
                     border: Border.all(
                       color: Color(0xFFDDDDDD),
-                      width: 1,
+                      width: 0.5,
                     ),
                     borderRadius: BorderRadius.all(
                         Radius.circular(6.0)
@@ -251,7 +251,9 @@ Widget storeItem(StoreModel store, BuildContext context) {
                 Row(
                   children: [
                     Text(store.store.name,
-                        style: Body1
+                        style: Body1.apply(
+                          fontWeightDelta: 1
+                        )
                     ),
                     whiteSpaceW(5),
                     store.store.deliveryStatus == "1" ?
@@ -329,14 +331,12 @@ Widget storeItem(StoreModel store, BuildContext context) {
                     ),
                   ],
                 ),
-                whiteSpaceH(4.0),
                 Row(
                   children: [
                     Text(store.store.short_description,
                       style: Body2,),
                   ],
                 ),
-                whiteSpaceH(4.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,

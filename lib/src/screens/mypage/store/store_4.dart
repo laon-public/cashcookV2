@@ -1,7 +1,6 @@
 import 'package:cashcook/src/provider/StoreProvider.dart';
-import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/mypage/store/storeApply.dart';
-import 'package:cashcook/src/screens/referrermanagement/franBizSelect.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
@@ -17,12 +16,8 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
 
   AppBar appBarWidget = AppBar(
     title: Text("매장 정보 3/3", style:
-    TextStyle(
-      color: black,
-      fontSize: 14,
-      fontFamily: 'noto',
-      fontWeight: FontWeight.w600,
-    )),
+    appBarDefaultText
+    ),
     centerTitle: true,
     elevation: 0.5,
   );
@@ -48,22 +43,14 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("기타정보",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Color(0xFF888888),
-                      fontFamily: 'noto',
-                    )
+                    style: Body2
                 ),
                 whiteSpaceH(10),
                 TextFormField(
                   autofocus: false,
                   maxLines: 6,
                   controller: commentController,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    fontFamily: 'noto',
-                  ),
+                  style: Subtitle2,
                   decoration: InputDecoration(
                       hintText: '기타 정보를 입력하여주세요.(원산지 표시 등)',
                       border: OutlineInputBorder(
@@ -102,11 +89,10 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
 
                         },
                         child: Text("완료",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: 'noto',
-                              color: white,
-                            ))
+                            style: Body1.apply(
+                              color: white
+                            )
+                        )
                     )
                 )
 

@@ -45,10 +45,8 @@ class _Invitation extends State {
               children: [
                 Text(
                   "초대할 추천회원\n친구를 불러옵니다.",
-                  style: TextStyle(
-                    color: Color(0xFF222222),
-                    fontSize: 16,
-                    fontFamily: 'noto'
+                  style: Subtitle2.apply(
+                    fontWeightDelta: -1
                   )
                 ),
                 whiteSpaceW(10.0),
@@ -62,10 +60,8 @@ class _Invitation extends State {
             ),
             whiteSpaceH(20),
             Text("휴대폰에 저장된 연락처를 가입자와 대조하여\n자동으로 나의 직접추천회원으로 등록해드립니다.",
-                style: TextStyle(
-                    color: Color(0xFF444444),
-                    fontSize: 12,
-                    fontFamily: 'noto',)),
+                style: Body2
+            ),
           Spacer(),
           Container(
                 width: MediaQuery.of(context).size.width,
@@ -90,10 +86,9 @@ class _Invitation extends State {
                         child: Center(
                           child: Text(
                             "확인",
-                            style: TextStyle(
-                                fontFamily: 'noto',
-                                fontSize: 12,
-                                color: white),
+                            style: Body2.apply(
+                              color: white
+                            ),
                           ),
                         ),
                       ),

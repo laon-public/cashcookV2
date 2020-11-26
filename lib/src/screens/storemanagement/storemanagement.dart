@@ -90,11 +90,7 @@ class _StoreManagement extends State<StoreManagement> {
                           Row(
                             children: [
                               Text("${userProvider.storeModel.store.name}",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: black,
-                                    fontFamily: 'noto',
-                                    fontSize: 24),
+                                style: Headline,
                               ),
                               whiteSpaceW(8),
                               Image.asset(

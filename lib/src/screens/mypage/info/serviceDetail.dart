@@ -49,11 +49,7 @@ class _ServiceDetail extends State<ServiceDetail> {
                 width: MediaQuery.of(context).size.width,
                 child: Text(
                   DateFormat("yyyy.MM.dd").format(widget.ol.createdAt),
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Color(0xFF999999),
-                    fontFamily: 'noto'
-                  )
+                  style: Body2
                 ),
               ),
               Container(
@@ -90,32 +86,21 @@ class _ServiceDetail extends State<ServiceDetail> {
                               children: [
                                 Container(
                                   child: Text(widget.ol.storeName,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontFamily: 'noto',
-                                      fontWeight: FontWeight.w600,
-                                      color: Color(0xFF333333),
+                                    style: Body1.apply(
+                                      fontWeightDelta: 2
                                     ),
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                                 whiteSpaceW(12),
                                 Text(DateFormat('kk:mm').format(widget.ol.createdAt),
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontFamily: 'noto',
-                                        color: Color(0xFF999999)
-                                    )
+                                    style: Body2
                                 ),
                               ],
                             ),
                             Expanded(
                               child: Text(widget.ol.content,
-                                style:TextStyle(
-                                    fontSize: 12,
-                                    fontFamily: 'noto',
-                                    color: Color(0xFF999999)
-                                ),
+                                style:Body2,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             )
@@ -129,12 +114,7 @@ class _ServiceDetail extends State<ServiceDetail> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text("-${numberFormat.format(widget.ol.pay)} 원",
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontFamily: 'noto',
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xFF999999)
-                                )
+                                style: Subtitle1
                             ),
                           ],
                         ),
@@ -160,11 +140,8 @@ class _ServiceDetail extends State<ServiceDetail> {
                           height: 40,
                           child: Center(
                             child: Text("리뷰작성",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: 'noto',
-                                  color: Color(0xFF333333),
-                                  fontWeight: FontWeight.w600
+                              style: Body1.apply(
+                                fontWeightDelta: 1
                               ),
                             ),
                           ),
@@ -200,11 +177,8 @@ class _ServiceDetail extends State<ServiceDetail> {
                             height: 40,
                             child: Center(
                               child: Text("실시간 흥정",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontFamily: 'noto',
-                                    color: Color(0xFF333333),
-                                    fontWeight: FontWeight.w600
+                                style: Body1.apply(
+                                    fontWeightDelta: 1
                                 ),
                               ),
                             ),
@@ -225,11 +199,8 @@ class _ServiceDetail extends State<ServiceDetail> {
                 width: MediaQuery.of(context).size.width,
                 child: Text(
                   "결제내역",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: 'noto',
-                    color: Color(0xFF333333)
+                  style: Body1.apply(
+                      fontWeightDelta: 1
                   ),
                 ),
               ),
@@ -250,19 +221,11 @@ class _ServiceDetail extends State<ServiceDetail> {
                 child: Row(
                   children: [
                     Text("결제 총 금액",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: 'noto',
-                        color: Color(0xFF333333)
-                      )
+                      style: Subtitle2
                     ),
                     Spacer(),
                     Text("${numberFormat.format(widget.ol.pay)}원",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: 'noto',
+                      style: Subtitle2.apply(
                         color: primary
                       )
                     ),
@@ -275,18 +238,14 @@ class _ServiceDetail extends State<ServiceDetail> {
                 child: Row(
                   children: [
                     Text("DL 사용",
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontFamily: 'noto',
-                            color: Color(0xFF333333)
+                        style: Body2.apply(
+                          color: black
                         )
                     ),
                     Spacer(),
                     Text("${numberFormat.format(widget.ol.dl)} DL",
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontFamily: 'noto',
-                            color: Color(0xFF333333)
+                        style: Body2.apply(
+                            color: black
                         )
                     ),
                   ],
@@ -298,10 +257,8 @@ class _ServiceDetail extends State<ServiceDetail> {
                 child: Row(
                   children: [
                     Text("실시간 흥정",
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontFamily: 'noto',
-                            color: Color(0xFF333333)
+                        style: Body2.apply(
+                            color: black
                         )
                     ),
                     Spacer(),
@@ -312,10 +269,8 @@ class _ServiceDetail extends State<ServiceDetail> {
                         "${numberFormat.format(widget.ol.gameQuantity)}DL 적립"
                         :
                         "아직 게임을 진행하지 않았습니다.",
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontFamily: 'noto',
-                            color: Color(0xFF333333)
+                        style: Body2.apply(
+                            color: black
                         )
                     ),
                   ],
@@ -327,12 +282,9 @@ class _ServiceDetail extends State<ServiceDetail> {
                 width: MediaQuery.of(context).size.width,
                 child: Text(
                   "결제방식",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: 'noto',
-                      color: Color(0xFF333333)
-                  ),
+                  style: Body1.apply(
+                    fontWeightDelta: 1
+                  )
                 ),
               ),
               whiteSpaceH(22),
@@ -345,10 +297,8 @@ class _ServiceDetail extends State<ServiceDetail> {
                     "신용카드 / ${widget.ol.bankInfo.cardName} / ${widget.ol.bankInfo.cardNumber}"
                     :
                     "현장 QR결제 진행",
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontFamily: 'noto',
-                      color: Color(0xFF333333)
+                  style: Body2.apply(
+                    color: black
                   ),
                 )
               )
@@ -370,11 +320,7 @@ class _ServiceDetail extends State<ServiceDetail> {
             Padding(
                 padding: EdgeInsets.symmetric(vertical: 12.0),
                 child:Text(omc.menuName,
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: Color(0xFF888888),
-                      fontFamily: 'noto'
-                  ),
+                  style: Body2,
                   textAlign: TextAlign.start,
                 )
             ),
@@ -404,20 +350,16 @@ class _ServiceDetail extends State<ServiceDetail> {
                           Expanded(
                             child:Text(
                                 "${osc.menuName}",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    fontFamily: 'noto',
-                                    color: Color(0xFF444444)
+                                style: Body2.apply(
+                                  color: black
                                 )
                             ),
                           ),
                           Expanded(
                             child:Text(
                                 "${numberFormat.format(osc.price)}원",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    fontFamily: 'noto',
-                                    color: Color(0xFF444444)
+                                style: Body2.apply(
+                                    color: black
                                 )
                             ),
                           ),
@@ -435,10 +377,8 @@ class _ServiceDetail extends State<ServiceDetail> {
                                 child: Center(
                                     child: Text(
                                         "${osc.amount}",
-                                        style: TextStyle(
-                                            fontFamily: 'noto',
-                                            color: Colors.black,
-                                            fontSize: 14
+                                        style: Body2.apply(
+                                            color: black
                                         )
                                     )
                                 ),
@@ -455,10 +395,8 @@ class _ServiceDetail extends State<ServiceDetail> {
                             "${numberFormat.format(osc.price *
                                 osc.amount)}원",
                             textAlign: TextAlign.end,
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 12,
-                                fontFamily: 'noto'
+                            style: Body2.apply(
+                                color: black
                             )
                         )
                     )

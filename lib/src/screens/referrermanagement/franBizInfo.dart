@@ -1,13 +1,9 @@
-import 'package:cashcook/src/model/point.dart';
 import 'package:cashcook/src/provider/PointMgmtProvider.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:cashcook/src/provider/UserProvider.dart';
-import '../../provider/UserProvider.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
-import '../../widgets/showToast.dart';
 
 class FranBizInfo extends StatefulWidget {
   @override
@@ -92,8 +88,7 @@ class _FranBizInfo extends State<FranBizInfo> {
                         Text(
                           "나의 총판 / 대리점 정보",
                           textAlign: TextAlign.start,
-                          style: TextStyle(
-                              fontFamily: 'noto', fontSize: 16, color: black),
+                          style: Subtitle2,
                         ),
                         whiteSpaceW(12),
                         Container(
@@ -111,8 +106,7 @@ class _FranBizInfo extends State<FranBizInfo> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(top: 18.0),
-                        child: Align(child: Text("총판", style: TextStyle(
-                            fontSize: 12, color: Color(0xff888888)),),
+                        child: Align(child: Text("총판", style: Body2),
                           alignment: Alignment.centerLeft,),
                       ),
                       TextFormField(
@@ -127,8 +121,7 @@ class _FranBizInfo extends State<FranBizInfo> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(top: 18.0),
-                        child: Align(child: Text("대리점", style: TextStyle(
-                            fontSize: 12, color: Color(0xff888888)),),
+                        child: Align(child: Text("대리점", style: Body2),
                           alignment: Alignment.centerLeft,),
                       ),
                       TextFormField(

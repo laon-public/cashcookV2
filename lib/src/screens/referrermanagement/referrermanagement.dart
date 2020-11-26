@@ -90,21 +90,13 @@ class _ReferrerManagement extends State {
                       builder: (context, reco, _) {
                         return Text(
                           reco.allCount.toString(),
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontFamily: 'noto',
-                              fontSize: 24,
-                              color: black),
+                          style: Headline,
                         );
                       },
                     ),
                     Text(
                       "명",
-                      style: TextStyle(
-                          color: black,
-                          fontSize: 14,
-                          fontFamily: 'noto',
-                          fontWeight: FontWeight.w600),
+                      style: Headline,
                     ),
                     Spacer(),
                     Container(
@@ -126,8 +118,7 @@ class _ReferrerManagement extends State {
                         child: Center(
                           child: Text(
                             "초대하기",
-                            style: TextStyle(
-                                color: black, fontFamily: 'noto', fontSize: 14),
+                            style: Body1
                           ),
                         ),
                       ),
@@ -152,19 +143,13 @@ class _ReferrerManagement extends State {
                               children: [
                                 Text(
                                     "직접추천회원 적립",
-                                    style: TextStyle(
-                                      fontFamily: 'noto',
-                                      color: Color(0xFF888888),
-                                      fontSize: 10,
-                                    )
+                                    style: TabsTagsStyle
                                 ),
                                 Text(
                                   "${numberFormat.format(reco.dirAmount)} CP",
-                                  style: TextStyle(
-                                      fontFamily: 'noto',
-                                      color: mainColor,
-                                      fontSize: 15
-                                  ),
+                                  style: Body1.apply(
+                                    color: primary
+                                  )
                                 )
                               ]
                           ),
@@ -211,30 +196,17 @@ class _ReferrerManagement extends State {
                               children: [
                                 Text(
                                     "${reco.typeTitle}",
-                                    style: TextStyle(
-                                      fontFamily: 'noto',
-                                      color: black,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600,
-                                    )
+                                    style: Subtitle2
                                 ),
                                 Text(
                                     reco.referrer.length.toString(),
-                                    style: TextStyle(
-                                      fontFamily: 'noto',
-                                      color: mainColor,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600,
+                                    style: Subtitle2.apply(
+                                      color: primary
                                     )
                                 ),
                                 Text(
                                     "명",
-                                    style: TextStyle(
-                                      fontFamily: 'noto',
-                                      color: black,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600,
-                                    )
+                                    style: Subtitle2
                                 ),
                               ]
                           ),
@@ -247,10 +219,7 @@ class _ReferrerManagement extends State {
                               child: DropdownButton<String>(
                                 underline: Container(),
                                 elevation: 0,
-                                style: TextStyle(
-                                    color: black,
-                                    fontSize: 14,
-                                    fontFamily: 'noto'),
+                                style: Body1,
                                 items: // <String>['전체', '직접 추천회원', '간접 추천회원', '가입 대기회원']
                                     <String>['직접 추천회원', '가입 대기회원']
                                     .map((value) {
@@ -258,10 +227,7 @@ class _ReferrerManagement extends State {
                                     value: value,
                                     child: Text(
                                       value,
-                                      style: TextStyle(
-                                          color: black,
-                                          fontSize: 14,
-                                          fontFamily: 'noto'),
+                                      style: Body1,
                                     ),
                                   );
                                 }).toList(),
@@ -344,16 +310,13 @@ class _ReferrerManagement extends State {
                   Text(
                     data.name,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        fontFamily: 'noto',
-                        fontSize: 14,
-                        color: black,
-                        fontWeight: FontWeight.w600),
+                    style: Body1.apply(
+                      fontWeightDelta: 1
+                    ),
                   ),
                   Text(
                     data.phone,
-                    style: TextStyle(
-                        color: Color(0xFF888888), fontSize: 12, fontFamily: 'noto'),
+                    style: Body2,
                   )
                 ],
               ),
@@ -365,14 +328,14 @@ class _ReferrerManagement extends State {
                 children: [
                   Text(
                     data.date,
-                    style: TextStyle(
-                        fontSize: 12, fontFamily: 'noto', color: Color(0xFF888888)),
+                    style: Body2
                   ),
                   type != "recognition" && data.type == 1
                       ? Text(
                     "By " + data.byName,
-                    style: TextStyle(
-                        fontFamily: 'noto', fontSize: 12, color: mainColor),
+                    style: Body2.apply(
+                      color: primary
+                    ),
                     textAlign: TextAlign.end,
                   )
                       : Container()
