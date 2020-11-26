@@ -227,11 +227,6 @@ class _Home extends State<Home> {
                             width: MediaQuery.of(context).size.width,
                             fit: BoxFit.fill,
                           ),
-                          Image.asset(
-                            "assets/resource/ad/ad_2.PNG",
-                            width: MediaQuery.of(context).size.width,
-                            fit: BoxFit.fill,
-                          ),
                         ],
                       ),
                     ),
@@ -259,12 +254,12 @@ class _Home extends State<Home> {
                                 child: Stack (
                                   children: [
                                     Opacity(
-                                      opacity: 0.3,
+                                      opacity: 0.6,
                                       child: Container(
-                                        width: 120,
+                                        width: 90,
                                         height: 3,
                                         decoration: BoxDecoration(
-                                            color: Color(0xFFAAAAAA),
+                                            color: white,
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(4.0)
                                             )

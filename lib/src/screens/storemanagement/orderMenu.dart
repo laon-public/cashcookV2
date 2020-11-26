@@ -461,13 +461,17 @@ class _OrderMenu extends State<OrderMenu> {
                                     child: Center(
                                       child: Text("취소",
                                           style: Body1.apply(
-                                            color: white
+                                            color: black
                                           )
                                       ),
                                     ),
                                     decoration: BoxDecoration(
-                                        color: Color(0xFF999999),
-                                        shape: BoxShape.circle
+                                        color: white,
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                            color: Color(0xFFDDDDDD),
+                                            width: 1
+                                        )
                                     ),
                                   ),
                                 ),
@@ -501,13 +505,17 @@ class _OrderMenu extends State<OrderMenu> {
                                     child: Center(
                                       child: Text("나중에",
                                           style: Body1.apply(
-                                            color: white
+                                            color: primary
                                           )
                                       ),
                                     ),
                                     decoration: BoxDecoration(
-                                        color: mainColor,
-                                        shape: BoxShape.circle
+                                        color: white,
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                            color: Color(0xFFDDDDDD),
+                                            width: 1
+                                        )
                                     ),
                                   ),
                                 ),
@@ -540,15 +548,19 @@ class _OrderMenu extends State<OrderMenu> {
                                     width: 64,
                                     height: 64,
                                     child: Center(
-                                      child: Text("확인",
+                                      child: Text("예",
                                           style: Body1.apply(
                                             color: white
                                           )
                                       ),
                                     ),
                                     decoration: BoxDecoration(
-                                        color: subColor,
-                                        shape: BoxShape.circle
+                                        color: primary,
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                            color: primary,
+                                            width: 1
+                                        )
                                     ),
                                   ),
                                 ),
@@ -896,8 +908,12 @@ class _OrderMenu extends State<OrderMenu> {
                                   width: 64,
                                   height: 64,
                                   decoration: BoxDecoration(
-                                    color:Color(0xFF888888),
+                                    color: white,
                                     shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: Color(0xFFDDDDDD),
+                                      width: 1
+                                    )
                                   ),
                                   child: Center(
                                       child: Material(
@@ -909,7 +925,7 @@ class _OrderMenu extends State<OrderMenu> {
                                           },
                                           child: Text("취소",
                                               style:Body2.apply(
-                                                color: white
+                                                color: black
                                               )
                                           ),
                                         ),
@@ -926,6 +942,10 @@ class _OrderMenu extends State<OrderMenu> {
                                   decoration: BoxDecoration(
                                     color:mainColor,
                                     shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color: primary,
+                                          width: 1
+                                      )
                                   ),
                                   child: Center(
                                       child: Material(
