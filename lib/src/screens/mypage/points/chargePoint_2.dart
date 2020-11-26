@@ -78,12 +78,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text("보유 ${widget.pointType}",
-                              style: TextStyle(
-                                color: Color(0xFF333333),
-                                fontSize: 20,
-                                fontFamily: 'noto',
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style: Subtitle1,
                             ),
                             whiteSpaceH(4.0),
                             Row(
@@ -95,11 +90,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
                                 ),
                                 whiteSpaceW(12.0),
                                 Text("${numberFormat.format(point[widget.pointType])} ${widget.pointType}",
-                                  style: TextStyle(
-                                      color: Color(0xFF333333),
-                                      fontSize: 12,
-                                      fontFamily: 'noto'
-                                  ),
+                                  style: Body1,
                                 ),
                               ],
                             )
@@ -122,11 +113,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text("충전수량",
-                            style: TextStyle(
-                                color: Color(0xFF999999),
-                                fontSize: 12,
-                                fontFamily: 'noto'
-                            )
+                            style: Body2
                         ),
                         whiteSpaceH(4.0),
                         Row(
@@ -139,10 +126,8 @@ class _ChargePoint2State extends State<ChargePoint2> {
                             Flexible(
                               child: TextFormField(
                                 textAlign: TextAlign.end,
-                                style: TextStyle(
-                                  color:Color(0xFF333333),
-                                  fontFamily: 'noto',
-                                  fontSize: 16,
+                                style: Subtitle2.apply(
+                                  fontWeightDelta: -2
                                 ),
                                 onChanged: (value) {
                                   up.setChargePay(rate);
@@ -152,10 +137,8 @@ class _ChargePoint2State extends State<ChargePoint2> {
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   suffixText: widget.pointType == "CARAT" ? "CARAT" : "ADP",
-                                  suffixStyle: TextStyle(
-                                      color: Color(0xFF333333),
-                                      fontSize: 16,
-                                      fontFamily: 'noto'
+                                  suffixStyle: Subtitle2.apply(
+                                    fontWeightDelta: -2
                                   ),
                                   contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
                                   border: UnderlineInputBorder(
@@ -175,11 +158,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
                           children: [
                             Text(
                                 "= ${numberFormat.format(up.chargePay)} 원",
-                                style: TextStyle(
-                                    color: Color(0xFF999999),
-                                    fontSize: 12,
-                                    fontFamily: 'noto'
-                                )
+                                style: Body2
                             )
                           ],
                         ),
@@ -198,19 +177,13 @@ class _ChargePoint2State extends State<ChargePoint2> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text("DL결제",
-                                style: TextStyle(
-                                    color: Color(0xFF999999),
-                                    fontSize: 12,
-                                    fontFamily: 'noto'
-                                )
+                                style: Body2
                             ),
                             whiteSpaceW(5.0),
                             Text("* ${numberFormat.format(point['DL'])} DL 보유 중",
-                                style: TextStyle(
-                                fontSize: 10,
-                                fontFamily: 'noto',
-                                color: mainColor,
-                                fontWeight: FontWeight.w600
+                                style: TabsTagsStyle.apply(
+                                  color: primary,
+                                  fontWeightDelta: 2
                                 )
                             )
                           ],
@@ -226,10 +199,8 @@ class _ChargePoint2State extends State<ChargePoint2> {
                             Flexible(
                               child: TextFormField(
                                 textAlign: TextAlign.end,
-                                style: TextStyle(
-                                  color:Color(0xFF333333),
-                                  fontFamily: 'noto',
-                                  fontSize: 16,
+                                style: Subtitle2.apply(
+                                  fontWeightDelta: -2
                                 ),
                                 onChanged: (value) {
                                   up.setDlPay();
@@ -239,10 +210,8 @@ class _ChargePoint2State extends State<ChargePoint2> {
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   suffixText: " DL",
-                                  suffixStyle: TextStyle(
-                                      color: Color(0xFF333333),
-                                      fontSize: 16,
-                                      fontFamily: 'noto'
+                                  suffixStyle: Subtitle2.apply(
+                                      fontWeightDelta: -2
                                   ),
                                   contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
                                   border: UnderlineInputBorder(
@@ -262,11 +231,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
                           children: [
                             Text(
                                 "= ${numberFormat.format(up.dlPay)} DL",
-                                style: TextStyle(
-                                    color: Color(0xFF999999),
-                                    fontSize: 12,
-                                    fontFamily: 'noto'
-                                )
+                                style: Body2
                             )
                           ],
                         ),
@@ -288,12 +253,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
                             flex:1,
                               child: Text(
                                 "총 결제 금액",
-                                style: TextStyle(
-                                    fontFamily: 'noto',
-                                    fontSize: 16,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600
-                                ),
+                                style: Subtitle2,
                                 textAlign: TextAlign.start,
                               )
                           ),
@@ -307,11 +267,8 @@ class _ChargePoint2State extends State<ChargePoint2> {
                                 "보유DL보다 많습니다."
                                 :
                                 "${numberFormat.format((up.chargePay - (up.dlPay * 100)))}원",
-                                style: TextStyle(
-                                    fontFamily: 'noto',
-                                    fontSize: 16,
-                                    color: mainColor,
-                                    fontWeight: FontWeight.w600
+                                style: Subtitle2.apply(
+                                  color: primary
                                 ),
                                 textAlign: TextAlign.end,
                               )
@@ -326,12 +283,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
                       children: [
                         Text(
                           "결제방식",
-                          style: TextStyle(
-                              color: Color(0xFF333333),
-                              fontSize: 16,
-                              fontFamily: 'noto',
-                              fontWeight: FontWeight.w600
-                          ),
+                          style: Subtitle2,
                         ),
                         whiteSpaceH(9.0),
                         Row(
@@ -385,10 +337,8 @@ class _ChargePoint2State extends State<ChargePoint2> {
                         Container()
                         :
                         Text("* 현금/카드 결제시 20%ADP가 추가지급됩니다.",
-                            style: TextStyle(
-                                color: Color(0xFF666666),
-                                fontSize: 14,
-                                fontFamily: 'noto'
+                            style: Body1.apply(
+                              color: secondary
                             )
                         ),
                       ]
@@ -399,7 +349,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     height: 40,
-                    color: mainColor,
+                    color: primary,
                     child: RaisedButton(
                       color: mainColor,
                       disabledColor: Color(0xFFDDDDDD),
@@ -461,10 +411,8 @@ class _ChargePoint2State extends State<ChargePoint2> {
                         }
                       },
                       child: Text("결제하기",
-                        style: TextStyle(
-                          color: white,
-                          fontSize: 14,
-                          fontFamily: 'noto'
+                        style: Body1.apply(
+                          color: white
                         ),
                       ),
                     )
@@ -502,7 +450,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
           ),
           Text(
             "개인정보 제 3자 제공 및 위탁동의",
-            style: TextStyle(fontSize: 12, color: Color(0xff999999),fontFamily: 'noto'),
+            style: Body2
           )
         ],
       ),
@@ -529,15 +477,32 @@ class _ChargePoint2State extends State<ChargePoint2> {
                     Color(0xFFDDDDDD)
             )),
         child: Center(
-          child: Text(
-            text,
-            style: TextStyle(
-                color: this.methodType == methodType ?
-                mainColor
-                    :
-                Color(0xFFDDDDDD)
-            ),
-          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+
+            children: [
+              Theme(
+                data: ThemeData(unselectedWidgetColor: Colors.transparent,
+                ),
+                child:
+                Checkbox(
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  activeColor: Colors.transparent,
+                  checkColor: primary,
+                  value: methodType == this.methodType,
+                  onChanged: (value) {},
+                ),
+              ),
+              Text(
+                text,
+                style: Body1.apply(
+                    color: methodType == this.methodType
+                        ? mainColor
+                        : Color(0xff888888)
+                )
+              ),
+            ],
+          )
         ),
       ),
     );

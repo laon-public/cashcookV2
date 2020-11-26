@@ -91,17 +91,17 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                                       crossAxisAlignment: CrossAxisAlignment.end,
                                       children: [
                                         Text("${Provider.of<UserProvider>(context, listen:false).loginUser.username}   ",
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w600,
-                                                color: white
-                                            )),
-                                        Text("${Provider.of<UserProvider>(context, listen:false).loginUser.phone}",
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600,
-                                                color: white
-                                            ))
+                                            style: Subtitle1.apply(
+                                              color: white
+                                            )
+                                        ),
+                                        Text("${Provider.of<UserProvider>(context, listen:false).loginUser.phone.substring(0,3)}-"
+                                            "${Provider.of<UserProvider>(context, listen:false).loginUser.phone.substring(3,7)}-"
+                                            "${Provider.of<UserProvider>(context, listen:false).loginUser.phone.substring(7,11)}",
+                                            style: Body1.apply(
+                                              color: white,
+                                            )
+                                        )
                                       ],
                                     ),
                                   ],
@@ -140,17 +140,14 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                                           child:Column(
                                             children: [
                                               Text("총 현장결제",
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Color(0xff888888),
-                                                  )),
+                                                  style: Body2
+                                              ),
                                               whiteSpaceH(5),
                                               Text("${numberFormat.format(pm.pay)}원",
-                                                  style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: Color(0xffFF6622),
-                                                      fontWeight: FontWeight.w600
-                                                  )),
+                                                  style: Body2.apply(
+                                                    color: primary
+                                                  )
+                                              ),
                                             ],
                                           ),
                                         ),
@@ -163,17 +160,14 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                                           child:Column(
                                             children: [
                                               Text("총 DL 결제",
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Color(0xff888888),
-                                                  )),
+                                                  style: Body2
+                                              ),
                                               whiteSpaceH(5),
                                               Text("${numberFormat.format(pm.dl)} DL",
-                                                  style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: Color(0xffD4145A),
-                                                      fontWeight: FontWeight.w600
-                                                  )),
+                                                  style: Body2.apply(
+                                                    color: Color(0xffD4145A),
+                                                  )
+                                              ),
                                             ],
                                           ),
                                         ),
@@ -208,10 +202,9 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                                           child:
                                           Text(
                                             "일간",
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                color: (viewType == "day") ? Colors.white : Colors.black
-                                            ),
+                                            style: Body2.apply(
+                                                color: (viewType == "day") ? Colors.white : black
+                                            )
                                           ),
                                         ),
                                         whiteSpaceW(10),
@@ -230,10 +223,9 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                                           child:
                                           Text(
                                             "월간",
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                color: (viewType == "month") ? Colors.white : Colors.black
-                                            ),
+                                              style: Body2.apply(
+                                                  color: (viewType == "month") ? Colors.white : black
+                                              )
                                           ),
                                         ),
                                         whiteSpaceW(10),
@@ -252,10 +244,9 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                                           child:
                                           Text(
                                             "연간",
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                color: (viewType == "year") ? Colors.white : Colors.black
-                                            ),
+                                              style: Body2.apply(
+                                                  color: (viewType == "year") ? Colors.white : black
+                                              )
                                           ),
                                         ),
                                       ]

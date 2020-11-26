@@ -3,6 +3,7 @@ import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 
@@ -37,7 +38,9 @@ class _IntegratedPoint extends State<IntegratedPoint> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text("$username 활동현황",
-        style: appBarDefaultText),
+        style: appBarDefaultText.apply(
+          color: white
+        )),
         centerTitle: true,
         elevation: 0.0,
         backgroundColor: mainColor,
@@ -66,16 +69,14 @@ class _IntegratedPoint extends State<IntegratedPoint> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text("$username   ",
-                      style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w600,
-                          color: white,
+                      style: Headline.apply(
+                        color: white
                       )),
-                  Text("$phone",style: TextStyle(
-                    fontSize: 20,
-                    color: white,
+                  Text("${phone.substring(0,3)}-${phone.substring(3,7)}-${phone.substring(7,11)}",style: Subtitle1.apply(
+                    color: white
                   )),
                 ],
               ),
@@ -117,10 +118,7 @@ class _IntegratedPoint extends State<IntegratedPoint> {
                                 child:Column(
                                   children: [
                                     Text("ADP",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xff888888),
-                                        )),
+                                        style: Body2),
                                     whiteSpaceH(5),
                                     Text("${numberFormat.format(pm.adp)} ADP",
                                         style: TextStyle(
@@ -140,10 +138,7 @@ class _IntegratedPoint extends State<IntegratedPoint> {
                                 child:Column(
                                   children: [
                                     Text("RP",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xff888888),
-                                        )),
+                                        style: Body2),
                                     whiteSpaceH(5),
                                     Text("${numberFormat.format(pm.rp)} RP",
                                         style: TextStyle(
@@ -163,10 +158,7 @@ class _IntegratedPoint extends State<IntegratedPoint> {
                                 child:Column(
                                   children: [
                                     Text("DL",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xff888888),
-                                        )),
+                                        style: Body2),
                                     whiteSpaceH(5),
                                     Text("${numberFormat.format(pm.dl)} DL",
                                         style: TextStyle(
@@ -186,16 +178,12 @@ class _IntegratedPoint extends State<IntegratedPoint> {
                                 child:Column(
                                   children: [
                                     Text("가맹점 수",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xff888888),
-                                        )),
+                                        style: Body2),
                                     whiteSpaceH(5),
                                     Text("${numberFormat.format(pm.franAmount)} 개",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: mainColor,
-                                            fontWeight: FontWeight.w600
+                                        style: Body2.apply(
+                                          fontWeightDelta: 1,
+                                          color: primary
                                         )),
                                   ],
                                 ),
@@ -250,12 +238,9 @@ class _IntegratedPoint extends State<IntegratedPoint> {
       children: [
         Padding(
           padding: const EdgeInsets.only(bottom: 20.0, right: 12.0, left: 12.0),
-          child: Text(data['date'],
-              style: TextStyle(
-                  fontFamily: 'noto',
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xff888888))),
+          child: Text(DateFormat("yy.MM.dd").format(
+              DateTime.parse( data['date'].toString())),
+              style: Body2),
         ),
         Column(
           children: histories.map((e) {
@@ -280,18 +265,11 @@ class _IntegratedPoint extends State<IntegratedPoint> {
                                 Text(
                                     "    ${e['description']}  ",
                                     overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontFamily: 'noto',
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black)
+                                    style: Subtitle2
                                 ),
                               Text(
-                                  "      ${e['time']}  ",
-                                  style: TextStyle(
-                                      fontFamily: 'noto',
-                                      fontSize: 10,
-                                      color: Color(0xFF888888))
+                                  "      ${e['time'].toString().split(":")[0]}:${e['time'].toString().split(":")[1]}  ",
+                                  style: Caption
                               ),
                           ]
                         ),
@@ -303,15 +281,13 @@ class _IntegratedPoint extends State<IntegratedPoint> {
                               padding: EdgeInsets.only(right: 13.0),
                               child:Text(
                                   "${e['title']}",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: 'noto',
-                                      fontWeight: FontWeight.w600,
+                                  style:
+                                    Subtitle2.apply(
                                       color:
                                       (e['title'].toString().contains("DL") || (e['title'].toString().contains("ADP")) ? Color(0xffBE1833)
                                           : (e['title'].toString().contains("RP")) ? subYellow
-                                          :  Colors.black),
-                                )
+                                          :  black),
+                                    )
                             )
                         )
                       )
