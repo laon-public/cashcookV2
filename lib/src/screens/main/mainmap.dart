@@ -303,11 +303,10 @@ class _MainMap extends State<MainMap> {
                                                     Text(
                                                       "  ${pointMap['ADP'] == null ? demicalFormat.format(0)
                                                           : demicalFormat.format(pointMap['ADP'])}",
-                                                      style: TextStyle(
-                                                          fontSize: 12,
-                                                          color: black,
-                                                          fontWeight: FontWeight.bold,
-                                                          fontFamily: 'noto'),
+                                                      style: Body2.apply(
+                                                        color: black,
+                                                        fontWeightDelta: 3
+                                                      ),
                                                     ),
                                                     whiteSpaceW(12),
                                                     Image.asset("assets/icon/DL 2.png",height: 30, fit: BoxFit.contain,),
@@ -387,10 +386,7 @@ class _MainMap extends State<MainMap> {
                                                 child: Center(
                                                   child: Text(
                                                     "매장정보/수정",
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Color(0xFF333333),
-                                                        fontFamily: 'noto'),
+                                                    style: Body1
                                                   ),
                                                 ),
                                                 shape: RoundedRectangleBorder(
@@ -416,10 +412,7 @@ class _MainMap extends State<MainMap> {
                                               child: Center(
                                                 child: Text(
                                                   "이용내역",
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: Color(0xFF333333),
-                                                      fontFamily: 'noto'),
+                                                  style: Body1,
                                                 ),
                                               ),
                                               shape: RoundedRectangleBorder(
@@ -520,20 +513,16 @@ class _MainMap extends State<MainMap> {
                                                     children: <Widget>[
                                                       Text(
                                                         sp.selStore.store.name,
-                                                        style: TextStyle(
-                                                            fontWeight: FontWeight.w600,
-                                                            fontSize: 14,
-                                                            color: Color(0xFF444444),
-                                                            fontFamily: 'noto'),
+                                                        style: Body1.apply(
+                                                          fontWeightDelta: 2
+                                                        ),
                                                       ),
                                                       whiteSpaceW(15),
                                                       Text(
                                                         "${sp.selStore.store.category_name} / ${sp.selStore.store.category_sub_name}",
-                                                        style: TextStyle(
-                                                            fontWeight: FontWeight.w100,
-                                                            fontSize: 12,
-                                                            color: mainColor,
-                                                            fontFamily: 'noto'),
+                                                        style: Body2.apply(
+                                                          color: primary
+                                                        ),
                                                       )
                                                     ]
                                                 ),
@@ -542,11 +531,7 @@ class _MainMap extends State<MainMap> {
                                                   children: <Widget>[
                                                     Text(
                                                       sp.selStore.store.short_description,
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.w100,
-                                                          fontSize: 12,
-                                                          color: Color(0xFF888888),
-                                                          fontFamily: 'noto'),
+                                                      style: Body2,
                                                     ),
                                                   ],
                                                 )
@@ -580,10 +565,9 @@ class _MainMap extends State<MainMap> {
                                                 child: Center(
                                                   child: Text(
                                                     "수정",
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: white,
-                                                        fontFamily: 'noto'),
+                                                    style: Body1.apply(
+                                                      color: white
+                                                    )
                                                   ),
                                                 ),
                                               )
@@ -645,11 +629,8 @@ class _MainMap extends State<MainMap> {
                                                           whiteSpaceW(2.0),
                                                           Text(
                                                             "찜하기",
-                                                            style: TextStyle(
-                                                                fontSize: 12,
-                                                                color: mainColor,
-                                                                fontFamily: 'noto',
-                                                                fontWeight: FontWeight.w400
+                                                            style: Body2.apply(
+                                                              color: primary
                                                             ),
                                                           ),
                                                         ],
@@ -684,11 +665,8 @@ class _MainMap extends State<MainMap> {
                                                           whiteSpaceW(2.0),
                                                          Text(
                                                            "공유하기",
-                                                           style: TextStyle(
-                                                               fontSize: 12,
-                                                               color: mainColor,
-                                                               fontFamily: 'noto',
-                                                               fontWeight: FontWeight.w400
+                                                           style: Body2.apply(
+                                                             color: primary
                                                            ),
                                                          ),
                                                        ],
@@ -721,11 +699,8 @@ class _MainMap extends State<MainMap> {
                                                           whiteSpaceW(2.0),
                                                           Text(
                                                             "연락처",
-                                                            style: TextStyle(
-                                                                fontSize: 12,
-                                                                color: mainColor,
-                                                                fontFamily: 'noto',
-                                                                fontWeight: FontWeight.w400
+                                                            style: Body2.apply(
+                                                              color: primary
                                                             ),
                                                           ),
                                                         ],
@@ -788,11 +763,9 @@ class _MainMap extends State<MainMap> {
                                                 children: <Widget>[
                                                   Text(
                                                     sp.selStore.store.description,
-                                                    style: TextStyle(
-                                                        fontWeight: FontWeight.w100,
-                                                        fontSize: 14,
-                                                        color: Color(0xFF888888),
-                                                        fontFamily: 'noto'),
+                                                    style: Body1.apply(
+                                                      color: third
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -803,22 +776,16 @@ class _MainMap extends State<MainMap> {
                                                 flex:1,
                                                 child:Text(
                                                   "연락처",
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight.w100,
-                                                      fontSize: 12,
-                                                      color: Color(0xFF888888),
-                                                      fontFamily: 'noto'),
+                                                  style: Body2,
                                                 ),
                                               ),
                                               Expanded(
                                                 flex:3,
                                                 child:Text(
                                                   sp.selStore.store.tel,
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight.w200,
-                                                      fontSize: 12,
-                                                      color: black,
-                                                      fontFamily: 'noto'),
+                                                  style: Body2.apply(
+                                                    color: black
+                                                  )
                                                 ),
                                               )
                                             ],
@@ -830,22 +797,16 @@ class _MainMap extends State<MainMap> {
                                                 flex:1,
                                                 child:Text(
                                                   "영업시간",
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight.w100,
-                                                      fontSize: 12,
-                                                      color: Color(0xFF888888),
-                                                      fontFamily: 'noto'),
+                                                  style: Body2,
                                                 ),
                                               ),
                                               Expanded(
                                                 flex:3,
                                                 child:Text(
                                                   sp.selStore.store.store_time,
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight.w200,
-                                                      fontSize: 12,
-                                                      color: black,
-                                                      fontFamily: 'noto'),
+                                                  style: Body2.apply(
+                                                      color: black
+                                                  ),
                                                 ),
                                               )
                                             ],
@@ -857,22 +818,16 @@ class _MainMap extends State<MainMap> {
                                                 flex:1,
                                                 child:Text(
                                                   "주소",
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight.w100,
-                                                      fontSize: 12,
-                                                      color: Color(0xFF888888),
-                                                      fontFamily: 'noto'),
+                                                  style: Body2,
                                                 ),
                                               ),
                                               Expanded(
                                                 flex:3,
                                                 child:Text(
                                                   "${sp.selStore.address.address} ${sp.selStore.address.detail}",
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight.w200,
-                                                      fontSize: 12,
-                                                      color: black,
-                                                      fontFamily: 'noto'),
+                                                  style: Body2.apply(
+                                                      color: black
+                                                  ),
                                                 ),
                                               )
                                             ],
@@ -884,11 +839,7 @@ class _MainMap extends State<MainMap> {
                                                 flex:1,
                                                 child:Text(
                                                   "DL 결제한도",
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight.w100,
-                                                      fontSize: 12,
-                                                      color: Color(0xFF888888),
-                                                      fontFamily: 'noto'),
+                                                  style: Body2
                                                 ),
                                               ),
                                               Expanded(
@@ -896,11 +847,9 @@ class _MainMap extends State<MainMap> {
                                                 child:Text(
                                                   sp.selStore.store.limitDL == null?
                                                   "결제한도가 없습니다." : "${sp.selStore.store.limitDL}% DL",
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight.w200,
-                                                      fontSize: 12,
-                                                      color: black,
-                                                      fontFamily: 'noto'),
+                                                  style: Body2.apply(
+                                                      color: black
+                                                  )
                                                 ),
                                               )
                                             ],
@@ -928,13 +877,12 @@ class _MainMap extends State<MainMap> {
                                           child:Text(
                                               "상품정보",
                                               textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontFamily: 'noto',
+                                              style:
+                                              Body1.apply(
                                                   color: ss.serviceNum == 0 ?
                                                   mainColor
                                                       :
-                                                  Color(0xFF444444)
+                                                  black
                                               )
                                           ),
                                           decoration: ss.serviceNum == 0 ? BoxDecoration(
@@ -953,14 +901,12 @@ class _MainMap extends State<MainMap> {
                                           child: Text(
                                             "매장리뷰",
                                             textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontFamily: 'noto',
-                                                color: ss.serviceNum == 1 ?
+                                            style: Body1.apply(
+                                                color: ss.serviceNum == 0 ?
                                                 mainColor
                                                     :
-                                                Color(0xFF444444)
-                                            ),
+                                                black
+                                            )
                                           ),
                                           decoration: ss.serviceNum == 1 ? BoxDecoration(
                                               border: Border(bottom: BorderSide(color: mainColor, width: 4.0))

@@ -1,5 +1,6 @@
 import 'package:cashcook/src/model/usercheck.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
+import 'package:cashcook/src/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
@@ -56,7 +57,10 @@ class _UserState extends State<UserState> {
                   Tabs(name: "계정정보 수정", routesName: "/myUpdate",),
                 Padding(
                   padding: const EdgeInsets.only(top: 40.0),
-                  child: Text("회원을 탈퇴하시겠습니까? >\n-회원을 탈퇴하시면, 보유하고 계신 포인트가 모두 사라집니다.",style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,color: Color(0xff444444)),),
+                  child: Text("회원을 탈퇴하시겠습니까?\n-회원을 탈퇴하시면, 보유하고 계신 포인트가 모두 사라집니다.",
+                    style: Body2.apply(
+                      color: black
+                    ),),
                 ),
                 ]
               )
@@ -76,9 +80,9 @@ class _UserState extends State<UserState> {
               children: [
                 RichText(
                   text: TextSpan(
-                      style: TextStyle(fontSize:16, fontWeight: FontWeight.w600, color: Colors.black),
+                      style: Subtitle2,
                       children: [
-                        TextSpan(text:"${userCheck.name}", style: TextStyle(fontSize: 20, color: Color(0xff444444))),
+                        TextSpan(text:"${userCheck.name}", style: Subtitle1),
                         TextSpan(text:"님\n"),
                         TextSpan(text:"반갑습니다.")
                       ]
@@ -86,7 +90,18 @@ class _UserState extends State<UserState> {
                 ),
                 Spacer(),
                 RaisedButton(
-                  child: Text("로그아웃", style: TextStyle(fontSize: 12),),
+                  color: primary,
+                  elevation: 0.0,
+                  child: Text("로그아웃",
+                    style: Body2.apply(
+                      color: white
+                    )
+                  ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(6.0)
+                      )
+                    ),
                     onPressed:(){
                       Navigator.of(context).pushNamedAndRemoveUntil("/logout", (route) => false);
                     }
@@ -118,9 +133,9 @@ class Tabs extends StatelessWidget {
         height: 48,
         child: Row(
           children: [
-            Text(name,style: TextStyle(fontSize: 14,color: Color(0xff444444)),),
+            Text(name,style: Body1,),
             Spacer(),
-            Icon(Icons.arrow_forward_ios, size: 24,color: Colors.black,)
+            Icon(Icons.arrow_forward_ios, size: 16,color: black,)
           ],
         ),
       ),
