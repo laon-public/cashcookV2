@@ -1,5 +1,4 @@
 import 'package:cashcook/src/screens/main/home.dart';
-import 'package:cashcook/src/screens/referrermanagement/firstBizSelect.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -50,11 +49,9 @@ class _FirstBiz extends State<FirstBiz> {
                     child: Text(
                       "가입하는 회원등급을\n"
                           "선택해주세요.",
-                      style: TextStyle(
-                          color: Color(0xFF222222),
-                          fontFamily: 'noto',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w300),
+                      style: Subtitle2.apply(
+                        fontWeightDelta: -1
+                      ),
                       textAlign: TextAlign.start,
                     )
                 ),
@@ -64,11 +61,7 @@ class _FirstBiz extends State<FirstBiz> {
                     child: Text(
                       "매장 회원등록은 일반회원으로 가입 후 마이페이지에서\n"
                           "매장등록을 하면 매장회원으로 등록됩니다.",
-                      style: TextStyle(
-                          color: Color(0xFF999999),
-                          fontSize: 12,
-                          fontFamily: 'noto'
-                      ),
+                      style: Body2,
                       textAlign: TextAlign.start,
                     ),
                 ),
@@ -135,12 +128,7 @@ class _FirstBiz extends State<FirstBiz> {
             children: [
               Text(
                 text,
-                style: TextStyle(
-                    fontSize: 20,
-                    color: Color(0xFF333333),
-                    fontFamily: 'noto',
-                    fontWeight: FontWeight.w600
-                ),
+                style: Subtitle1,
               ),
               Spacer(),
               Container(

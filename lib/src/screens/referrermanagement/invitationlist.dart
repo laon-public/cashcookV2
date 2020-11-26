@@ -66,10 +66,8 @@ class _InvitationList extends State<InvitationList> {
                         child: Row(
                           children: [
                             Text("추천회원\n초대 목록입니다.",
-                              style: TextStyle(
-                                color: Color(0xFF222222),
-                                fontSize: 16,
-                                fontFamily: 'noto',
+                              style: Subtitle2.apply(
+                                fontWeightDelta: -1
                               )
                             ),
                             whiteSpaceW(5.0),
@@ -89,27 +87,17 @@ class _InvitationList extends State<InvitationList> {
                             children: [
                               Text(
                                 "${phoneProvider.phoneList.length}명 중 ",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: 'noto',
-                                    fontSize: 16,
-                                    color: Color(0xFF444444)),
+                                style: Subtitle2
                               ),
                               Text(
                                 "${phoneProvider.checkCnt}",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: 'noto',
-                                    fontSize: 16,
-                                    color: mainColor),
+                                style: Subtitle2.apply(
+                                  color: primary
+                                )
                               ),
                               Text(
                                 "명 선택",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: 'noto',
-                                    fontSize: 16,
-                                    color: Color(0xFF444444)),
+                                style: Subtitle2
                               ),
                               whiteSpaceH(15),
                             ],
@@ -135,11 +123,7 @@ class _InvitationList extends State<InvitationList> {
                             ),
                             Text(
                               "전체선택",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: 'noto',
-                                  fontSize: 18,
-                                  color: black),
+                              style: Subtitle2
                             ),
                           ],
                         ),
@@ -164,11 +148,10 @@ class _InvitationList extends State<InvitationList> {
                           child: Center(
                             child: Text(
                               "초대하기",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: 'noto',
-                                  fontSize: 14,
-                                  color: white),
+                              style: Body1.apply(
+                                fontWeightDelta: 1,
+                                color: white
+                              ),
                             ),
                           ),
                         ),
@@ -238,11 +221,7 @@ class _InvitationItemListState extends State<InvitationItemList> {
                     Expanded(
                       flex: 1,
                       child: Text('${NumberFormat("000").format(index + 1)}',
-                        style: TextStyle(
-                          color: Color(0xFF888888),
-                          fontSize: 14,
-                          fontFamily: 'noto',
-                        ),
+                        style: Body2
                       ),
                     ),
                     Expanded(
@@ -250,22 +229,14 @@ class _InvitationItemListState extends State<InvitationItemList> {
                       child: Text('${phoneList[index].name}',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: Color(0xFF444444),
-                          fontSize: 14,
-                          fontFamily: 'noto',
-                        ),
+                        style: Body1
                       ),
                     ),
                     Expanded(
                       flex: 3,
                       child: Text('${phoneList[index].phone}',
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: Color(0xFF444444),
-                          fontSize: 14,
-                          fontFamily: 'noto',
-                        ),
+                        style: Body1,
                         textAlign: TextAlign.end,
                       ),
                     )

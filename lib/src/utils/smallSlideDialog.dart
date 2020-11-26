@@ -3,6 +3,7 @@ import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/storemanagement/orderMenu.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:flutter/material.dart';
@@ -127,8 +128,8 @@ class _SmallSlideDialogState extends State<SmallSlideDialog> {
                                       },
                                       child: Text(
                                           "주문하기",
-                                          style: TextStyle(
-                                              color: Colors.white
+                                          style: Body2.apply(
+                                              color: white
                                           )
                                       )
                                   )

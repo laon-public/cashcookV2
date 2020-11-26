@@ -116,32 +116,28 @@ class _OrderMenu extends State<OrderMenu> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text("DL 결제",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontFamily: 'noto',
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600
-                                )),
+                                style: Body1.apply(
+                                  fontWeightDelta: 1
+                                )
+                            ),
                             whiteSpaceW(10),
                             Text("${demicalFormat.format(pointMap['DL'])} DL 보유",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    fontFamily: 'noto',
-                                    color: primary,
-                                    fontWeight: FontWeight.w600
-                                )),
+                                style: Body2.apply(
+                                  fontWeightDelta: 1,
+                                  color: primary
+                                )
+                            ),
                             whiteSpaceW(5),
                             Text(
                                 store.store.limitDL == null ?
                                 "* 결제한도가 없는 매장 입니다."
                                     :
                                 "* 해당매장의 결제한도는 ${store.store.limitDL}% DL 입니다.",
-                                style: TextStyle(
-                                    fontSize: 10,
-                                    fontFamily: 'noto',
-                                    color: primary,
-                                    fontWeight: FontWeight.w600
-                                )),
+                                style: TabsTagsStyle.apply(
+                                  color: primary,
+                                  fontWeightDelta: 1
+                                )
+                            ),
                           ],
                         ),
                         whiteSpaceH(16),
@@ -197,7 +193,7 @@ class _OrderMenu extends State<OrderMenu> {
                                                       children: [
                                                         Expanded(
                                                           child: Text(
-                                                            "-${numberFormat.format(int.parse(ssp.dlCtrl.text) * 100)}원",
+                                                            "-${numberFormat.format(int.parse(ssp.dlCtrl.text == "" ? "0" : ssp.dlCtrl.text) * 100)}원",
                                                             style: Body2.apply(
 
                                                             ),
@@ -223,23 +219,15 @@ class _OrderMenu extends State<OrderMenu> {
                                     Expanded(
                                         child: Text(
                                           "남은 결제 금액",
-                                          style: TextStyle(
-                                              fontFamily: 'noto',
-                                              fontSize: 16,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w600
-                                          ),
+                                          style: Subtitle2,
                                           textAlign: TextAlign.start,
                                         )
                                     ),
                                     Expanded(
                                         child: Text(
-                                          "${numberFormat.format(ss.orderPay - (int.parse(ss.dlCtrl.text) * 100))}원",
-                                          style: TextStyle(
-                                              fontFamily: 'noto',
-                                              fontSize: 18,
-                                              color: primary,
-                                              fontWeight: FontWeight.w600
+                                          "${numberFormat.format(ss.orderPay - (int.parse(ss.dlCtrl.text == "" ? "0" : ss.dlCtrl.text) * 100))}원",
+                                          style: Subtitle2.apply(
+                                            color: primary
                                           ),
                                           textAlign: TextAlign.end,
                                         )
@@ -262,13 +250,15 @@ class _OrderMenu extends State<OrderMenu> {
                                       :
                                   "DL 결제가 진행됩니다.\n"
                                       "DL 결제는 실시간 흥정 혜택이 없습니다.",
-                                  style: TextStyle(
-                                      fontFamily: 'noto',
-                                      fontSize: (ssp.orderPay > (int.parse(ssp.dlCtrl.text) * 100)) ? 14 : 16,
-                                      color: (ssp.orderPay > (int.parse(ssp.dlCtrl.text) * 100)) ? Colors.black : primary,
-                                      fontWeight: FontWeight.w600
-                                  ),
-                                  textAlign: (ssp.orderPay > (int.parse(ssp.dlCtrl.text) * 100)) ? TextAlign.start : TextAlign.center,
+                                  style: (ssp.orderPay > (int.parse(ssp.dlCtrl.text == "" ? "0" : ssp.dlCtrl.text) * 100)) ?
+                                      Body1.apply(
+                                        fontWeightDelta: 1
+                                      )
+                                      :
+                                      Subtitle2.apply(
+                                          color: primary
+                                        ),
+                                  textAlign: (ssp.orderPay > (int.parse(ssp.dlCtrl.text == "" ? "0" : ssp.dlCtrl.text) * 100)) ? TextAlign.start : TextAlign.center,
                                 )
                             ),
                           ]
@@ -278,7 +268,7 @@ class _OrderMenu extends State<OrderMenu> {
                   whiteSpaceH(20),
                   Consumer<StoreServiceProvider>(
                     builder: (context, ssp, _){
-                      return (ssp.orderPay > (int.parse(ssp.dlCtrl.text) * 100)) ?
+                      return (ssp.orderPay > (int.parse(ssp.dlCtrl.text == "" ? "0" : ssp.dlCtrl.text) * 100)) ?
                       Row(
                         children: [
                           Expanded(
@@ -342,7 +332,7 @@ class _OrderMenu extends State<OrderMenu> {
                         ),
                       ),
                       whiteSpaceW(12),
-                      Text("개인정보 제 3자 제공 및 위탁동의",style: TextStyle(fontSize: 12, color: Color(0xff888888)),)
+                      Text("개인정보 제 3자 제공 및 위탁동의",style: Body2,)
                     ],
                   ),
                   whiteSpaceH(10),
@@ -350,9 +340,11 @@ class _OrderMenu extends State<OrderMenu> {
                       builder: (context, ss, _){
                         return Container(
                             width: MediaQuery.of(context).size.width,
+                            height: 40,
                             child:
                             RaisedButton(
-                                color: mainColor,
+                                color: primary,
+                                elevation: 0.0,
                                 onPressed: () async {
                                   if(isAgreeCheck){
 
@@ -401,8 +393,8 @@ class _OrderMenu extends State<OrderMenu> {
                                 },
                                 child: Text(
                                     "결제하기",
-                                    style: TextStyle(
-                                        color: Colors.white
+                                    style: Body1.apply(
+                                      color: white
                                     )
                                 )
                             )
@@ -425,11 +417,8 @@ class _OrderMenu extends State<OrderMenu> {
             title: Consumer<StoreServiceProvider>(
               builder: (context, ssp, _){
                 return Text("결제안내",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF333333),
-                    fontFamily: 'noto'
+                  style: Body1.apply(
+                    fontWeightDelta: 1
                   ),
                   textAlign: TextAlign.center,
                 );
@@ -444,20 +433,15 @@ class _OrderMenu extends State<OrderMenu> {
                       children: [
                         Text("${widget.store.store.name}에서 ${numberFormat.format(ssp.orderPay)}원을\n"
                             "${numberFormat.format(ssp.orderPay - (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text) * 100))}원과 ${numberFormat.format(int.parse(ssp.dlCtrl.text))} DL로 각각 결제합니다.",
-                          style: TextStyle(
-                              fontFamily: 'noto',
-                              fontSize: 12,
-                              color: Color(0xFF333333)
+                          style: Body2.apply(
+                            color: black,
                           ),
                           textAlign: TextAlign.center,
                         ),
                         whiteSpaceH(22),
                         Text("결제 후 게임하기를 진행하시겠습니까?",
-                            style: TextStyle(
-                                fontSize: 10,
-                                fontFamily: 'noto',
-                                decoration: TextDecoration.underline,
-                                color: Color(0xFFCCCCCC)
+                            style: TabsTagsStyle.apply(
+                              decoration: TextDecoration.underline
                             )
                         ),
                         whiteSpaceH(22),
@@ -476,10 +460,8 @@ class _OrderMenu extends State<OrderMenu> {
                                     height: 64,
                                     child: Center(
                                       child: Text("취소",
-                                          style: TextStyle(
-                                            color: white,
-                                            fontSize: 14,
-                                            fontFamily: 'noto',
+                                          style: Body1.apply(
+                                            color: white
                                           )
                                       ),
                                     ),
@@ -518,10 +500,8 @@ class _OrderMenu extends State<OrderMenu> {
                                     height: 64,
                                     child: Center(
                                       child: Text("나중에",
-                                          style: TextStyle(
-                                            color: white,
-                                            fontSize: 14,
-                                            fontFamily: 'noto',
+                                          style: Body1.apply(
+                                            color: white
                                           )
                                       ),
                                     ),
@@ -561,10 +541,8 @@ class _OrderMenu extends State<OrderMenu> {
                                     height: 64,
                                     child: Center(
                                       child: Text("확인",
-                                          style: TextStyle(
-                                            color: white,
-                                            fontSize: 14,
-                                            fontFamily: 'noto',
+                                          style: Body1.apply(
+                                            color: white
                                           )
                                       ),
                                     ),
@@ -686,11 +664,7 @@ class _OrderMenu extends State<OrderMenu> {
                                     child: Center(
                                         child: Text(
                                           "-",
-                                          style: TextStyle(
-                                              fontFamily: 'noto',
-                                              color: Colors.black,
-                                              fontSize: 14
-                                          ),
+                                          style: Body1,
                                           textAlign: TextAlign.center,
                                         )
                                     )
@@ -706,11 +680,7 @@ class _OrderMenu extends State<OrderMenu> {
                                   child: Center(
                                       child: Text(
                                           "${mm.count}",
-                                          style: TextStyle(
-                                              fontFamily: 'noto',
-                                              color: Colors.black,
-                                              fontSize: 14
-                                          )
+                                          style: Body1
                                       )
                                   ),
                                 )
@@ -730,11 +700,7 @@ class _OrderMenu extends State<OrderMenu> {
                                     child: Center(
                                         child: Text(
                                           "+",
-                                          style: TextStyle(
-                                              fontFamily: 'noto',
-                                              color: black,
-                                              fontSize: 14
-                                          ),
+                                          style: Body1,
                                           textAlign: TextAlign.center,
                                         )
                                     )
@@ -766,7 +732,7 @@ class _OrderMenu extends State<OrderMenu> {
   }
 
   Widget accountDL() {
-    final textstyle = TextStyle(fontSize: 14, color: Color(0xff444444));
+    final textstyle = Body1;
     Map<String, dynamic> pointMap =  Provider.of<UserProvider>(context, listen: false).pointMap;
     return
       Consumer<StoreServiceProvider>(
@@ -838,10 +804,12 @@ class _OrderMenu extends State<OrderMenu> {
               ),
               Text(
                 type,
-                style: TextStyle(
+                style:
+                  Body2.apply(
                     color: idx == currentMethod
-                        ? mainColor
-                        : Color(0xff888888)),
+                      ? mainColor
+                      : Color(0xff888888)
+                  )
               ),
             ],
           )
@@ -860,11 +828,8 @@ class _OrderMenu extends State<OrderMenu> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20)),
             title: Text("DL 사용",
-              style: TextStyle(
-                color: Color(0xFF444444),
-                fontSize: 14,
-                fontFamily: 'noto',
-                fontWeight: FontWeight.w600,
+              style: Body1.apply(
+                fontWeightDelta: 1
               ),
               textAlign: TextAlign.center,
             ),
@@ -879,10 +844,8 @@ class _OrderMenu extends State<OrderMenu> {
                       return Text(
                         "${store.store.name} 주문 금액 ${numberFormat.format(ssp.orderPay)}원 중\n"
                             + "DL로 결제할 수량을 입력하세요.",
-                        style: TextStyle(
-                            color: Color(0xFF444444),
-                            fontSize: 12,
-                            fontFamily: 'noto'
+                        style: Body2.apply(
+                          color: black,
                         ),
                         textAlign: TextAlign.center,
                       );
@@ -900,11 +863,7 @@ class _OrderMenu extends State<OrderMenu> {
                           controller: ssp.dlCtrl,
                           keyboardType: TextInputType.number,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Color(0xFF444444),
-                              fontSize: 14,
-                              fontFamily: 'noto'
-                          ),
+                          style: Body1,
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.zero,
                             floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -949,10 +908,8 @@ class _OrderMenu extends State<OrderMenu> {
                                             Navigator.pop(context);
                                           },
                                           child: Text("취소",
-                                              style:TextStyle(
-                                                  color: Color(0xFFFFFFFF),
-                                                  fontSize: 12,
-                                                  fontFamily: 'noto'
+                                              style:Body2.apply(
+                                                color: white
                                               )
                                           ),
                                         ),
@@ -989,10 +946,8 @@ class _OrderMenu extends State<OrderMenu> {
                                             }
                                           },
                                           child: Text("확인",
-                                              style:TextStyle(
-                                                  color: Color(0xFFFFFFFF),
-                                                  fontSize: 12,
-                                                  fontFamily: 'noto'
+                                              style:Body2.apply(
+                                                color: white
                                               )
                                           ),
                                         ),

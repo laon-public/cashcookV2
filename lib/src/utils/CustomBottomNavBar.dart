@@ -103,11 +103,9 @@ Widget CustomBottomNavBar(BuildContext context, String pageName) {
                       Center(
                         child: Text(
                           "COOK",
-                          style: TextStyle(
-                            fontFamily: 'noto',
-                            fontSize: 10,
-                            fontWeight: FontWeight.w600,
-                            color: white,
+                          style: TabsTagsStyle.apply(
+                            fontWeightDelta: 1,
+                            color: white
                           ),
                         ),
                       )

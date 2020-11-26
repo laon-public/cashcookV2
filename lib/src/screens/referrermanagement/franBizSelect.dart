@@ -78,8 +78,9 @@ class _FranBizSelect extends State<FranBizSelect> {
                           Text(
                             "현재 매장의\n상위총판을 선택해주세요.",
                             textAlign: TextAlign.start,
-                            style: TextStyle(
-                                fontFamily: 'noto', fontSize: 16, color: black),
+                            style: Subtitle2.apply(
+                              fontWeightDelta: -1
+                            ),
                           ),
                           whiteSpaceW(12),
                           Container(
@@ -154,8 +155,7 @@ class _FranBizSelect extends State<FranBizSelect> {
                           Text(
                             '상위 총판 / 대리점을 선택해주세요.',
                             textAlign: TextAlign.start,
-                            style: TextStyle(
-                                fontFamily: 'noto', fontSize: 12, color: Color(0xFF888888)),
+                            style: Body2
                           ),
                           whiteSpaceW(12),
                         ],
@@ -187,11 +187,9 @@ class _FranBizSelect extends State<FranBizSelect> {
                         child: Center(
                           child: Text(
                             "확인",
-                            style: TextStyle(
-                                color: white,
-                                fontSize: 14,
-                                fontFamily: 'noto',
-                                fontWeight: FontWeight.w600),
+                            style: Body1.apply(
+                              color: white
+                            )
                           ),
                         ),
                       ),

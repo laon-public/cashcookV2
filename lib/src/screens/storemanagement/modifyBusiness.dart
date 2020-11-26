@@ -73,6 +73,16 @@ class _ModifyBusiness extends State<ModifyBusiness> {
           style: appBarDefaultText),
         centerTitle: true,
         elevation: 0.5,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Image.asset(
+            "assets/resource/public/prev.png",
+            width: 24,
+            height: 24,
+          ),
+        ),
       ),
       body: SafeArea(top: false, child: body(context)),
     );
@@ -91,7 +101,7 @@ class _ModifyBusiness extends State<ModifyBusiness> {
             BusinessNumber(onSetUri: setBlUri,),
             Padding(
               padding: const EdgeInsets.only(top:18.0),
-              child: Align(child: Text("사업자번호",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+              child: Align(child: Text("사업자번호",style: Body2,),alignment: Alignment.centerLeft,),
             ),
             TextFormField(
               controller: bnCtrl,
@@ -110,7 +120,7 @@ class _ModifyBusiness extends State<ModifyBusiness> {
 //            textField("사업자번호", "사업자등록증의 내용으로 입력해주세요.", bnCtrl,TextInputType.text),
             Padding(
               padding: const EdgeInsets.only(top:18.0),
-              child: Align(child: Text("대표자명",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+              child: Align(child: Text("대표자명",style: Body2,),alignment: Alignment.centerLeft,),
             ),
             TextFormField(
               controller: ownerCtrl,
@@ -131,7 +141,7 @@ class _ModifyBusiness extends State<ModifyBusiness> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top:18.0),
-                    child: Align(child: Text("연락처",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+                    child: Align(child: Text("연락처",style: Body2,),alignment: Alignment.centerLeft,),
                   ),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -153,8 +163,7 @@ class _ModifyBusiness extends State<ModifyBusiness> {
                                 ),
                               ),
                             )),
-                        Text("-", style: TextStyle(
-                            fontSize: 12, color: Color(0xff888888)),),
+                        Text("-", style: Body2,),
                         Expanded(
                             child:
                             TextFormField(
@@ -172,8 +181,7 @@ class _ModifyBusiness extends State<ModifyBusiness> {
                                 ),
                               ),
                             )),
-                        Text("-", style: TextStyle(
-                            fontSize: 12, color: Color(0xff888888)),),
+                        Text("-", style: Body2,),
                         Expanded(
                             child:
                             TextFormField(
@@ -196,8 +204,7 @@ class _ModifyBusiness extends State<ModifyBusiness> {
                   Padding(
                     padding: const EdgeInsets.only(top: 5.0),
                     child: Align(child: Text("연락가능한 연락처를 입력하여주세요",
-                      style: TextStyle(
-                          fontSize: 12, color: Color(0xff888888)),),
+                      style: Body2,),
                       alignment: Alignment.centerRight,),
                   ),
 
@@ -206,7 +213,7 @@ class _ModifyBusiness extends State<ModifyBusiness> {
 
             Padding(
               padding: const EdgeInsets.only(top:18.0),
-              child: Align(child: Text("이메일 주소",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+              child: Align(child: Text("이메일 주소",style: Body2,),alignment: Alignment.centerLeft,),
             ),
             TextFormField(
               controller: emailCtrl,
@@ -240,7 +247,7 @@ class _ModifyBusiness extends State<ModifyBusiness> {
           children: [
               Padding(
                 padding: const EdgeInsets.only(top:18.0),
-                child: Align(child: Text("상호명",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+                child: Align(child: Text("상호명",style: Body2,),alignment: Alignment.centerLeft,),
               ),
               TextFormField(
               controller: nameCtrl,
@@ -269,7 +276,7 @@ class _ModifyBusiness extends State<ModifyBusiness> {
         children: [
           Padding(
             padding: const EdgeInsets.only(top:18.0),
-            child: Align(child: Text("계좌정보",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+            child: Align(child: Text("계좌정보",style: Body2,),alignment: Alignment.centerLeft,),
           ),
           TextFormField(
             // controller: bankCtrl,
@@ -302,7 +309,7 @@ class _ModifyBusiness extends State<ModifyBusiness> {
           ),
           Padding(
             padding: const EdgeInsets.only(top:5.0),
-            child: Align(child: Text("본인 명의의 계좌를 입력해주세요.",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerRight,),
+            child: Align(child: Text("본인 명의의 계좌를 입력해주세요.",style: Body2,),alignment: Alignment.centerRight,),
           )
         ],
       ),
@@ -380,7 +387,7 @@ class _ModifyBusiness extends State<ModifyBusiness> {
           Padding(
             padding: const EdgeInsets.only(top: 18.0),
             child: Align(child: Text("계좌정보",
-              style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
+              style: Body2,),
               alignment: Alignment.centerLeft,),
           ),
           DropdownButton(
@@ -424,7 +431,7 @@ class _ModifyBusiness extends State<ModifyBusiness> {
           Padding(
             padding: const EdgeInsets.only(top: 5.0),
             child: Align(child: Text("본인 명의의 계좌를 입력해주세요.",
-              style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
+              style: Body2,),
               alignment: Alignment.centerRight,),
           )
         ],
@@ -466,7 +473,7 @@ class _BusinessNumberState extends State<BusinessNumber> {
         children: [
           Padding(
             padding: const EdgeInsets.only(top:18.0,bottom: 5.0),
-            child: Align(child: Text("사업자등록증",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+            child: Align(child: Text("사업자등록증",style: Body2,),alignment: Alignment.centerLeft,),
           ),
           Container(
             height: 40,
@@ -488,10 +495,8 @@ class _BusinessNumberState extends State<BusinessNumber> {
                     color: mainColor,
                     child: Center(child:
                       Text("파일첨부",
-                        style: TextStyle(
-                          color: white,
-                          fontSize: 14,
-                          fontFamily: 'noto'
+                        style: Body1.apply(
+                          color: white
                         ),
                       ),
 
@@ -506,7 +511,7 @@ class _BusinessNumberState extends State<BusinessNumber> {
           ),
           Padding(
             padding: const EdgeInsets.only(top:5.0),
-            child: Align(child: Text("저해상도의 경우 승인 거부의 사유가 될 수 있습니다.",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerRight,),
+            child: Align(child: Text("저해상도의 경우 승인 거부의 사유가 될 수 있습니다.",style: Body2,),alignment: Alignment.centerRight,),
           )
         ],
       ),

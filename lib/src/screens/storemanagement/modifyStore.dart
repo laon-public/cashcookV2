@@ -134,10 +134,8 @@ class _ModifyStoreState extends State<ModifyStore> {
                       },
                       child: Text(
                           "메뉴 수정",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: 'noto',
-                            color: white,
+                          style: Body1.apply(
+                            color: white
                           )
                       ),
                     )
@@ -172,10 +170,8 @@ class _ModifyStoreState extends State<ModifyStore> {
                       child: Container(
                         padding: EdgeInsets.only(bottom: 12.0),
                           child: Text("매장정보",
-                              style: TextStyle(
-                                  color: view == 0 ? mainColor : Color(0xFF444444),
-                                  fontSize: 14,
-                                  fontFamily: 'noto'
+                              style: Body1.apply(
+                                color: view == 0 ? primary : Color(0xFF444444),
                               )
                           ),
                         decoration: view == 0 ? BoxDecoration(
@@ -195,11 +191,10 @@ class _ModifyStoreState extends State<ModifyStore> {
                       child: Container(
                           padding: EdgeInsets.only(bottom: 12.0),
                           child: Text("메뉴정보",
-                              style: TextStyle(
-                                  color: view == 1 ? mainColor : Color(0xFF444444),
-                                  fontSize: 14,
-                                  fontFamily: 'noto'
-                              )),
+                              style: Body1.apply(
+                                color: view == 1 ? primary : Color(0xFF444444),
+                              )
+                          ),
                         decoration: view == 1 ? BoxDecoration(
                             border: Border(bottom: BorderSide(color: mainColor, width: 4.0))
                         ) : BoxDecoration(),
@@ -217,11 +212,10 @@ class _ModifyStoreState extends State<ModifyStore> {
                       child: Container(
                           padding: EdgeInsets.only(bottom: 12.0),
                           child: Text("기타정보",
-                              style: TextStyle(
-                                  color: view == 2 ? mainColor : Color(0xFF444444),
-                                  fontSize: 14,
-                                  fontFamily: 'noto'
-                              )),
+                              style: Body1.apply(
+                                color: view == 2 ? primary : Color(0xFF444444),
+                              )
+                          ),
                         decoration: view == 2 ? BoxDecoration(
                             border: Border(bottom: BorderSide(color: mainColor, width: 4.0))
                         ) : BoxDecoration(),
@@ -258,7 +252,7 @@ class _ModifyStoreState extends State<ModifyStore> {
       children: [
         Padding(
           padding: const EdgeInsets.only(top:5.0),
-          child: Align(child: Text("업종",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+          child: Align(child: Text("업종",style: Body2,),alignment: Alignment.centerLeft,),
         ),
         Consumer<StoreServiceProvider>(
             builder: (context, ssp, _) {
@@ -324,17 +318,15 @@ class _ModifyStoreState extends State<ModifyStore> {
         textField("매장요약", "20자 내외로 입력해주세요.", descSrtCtrl,TextInputType.text),
         Padding(
           padding: const EdgeInsets.only(top:5.0),
-          child: Align(child: Text("매장설명",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+          child: Align(child: Text("매장설명",style: Body2,),alignment: Alignment.centerLeft,),
         ),
         whiteSpaceH(5),
         TextFormField(
           autofocus: false,
           maxLines: 4,
           controller: descCtrl,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-            fontFamily: 'noto',
+          style: Subtitle2.apply(
+            fontWeightDelta: -1
           ),
           decoration: InputDecoration(
               border: OutlineInputBorder(
@@ -351,25 +343,23 @@ class _ModifyStoreState extends State<ModifyStore> {
         ),
         Padding(
           padding: const EdgeInsets.only(top:5.0),
-          child: Align(child: Text("100자 내외로 입력해주세요.",style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerRight,),
+          child: Align(child: Text("100자 내외로 입력해주세요.",style: Body2,),alignment: Alignment.centerRight,),
         ),
         Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Align(child: Text("매장 연락처",
-                style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
+                style: Body2,),
                 alignment: Alignment.centerLeft,),
               Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Expanded(
                         child: textFieldss(telCtrl1, TextInputType.phone)),
-                    Text("-", style: TextStyle(
-                        fontSize: 12, color: Color(0xff888888)),),
+                    Text("-", style: Body2,),
                     Expanded(
                         child: textFields(telCtrl2, TextInputType.phone)),
-                    Text("-", style: TextStyle(
-                        fontSize: 12, color: Color(0xff888888)),),
+                    Text("-", style: Body2,),
                     Expanded(
                         child: textFields(telCtrl3, TextInputType.phone)),
                   ]
@@ -377,8 +367,7 @@ class _ModifyStoreState extends State<ModifyStore> {
               Padding(
                 padding: const EdgeInsets.only(top: 5.0),
                 child: Align(child: Text("연락가능한 연락처를 입력하여주세요",
-                  style: TextStyle(
-                      fontSize: 12, color: Color(0xff888888)),),
+                  style: Body2,),
                   alignment: Alignment.centerRight,),
               ),
 
@@ -391,7 +380,7 @@ class _ModifyStoreState extends State<ModifyStore> {
           child: Align(
             child: Text(
               "매장사진",
-              style: TextStyle(fontSize: 12, color: Color(0xff888888)),
+              style: Body2,
             ),
             alignment: Alignment.centerLeft,
           ),
@@ -436,10 +425,8 @@ class _ModifyStoreState extends State<ModifyStore> {
                       },
                       child: Text(
                           "대분류 추가",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: 'noto',
-                            color: white,
+                          style: Body1.apply(
+                            color: white
                           )
                       ),
                     ),
@@ -460,18 +447,12 @@ class _ModifyStoreState extends State<ModifyStore> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("메뉴분류",
-                style: TextStyle(
-                    fontSize: 12,
-                    fontFamily: 'noto',
-                    color: Color(0xFF888888)
-                )),
+                style: Body2),
             TextFormField(
               autofocus: false,
               controller: bme.nameCtrl,
-              style: TextStyle(
-                  fontSize: 16,
-                  fontFamily: 'noto',
-                  color: black
+              style: Subtitle2.apply(
+                fontWeightDelta: -1
               ),
               decoration: InputDecoration(
                 hintText: '메뉴 대분류를 작성해주세요.',
@@ -522,11 +503,7 @@ class _ModifyStoreState extends State<ModifyStore> {
                   whiteSpaceW(10),
                   Text(
                       "메뉴추가",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'noto',
-                          color: Color(0xFF444444)
-                      )
+                      style: Body1
                   )
                 ]
             ),
@@ -546,10 +523,8 @@ class _ModifyStoreState extends State<ModifyStore> {
               child: TextFormField(
                 autofocus: false,
                 controller: me.nameCtrl,
-                style: TextStyle(
-                    fontSize: 16,
-                    fontFamily: 'noto',
-                    color: black
+                style: Subtitle2.apply(
+                  fontWeightDelta: -1
                 ),
                 decoration: InputDecoration(
                   suffixIcon: InkWell(
@@ -580,10 +555,8 @@ class _ModifyStoreState extends State<ModifyStore> {
                 autofocus: false,
                 controller: me.priceCtrl,
                 keyboardType: TextInputType.number,
-                style: TextStyle(
-                    fontSize: 16,
-                    fontFamily: 'noto',
-                    color: black
+                style: Subtitle2.apply(
+                  fontWeightDelta: -1
                 ),
                 decoration: InputDecoration(
                   hintText: "가격",
@@ -607,21 +580,15 @@ class _ModifyStoreState extends State<ModifyStore> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
         Text("기타정보",
-        style: TextStyle(
-          fontSize: 12,
-          color: Color(0xFF888888),
-          fontFamily: 'noto',
-        )
+        style: Body2
     ),
     whiteSpaceH(10),
     TextFormField(
     autofocus: false,
     maxLines: 6,
     controller: commentCtrl,
-    style: TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w400,
-    fontFamily: 'noto',
+    style: Subtitle2.apply(
+      fontWeightDelta: -1
     ),
     decoration: InputDecoration(
     hintText: '기타 정보를 입력하여주세요.(원산지 표시 등)',
@@ -722,9 +689,9 @@ class _ModifyStoreState extends State<ModifyStore> {
   }
 
   TextStyle _decorationStyleOf(BuildContext context) {
-    final theme = Theme.of(context);
-    return theme.textTheme.subhead
-        .copyWith(fontSize: 14, color: mainColor);
+    return Body1.apply(
+      color: primary
+    );
   }
 
   void getData(address, lat, lon){
@@ -748,7 +715,7 @@ class _ModifyStoreState extends State<ModifyStore> {
             child: Align(
               child: Text(
                 "매장주소",
-                style: TextStyle(fontSize: 12, color: Color(0xff888888)),
+                style: Body2,
               ),
               alignment: Alignment.centerLeft,
             ),
@@ -799,8 +766,7 @@ class _ModifyStoreState extends State<ModifyStore> {
                         Navigator.of(context).pushNamed("/store/findAddress",arguments: args);
                       },
                       child: Text("지도찾기")),
-                  suffixStyle:
-                  TextStyle(fontSize: 14, color: mainColor),
+                  suffixStyle: _decorationStyleOf(context),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   border: UnderlineInputBorder(
                     borderSide:
@@ -819,7 +785,7 @@ class _ModifyStoreState extends State<ModifyStore> {
             child: Align(
               child: Text(
                 "지도에서 매장의 위치를 지정해주세요.",
-                style: TextStyle(fontSize: 12, color: Color(0xff888888)),
+                style: Body2
               ),
               alignment: Alignment.centerRight,
             ),
@@ -885,11 +851,9 @@ class _PicturesState extends State<Pictures> {
                     color: mainColor,
                     child: Center(
                       child: Text("파일첨부", style:
-                      TextStyle(
-                          color: white,
-                          fontSize: 12,
-                          fontFamily: 'noto'
-                        ),
+                      Body2.apply(
+                        color: white
+                      )
                       ),
                     ),
                   ),
