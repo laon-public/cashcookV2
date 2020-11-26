@@ -151,26 +151,36 @@ class _StoreApplyState extends State<StoreApplyState>{
               child:
               Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 300,
+                  height: 400,
                   child: Column(
                       children: [
-                        Text("매장 등록에 성공 했습니다!",
-                            style: TextStyle(
-                              color: primary,
-                              fontSize: 20,
-                              fontFamily: 'noto',
-                            )),
-                        whiteSpaceH(10),
                         Image.asset(
-                          "assets/icon/splash2.png",
+                          // "assets/icon/splash2.png",
+                          // "assets/icon/cashcook_logo.png",
+                          "assets/icon/excellent.png",
                           width: 150,
                           height: 150,
                           fit: BoxFit.fill,
                         ),
                         whiteSpaceH(10.0),
+                        Text("축하합니다.\n매장신청이 완료되었습니다.",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: black,
+                              fontSize: 20,
+                              fontFamily: 'noto',
+                            )),
+                        whiteSpaceH(10),
+                        Text("매장적용은 사업자 정보 확인 후 완료되며,\n완료까지 약 일주일 정도 소요됩니다.",
+                            style: TextStyle(
+                              color: black,
+                              fontSize: 14,
+                              fontFamily: 'noto',
+                            )),
+                        whiteSpaceH(10),
                         RaisedButton(
                           onPressed: () async {
-                            await Provider.of<StoreProvider>(context, listen: false).clearMap();
+                            await  Provider.of<StoreProvider>(context, listen: false).clearMap();
                             await Provider.of<StoreProvider>(context, listen: false).hideDetailView();
                             await Provider.of<UserProvider>(context, listen: false).fetchMyInfo(context);
 

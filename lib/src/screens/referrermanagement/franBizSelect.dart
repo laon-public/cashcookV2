@@ -4,10 +4,10 @@ import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
-
 import '../../provider/UserProvider.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import '../../widgets/showToast.dart';
+import 'package:cashcook/src/screens/main/mainmap.dart';
 
 class FranBizSelect extends StatefulWidget {
   @override
@@ -179,8 +179,12 @@ class _FranBizSelect extends State<FranBizSelect> {
 
                           await Provider.of<UserProvider>(context, listen: false).insertDisAge();
 
+                          // Navigator.of(context).pushAndRemoveUntil(
+                          //     MaterialPageRoute(builder: (context) => StoreApplyState()), (route) => false);
+
+                          showToast("총판/대리점 등록이 완료됐습니다.");
                           Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(builder: (context) => StoreApplyState()), (route) => false);
+                              MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
                         },
                         elevation: 0.0,
                         color: mainColor,
