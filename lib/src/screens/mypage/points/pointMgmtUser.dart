@@ -4,6 +4,7 @@ import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/CustomBottomNavBar.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class pointMgmtUser extends StatefulWidget {
@@ -318,10 +320,7 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
         Padding(
           padding: const EdgeInsets.only(bottom: 5.0, right: 20.0, left: 20.0),
           child: Text("${data.base_mday} ${(viewType == "month") ? "월" : "년"}",
-              style: TextStyle(
-                  fontFamily: 'noto',
-                  fontSize: 12,
-                  color: Color(0xff888888))),
+              style: Body2),
         ),
         Container(
           padding: const EdgeInsets.only(right:12.0, left:12.0, bottom: 10.0),
@@ -339,11 +338,9 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                       child:
                       Text("  ${numberFormat.format(double.parse(data.base_amount))} 원",
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontFamily: 'noto',
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                              color:Color(0xffFF6622)))
+                          style: Subtitle1.apply(
+                            color: primary
+                          ))
                   ),
                 ),
                 whiteSpaceW(10),
@@ -358,11 +355,9 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                       child:
                       Text("  ${numberFormat.format(double.parse(data.sub_amount))} DL",
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontFamily: 'noto',
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xffD4145A)))
+                          style: Subtitle1.apply(
+                            color: etcYellow
+                          ))
                   ),
                 ),
               ]
@@ -410,11 +405,11 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
       children: [
         Padding(
           padding: const EdgeInsets.only(bottom: 20.0, right: 12.0, left: 12.0),
-          child: Text(data['date'],
-              style: TextStyle(
-                  fontFamily: 'noto',
-                  fontSize: 12,
-                  color: Color(0xFF888888))),
+          child: Text(
+              DateFormat("yy.MM.dd").format(
+                  DateTime.parse( data['date'].toString())),
+              style: Body2
+                  ),
         ),
         Column(
           children: histories.map((e) {
@@ -441,18 +436,11 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                                   Text(
                                       "    ${e['description']}  ",
                                       overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          fontFamily: 'noto',
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.black)
+                                      style: Subtitle2
                                   ),
                                   Text(
-                                      "      ${e['time']}  ",
-                                      style: TextStyle(
-                                          fontFamily: 'noto',
-                                          fontSize: 10,
-                                          color: Color(0xFF888888))
+                                      "      ${e['time'].toString().split(":")[0]}:${e['time'].toString().split(":")[1]}  ",
+                                      style: TabsTagsStyle
                                   ),
                                 ]
                             )
@@ -465,13 +453,10 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                               padding: EdgeInsets.only(right: 13.0),
                               child:Text(
                                   "${e['title']}",
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontFamily: 'noto',
-                                    fontWeight: FontWeight.w600,
+                                  style: Subtitle2.apply(
                                     color:
                                     (e['title'].toString().contains("DL") || (e['title'].toString().contains("ADP")) ? Color(0xffD4145A)
-                                        : (e['title'].toString().contains("RP")) ? mainColor
+                                        : (e['title'].toString().contains("RP")) ? primary
                                         :  Color(0xffFF6622)),
                                   )
                               )

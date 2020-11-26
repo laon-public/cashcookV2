@@ -1,4 +1,5 @@
 import 'package:cashcook/src/provider/CenterProvider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
@@ -39,11 +40,10 @@ class AppInfomation extends StatelessWidget {
                   onKakaoShare();
                 },
                 child: Text("공유",style:
-                  TextStyle(
-                      fontSize: 14,
-                      color: primary,
-                      fontFamily: 'noto',
-                      decoration: TextDecoration.underline),), //오른쪽 상단에 텍스트 출력
+                    Body1.apply(
+                      decoration: TextDecoration.underline,
+                      color: primary
+                    ),), //오른쪽 상단에 텍스트 출력
               ),
             ),
           ),
@@ -74,35 +74,27 @@ class AppInfomation extends StatelessWidget {
                     ),
                     whiteSpaceH(20.0),
                     Text('현재버전 : V.${cp.phoneVersion}',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'noto',
-                          color: Color(0xFF444444),
-                          fontWeight: FontWeight.w600,
-                        )),
+                        style: Body1.apply(
+                          fontWeightDelta: 2
+                        )
+                    ),
                     (cp.phoneVersion == cp.appVersion) ?
                         Text("최신버전을 사용 중 입니다.",
-                          style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'noto'
-                          ))
+                          style: Body1
+                        )
                         :
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text('최신버전 : ',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontFamily: 'noto',
-                                  color: Color(0xFF444444),
-                                  fontWeight: FontWeight.w600,
-                                )),
+                                style: Body1.apply(
+                                    fontWeightDelta: 2
+                                )
+                            ),
                             Text("V.${cp.appVersion}",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'noto',
+                              style: Body1.apply(
                                 color: primary,
-                                fontWeight: FontWeight.w600,
+                                  fontWeightDelta: 2
                               ),)
                           ],
                         ),
@@ -115,11 +107,11 @@ class AppInfomation extends StatelessWidget {
                             );
                           },
                           child: Text("업데이트",style:
-                          TextStyle(
-                          fontSize: 14,
-                          color: primary,
-                          fontFamily: 'noto',
-                          decoration: TextDecoration.underline),))
+                          Body1.apply(
+                            color: primary,
+                              fontWeightDelta: 2,
+                            decoration: TextDecoration.underline
+                          ),))
                     :
                       Container()
                   ],

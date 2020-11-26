@@ -814,22 +814,37 @@ class _OrderMenu extends State<OrderMenu> {
         });
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(
-          vertical: 10,
-        ),
         decoration: BoxDecoration(
             border: Border.all(
                 color: idx == currentMethod
                     ? mainColor
                     : Color(0xff888888))),
         child: Center(
-          child: Text(
-            type,
-            style: TextStyle(
-                color: idx == currentMethod
-                    ? mainColor
-                    : Color(0xff888888)),
-          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+
+            children: [
+              Theme(
+                data: ThemeData(unselectedWidgetColor: Colors.transparent,
+                ),
+                child:
+                Checkbox(
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  activeColor: Colors.transparent,
+                  checkColor: primary,
+                  value: idx == currentMethod,
+                  onChanged: (value) {},
+                ),
+              ),
+              Text(
+                type,
+                style: TextStyle(
+                    color: idx == currentMethod
+                        ? mainColor
+                        : Color(0xff888888)),
+              ),
+            ],
+          )
         ),
       ),
     );

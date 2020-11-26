@@ -157,10 +157,8 @@ class _Inquiry extends State<Inquiry> {
                   children: [
                     Text(
                       inquiryModel.title,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff444444),
+                      style: Body1.apply(
+                          fontWeightDelta: 2
                       ),
                     ),
 //                    Provider.of<CenterProvider>(context).inquiry[0].status == "ANSWER"?
@@ -176,18 +174,13 @@ class _Inquiry extends State<Inquiry> {
                   inquiryModel.status == "NOT_ANSWER"? "관리자 확인 전입니다." :
                   inquiryModel.status == "ANSWER"? "답변이 달렸습니다." :
                   inquiryModel.status == "DONE"? "읽은 글입니다." : "알수없음",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff444444),
+                  style: Body1.apply(
+                      fontWeightDelta: 2
                   ),
                 ),
                 Text(
                   inquiryModel.created_at.split("T").first,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Color(0xff888888),
-                  ),
+                  style: Body2,
                 ),
               ],
             ),
@@ -217,9 +210,8 @@ class _Inquiry extends State<Inquiry> {
                 whiteSpaceW(12),
                 Text(
                   inquiryModel.title,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Color(0xff444444),
+                  style: Body2.apply(
+                    color: black
                   ),
                 ),
               ],
@@ -237,9 +229,8 @@ class _Inquiry extends State<Inquiry> {
                   whiteSpaceW(12),
                   Text(
                     inquiryModel.answer == null? "아직 답이 달리지 않았습니다.": inquiryModel.answer,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Color(0xff444444),
+                    style: Body2.apply(
+                        color: black
                     ),
                   ),
                 ],

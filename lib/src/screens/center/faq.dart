@@ -111,10 +111,8 @@ class _FaqItemState extends State<FaqItem> {
             whiteSpaceW(12),
              Text(
                 widget.faqModel.question,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xff444444),
+                style: Body1.apply(
+                  fontWeightDelta: 2
                 ),
               ),
           ],
@@ -137,7 +135,9 @@ class _FaqItemState extends State<FaqItem> {
             whiteSpaceW(12),
             Text(
               widget.faqModel.answer,
-              style: TextStyle(fontSize: 12, color: Color(0xff444444)),
+              style: Body2.apply(
+                color: black
+              ),
             ),
           ],
         ),

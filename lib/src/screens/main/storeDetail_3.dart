@@ -121,12 +121,17 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                 crossAxisAlignment: CrossAxisAlignment.center,
                                                 children: [
                                                   Text(widget.store.store.name,
-                                                      style: TextStyle(
-                                                        fontSize: 13,
-                                                        fontFamily: 'noto',
-                                                        fontWeight: FontWeight.w600,
+                                                      style: Body1.apply(
+                                                        fontWeightDelta: 1,
                                                         color: Color.lerp(Colors.transparent, black, stuckAmount * 1.1),
                                                       )
+                                                      //
+                                                      // style: TextStyle(
+                                                      //   fontSize: 13,
+                                                      //   fontFamily: 'noto',
+                                                      //   fontWeight: FontWeight.w600,
+                                                      //   color: Color.lerp(Colors.transparent, black, stuckAmount * 1.1),
+                                                      // )
                                                   ),
                                                 ],
                                               )
@@ -331,7 +336,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                   ),
                                                   whiteSpaceW(4.0),
                                                   Text("${NumberFormat("#.#").format(widget.store.store.scope)}",
-                                                    style: Body1.apply(color: secondary, fontWeightDelta: -1),
+                                                    style: Body1.apply(color: black, fontWeightDelta: -1),
                                                     textAlign: TextAlign.center,
                                                   )
                                                 ],
@@ -354,7 +359,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                   ),
                                                   whiteSpaceW(4.0),
                                                   Text("${widget.store.store.limitDL == null ? "100" : widget.store.store.limitDL }%",
-                                                    style: Body1.apply(color: secondary, fontWeightDelta: -1),
+                                                    style: Body1.apply(color: black, fontWeightDelta: -1),
                                                     textAlign: TextAlign.center,
                                                   )
                                                 ],
@@ -390,7 +395,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                     ),
                                                     whiteSpaceW(4.0),
                                                     Text("QR 스캔",
-                                                      style: Body1.apply(color: secondary, fontWeightDelta: -1),
+                                                      style: Body1.apply(color: black, fontWeightDelta: -1),
                                                       textAlign: TextAlign.center,
                                                     )
                                                   ],

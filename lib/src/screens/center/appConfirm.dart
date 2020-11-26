@@ -89,11 +89,8 @@ class _AppConfirm extends State<AppConfirm> {
               child: Column(
                 children: [
                   Text("ADP 경고",
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'noto',
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xFF333333)
+                    style: Body1.apply(
+                      fontWeightDelta: 2
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -101,10 +98,8 @@ class _AppConfirm extends State<AppConfirm> {
                   Text("소유 ADP가 30,000 ADP 이하입니다.\n"
                       "10,000 ADP 이하일시 결제 후\n"
                       "추가할인 서비스가 제한됩니다.",
-                    style: TextStyle(
-                        fontSize: 12,
-                        fontFamily: 'noto',
-                        color: Color(0xFF333333)
+                    style: Body2.apply(
+                      color: black
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -119,16 +114,14 @@ class _AppConfirm extends State<AppConfirm> {
                           Radius.circular(100)
                         )
                       ),
-                      color: subColor,
+                      color: etcYellow,
                       onPressed: () {
                         Navigator.of(context)
                             .pushReplacement(MaterialPageRoute(builder: (context) => Home()));
                       },
                       child: Text("확인",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'noto',
-                          color: white,
+                        style: Body1.apply(
+                          color: white
                         ),
                       ),
                     ),
@@ -180,11 +173,8 @@ class _AppConfirm extends State<AppConfirm> {
                 child: Text(
                     "Copyright ⓒ 2020 CashCook Inc. All Rights Reserved.",
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontFamily: 'noto',
-                        fontSize: 11,
-                        color: white,
-                        fontWeight: FontWeight.w400
+                    style: Caption.apply(
+                      color: white
                     )
                 ),
               ),
@@ -211,10 +201,8 @@ class _AppConfirm extends State<AppConfirm> {
                       Text("새로운 캐시쿡이\n"
                           "업데이트 되었습니다!\n"
                           "새로운 캐시쿡을 만나보세요!",
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontFamily: 'noto',
-                          color: Color(0xFF333333),
+                        style: Body2.apply(
+                          color: black
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -238,10 +226,8 @@ class _AppConfirm extends State<AppConfirm> {
                                         .pushReplacement(MaterialPageRoute(builder: (context) => Home()));
                                   },
                                   child: Text("나중에",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: 'noto',
-                                      color: white,
+                                    style: Body2.apply(
+                                        color: white
                                     ),
                                   ),
                                 ),
@@ -264,10 +250,8 @@ class _AppConfirm extends State<AppConfirm> {
                                     );
                                   },
                                   child: Text("업데이트",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontFamily: 'noto',
-                                      color: white,
+                                    style: Body1.apply(
+                                      color: white
                                     ),),
                                 ),
                               )
