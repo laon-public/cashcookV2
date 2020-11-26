@@ -1,6 +1,7 @@
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
@@ -80,11 +81,7 @@ class _StoreApplyState extends State<StoreApplyState>{
                           fit: BoxFit.fill,
                         ),
                         Text("매장 등록을 진행 중 입니다.",
-                            style: TextStyle(
-                              color: primary,
-                              fontSize: 20,
-                              fontFamily: 'noto',
-                            )),
+                            style: Subtitle1),
                       ]
                   )
               )
@@ -113,16 +110,12 @@ class _StoreApplyState extends State<StoreApplyState>{
                   child: Column(
                       children: [
                         Text("거의 완료 되었습니다!",
-                            style: TextStyle(
-                              color: primary,
-                              fontSize: 20,
-                              fontFamily: 'noto',
+                            style: Subtitle1.apply(
+                              color: primary
                             )),
                         Text("조금만 더 기다려주세요!",
-                            style: TextStyle(
-                              color: primary,
-                              fontSize: 20,
-                              fontFamily: 'noto',
+                            style: Subtitle1.apply(
+                                color: primary
                             )),
                         Image.asset(
                           "assets/icon/cookie.png",
@@ -131,10 +124,8 @@ class _StoreApplyState extends State<StoreApplyState>{
                           fit: BoxFit.fill,
                         ),
                         Text("메뉴 등록을 진행 중 입니다.",
-                            style: TextStyle(
-                              color: primary,
-                              fontSize: 20,
-                              fontFamily: 'noto',
+                            style: Subtitle1.apply(
+                                color: primary
                             )),
                       ]
                   )
@@ -155,10 +146,8 @@ class _StoreApplyState extends State<StoreApplyState>{
                   child: Column(
                       children: [
                         Text("매장 등록에 성공 했습니다!",
-                            style: TextStyle(
-                              color: primary,
-                              fontSize: 20,
-                              fontFamily: 'noto',
+                            style: Subtitle1.apply(
+                                color: primary
                             )),
                         whiteSpaceH(10),
                         Image.asset(
@@ -181,10 +170,8 @@ class _StoreApplyState extends State<StoreApplyState>{
                           color: primary,
                           child: Text(
                             "메인으로 돌아가기",
-                            style: TextStyle(
-                              color: white,
-                              fontSize: 12,
-                              fontFamily: 'noto'
+                            style: Body2.apply(
+                              color: white
                             )
                           )
                         )

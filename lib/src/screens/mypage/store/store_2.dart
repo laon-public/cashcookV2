@@ -2,12 +2,8 @@ import 'dart:io';
 
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
-import 'package:cashcook/src/provider/UserProvider.dart';
-import 'package:cashcook/src/screens/main/mainmap.dart';
-import 'package:cashcook/src/screens/referrermanagement/franBizSelect.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
-import 'package:cashcook/src/utils/geocoder.dart';
 import 'package:cashcook/src/widgets/TextFieldWidget.dart';
 import 'package:cashcook/src/widgets/TextFieldssWidget.dart';
 import 'package:cashcook/src/widgets/TextFieldsWidget.dart';

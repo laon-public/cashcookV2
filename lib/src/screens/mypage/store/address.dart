@@ -143,7 +143,7 @@ class _FindAddressState extends State<FindAddress> {
                 ),
               ],
             ),
-            child: Align(child: Text(address, style: TextStyle(color: Colors.black)),alignment: Alignment.centerLeft,),
+            child: Align(child: Text(address, style: Body2.apply(color:black)),alignment: Alignment.centerLeft,),
           ),
         ),
         Positioned(
@@ -168,7 +168,7 @@ class _FindAddressState extends State<FindAddress> {
                       ),
                     ],
                   ),
-                  child: Center(child: Text("선택", style: TextStyle(fontSize: 14, color: primary,fontWeight: FontWeight.bold),),),
+                  child: Center(child: Text("선택", style: Body1.apply(color: primary, fontWeightDelta: 1),),),
                 ),
               ),
         ),

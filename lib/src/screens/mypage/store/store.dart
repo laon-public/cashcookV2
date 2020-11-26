@@ -88,8 +88,8 @@ class _StoreApplyFirstStep extends State<StoreApplyFirstStep> {
                   Padding(
                     padding: const EdgeInsets.only(top: 5.0),
                     child: Align(child: Text("연락가능한 연락처를 입력하여주세요",
-                      style: TextStyle(
-                          fontSize: 12, color: Color(0xff888888)),),
+                      style: Body2
+                    ),
                       alignment: Alignment.centerRight,),
                   ),
 
@@ -161,7 +161,7 @@ class _StoreApplyFirstStep extends State<StoreApplyFirstStep> {
           Padding(
             padding: const EdgeInsets.only(top: 5.0),
             child: Align(child: Text("본인 명의의 계좌를 입력해주세요.",
-              style: TextStyle(fontSize: 12, color: Color(0xff888888)),),
+              style: Body2,),
               alignment: Alignment.centerRight,),
           )
         ],
@@ -276,11 +276,11 @@ class _BusinessNumberState extends State<BusinessNumber> {
                     width: 90,
                     color: primary,
                     child: Center(child: Text("파일첨부", style:
-                      TextStyle(
-                        color: white,
-                        fontSize: 12,
-                        fontFamily: 'noto'
-                      )),),
+                      Body2.apply(
+                        color: white
+                      )
+                    ),
+                    ),
                   ),
                   onTap: (){
                     getImage();

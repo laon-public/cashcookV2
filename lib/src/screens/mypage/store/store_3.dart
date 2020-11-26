@@ -1,19 +1,9 @@
-import 'dart:io';
-
 import 'package:cashcook/src/model/store/menuedit.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
-import 'package:cashcook/src/provider/UserProvider.dart';
-import 'package:cashcook/src/screens/main/mainmap.dart';
-import 'package:cashcook/src/screens/referrermanagement/franBizSelect.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
-import 'package:cashcook/src/utils/geocoder.dart';
-import 'package:cashcook/src/widgets/TextFieldWidget.dart';
-import 'package:cashcook/src/widgets/TextFieldssWidget.dart';
-import 'package:cashcook/src/widgets/TextFieldsWidget.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class StoreApplyThirdStep extends StatefulWidget {
@@ -34,12 +24,7 @@ class _StoreApplyThirdStepState extends State<StoreApplyThirdStep> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("매장 정보 2/3", style:
-        TextStyle(
-            color: black,
-            fontSize: 14,
-            fontFamily: 'noto',
-            fontWeight: FontWeight.w600,
-        )),
+        appBarDefaultText),
         centerTitle: true,
         elevation: 0.5,
       ),
@@ -85,11 +70,7 @@ class _StoreApplyThirdStepState extends State<StoreApplyThirdStep> {
                                     },
                                     child: Text(
                                         "대분류 추가",
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontFamily: 'noto',
-                                          color: Color(0xFF333333),
-                                        )
+                                        style: Body1
                                     ),
                                   ),
                                   decoration: BoxDecoration(
@@ -123,10 +104,8 @@ class _StoreApplyThirdStepState extends State<StoreApplyThirdStep> {
                 },
                 child: Text(
                     "다음",
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'noto',
-                      color: white,
+                    style: Body1.apply(
+                      color: white
                     )
                 ),
               )
@@ -145,18 +124,13 @@ class _StoreApplyThirdStepState extends State<StoreApplyThirdStep> {
                 crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("메뉴분류",
-                    style: TextStyle(
-                        fontSize: 12,
-                        fontFamily: 'noto',
-                        color: Color(0xFF888888)
-                    )),
+                    style: Body2
+                ),
                 TextFormField(
                   autofocus: false,
                   controller: bme.nameCtrl,
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontFamily: 'noto',
-                      color: black
+                  style: Subtitle2.apply(
+                    fontWeightDelta: -1
                   ),
                   decoration: InputDecoration(
                     hintText: '메뉴 대분류를 작성해주세요.',
@@ -207,11 +181,7 @@ class _StoreApplyThirdStepState extends State<StoreApplyThirdStep> {
                     whiteSpaceW(10),
                     Text(
                       "메뉴추가",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: 'noto',
-                        color: Color(0xFF444444)
-                      )
+                      style: Body1
                     )
                   ]
                 ),
@@ -231,10 +201,8 @@ class _StoreApplyThirdStepState extends State<StoreApplyThirdStep> {
             child: TextFormField(
               autofocus: false,
               controller: me.nameCtrl,
-              style: TextStyle(
-                fontSize: 16,
-                fontFamily: 'noto',
-                color: black
+              style: Subtitle2.apply(
+                fontWeightDelta: -1
               ),
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.only(left: 7.0, right: 7.0),
@@ -266,10 +234,8 @@ class _StoreApplyThirdStepState extends State<StoreApplyThirdStep> {
               autofocus: false,
               controller: me.priceCtrl,
               keyboardType: TextInputType.number,
-              style: TextStyle(
-                fontSize: 16,
-                fontFamily: 'noto',
-                color: black
+              style: Subtitle2.apply(
+                fontWeightDelta: -1
               ),
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.only(left: 7.0, right: 7.0),
