@@ -1,6 +1,7 @@
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
@@ -80,11 +81,11 @@ class _StoreApplyState extends State<StoreApplyState>{
                           fit: BoxFit.fill,
                         ),
                         Text("매장 등록을 진행 중 입니다.",
-                            style: TextStyle(
-                              color: primary,
-                              fontSize: 20,
-                              fontFamily: 'noto',
-                            )),
+                            style: Subtitle1.apply(
+                                color: primary,
+                                fontWeightDelta: -1
+                              )
+                        ),
                       ]
                   )
               )
@@ -113,17 +114,17 @@ class _StoreApplyState extends State<StoreApplyState>{
                   child: Column(
                       children: [
                         Text("거의 완료 되었습니다!",
-                            style: TextStyle(
-                              color: primary,
-                              fontSize: 20,
-                              fontFamily: 'noto',
-                            )),
+                            style: Subtitle1.apply(
+                                color: primary,
+                                fontWeightDelta: -1
+                            )
+                        ),
                         Text("조금만 더 기다려주세요!",
-                            style: TextStyle(
-                              color: primary,
-                              fontSize: 20,
-                              fontFamily: 'noto',
-                            )),
+                            style: Subtitle1.apply(
+                                color: primary,
+                                fontWeightDelta: -1
+                            )
+                        ),
                         Image.asset(
                           "assets/icon/cookie.png",
                           width: 80,
@@ -131,11 +132,11 @@ class _StoreApplyState extends State<StoreApplyState>{
                           fit: BoxFit.fill,
                         ),
                         Text("메뉴 등록을 진행 중 입니다.",
-                            style: TextStyle(
-                              color: primary,
-                              fontSize: 20,
-                              fontFamily: 'noto',
-                            )),
+                            style: Subtitle1.apply(
+                                color: primary,
+                                fontWeightDelta: -1
+                            )
+                        ),
                       ]
                   )
               )
@@ -165,18 +166,15 @@ class _StoreApplyState extends State<StoreApplyState>{
                         whiteSpaceH(10.0),
                         Text("축하합니다.\n매장신청이 완료되었습니다.",
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: black,
-                              fontSize: 20,
-                              fontFamily: 'noto',
-                            )),
+                            style: Subtitle1.apply(
+                                color: black,
+                                fontWeightDelta: -1
+                            )
+                        ),
                         whiteSpaceH(10),
                         Text("매장적용은 사업자 정보 확인 후 완료되며,\n완료까지 약 일주일 정도 소요됩니다.",
-                            style: TextStyle(
-                              color: black,
-                              fontSize: 14,
-                              fontFamily: 'noto',
-                            )),
+                            style: Body1
+                        ),
                         whiteSpaceH(10),
                         RaisedButton(
                           onPressed: () async {
@@ -191,10 +189,8 @@ class _StoreApplyState extends State<StoreApplyState>{
                           color: primary,
                           child: Text(
                             "메인으로 돌아가기",
-                            style: TextStyle(
-                              color: white,
-                              fontSize: 12,
-                              fontFamily: 'noto'
+                            style: Body2.apply(
+                              color: white
                             )
                           )
                         )
