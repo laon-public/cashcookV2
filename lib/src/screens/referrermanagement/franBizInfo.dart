@@ -1,4 +1,5 @@
 import 'package:cashcook/src/provider/PointMgmtProvider.dart';
+import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
@@ -11,10 +12,6 @@ class FranBizInfo extends StatefulWidget {
 }
 
 class _FranBizInfo extends State<FranBizInfo> {
-
-  TextEditingController distributorCtrl = TextEditingController(); //총판
-  TextEditingController agencyCtrl = TextEditingController(); //대리점
-
   String viewType = "day";
   int page;
 
@@ -26,19 +23,10 @@ class _FranBizInfo extends State<FranBizInfo> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await Provider.of<PointMgmtProvider>(context, listen: false).fetchFranMgmt(viewType, page);
+      await Provider.of<PointMgmtProvider>(context, listen: false).fetchFranMgmt(viewType, 1);
     });
 
     AppBar appBar;
-
-    String distributorName = Provider.of<PointMgmtProvider>(context,listen: false).disMap['username'];
-    String agencyName = Provider.of<PointMgmtProvider>(context,listen: false).ageMap['username'];
-
-    print("distributorName : $distributorName");
-    print("agencyName : $agencyName");
-
-    distributorCtrl.text = distributorName;
-    agencyCtrl.text = agencyName;
 
     return Scaffold(
       backgroundColor: white,
@@ -66,10 +54,14 @@ class _FranBizInfo extends State<FranBizInfo> {
       body:
     Consumer<PointMgmtProvider>(
       builder: (context, pm, _) {
-        print("disAgeMap");
-        print(pm.disMap.length);
-        print(pm.ageMap.length);
-        return Container(
+        return pm.isLoading ?
+        Center(
+            child: CircularProgressIndicator(
+                valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
+            )
+        )
+            :
+        Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom - appBar.preferredSize.height,
           child: Padding(
@@ -105,29 +97,72 @@ class _FranBizInfo extends State<FranBizInfo> {
                   Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 18.0),
+                        padding: const EdgeInsets.only(top: 18.0, bottom: 6),
                         child: Align(child: Text("총판", style: Body2),
                           alignment: Alignment.centerLeft,),
                       ),
-                      TextFormField(
-                        controller: distributorCtrl,
-                        cursorColor: Color(0xff000000),
-                        readOnly: true,
-                      ),
+                      (Provider.of<UserProvider>(context, listen: false).loginUser.userGrade == "AGENCY") ?
+                          Container(
+                            padding: EdgeInsets.only(bottom: 10),
+                            width: MediaQuery.of(context).size.width,
+                            child: Text(
+                                pm.ageMap['username'],
+                                style: Subtitle2,
+                            ),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: third,
+                                  width: 1
+                                )
+                              )
+                            ),
+                          )
+                      :
+                      Container(
+                        padding: EdgeInsets.only(bottom: 10),
+                        width: MediaQuery.of(context).size.width,
+                        child: Text(
+                          pm.disMap['username'],
+                          style: Subtitle2,
+                        ),
+                        decoration: BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                    color: third,
+                                    width: 1
+                                )
+                            )
+                        ),
+                      )
                     ],
                   ),
                   whiteSpaceH(4),
+                  (Provider.of<UserProvider>(context, listen: false).loginUser.userGrade == "AGENCY") ?
+                      Container()
+                      :
                   Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 18.0),
+                        padding: const EdgeInsets.only(top: 18.0, bottom: 6),
                         child: Align(child: Text("대리점", style: Body2),
                           alignment: Alignment.centerLeft,),
                       ),
-                      TextFormField(
-                        controller: agencyCtrl,
-                        cursorColor: Color(0xff000000),
-                        readOnly: true,
+                      Container(
+                        padding: EdgeInsets.only(bottom: 10),
+                        width: MediaQuery.of(context).size.width,
+                        child: Text(
+                          pm.ageMap['username'],
+                          style: Subtitle2,
+                        ),
+                        decoration: BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                    color: third,
+                                    width: 1
+                                )
+                            )
+                        ),
                       ),
                     ],
                   ),

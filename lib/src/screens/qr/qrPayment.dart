@@ -230,7 +230,7 @@ class _QrPayment extends State<QrPayment> {
               builder: (context, qp, _){
                 return Container(
                     width: 240,
-                    height: 185,
+                    height: 230,
                     child: Column(
                       children: [
                         Text("${qp.store.store.name}에서 ${numberFormat.format(qp.paymentModel.price)}원을\n"
@@ -266,8 +266,12 @@ class _QrPayment extends State<QrPayment> {
                                       ),
                                     ),
                                     decoration: BoxDecoration(
-                                        color: Color(0xFF999999),
-                                        shape: BoxShape.circle
+                                        color: white,
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                            color: Color(0xFFDDDDDD),
+                                            width: 1
+                                        )
                                     ),
                                   ),
                                 ),
@@ -294,8 +298,12 @@ class _QrPayment extends State<QrPayment> {
                                       ),
                                     ),
                                     decoration: BoxDecoration(
-                                        color: mainColor,
-                                        shape: BoxShape.circle
+                                        color: white,
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                            color: Color(0xFFDDDDDD),
+                                            width: 1
+                                        )
                                     ),
                                   ),
                                 ),
@@ -325,8 +333,12 @@ class _QrPayment extends State<QrPayment> {
                                       ),
                                     ),
                                     decoration: BoxDecoration(
-                                        color: subColor,
-                                        shape: BoxShape.circle
+                                        color: primary,
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                            color: primary,
+                                            width: 1
+                                        )
                                     ),
                                   ),
                                 ),

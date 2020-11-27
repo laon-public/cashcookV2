@@ -56,6 +56,8 @@ class PointMgmtProvider with ChangeNotifier {
     disMap = json['data']['dis'];
     ageMap = json['data']['age'];
 
+    print("====================> ${json['data']['age']}");
+
     String date = "";
     Map<String, dynamic> obj = {};
 
