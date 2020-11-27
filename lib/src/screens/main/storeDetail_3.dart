@@ -121,10 +121,14 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                 crossAxisAlignment: CrossAxisAlignment.center,
                                                 children: [
                                                   Text(widget.store.store.name,
-                                                      style: Body1.apply(
-                                                        fontWeightDelta: 1,
-                                                        color: Color.lerp(Colors.transparent, black, stuckAmount * 1.1),
-                                                      )
+                                                      style:
+                                                        appBarDefaultText.apply(
+                                                          color: Color.lerp(Colors.transparent, black, stuckAmount * 1.1),
+                                                        )
+                                                      // Body1.apply(
+                                                      //   fontWeightDelta: 1,
+                                                      //   color: Color.lerp(Colors.transparent, black, stuckAmount * 1.1),
+                                                      // )
                                                       //
                                                       // style: TextStyle(
                                                       //   fontSize: 13,

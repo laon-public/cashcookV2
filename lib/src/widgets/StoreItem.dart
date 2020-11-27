@@ -256,20 +256,38 @@ Widget storeItem(StoreModel store, BuildContext context) {
                         )
                     ),
                     whiteSpaceW(5),
-                    store.store.deliveryStatus == "1" ?
+                    (store.store.deliveryTime != null) ?
                     Container(
-                      width: 23,
+                      width: 27,
                       height: 14,
                       child: Center(
                         child:Text("포장",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w100,
-                              fontSize: 8,
-                              color: white),
+                          style: TabsTagsStyle.apply(
+                            color: white
+                          )
                         ),
                       ),
                       decoration: BoxDecoration(
-                          color: Color(0xFF55BBFF),
+                          color: etcBlue,
+                          borderRadius: BorderRadius.all(Radius.circular(50.0))
+                      ),
+                    )
+                        :
+                    Text(""),
+                    whiteSpaceW(4),
+                    (store.store.deliveryTime != null) ?
+                    Container(
+                      width: 27,
+                      height: 14,
+                      child: Center(
+                        child:Text("배달",
+                            style: TabsTagsStyle.apply(
+                                color: white
+                            )
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                          color: etcGreen,
                           borderRadius: BorderRadius.all(Radius.circular(50.0))
                       ),
                     )
