@@ -1,4 +1,5 @@
 import 'package:cashcook/src/provider/CarouselProvider.dart';
+import 'package:cashcook/src/provider/CenterProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/CustomBottomNavBar.dart';
@@ -122,6 +123,8 @@ class _Home extends State<Home> {
         await P.Provider.of<StoreServiceProvider>(context, listen: false)
             .getStore(start, end);
       }
+
+      await P.Provider.of<CenterProvider>(context, listen: false).getAppInfo();
     });
     return
       WillPopScope(
@@ -198,6 +201,7 @@ class _Home extends State<Home> {
                     Container(
                       width: MediaQuery.of(context).size.width,
                       height: 140,
+                      color: primary,
                       child: CarouselSlider(
                         options: CarouselOptions(
                           initialPage: 0,
@@ -224,7 +228,6 @@ class _Home extends State<Home> {
                           ),
                           Image.asset(
                             "assets/resource/ad/banner3.png",
-                            width: MediaQuery.of(context).size.width,
                             fit: BoxFit.fill,
                           ),
                         ],
@@ -513,6 +516,7 @@ class _Home extends State<Home> {
 
         await P.Provider.of<StoreServiceProvider>(context, listen:false).fetchSubCategory(serviceName[idx]['code'], start, end);
       }
+
     });
     return Container(
         padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top,

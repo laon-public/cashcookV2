@@ -29,11 +29,13 @@ class _AppConfirm extends State<AppConfirm> {
     return Consumer<CenterProvider>(
       builder: (context, cp, _){
         return Scaffold(
-            backgroundColor: cp.isLoading? white : (cp.phoneVersion == cp.appVersion) ? white : primary,
+            backgroundColor: cp.isLoading? white : (cp.phoneVersion == cp.appVersion
+                || (cp.nextAppVersion != "" && cp.nextAppVersion == cp.phoneVersion)) ? white : primary,
             body: cp.isLoading ?
               Container()
                 :
-              (cp.phoneVersion == cp.appVersion) ?
+              (cp.phoneVersion == cp.appVersion
+                  || (cp.nextAppVersion != "" && cp.nextAppVersion == cp.phoneVersion)) ?
               (up.loginUser.isFran && up.pointMap['ADP'] < 30000 ) ?
               adpCheckForm()
                   :

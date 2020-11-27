@@ -17,6 +17,7 @@ class CenterProvider with ChangeNotifier{
   List<InquiryModel> inquiry = [];
   String phoneVersion = "";
   String appVersion = "";
+  String nextAppVersion = "";
   String hojoFunds = "";
   int limitGamePercentage = 0;
   Pageing pageing = null;
@@ -108,10 +109,18 @@ class CenterProvider with ChangeNotifier{
   }
 
   void getAppInfo() async {
+
     final response = await service.getAppInfo();
     print(response);
 
-    appVersion = json.decode(response)['data']['policy']['value'];
+    appVersion="";
+    nextAppVersion="";
+    startLoading();
+
+    appVersion = json.decode(response)['data']['ver']['value'];
+    if(json.decode(response)['data']['nextVer'] != null) {
+      nextAppVersion = json.decode(response)['data']['nextVer']['value'];
+    }
 
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
