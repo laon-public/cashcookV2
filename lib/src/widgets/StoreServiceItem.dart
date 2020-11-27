@@ -157,7 +157,7 @@ Widget MenuItem(int bigIdx,int idx,MenuModel mm, BuildContext context) {
                 overflow: TextOverflow.ellipsis,
                 style: Body1.apply(
                   color: black,
-                  fontWeightDelta: -1
+                  fontWeightDelta: 2
                 )
             ),
           ),
@@ -167,7 +167,7 @@ Widget MenuItem(int bigIdx,int idx,MenuModel mm, BuildContext context) {
             overflow: TextOverflow.ellipsis,
             style: Body1.apply(
                 color: secondary,
-                fontWeightDelta: -1
+                fontWeightDelta: 2
             ),
             textAlign: TextAlign.end,
           )
@@ -199,7 +199,7 @@ Widget reviewForm(BuildContext context, StoreModel store) {
                                       colors: [
                                         primary,
                                         primary,
-                                        primary,
+                                        Color(0xFFFF4800),
                                         Color(0xFFFF4800)
                                       ]
                                   )
@@ -219,9 +219,13 @@ Widget reviewForm(BuildContext context, StoreModel store) {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         starImage(ss.reviewAvg,1),
+                                        whiteSpaceW(2),
                                         starImage(ss.reviewAvg,2),
+                                        whiteSpaceW(2),
                                         starImage(ss.reviewAvg,3),
+                                        whiteSpaceW(2),
                                         starImage(ss.reviewAvg,4),
+                                        whiteSpaceW(2),
                                         starImage(ss.reviewAvg,5),
                                       ]
                                   ),
@@ -365,7 +369,8 @@ Widget hateImage(idx,review_id,isHate,BuildContext context) {
         "assets/icon/dislike_grey.png",
         width: 16,
         height: 16,
-        color: secondary
+          color: secondary,
+        fit: BoxFit.fill,
       )
   )
       :
