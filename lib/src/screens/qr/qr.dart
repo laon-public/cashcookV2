@@ -85,7 +85,6 @@ class _Qr extends State<Qr> {
                       return Container();
                     },
                     qrCodeCallback: (data) {
-                      print("켜지긴 했냐?");
                       if (qrSet) return;
                       print("QrData : $data");
                       print(qrSet);
