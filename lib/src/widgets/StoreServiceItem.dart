@@ -55,7 +55,9 @@ Widget BigMenuItem(int bigIdx,BigMenuModel bmm, BuildContext context){
                         padding: EdgeInsets.only(top: 10, bottom: 10, left: 20.0),
                         child:
                         Text(bmm.name,
-                          style: Subtitle2,
+                          style: Subtitle2.apply(
+                            fontWeightDelta: 1
+                          ),
                           textAlign: TextAlign.start,
                         ),
                         width: MediaQuery.of(context).size.width,
@@ -85,94 +87,102 @@ Widget BigMenuItem(int bigIdx,BigMenuModel bmm, BuildContext context){
 
 Widget MenuItem(int bigIdx,int idx,MenuModel mm, BuildContext context) {
   StoreServiceProvider ssp = Provider.of<StoreServiceProvider>(context, listen: false);
-  return Container(
-    padding: EdgeInsets.only(left: 16.0),
-    width: MediaQuery.of(context).size.width,
-    height: 80,
-    child: Row(
-        children: [
-          InkWell(
-            onTap: () {
-              ssp.setCheck(bigIdx,idx, !mm.isCheck);
-            },
-            child: Container(
-              width: 48,
-              height: 48,
-              child: Stack(
-                children: [
-                  Center(
-                    child: Image.asset(
-                        "assets/icon/cashcook_logo.png"
+  return InkWell(
+      onTap: () {
+          ssp.setCheck(bigIdx,idx, !mm.isCheck);
+          },
+      child:Container(
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: Color(0xFFF7F7F7),
+              width: 1
+            )
+          )
+        ),
+        padding: EdgeInsets.only(left: 16.0),
+        width: MediaQuery.of(context).size.width,
+        height: 80,
+        child: Row(
+            children: [
+              Container(
+                width: 48,
+                height: 48,
+                child: Stack(
+                  children: [
+                    Center(
+                      child: Image.asset(
+                          "assets/icon/cashcook_logo.png"
+                      ),
                     ),
-                  ),
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: Container(
-                      transform: Matrix4.translationValues(2.0, -2.0, 0.0),
-                      width:12,
-                      height: 12,
-                      child: Transform.scale(scale: 0.6,
-                        child: CircularCheckBox(
-                          value: mm.isCheck,
-                          activeColor: Color(0xFFFF0000),
-                          inactiveColor: Color(0xFFDDDDDD),
-                          onChanged: (value) {
-                            ssp.setCheck(bigIdx,idx, value);
-                          },
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: Container(
+                        transform: Matrix4.translationValues(2.0, -2.0, 0.0),
+                        width:12,
+                        height: 12,
+                        child: Transform.scale(scale: 0.6,
+                          child: CircularCheckBox(
+                            value: mm.isCheck,
+                            activeColor: Color(0xFFFF0000),
+                            inactiveColor: Color(0xFFDDDDDD),
+                            onChanged: (value) {
+                              ssp.setCheck(bigIdx,idx, value);
+                            },
+                          ),
                         ),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color(0xFFDDDDDD),
+                        ),
+                        // Checkbox(
+                        //   activeColor: mainColor,
+                        //   checkColor: mainColor,
+                        //   value: mm.isCheck,
+                        //   onChanged: (value) {
+                        //     ssp.setCheck(bigIdx,idx, value);
+                        //   },
+                        // ),
                       ),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
+                    )
+                  ],
+                ),
+                decoration: BoxDecoration(
+                    border: Border.all(
                         color: Color(0xFFDDDDDD),
-                      ),
-                      // Checkbox(
-                      //   activeColor: mainColor,
-                      //   checkColor: mainColor,
-                      //   value: mm.isCheck,
-                      //   onChanged: (value) {
-                      //     ssp.setCheck(bigIdx,idx, value);
-                      //   },
-                      // ),
+                        width: 1
                     ),
-                  )
-                ],
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(12.0)
+                    )
+                ),
               ),
-              decoration: BoxDecoration(
-                  border: Border.all(
-                      color: Color(0xFFDDDDDD),
-                      width: 1
-                  ),
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(12.0)
-                  )
+              whiteSpaceW(16.0),
+              Expanded(
+                child: Text("${mm.name}",
+                    maxLines: 1,
+                    softWrap: false,
+                    overflow: TextOverflow.ellipsis,
+                    style: Body1.apply(
+                        color: black,
+                        fontWeightDelta: 2
+                    )
+                ),
               ),
-            ),
-          ),
-          whiteSpaceW(16.0),
-          Expanded(
-            child: Text("${mm.name}",
+              Text("${numberFormat.format(mm.price)} 원",
                 maxLines: 1,
                 softWrap: false,
                 overflow: TextOverflow.ellipsis,
                 style: Body1.apply(
-                  color: black,
-                  fontWeightDelta: 2
-                )
-            ),
-          ),
-          Text("${numberFormat.format(mm.price)} 원",
-            maxLines: 1,
-            softWrap: false,
-            overflow: TextOverflow.ellipsis,
-            style: Body1.apply(
-                color: secondary,
-                fontWeightDelta: 2
-            ),
-            textAlign: TextAlign.end,
-          )
-        ]
-    ),
+                    color: secondary,
+                    fontWeightDelta: 2
+                ),
+                textAlign: TextAlign.end,
+              )
+            ]
+        ),
+      )
   );
 }
 
