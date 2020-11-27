@@ -470,11 +470,17 @@ class _OrderMenu extends State<OrderMenu> {
       context: context,
       builder: (context) =>
           AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20.0)
+              )
+            ),
             title: Consumer<StoreServiceProvider>(
               builder: (context, ssp, _){
                 return Text("결제안내",
                   style: Body1.apply(
-                    fontWeightDelta: 1
+                    color: black,
+                    fontWeightDelta: 3,
                   ),
                   textAlign: TextAlign.center,
                 );
@@ -488,17 +494,13 @@ class _OrderMenu extends State<OrderMenu> {
                     child: Column(
                       children: [
                         Text("${widget.store.store.name}에서 ${numberFormat.format(ssp.orderPay)}원을\n"
-                            "${numberFormat.format(ssp.orderPay - (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text) * 100))}원과 ${numberFormat.format(int.parse(ssp.dlCtrl.text))} DL로 각각 결제합니다.",
-                          style: Body2.apply(
-                            color: black,
-                          ),
+                            "${numberFormat.format(ssp.orderPay - (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text) * 100))}원과 ${numberFormat.format(int.parse(ssp.dlCtrl.text))}DL로 각 각 결제합니다.",
+                          style: Body1,
                           textAlign: TextAlign.center,
                         ),
                         whiteSpaceH(22),
-                        Text("결제 후 게임하기를 진행하시겠습니까?",
-                            style: TabsTagsStyle.apply(
-                              decoration: TextDecoration.underline
-                            )
+                        Text("실시간 흥정 게임으로 이동하시겠습니까?",
+                            style: Body2
                         ),
                         whiteSpaceH(22),
                         Container(
@@ -517,7 +519,8 @@ class _OrderMenu extends State<OrderMenu> {
                                     child: Center(
                                       child: Text("취소",
                                           style: Body1.apply(
-                                            color: black
+                                            color: secondary,
+                                            fontWeightDelta: 3
                                           )
                                       ),
                                     ),
@@ -561,7 +564,8 @@ class _OrderMenu extends State<OrderMenu> {
                                     child: Center(
                                       child: Text("나중에",
                                           style: Body1.apply(
-                                            color: primary
+                                            color: primary,
+                                            fontWeightDelta: 3
                                           )
                                       ),
                                     ),
@@ -606,7 +610,8 @@ class _OrderMenu extends State<OrderMenu> {
                                     child: Center(
                                       child: Text("예",
                                           style: Body1.apply(
-                                            color: white
+                                            color: white,
+                                            fontWeightDelta: 3
                                           )
                                       ),
                                     ),
