@@ -52,7 +52,7 @@ class _OrderMenu extends State<OrderMenu> {
             elevation: 1,
             backgroundColor: Colors.white,
             centerTitle: true,
-            title: Text("주문서",
+            title: Text("주문서 작성",
                 style: appBarDefaultText
             )
         ),

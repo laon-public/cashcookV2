@@ -947,11 +947,10 @@ class _MyPageState extends State<MyPage> {
                                   HistoryCard(),
                                   sellDlCard(),
                                   whiteSpaceH(16.0),
-                                  Tabs(name: "알림", routesName: "/store/modify/business",),
                                   Tabs(name: "사업자정보 수정", routesName: "/store/modify/business",),
                                   Tabs(name: "매장정보 수정", routesName: "/store/modify/store",),
                                   Tabs(name: "DL 결제 한도 설정", routesName: "/store/modify/limitDL",),
-                                  CustomerCenter(),
+                                  whiteSpaceH(70.0),
                                 ]
                             )
                         ),
