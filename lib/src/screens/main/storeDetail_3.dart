@@ -95,10 +95,12 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                   ssp.doScrap(
                                                       widget.store.id.toString()
                                                   );
+                                                  widget.store.scrap.scrap = "1";
                                                 } : () {
                                                   ssp.cancleScrap(
                                                       widget.store.id
                                                   );
+                                                  widget.store.scrap.scrap = "0";
                                                 },
                                                 child: Image.asset(
                                                   "assets/resource/main/steam.png",
@@ -304,9 +306,9 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                 ),
                                 Container(
                                   padding: EdgeInsets.symmetric(horizontal: 16),
-                                  transform: Matrix4.translationValues(0.0, -40.0, 0.0),
+                                  transform: Matrix4.translationValues(0.0, -30.0, 0.0),
                                   child: Container(
-                                    padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 18.0, bottom: 12.0),
+                                    padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 18.0, bottom: 15.0),
                                     width: MediaQuery.of(context).size.width,
                                     height: 102,
                                     decoration: BoxDecoration(
@@ -325,9 +327,11 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                     child: Column(
                                       children: [
                                         Text("${widget.store.store.name}",
-                                            style: Subtitle2
+                                            style: Subtitle2.apply(
+                                              fontWeightDelta: 1
+                                            )
                                         ),
-                                        whiteSpaceH(12.0),
+                                        whiteSpaceH(14.0),
                                         Row(
                                           children: [
                                             Expanded(
@@ -340,7 +344,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                   ),
                                                   whiteSpaceW(4.0),
                                                   Text("${NumberFormat("#.#").format(widget.store.store.scope)}",
-                                                    style: Body1.apply(color: black, fontWeightDelta: -1),
+                                                    style: Body1.apply(color: secondary),
                                                     textAlign: TextAlign.center,
                                                   )
                                                 ],
@@ -358,12 +362,13 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                 children: [
                                                   Text("DL ",
                                                       style: Body1.apply(
-                                                        color: primary
+                                                        color: primary,
+                                                        fontWeightDelta: 3
                                                       )
                                                   ),
                                                   whiteSpaceW(4.0),
                                                   Text("${widget.store.store.limitDL == null ? "100" : widget.store.store.limitDL }%",
-                                                    style: Body1.apply(color: black, fontWeightDelta: -1),
+                                                    style: Body1.apply(color: secondary),
                                                     textAlign: TextAlign.center,
                                                   )
                                                 ],
@@ -398,8 +403,8 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                       height: 20,
                                                     ),
                                                     whiteSpaceW(4.0),
-                                                    Text("QR 스캔",
-                                                      style: Body1.apply(color: black, fontWeightDelta: -1),
+                                                    Text("QR 스켄",
+                                                      style: Body1.apply(color: secondary),
                                                       textAlign: TextAlign.center,
                                                     )
                                                   ],
@@ -417,7 +422,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                 Consumer<StoreServiceProvider>(
                                   builder: (context, ss, _){
                                     return Container(
-                                      transform: Matrix4.translationValues(0.0, -24.0, 0.0),
+                                      transform: Matrix4.translationValues(0.0, -14.0, 0.0),
                                       padding: EdgeInsets.symmetric(horizontal: 16.0),
                                       child: Column(
                                         children: [
@@ -432,10 +437,50 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                               ),
                                               Expanded(
                                                 flex:3,
-                                                child:Text(
-                                                  "${widget.store.store.category_name} / ${widget.store.store.category_sub_name}",
-                                                  style: Body1.apply(color: mainColor),
-                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                      "${widget.store.store.category_name} / ${widget.store.store.category_sub_name}",
+                                                      style: Body1.apply(color: mainColor, fontWeightDelta: 1),
+                                                    ),
+                                                    whiteSpaceW(4),
+                                                    (widget.store.store.deliveryTime != null) ?
+                                                    Container(
+                                                      padding: EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+                                                      child: Center(
+                                                        child:Text("포장",
+                                                            style: TabsTagsStyle.apply(
+                                                                color: white
+                                                            )
+                                                        ),
+                                                      ),
+                                                      decoration: BoxDecoration(
+                                                          color: etcBlue,
+                                                          borderRadius: BorderRadius.all(Radius.circular(50.0))
+                                                      ),
+                                                    )
+                                                        :
+                                                    Text(""),
+                                                    whiteSpaceW(4),
+                                                    (widget.store.store.deliveryTime != null) ?
+                                                    Container(
+                                                      padding: EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+                                                      child: Center(
+                                                        child:Text("배달",
+                                                            style: TabsTagsStyle.apply(
+                                                                color: white
+                                                            )
+                                                        ),
+                                                      ),
+                                                      decoration: BoxDecoration(
+                                                          color: etcGreen,
+                                                          borderRadius: BorderRadius.all(Radius.circular(50.0))
+                                                      ),
+                                                    )
+                                                        :
+                                                    Text(""),
+                                                  ],
+                                                )
                                               )
                                             ],
                                           ),
@@ -580,7 +625,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                                       "상품",
                                                                       textAlign: TextAlign.center,
                                                                       style: Body1.apply(
-                                                                        fontWeightDelta: -1,
+                                                                        fontWeightDelta: 1,
                                                                         color: ss.serviceNum == 0 ?
                                                                             black
                                                                             :
@@ -601,7 +646,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                                     "정보",
                                                                     textAlign: TextAlign.center,
                                                                     style: Body1.apply(
-                                                                        fontWeightDelta: -1,
+                                                                        fontWeightDelta: 1,
                                                                         color: ss.serviceNum == 1 ?
                                                                         black
                                                                             :
@@ -622,7 +667,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                                     "리뷰",
                                                                     textAlign: TextAlign.center,
                                                                     style: Body1.apply(
-                                                                        fontWeightDelta: -1,
+                                                                        fontWeightDelta: 1,
                                                                         color: ss.serviceNum == 2 ?
                                                                         black
                                                                             :

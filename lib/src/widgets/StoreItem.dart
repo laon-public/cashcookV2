@@ -258,8 +258,7 @@ Widget storeItem(StoreModel store, BuildContext context) {
                     whiteSpaceW(5),
                     (store.store.deliveryTime != null) ?
                     Container(
-                      width: 27,
-                      height: 14,
+                      padding: EdgeInsets.symmetric(vertical: 2, horizontal: 4),
                       child: Center(
                         child:Text("포장",
                           style: TabsTagsStyle.apply(
@@ -277,8 +276,7 @@ Widget storeItem(StoreModel store, BuildContext context) {
                     whiteSpaceW(4),
                     (store.store.deliveryTime != null) ?
                     Container(
-                      width: 27,
-                      height: 14,
+                      padding: EdgeInsets.symmetric(vertical: 2, horizontal: 4),
                       child: Center(
                         child:Text("배달",
                             style: TabsTagsStyle.apply(
