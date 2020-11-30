@@ -1,5 +1,6 @@
 import 'package:cashcook/src/screens/main/home.dart';
 import 'package:cashcook/src/utils/colors.dart';
+import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
@@ -33,7 +34,7 @@ class _FirstBiz extends State<FirstBiz> {
           elevation: 0.5,
           centerTitle: true,
           title: Text(
-            "회원등급 선택",
+            "회원종류",
             style: appBarDefaultText,
           ),
           automaticallyImplyLeading: false,
@@ -47,25 +48,15 @@ class _FirstBiz extends State<FirstBiz> {
                     width: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.only(top: 40.0, bottom: 10.0),
                     child: Text(
-                      "가입하는 회원등급을\n"
+                      "회원 종류를\n"
                           "선택해주세요.",
-                      style: Subtitle2.apply(
-                        fontWeightDelta: -1
-                      ),
+                      style: Subtitle1,
                       textAlign: TextAlign.start,
                     )
                 ),
-                Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.only(bottom: 24.0),
-                    child: Text(
-                      "매장 회원등록은 일반회원으로 가입 후 마이페이지에서\n"
-                          "매장등록을 하면 매장회원으로 등록됩니다.",
-                      style: Body2,
-                      textAlign: TextAlign.start,
-                    ),
-                ),
+               whiteSpaceH(34),
                Container(
+                 width: MediaQuery.of(context).size.width,
                     height: 88,
                     child:InkWell(
                       onTap: () async {
@@ -84,7 +75,30 @@ class _FirstBiz extends State<FirstBiz> {
                         }
                         );
                       },
-                      child: whiteBox("일반"),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Image.asset(
+                              "assets/resource/character/signup-user.png",
+                              width: 36,
+                              height: 36,
+                            ),
+                            whiteSpaceW(12),
+                            Text(
+                              "일반회원 가입",
+                              style: Subtitle2.apply(
+                                color: black,
+                                fontWeightDelta: 1
+                              ),
+                            ),
+                            Spacer(),
+                            Image.asset(
+                                "assets/resource/public/small-arrow-right.png",
+                                width: 16,
+                                height: 16,
+                              ),
+                          ]
+                      ),
                     )
                 ),
                 Container(
@@ -109,7 +123,30 @@ class _FirstBiz extends State<FirstBiz> {
                       }
                       );
                     },
-                    child: whiteBox("제휴업체"),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Image.asset(
+                            "assets/resource/character/signup-store.png",
+                            width: 36,
+                            height: 36,
+                          ),
+                          whiteSpaceW(12),
+                          Text(
+                            "제휴매장 가입",
+                            style: Subtitle2.apply(
+                                color: black,
+                                fontWeightDelta: 1
+                            ),
+                          ),
+                          Spacer(),
+                         Image.asset(
+                              "assets/resource/public/small-arrow-right.png",
+                              width: 16,
+                              height: 16,
+                            ),
+                        ]
+                    ),
                   ),
                 ),
               ]
@@ -135,8 +172,8 @@ class _FirstBiz extends State<FirstBiz> {
                 margin: EdgeInsets.only(right: 12.0),
                 child: Image.asset(
                   "assets/resource/public/small-arrow-right.png",
-                  width: 24,
-                  height: 24,
+                  width: 16,
+                  height: 16,
                 ),
               )
             ]

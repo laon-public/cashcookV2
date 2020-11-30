@@ -50,7 +50,7 @@ class _FirstRecommendation extends State<FirstRecommendation> {
         elevation: 0.5,
         centerTitle: true,
         title: Text(
-          "추천회원 입력",
+          "추천자 선택",
           style: appBarDefaultText
         ),
         automaticallyImplyLeading: false, // 뒤로가기 기능 x
@@ -58,40 +58,20 @@ class _FirstRecommendation extends State<FirstRecommendation> {
       body: SingleChildScrollView(
         child: Container(
           width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height - appBar.preferredSize.height,
+          height: MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top,
           child: Padding(
             padding: EdgeInsets.only(top: 30,left: 16, right: 16, bottom: 16),
             child:
               Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 72,
-                  padding: EdgeInsets.only(top: 12, bottom: 12),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        "캐시쿡을 추천해준\n친구를 선택해주세요.",
-                        textAlign: TextAlign.start,
-                        style: Subtitle2.apply(
-                          fontWeightDelta: -1
-                        ),
-                      ),
-                      whiteSpaceW(12),
-                      Container(
-                        child: Image.asset(
-                          "assets/icon/left_payment.png",
-                          width: 48,
-                          height: 48,
-                        ),
-                      )
-                    ],
-                  ),
+                Text(
+                    "캐시쿡을 추천해준\n친구를 선택해주세요.",
+                    textAlign: TextAlign.start,
+                    style: Subtitle1
                 ),
-                whiteSpaceH(24),
-                Text('추천회원',
+                whiteSpaceH(34),
+                Text('추천자',
                   style: Body2.apply(
                     color: primary
                   ),
@@ -108,13 +88,14 @@ class _FirstRecommendation extends State<FirstRecommendation> {
                       child: DropdownButton(
                         isExpanded: true,
                         icon: Icon(Icons.arrow_drop_down,
-                          color: primary,
+                          color: black,
                         ),
+
                         iconSize: 24,
                         elevation: 16,
                         underline: Container(
-                            height: 2,
-                            color: primary
+                            height: 3,
+                            color: black
                         ),
                         value: (user.recomemberList.length < 2) ? _unSelectedValue : _selectedValue ,
                         items: user.recomemberList.map(
@@ -125,6 +106,10 @@ class _FirstRecommendation extends State<FirstRecommendation> {
                               );
                             }
                         ).toList(),
+                        style: Subtitle2.apply(
+                          fontWeightDelta: -1
+                        ),
+
                         onChanged: (value){
                           (user.recomemberList.length < 2) ?
                           setState(() {
@@ -145,30 +130,14 @@ class _FirstRecommendation extends State<FirstRecommendation> {
                     );
                   },
                 ),
-                whiteSpaceH(8),
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        '$memb',
-                        textAlign: TextAlign.start,
-                        style: Body2,
-                      ),
-                      whiteSpaceW(12),
-                    ],
-                  ),
-                ),
-
-
                 Expanded(
                   child: Container(),
                 ),
                 whiteSpaceH(24),
                 Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 40,
                   child: RaisedButton(
+                    padding: EdgeInsets.symmetric(vertical: 11),
                     onPressed: () {
                       apply(userProvider.loginUser);
                     },
@@ -179,15 +148,14 @@ class _FirstRecommendation extends State<FirstRecommendation> {
                     child: Center(
                       child: Text(
                         "확인",
-                        style: Body1.apply(
-                          color:white,
+                        style: Subtitle2.apply(
+                          color: white,
                           fontWeightDelta: 1
                         )
                       ),
                     ),
                   ),
                 ),
-                whiteSpaceH(40)
               ],
             ),
           ),
