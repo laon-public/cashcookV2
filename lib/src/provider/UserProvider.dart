@@ -265,7 +265,6 @@ class UserProvider with ChangeNotifier {
     if (page == 0) result.clear();
 
     final response = await service.getAccountsHistory(type,page);
-    print(response);
     Map<String, dynamic> json = jsonDecode(response);
     if(isResponse(json)){
       pageing = Pageing.fromJson(json['data']['paging']);
@@ -276,7 +275,6 @@ class UserProvider with ChangeNotifier {
       for (var history in json["data"]['list']) {
         try {
           AccountListModel accountListModel = AccountListModel.fromJson(history);
-          print(accountListModel);
           accountHistory.add(accountListModel);
           String time = accountListModel.created_at.split("T").first;
           if (date != time) {
@@ -294,7 +292,6 @@ class UserProvider with ChangeNotifier {
                 + accountListModel.created_at.split("T").last.split(":")[1],
               "price": demicalFormat.format(double.parse(accountListModel.amount)),
             });
-            print(obj);
           } else {
             obj["history"].add({
               "title": accountListModel.purpose,
@@ -311,7 +308,6 @@ class UserProvider with ChangeNotifier {
       if (obj.isNotEmpty) result.add(obj);
 
       nowPoint = json['data']['nowPoint'];
-      print(result);
     }
     stopLoading();
     notifyListeners();

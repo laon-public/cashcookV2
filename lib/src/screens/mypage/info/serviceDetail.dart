@@ -135,12 +135,17 @@ class _ServiceDetail extends State<ServiceDetail> {
                   children: [
                     Expanded(
                       child: InkWell(
-                        onTap: () async {
+                        onTap: (widget.ol.reviewId == 0 ) ? () async {
                           await Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (context) => ReviewWrite(
                                     store_id: widget.ol.storeId,
+                                    order_id: widget.ol.id,
                                   )));
+                        }
+                        :
+                        () {
+                          showToast("이미 리뷰를 작성 했습니다.");
                         },
                         child: Container(
                           height: 40,

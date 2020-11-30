@@ -44,7 +44,6 @@ class _ServiceList extends State<ServiceList> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.afterGame);
     // TODO: implement build
     return WillPopScope(
         child: Scaffold(

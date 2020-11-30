@@ -296,8 +296,8 @@ class StoreServiceProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> insertReview(int store_id, int scope, String contents) async {
-    final response = await service.insertReview(store_id, scope, contents);
+  Future<bool> insertReview(int store_id, int scope, String contents, int order_id) async {
+    final response = await service.insertReview(store_id, scope, contents, order_id);
     if (isResponse(jsonDecode(response))) {
       return true;
     }

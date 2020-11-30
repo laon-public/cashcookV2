@@ -51,7 +51,6 @@ class History extends StatelessWidget {
         loadMore(context);
     });
 
-    print("point : $point");
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -142,7 +141,6 @@ class History extends StatelessWidget {
             "dlAccount": dl
           };
           String path = "charge";
-          // await Navigator.of(context).pushNamed("/point/$path", arguments: args);
           await Provider.of<UserProvider>(context, listen: false).clearQuantity();
           await Navigator.of(context).push(
             MaterialPageRoute(
@@ -197,7 +195,6 @@ class History extends StatelessWidget {
                 "dlAccount": dl
               };
               String path = "charge";
-              // await Navigator.of(context).pushNamed("/point/$path", arguments: args);
               await Provider.of<UserProvider>(context, listen: false).clearQuantity();
               await Navigator.of(context).push(
                   MaterialPageRoute(

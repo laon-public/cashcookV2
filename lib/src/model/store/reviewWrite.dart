@@ -12,8 +12,9 @@ import 'package:cashcook/src/utils/TextStyles.dart';
 
 class ReviewWrite extends StatefulWidget {
   final int store_id;
+  final int order_id;
 
-  ReviewWrite({this.store_id});
+  ReviewWrite({this.store_id, this.order_id});
 
   @override
   _ReviewWrite createState() => _ReviewWrite();
@@ -111,16 +112,19 @@ class _ReviewWrite extends State<ReviewWrite> {
                               await Provider.of<StoreServiceProvider>(context, listen: false).insertReview(
                                   widget.store_id,
                                   scope,
-                                  contentsController.text);
+                                  contentsController.text,
+                                  widget.order_id,
+                              );
 
                               Navigator.of(context).pop();
 
                               showToast("리뷰를 등록했습니다.");
                             },
+                            elevation: 0.0,
                             child: Text("완료",
                                 style: Body1.apply(
                                   color: white,
-                                  fontWeightDelta: -1
+                                  fontWeightDelta: 3
                                 ))
                         )
                     )

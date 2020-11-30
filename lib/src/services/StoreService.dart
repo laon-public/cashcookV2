@@ -64,11 +64,12 @@ class StoreService{
     return utf8.decode(response.bodyBytes);
   }
 
-  insertReview(int store_id, int scope, String contents)async{
+  insertReview(int store_id, int scope, String contents, int order_id)async{
     Map<String, dynamic> data = {
       "store_id": store_id,
       "scope": scope,
-      "contents": contents
+      "contents": contents,
+      "order_id" : order_id
     };
     final response = await client.post(cookURL+"/franchises/review", body: json.encode(data), headers: {
       "Content-Type": "application/json",
