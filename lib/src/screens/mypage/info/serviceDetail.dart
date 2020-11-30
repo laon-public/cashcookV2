@@ -36,6 +36,12 @@ class _ServiceDetail extends State<ServiceDetail> {
           style: appBarDefaultText,
         ),
         centerTitle: true,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24, color: black,),
+        ),
       ),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),

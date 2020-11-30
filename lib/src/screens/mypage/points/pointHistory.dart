@@ -56,7 +56,7 @@ class History extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         // title: Text("${point == "DL" ? "DL" : point} 적립 / 사용 내역",
-        title: Text("${point == "DL" ? "DL" : point == "CARAT" ? "CARAT" : "CP"} 적립 / 사용 내역",
+        title: Text("${point == "DL" ? "DL" : point == "CARAT" ? "CARAT" : point == "RP" ? "CP" : point} 적립 / 사용 내역",
           style: appBarDefaultText),
         centerTitle: true,
         elevation: 1,
@@ -97,7 +97,7 @@ class History extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             // child: Text("현재 보유 ${point == "DL" ? "DL" : point}",
-              child: Text("현재 보유 ${point == "DL" ? "DL" : point == "CARAT" ? "CARAT" : "CP"}",
+              child: Text("현재 보유 ${point == "DL" ? "DL" : point == "CARAT" ? "CARAT" : point == "RP" ? "CP" : point}",
               style: Body1.apply(
                 color: primary
               ),),
@@ -114,7 +114,7 @@ class History extends StatelessWidget {
                         style: Headline,
                         children: [
                           TextSpan(text: "${demicalFormat.format(user.nowPoint)} "),
-                          TextSpan(text: "${point == "DL" ? "DL" : point == "CARAT" ? "CARAT" : "CP"}", style: Body1)
+                          TextSpan(text: "${point == "DL" ? "DL" : point == "CARAT" ? "CARAT" : point == "RP" ? "CP" : point}", style: Body1)
                         ]
                     ),
                   );

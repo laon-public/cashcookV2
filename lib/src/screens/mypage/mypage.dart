@@ -213,138 +213,140 @@ class _MyPageState extends State<MyPage> {
             ),
           )
               :
-          Column(
-              children: [
-                Container(
-                    padding: const EdgeInsets.only(top: 30.0, left: 12.0, right: 12.0, bottom: 10),
-                    decoration: BoxDecoration(
-                      color: white,
-                    ),
-                    child: InkWell(
-                      onTap: () async{
-                        await Navigator.pushNamed(context, "/userState");
-                      },
-                      child:
+              SingleChildScrollView(
+                child: Column(
+                    children: [
                       Container(
-                        child: Column(
-                          children: [
-                            Row(
+                          padding: const EdgeInsets.only(top: 30.0, left: 12.0, right: 12.0, bottom: 10),
+                          decoration: BoxDecoration(
+                            color: white,
+                          ),
+                          child: InkWell(
+                            onTap: () async{
+                              await Navigator.pushNamed(context, "/userState");
+                            },
+                            child:
+                            Container(
+                              child: Column(
                                 children: [
-                                  RichText(
-                                    text: TextSpan(
-                                        style: Subtitle2,
-                                        children: [
-                                          TextSpan(text:"${user.loginUser.name}", style: Headline),
-                                          TextSpan(text:" 님\n"),
-                                          TextSpan(text:"반갑습니다.")
-                                        ]
-                                    ),
+                                  Row(
+                                      children: [
+                                        RichText(
+                                          text: TextSpan(
+                                              style: Subtitle2,
+                                              children: [
+                                                TextSpan(text:"${user.loginUser.name}", style: Headline),
+                                                TextSpan(text:" 님\n"),
+                                                TextSpan(text:"반갑습니다.")
+                                              ]
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        Icon(Icons.arrow_forward_ios, size: 24,color: black),
+                                      ]
                                   ),
-                                  Spacer(),
-                                  Icon(Icons.arrow_forward_ios, size: 24,color: black),
-                                ]
+                                  whiteSpaceH(40),
+                                  Row(
+                                      children: [
+                                        InkWell(
+                                          onTap: (){
+                                            Map<String, dynamic> args = {
+                                              "point":"RP",
+                                              "pointImg":"assets/icon/c_point.png"
+                                            };
+                                            Navigator.of(context).pushNamed("/point/history", arguments: args);
+                                          },
+                                          child: Row(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: [
+                                              Image.asset("assets/icon/c_point.png",height: 24, fit: BoxFit.contain,),
+                                              whiteSpaceW(5),
+                                              Text("${demicalFormat.format(user.pointMap['RP'])} CP",style: Body2.apply(color: black),),
+                                              Icon(Icons.arrow_forward_ios, color: black, size: 12,),
+                                            ],
+                                          ),
+                                        ),
+                                        whiteSpaceW(20),
+                                        InkWell(
+                                          onTap: (){
+                                            Map<String, dynamic> args = {
+                                              "point":"DL",
+                                              "pointImg":"assets/icon/DL 2.png"
+                                            };
+                                            Navigator.of(context).pushNamed("/point/history", arguments: args);
+                                          },
+                                          child: Row(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: [
+                                              Image.asset("assets/icon/DL 2.png",height: 24, fit: BoxFit.contain,),
+                                              whiteSpaceW(5),
+                                              Text("${demicalFormat.format(user.pointMap['DL'])} DL",style: Body2.apply(color: black),),
+                                              Icon(Icons.arrow_forward_ios, color: black, size: 12,),
+                                            ],
+                                          ),
+                                        ),
+                                        whiteSpaceW(20),
+                                        InkWell(
+                                          onTap: (){
+                                            Map<String, dynamic> args = {
+                                              "point":"CARAT",
+                                              "pointImg":"assets/icon/carat.jpg"
+                                            };
+                                            Navigator.of(context).pushNamed("/point/history", arguments: args);
+                                          },
+                                          child: Row(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: [
+                                              Image.asset("assets/icon/carat.jpg",height: 24, fit: BoxFit.contain,),
+                                              whiteSpaceW(5),
+                                              Text("${demicalFormat.format(user.pointMap['CARAT'])} CR",style: Body2.apply(color: black),),
+                                              Icon(Icons.arrow_forward_ios, color: black, size: 12,),
+                                            ],
+                                          ),
+                                        ),
+                                      ]
+                                  ),
+                                ],
+                              ),
                             ),
-                            whiteSpaceH(40),
-                            Row(
-                                children: [
-                                  InkWell(
-                                    onTap: (){
-                                      Map<String, dynamic> args = {
-                                        "point":"RP",
-                                        "pointImg":"assets/icon/c_point.png"
-                                      };
-                                      Navigator.of(context).pushNamed("/point/history", arguments: args);
-                                    },
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Image.asset("assets/icon/c_point.png",height: 24, fit: BoxFit.contain,),
-                                        whiteSpaceW(5),
-                                        Text("${demicalFormat.format(user.pointMap['RP'])} CP",style: Body2.apply(color: black),),
-                                        Icon(Icons.arrow_forward_ios, color: black, size: 12,),
-                                      ],
-                                    ),
-                                  ),
-                                  whiteSpaceW(20),
-                                  InkWell(
-                                    onTap: (){
-                                      Map<String, dynamic> args = {
-                                        "point":"DL",
-                                        "pointImg":"assets/icon/DL 2.png"
-                                      };
-                                      Navigator.of(context).pushNamed("/point/history", arguments: args);
-                                    },
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Image.asset("assets/icon/DL 2.png",height: 24, fit: BoxFit.contain,),
-                                        whiteSpaceW(5),
-                                        Text("${demicalFormat.format(user.pointMap['DL'])} DL",style: Body2.apply(color: black),),
-                                        Icon(Icons.arrow_forward_ios, color: black, size: 12,),
-                                      ],
-                                    ),
-                                  ),
-                                  whiteSpaceW(20),
-                                  InkWell(
-                                    onTap: (){
-                                      Map<String, dynamic> args = {
-                                        "point":"CARAT",
-                                        "pointImg":"assets/icon/carat.jpg"
-                                      };
-                                      Navigator.of(context).pushNamed("/point/history", arguments: args);
-                                    },
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Image.asset("assets/icon/carat.jpg",height: 24, fit: BoxFit.contain,),
-                                        whiteSpaceW(5),
-                                        Text("${demicalFormat.format(user.pointMap['CARAT'])} CR",style: Body2.apply(color: black),),
-                                        Icon(Icons.arrow_forward_ios, color: black, size: 12,),
-                                      ],
-                                    ),
-                                  ),
-                                ]
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                ),
-                Column(
-                    children:[
-                      SizedBox(height: 24,),
-                      Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Column(
-                              children: [
-                                HistoryCard(),
-                                RecoCard(),
-                                easyPayCard(),
-                                scrapCard(),
-                                SizedBox(height: 16,),
-                                Tabs(name: "공지사항", routesName: "/notice",),
-                                // CustomerCenter(),
-                                Tabs(name: "FAQ", routesName: "/faq",),
-                                Tabs(name: "서비스 문의", routesName: "/inquiry",),
-                                Tabs(name: "약관 및 정책", routesName: "",),
-                                Tabs(name: "앱정보", routesName: "/appinfomation",),
-
-
-                                SizedBox(height: 40,),
-                              ]
                           )
                       ),
-                      (!user.loginUser.isFran) ? Tabs2(name: "제휴매장 등록하기", routesName: "/store/apply1",img: "assets/icon/shop.png",): SizedBox(),
-                      SizedBox(height: 12,),
-                      Tabs2(name: "캐시링크 가기", routesName: "cashlink",img: "assets/icon/cashlink-icon.png",),
-                      SizedBox(height: 60,),
+                      Column(
+                          children:[
+                            SizedBox(height: 24,),
+                            Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16),
+                                child: Column(
+                                    children: [
+                                      HistoryCard(),
+                                      RecoCard(),
+                                      easyPayCard(),
+                                      scrapCard(),
+                                      SizedBox(height: 16,),
+                                      Tabs(name: "공지사항", routesName: "/notice",),
+                                      // CustomerCenter(),
+                                      Tabs(name: "FAQ", routesName: "/faq",),
+                                      Tabs(name: "서비스 문의", routesName: "/inquiry",),
+                                      Tabs(name: "약관 및 정책", routesName: "",),
+                                      Tabs(name: "앱정보", routesName: "/appinfomation",),
+
+
+                                      SizedBox(height: 40,),
+                                    ]
+                                )
+                            ),
+                            (!user.loginUser.isFran) ? Tabs2(name: "제휴매장 등록하기", routesName: "/store/apply1",img: "assets/icon/shop.png",): SizedBox(),
+                            SizedBox(height: 12,),
+                            Tabs2(name: "캐시링크 가기", routesName: "cashlink",img: "assets/icon/cashlink-icon.png",),
+                            SizedBox(height: 60,),
+                          ]
+                      )
                     ]
                 )
-              ]
-          );
+              );
         }
     );
   }
@@ -355,40 +357,52 @@ class _MyPageState extends State<MyPage> {
         children: [
           Container(
             width: MediaQuery.of(context).size.width,
-            padding: const EdgeInsets.only(top: 30.0, left: 12.0, right: 12.0, bottom: 50.0),
+            padding: EdgeInsets.all(16.0),
             decoration: BoxDecoration(
               color: white,
             ),
             child: Row(
               children: [
                 Column (
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    whiteSpaceH(10),
-                    Row(
-                      children: [
-                        Text("${user.username}  ",
-                            style: Headline),
+                        Text("${user.username}",
+                            style: Subtitle1.apply(
+                              color: primary,
+                              fontWeightDelta: 2
+                            ),
+                          textAlign: TextAlign.start,
+                        ),
                         Text("${user.phone.substring(0,3)}-${user.phone.substring(3,7)}-${user.phone.substring(7,11)}",
-                            style: Subtitle2),
-                      ],
-                    ),
+                            style: Subtitle2.apply(
+                              fontWeightDelta: -1
+                            )
+                        ),
                   ],
                 ),
+                Spacer(),
+                Image.asset(
+                  "assets/icon/s_master.png",
+                  width: 48,
+                  height: 48
+                )
               ],
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 16.0, right: 16.0),
             child: Container(
-              transform: Matrix4.translationValues(0.0, -30.0, 0.0),
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
-                color: primary,
+                color: white,
                 borderRadius: BorderRadius.all(
                   Radius.circular(16),
                 ),
-
+                border: Border.all(
+                  color: primary,
+                  width: 2
+                )
               ),
               child:
               Consumer<RecoProvider>(
@@ -396,85 +410,50 @@ class _MyPageState extends State<MyPage> {
                     return Row(
                         children: [
                           Expanded(
-                            flex: 4,
                             child:
                             Padding(
-                              padding: const EdgeInsets.only(top: 15.0, left: 12.0, right: 12.0, bottom: 15.0),
+                              padding: EdgeInsets.symmetric(vertical: 12),
                               child:Column(
                                 children: [
-                                  Text("ADP 리워드",
-                                      style: Caption.apply(
-                                        color: white
-                                      )),
-                                  whiteSpaceH(5),
+                                  Text("ADP 충전 리워드",
+                                      style: Body2.apply(
+                                        color: secondary
+                                      )
+                                  ),
+                                  whiteSpaceH(2),
                                   Text("${numberFormat.format(reco.adp)} ADP",
-                                      style: Caption.apply(
-                                          color: white,
-                                        fontWeightDelta: 1
-                                      )),
+                                      style: Body1.apply(
+                                        color: black,
+                                        fontWeightDelta: 3
+                                      )
+                                  ),
                                 ],
                               ),
                             ),
                           ),
+                          Container(
+                            width:1,
+                            height: 24,
+                            color: deActivatedGrey
+                          ),
                           Expanded(
-                            flex: 4,
                             child:
                             Padding(
-                              padding: const EdgeInsets.only(top: 15.0, left: 12.0, right: 12.0, bottom: 15.0),
+                              padding: EdgeInsets.symmetric(vertical: 12),
                               child:Column(
                                 children: [
-                                  Text("현금리워드",
-                                      style: Caption.apply(
-                                          color: white,
-                                      )),
-                                  whiteSpaceH(5),
+                                  Text("현금 리워드",
+                                      style: Body2.apply(
+                                          color: secondary
+                                      )
+                                  ),
+                                  whiteSpaceH(2),
                                   Text("${numberFormat.format(reco.pay)}원",
-                                      style: Caption.apply(
-                                          color: white,
-                                          fontWeightDelta: 1
-                                      )),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 3,
-                            child:
-                            Padding(
-                              padding: const EdgeInsets.only(top: 15.0, left: 12.0, right: 12.0, bottom: 15.0),
-                              child:Column(
-                                children: [
-                                  Text("대리점 수",
-                                      style: Caption.apply(
-                                          color: white,
-                                      )),
-                                  whiteSpaceH(5),
-                                  Text("${user.userGrade == "DISTRIBUTOR" ? numberFormat.format(reco.ageAmount) : 0} 개",
-                                      style: Caption.apply(
-                                          color: white,
-                                          fontWeightDelta: 1
-                                      )),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 3,
-                            child:
-                            Padding(
-                              padding: const EdgeInsets.only(top: 15.0, left: 12.0, right: 12.0, bottom: 15.0),
-                              child:Column(
-                                children: [
-                                  Text("가맹점 수",
-                                      style: Caption.apply(
-                                          color: white,
-                                      )),
-                                  whiteSpaceH(5),
-                                  Text("${user.userGrade == "DISTRIBUTOR" ? numberFormat.format(reco.franAmount) : numberFormat.format(reco.ageAmount)}개",
-                                      style: Caption.apply(
-                                          color: white,
-                                          fontWeightDelta: 1
-                                      )),
+                                      style: Body1.apply(
+                                          color: black,
+                                          fontWeightDelta: 3
+                                      )
+                                  ),
                                 ],
                               ),
                             ),
@@ -485,6 +464,79 @@ class _MyPageState extends State<MyPage> {
               ),
             ),
           ),
+          whiteSpaceH(8),
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                color: Color(0xFFF2F2F2),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(4),
+                ),
+
+              ),
+              child:
+              Consumer<RecoProvider>(
+                  builder: (context, reco, _){
+                    return Row(
+                        children: [
+                          Expanded(
+                            child:
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 7, horizontal: 12),
+                              child: Row(
+                                children: [
+                                  Text("대리점 수",
+                                      style: Body2.apply(
+                                          color: secondary
+                                      )
+                                  ),
+                                  Spacer(),
+                                  Text("${user.userGrade == "DISTRIBUTOR" ? numberFormat.format(reco.ageAmount) : 0} 개",
+                                      style: Body1.apply(
+                                          color: black,
+                                          fontWeightDelta: 3
+                                      )
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: 1,
+                            height: 10,
+                            color: deActivatedGrey
+                          ),
+                          Expanded(
+                            child:
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 7, horizontal: 12),
+                              child:Row(
+                                children: [
+                                  Text("가맹점 수",
+                                      style: Body2.apply(
+                                          color: secondary
+                                      )
+                                  ),
+                                  Spacer(),
+                                  Text("${user.userGrade == "DISTRIBUTOR" ? numberFormat.format(reco.franAmount) : numberFormat.format(reco.ageAmount)}개",
+                                      style: Body1.apply(
+                                          color: black,
+                                          fontWeightDelta: 3
+                                      )
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ]
+                    );
+                  }
+              ),
+            ),
+          ),
+          whiteSpaceH(12),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 0),
             child: Column(
@@ -493,64 +545,79 @@ class _MyPageState extends State<MyPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  transform: Matrix4.translationValues(0.0, -20.0, 0.0),
                   padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                  height: 50,
+                  height: 40,
                   child: Row (
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        InkWell(
-                          onTap:() {
-                            setState(() {
-                              ageView = "History";
-                            });
-                          },
-                          child: (ageView == "History") ?
-                          Container(
-                              child:Text("대리점/가맹점 내역", style: Subtitle2.apply(
-                                color: primary
-                              )),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border(bottom: BorderSide(color: primary, width: 3)
-                                  )
-                              )
-                          )
-                              :
-                          Text("대리점/가맹점 내역", style: Subtitle2),
+                        Expanded(
+                          child: InkWell(
+                            onTap:() {
+                              setState(() {
+                                ageView = "History";
+                              });
+                            },
+                            child: (ageView == "History") ?
+                            Text("대리점/가맹점 내역", style: Body1.apply(
+                                color: black,
+                                fontWeightDelta: 1
+                            ),
+                              textAlign: TextAlign.center,
+                            )
+                                :
+                            Text("대리점/가맹점 내역", style: Body1.apply(
+                                color:  third
+                            ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
                         ),
-                        whiteSpaceW(20.0),
-                        InkWell(
-                          onTap:() {
-                            setState(() {
-                              ageView = "Reward";
-                              viewType = "month";
-                            });
-                          },
-                          child: (ageView == "Reward") ?
-                          Container(
-                              child:Text("리워드 내역", style: Subtitle2.apply(
-                                  color: primary
-                              )),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border(bottom: BorderSide(color: primary, width: 3)
-                                  )
-                              )
-                          )
-
-                              :
-                          Text("리워드 내역", style: Subtitle2,),
-                        ),
-                        whiteSpaceW(20.0),
+                        Expanded(
+                          child: InkWell(
+                            onTap:() {
+                              setState(() {
+                                ageView = "Reward";
+                                viewType = "month";
+                              });
+                            },
+                            child: (ageView == "Reward") ?
+                            Text("리워드 내역", style: Body1.apply(
+                                color: black,
+                                fontWeightDelta: 1
+                            ),
+                              textAlign: TextAlign.center,
+                            )
+                                :
+                            Text("리워드 내역", style: Body1.apply(
+                                color:  third
+                            ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        )
                       ]
                   ),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border(bottom: BorderSide(color:Colors.grey, width: 1)
-                      )
-                  ),
                 ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 1,
+                  color: third,
+                  child: Stack(
+                    children: [
+                      AnimatedPositioned(
+                        left: ageView == "History" ? 0 : MediaQuery.of(context).size.width / 2,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width / 2,
+                          height: 3,
+                          decoration: BoxDecoration(
+                              color: primary,
+                          ),
+                        ),
+                        duration: Duration(milliseconds: 400),
+                      )
+                    ],
+                  ),
+                )
               ],
             ),
           ),
@@ -570,27 +637,11 @@ class _MyPageState extends State<MyPage> {
     });
     return Consumer<RecoProvider>(
       builder: (context, reco, _) {
-        print(reco.gradeReferrer);
-        return
-          Container(
-              height: 300,
-              child:
-              ListView.builder(
-                itemBuilder: (context, idx) {
-                  if (idx < reco.gradeReferrer.length) {
-                    return RecoItem(reco.gradeReferrer[idx]);
-                  }
-                  return Center(
-                      child: CircularProgressIndicator(
-                          valueColor: new AlwaysStoppedAnimation<Color>(primary)
-                      )
-                  );
-                },
-                itemCount: reco.gradeReferrer.length,
-                shrinkWrap: true,
-                physics: AlwaysScrollableScrollPhysics(),
-              )
-          );
+        return Column(
+          children: reco.gradeReferrer.map((e) =>
+            RecoItem(e)
+          ).toList(),
+        );
       },
     );
   }
@@ -686,7 +737,6 @@ class _MyPageState extends State<MyPage> {
               padding: const EdgeInsets.only(left: 32.0, right: 32.0),
               child:
               Container(
-                  transform: Matrix4.translationValues(0.0, -20.0, 0.0),
                   width: MediaQuery.of(context).size.width,
                   child:
                   Row(
@@ -697,17 +747,19 @@ class _MyPageState extends State<MyPage> {
                               viewType = "month";
                             });
                           },
+                          elevation: 0.0,
                           color: white,
-                          disabledColor: primary,
+                          disabledColor: white,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20.0),
-                              side: BorderSide(color: primary)
+                              side: BorderSide(color: (viewType == "month") ? primary : third)
                           ),
                           child:
                           Text(
                             "월간",
-                            style: Body2.apply(
-                                color: (viewType == "month") ? Colors.white : black
+                            style: Body1.apply(
+                                color: (viewType == "month") ? black : third,
+                                fontWeightDelta: 1
                             )
                           ),
                         ),
@@ -719,16 +771,18 @@ class _MyPageState extends State<MyPage> {
                             });
                           },
                           color: white,
-                          disabledColor: primary,
+                          elevation: 0.0,
+                          disabledColor: white,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20.0),
-                              side: BorderSide(color: primary)
+                              side: BorderSide(color: (viewType == "year") ? primary : third)
                           ),
                           child:
                           Text(
                             "연간",
-                            style: Body2.apply(
-                                color: (viewType == "year") ? Colors.white : black
+                            style: Body1.apply(
+                                color: (viewType == "year") ? black : third,
+                              fontWeightDelta: 1
                             )
                           ),
                         ),

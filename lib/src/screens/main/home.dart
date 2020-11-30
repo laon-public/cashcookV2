@@ -297,7 +297,7 @@ class _Home extends State<Home> {
             Container(
                 padding: EdgeInsets.symmetric(vertical: 19.0, horizontal: 8.0),
                 width: MediaQuery.of(context).size.width,
-                height: 170,
+                height: 180,
                 child: Stack(
                   children: [
                     Container(
@@ -339,10 +339,10 @@ class _Home extends State<Home> {
                                           children: [
                                             Image.asset(
                                                 serviceImage[idx],
-                                                width: 32,
-                                                height: 32
+                                                width: 36,
+                                                height: 36
                                             ),
-                                            whiteSpaceH(6),
+                                            whiteSpaceH(2),
                                             Text(serviceName[idx]['code_name'],
                                               style: Caption.apply(color: secondary),),
                                           ],
@@ -350,7 +350,7 @@ class _Home extends State<Home> {
                                     ),
                                   ),
                                 ),
-                                whiteSpaceH(12),
+                                whiteSpaceH(18),
                                 InkWell(
                                   onTap: () {
                                     if (serviceName[idx + 5]['code_name'] == '가전') {
@@ -375,10 +375,10 @@ class _Home extends State<Home> {
                                         children: [
                                           Image.asset(
                                               serviceImage[idx+5],
-                                              width: 32,
-                                              height: 32
+                                              width: 36,
+                                              height: 36
                                           ),
-                                          whiteSpaceH(6),
+                                          whiteSpaceH(2),
                                           Text(serviceName[idx+5]['code_name'],
                                             style: Caption.apply(color: secondary),),
                                         ],

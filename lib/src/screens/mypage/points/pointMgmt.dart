@@ -50,7 +50,20 @@ class _pointMgmtState extends State<pointMgmt> {
         appBar: AppBar(
           centerTitle: true,
           elevation: 1.5,
+          title: Text("활동현황",
+            style: appBarDefaultText,
+          ),
           backgroundColor: white,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Image.asset(
+              "assets/resource/public/prev.png",
+              width: 24,
+              height: 24,
+            ),
+          ),
         ),
         body:
         Consumer<PointMgmtProvider>(
@@ -60,7 +73,7 @@ class _pointMgmtState extends State<pointMgmt> {
                     children: [
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        padding: const EdgeInsets.only(top: 30.0, left: 12.0, right: 12.0, bottom: 50.0),
+                        padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0, bottom: 16.0),
                         decoration: BoxDecoration(
                           color: white,
                         ),
@@ -104,55 +117,49 @@ class _pointMgmtState extends State<pointMgmt> {
                                 ) : Row()
                                     : whiteSpaceH(1),
                                 whiteSpaceH(10),
-                                Row(
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text("${Provider.of<UserProvider>(context, listen:false).storeModel.store.name}   ",
-                                        style: Headline
+                                    Text("${Provider.of<UserProvider>(context, listen:false).storeModel.store.name}",
+                                        style: Subtitle1.apply(
+                                          color: primary,
+                                          fontWeightDelta: 2
+                                        )
                                     ),
                                     Text("${Provider.of<UserProvider>(context, listen:false).storeModel.store.tel.substring(0,3)}-"
                                         "${Provider.of<UserProvider>(context, listen:false).storeModel.store.tel.substring(3,7)}-"
                                         "${Provider.of<UserProvider>(context, listen:false).storeModel.store.tel.substring(7,11)}",
-                                        style: Body2.apply(
-                                            fontWeightDelta: 1
-                                        )),
+                                        style: Subtitle2.apply(
+                                          fontWeightDelta: -1
+                                        )
+                                    ),
                                   ],
                                 ),
                               ],
                             ),
                             Spacer(),
-                            CachedNetworkImage(
-                              imageUrl: "${Provider.of<UserProvider>(context, listen: false).storeModel.store.shop_img1}",
-                              imageBuilder: (context, img) => Container(
-                                  width: 64,
-                                  height: 64,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(6),
-                                      image: DecorationImage(
-                                          image: img, fit: BoxFit.fill
-                                      )
-                                  )
-                              ),
-                            ),
+                            Image.asset(
+                              "assets/icon/s_store.png",
+                              width: 48,
+                              height: 48,
+                            )
                           ],
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                         child: Container(
-                            transform: Matrix4.translationValues(0.0, -30.0, 0.0),
                             width: MediaQuery.of(context).size.width,
                             decoration: BoxDecoration(
-                              color: mainColor,
+                              color: white,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(16),
+                                Radius.circular(12),
                               ),
-                              boxShadow: [
-                                BoxShadow(
-                                  offset: Offset(3,3),
-                                  blurRadius: 3,
-                                  color: Color(0xff888888).withOpacity(0.15),
-                                ),
-                              ],
+                              border: Border.all(
+                                color: primary,
+                                width: 2
+                              )
                             ),
                             child:
                             Row(
@@ -166,19 +173,24 @@ class _pointMgmtState extends State<pointMgmt> {
                                         children: [
                                           Text("광고주 포인트",
                                               style: Caption.apply(
-                                                color: white
+                                                color: secondary
                                               )
                                           ),
                                           whiteSpaceH(5),
                                           Text("${numberFormat.format(pm.adp)} ADP",
                                               style: Caption.apply(
-                                                  color: white,
-                                                fontWeightDelta: 1
+                                                  color:black,
+                                                fontWeightDelta: 3
                                               )
                                           ),
                                         ],
                                       ),
                                     ),
+                                  ),
+                                  Container(
+                                    width: 1,
+                                    height: 24,
+                                    color: deActivatedGrey,
                                   ),
                                   Expanded(
                                     flex: 1,
@@ -189,19 +201,24 @@ class _pointMgmtState extends State<pointMgmt> {
                                         children: [
                                           Text("총 현장결제",
                                               style: Caption.apply(
-                                                  color: white
+                                                  color: secondary
                                               )
                                           ),
                                           whiteSpaceH(5),
                                           Text("${numberFormat.format(pm.pay)}원",
                                               style: Caption.apply(
-                                                  color: white,
-                                                fontWeightDelta: 1
+                                                  color:black,
+                                                  fontWeightDelta: 3
                                               )
                                           ),
                                         ],
                                       ),
                                     ),
+                                  ),
+                                  Container(
+                                    width: 1,
+                                    height: 24,
+                                    color: deActivatedGrey,
                                   ),
                                   Expanded(
                                     flex: 1,
@@ -212,14 +229,14 @@ class _pointMgmtState extends State<pointMgmt> {
                                         children: [
                                           Text("총 DL 결제",
                                               style: Caption.apply(
-                                                  color: white
+                                                  color: secondary
                                               )
                                           ),
                                           whiteSpaceH(5),
                                           Text("${numberFormat.format(pm.dl)} DL",
                                               style: Caption.apply(
-                                                  color: white,
-                                                fontWeightDelta: 1
+                                                  color:black,
+                                                  fontWeightDelta: 3
                                               )
                                           ),
                                         ],
@@ -231,10 +248,9 @@ class _pointMgmtState extends State<pointMgmt> {
                         ),
                       ),
                       Padding(
-                          padding: const EdgeInsets.only(left: 32.0, right: 32.0),
+                          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 32),
                           child:
                           Container(
-                              transform: Matrix4.translationValues(0.0, -20.0, 0.0),
                               width: MediaQuery.of(context).size.width,
                               child:
                               Row(
@@ -245,17 +261,21 @@ class _pointMgmtState extends State<pointMgmt> {
                                           viewType = "day";
                                         });
                                       },
+                                      elevation: 0.0,
                                       color: white,
-                                      disabledColor: mainColor,
+                                      disabledColor: white,
                                       shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(20.0),
-                                          side: BorderSide(color: mainColor)
+                                          side: BorderSide(
+                                              color: (viewType == "day") ? primary : third,
+                                          )
                                       ),
                                       child:
                                       Text(
                                         "일간",
-                                        style: Body2.apply(
-                                            color: (viewType == "day") ? Colors.white : black
+                                        style: Body1.apply(
+                                            color: (viewType == "day") ? black : third,
+                                          fontWeightDelta: 1
                                         )
                                       ),
                                     ),
@@ -266,17 +286,21 @@ class _pointMgmtState extends State<pointMgmt> {
                                           viewType = "month";
                                         });
                                       },
+                                      elevation: 0.0,
                                       color: white,
-                                      disabledColor: mainColor,
+                                      disabledColor: white,
                                       shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(20.0),
-                                          side: BorderSide(color: mainColor)
+                                          side: BorderSide(
+                                              color: (viewType == "month") ? primary : third
+                                          )
                                       ),
                                       child:
                                       Text(
                                         "월간",
-                                          style: Body2.apply(
-                                              color: (viewType == "month") ? Colors.white : black
+                                          style: Body1.apply(
+                                              color: (viewType == "month") ? black : third,
+                                              fontWeightDelta: 1
                                           )
                                       ),
                                     ),
@@ -287,17 +311,21 @@ class _pointMgmtState extends State<pointMgmt> {
                                           viewType = "year";
                                         });
                                       },
+                                      elevation: 0.0,
                                       color: white,
-                                      disabledColor: mainColor,
+                                      disabledColor: white,
                                       shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(20.0),
-                                          side: BorderSide(color: mainColor)
+                                          side: BorderSide(
+                                              color: (viewType == "year") ? primary : third
+                                          )
                                       ),
                                       child:
                                       Text(
                                         "연간",
-                                          style: Body2.apply(
-                                              color: (viewType == "year") ? Colors.white : black
+                                          style: Body1.apply(
+                                              color: (viewType == "year") ? black : third,
+                                              fontWeightDelta: 1
                                           )
                                       ),
                                     ),

@@ -41,7 +41,6 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
         appBar: AppBar(
           centerTitle: true,
           elevation: 0,
-          backgroundColor: primary,
           leading: widget.isHome ? null : IconButton(
             onPressed: () {
               if(widget.afterGame){
@@ -59,7 +58,7 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
 
             },
             icon: Image.asset(
-              "assets/resource/public/close.png",
+              "assets/resource/public/prev.png",
               width: 24,
               height: 24,
             ),
@@ -74,60 +73,43 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                         children: [
                           Container(
                             width: MediaQuery.of(context).size.width,
-                            padding: const EdgeInsets.only(top: 30.0, left: 12.0, right: 12.0, bottom: 50.0),
-                            decoration: BoxDecoration(
-                              color: primary,
-                            ),
+                            padding: const EdgeInsets.only(top: 12.0, left: 16.0, right: 16.0),
                             child: Row(
                               children: [
                                 Column (
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    whiteSpaceH(1),
-                                    whiteSpaceH(5),
-                                    whiteSpaceH(1),
-                                    whiteSpaceH(20),
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: [
-                                        Text("${Provider.of<UserProvider>(context, listen:false).loginUser.username}   ",
-                                            style: Subtitle1.apply(
-                                              color: white
-                                            )
-                                        ),
-                                        Text("${Provider.of<UserProvider>(context, listen:false).loginUser.phone.substring(0,3)}-"
-                                            "${Provider.of<UserProvider>(context, listen:false).loginUser.phone.substring(3,7)}-"
-                                            "${Provider.of<UserProvider>(context, listen:false).loginUser.phone.substring(7,11)}",
-                                            style: Body1.apply(
-                                              color: white,
-                                            )
+                                    Text("${Provider.of<UserProvider>(context, listen:false).loginUser.username}   ",
+                                        style: Subtitle1.apply(
+                                          color: primary,
+                                          fontWeightDelta: 2
                                         )
-                                      ],
                                     ),
+                                    Text("${Provider.of<UserProvider>(context, listen:false).loginUser.phone.substring(0,3)}-"
+                                        "${Provider.of<UserProvider>(context, listen:false).loginUser.phone.substring(3,7)}-"
+                                        "${Provider.of<UserProvider>(context, listen:false).loginUser.phone.substring(7,11)}",
+                                        style: Body1.apply(
+                                          color: black,
+                                        )
+                                    )
                                   ],
                                 ),
-                                Spacer(),
-                                Image.asset("assets/icon/recommend.png", height: 42, fit: BoxFit.contain,),
                               ],
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                            padding: EdgeInsets.only(top:16.0, left: 16.0, right: 16.0),
                             child: Container(
-                                transform: Matrix4.translationValues(0.0, -40.0, 0.0),
                                 width: MediaQuery.of(context).size.width,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(16),
                                   ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      offset: Offset(3,3),
-                                      blurRadius: 3,
-                                      color: Color(0xff888888).withOpacity(0.15),
-                                    ),
-                                  ],
+                                  border: Border.all(
+                                    color: primary,
+                                    width: 2
+                                  )
                                 ),
                                 child:
                                 Row(
@@ -140,12 +122,15 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                                           child:Column(
                                             children: [
                                               Text("총 현장결제",
-                                                  style: Body2
+                                                  style: Body2.apply(
+                                                    color: secondary
+                                                  )
                                               ),
                                               whiteSpaceH(5),
                                               Text("${numberFormat.format(pm.pay)}원",
-                                                  style: Body2.apply(
-                                                    color: primary
+                                                  style: Body1.apply(
+                                                    color: black,
+                                                    fontWeightDelta: 3
                                                   )
                                               ),
                                             ],
@@ -160,12 +145,15 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                                           child:Column(
                                             children: [
                                               Text("총 DL 결제",
-                                                  style: Body2
+                                                  style: Body2.apply(
+                                                      color: secondary
+                                                  )
                                               ),
                                               whiteSpaceH(5),
                                               Text("${numberFormat.format(pm.dl)} DL",
-                                                  style: Body2.apply(
-                                                    color: Color(0xffD4145A),
+                                                  style: Body1.apply(
+                                                      color: black,
+                                                      fontWeightDelta: 3
                                                   )
                                               ),
                                             ],
@@ -180,7 +168,6 @@ class _pointMgmtUserState extends State<pointMgmtUser> {
                               padding: const EdgeInsets.only(left: 32.0, right: 32.0),
                               child:
                               Container(
-                                  transform: Matrix4.translationValues(0.0, -20.0, 0.0),
                                   width: MediaQuery.of(context).size.width,
                                   child:
                                   Row(

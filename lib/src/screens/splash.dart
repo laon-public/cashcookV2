@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/screens/login/loginVerRest.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -34,12 +35,10 @@ class _Splash extends State<Splash> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text("소비가 소득이 되는 앱",
-                        style: TextStyle(
-                          fontFamily: 'noto',
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
+                      Text("실시간 스토어 할인 앱",
+                        style: Subtitle2.apply(
                           color: white,
+                          fontWeightDelta: 1
                         )
                       ),
                       Image.asset(
@@ -61,11 +60,9 @@ class _Splash extends State<Splash> {
                   child: Text(
                       "Copyright ⓒ 2020 CashCook Inc. All Rights Reserved.",
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: 'noto',
-                      fontSize: 11,
+                    style: Caption.apply(
                       color: white,
-                      fontWeight: FontWeight.w400
+                      fontWeightDelta: 1
                     )
                   ),
                ),
