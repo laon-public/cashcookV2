@@ -172,12 +172,11 @@ class _ServiceList extends State<ServiceList> {
   // 서비스 이용내역 아이템
   Widget OrderItem(OrderLog ol){
     return InkWell(
-      onTap: () {
+      onTap: () async {
+        await Provider.of<UserProvider>(context, listen: false).setSelOrderLog(ol);
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => ServiceDetail(
-              ol: ol,
-            )
+            builder: (context) => ServiceDetail()
           )
         );
       },

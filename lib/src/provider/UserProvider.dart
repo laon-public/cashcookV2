@@ -45,10 +45,17 @@ class UserProvider with ChangeNotifier {
 
   // Service List
   List<ServiceLogListItem> serviceLogList = [];
+  OrderLog selLog;
   bool isLastList = false;
 
   // Authentication Variable
   String jsession;
+
+  void setSelOrderLog(OrderLog orderLog) {
+      selLog = orderLog;
+
+      notifyListeners();
+  }
 
   void fetchServiceList(int page) async {
     if(page == 1){
@@ -144,6 +151,27 @@ class UserProvider with ChangeNotifier {
   Future<void> userSync() async {
     await service.userSync();
     return;
+  }
+
+  void updateServiceLogList(int reviewId, int orderId) {
+    bool isOkay = false;
+
+    serviceLogList.forEach((serviceLog) {
+      serviceLog.orderLogList.forEach((orderLog) {
+        if(orderLog.id == orderId) {
+          orderLog.reviewId = reviewId;
+          isOkay = true;
+
+          return;
+        }
+      });
+
+      if(isOkay){
+        return;
+      }
+    });
+
+    notifyListeners();
   }
 
   void fetchAccounts() async {

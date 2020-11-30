@@ -95,12 +95,16 @@ class _MainMap extends State<MainMap> {
           backgroundColor: white,
           resizeToAvoidBottomInset: true,
           appBar: sp.isCurrentPage != 2 ? AppBar(
-          leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.black), 
-              onPressed: () => Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => Home()),
-                      (route) => false),
-              ),
+            leading: IconButton(
+              onPressed: () {
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => Home()
+                  )
+                , (route) => false);
+              },
+              icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24, color: black,),
+            ),
           backgroundColor: white,
           elevation: 0.5,
           centerTitle: true,

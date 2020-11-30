@@ -14,9 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 
 class ServiceDetail extends StatefulWidget {
-  OrderLog ol;
-
-  ServiceDetail({this.ol});
+  ServiceDetail();
 
   @override
   _ServiceDetail createState() => _ServiceDetail();
@@ -27,296 +25,300 @@ class _ServiceDetail extends State<ServiceDetail> {
   Widget build(BuildContext context) {
     Map<String, dynamic> pointMap =  Provider.of<UserProvider>(context, listen: false).pointMap;
     // TODO: implement build
-    return Scaffold(
-      backgroundColor: white,
-      appBar: AppBar(
-        elevation: 0.5,
-        title: Text(
-          "${widget.ol.storeName} 이용내역",
-          style: appBarDefaultText,
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24, color: black,),
-        ),
-      ),
-      body: Container(
-        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 4.0),
-                width: MediaQuery.of(context).size.width,
-                child: Text(
-                  DateFormat("yyyy.MM.dd").format(widget.ol.createdAt),
-                  style: Body2
-                ),
-              ),
-              Container(
-                  padding: EdgeInsets.symmetric(vertical: 8.0),
-                  width: MediaQuery.of(context).size.width,
-                  height: 64,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CachedNetworkImage(
-                        imageUrl: widget.ol.storeImg,
-                        imageBuilder: (context, img) => Container(
-                            width: 48,
-                            height: 48,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(6.0)
-                                ),
-                                image: DecorationImage(
-                                    image: img, fit: BoxFit.fill
-                                )
-                            )
-                        ),
-                      ),
-                      whiteSpaceW(13.0),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  child: Text(widget.ol.storeName,
-                                    style: Body1.apply(
-                                      fontWeightDelta: 2
+    return Consumer<UserProvider>(
+      builder: (context,up,_){
+        return Scaffold(
+          backgroundColor: white,
+          appBar: AppBar(
+            elevation: 0.5,
+            title: Text(
+              "${up.selLog.storeName} 이용내역",
+              style: appBarDefaultText,
+            ),
+            centerTitle: true,
+            leading: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24, color: black,),
+            ),
+          ),
+          body: Container(
+            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 4.0),
+                    width: MediaQuery.of(context).size.width,
+                    child: Text(
+                        DateFormat("yyyy.MM.dd").format(up.selLog.createdAt),
+                        style: Body2
+                    ),
+                  ),
+                  Container(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      width: MediaQuery.of(context).size.width,
+                      height: 64,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CachedNetworkImage(
+                            imageUrl: up.selLog.storeImg,
+                            imageBuilder: (context, img) => Container(
+                                width: 48,
+                                height: 48,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(6.0)
                                     ),
+                                    image: DecorationImage(
+                                        image: img, fit: BoxFit.fill
+                                    )
+                                )
+                            ),
+                          ),
+                          whiteSpaceW(13.0),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      child: Text(up.selLog.storeName,
+                                        style: Body1.apply(
+                                            fontWeightDelta: 2
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    whiteSpaceW(12),
+                                    Text(DateFormat('kk:mm').format(up.selLog.createdAt),
+                                        style: Body2
+                                    ),
+                                  ],
+                                ),
+                                Expanded(
+                                  child: Text(up.selLog.content,
+                                    style:Body2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
-                                ),
-                                whiteSpaceW(12),
-                                Text(DateFormat('kk:mm').format(widget.ol.createdAt),
-                                    style: Body2
+                                )
+                              ],
+                            ),
+                          ),
+                          whiteSpaceW(13.0),
+                          Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text("-${numberFormat.format(up.selLog.pay)} 원",
+                                    style: Subtitle1
                                 ),
                               ],
                             ),
-                            Expanded(
-                              child: Text(widget.ol.content,
-                                style:Body2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      whiteSpaceW(13.0),
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text("-${numberFormat.format(widget.ol.pay)} 원",
-                                style: Subtitle1
-                            ),
-                          ],
-                        ),
+                          )
+                        ],
                       )
-                    ],
-                  )
-              ),
-              Container(
-                padding: EdgeInsets.only(bottom: 8.0),
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: InkWell(
-                        onTap: (widget.ol.reviewId == 0 ) ? () async {
-                          await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) => ReviewWrite(
-                                    store_id: widget.ol.storeId,
-                                    order_id: widget.ol.id,
-                                  )));
-                        }
-                        :
-                        () {
-                          showToast("이미 리뷰를 작성 했습니다.");
-                        },
-                        child: Container(
-                          height: 40,
-                          child: Center(
-                            child: Text("리뷰작성",
-                              style: Body1.apply(
-                                fontWeightDelta: 1
-                              ),
-                            ),
-                          ),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Color(0xFFDDDDDD),
-                              width: 1
-                            )
-                          ),
-                        ),
-                      ),
-                    ),
-                    whiteSpaceW(8.0),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          if(widget.ol.playGame){
-                            showToast("게임을 이미 진행하였습니다.");
-                          } else {
-                            print("CARAT : ${pointMap['CARAT']}");
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                    builder: (context) => BargainGame2(
-                                      orderId: widget.ol.id,
-                                      orderPayment: widget.ol.pay - (widget.ol.dl * 100),
-                                      totalCarat: pointMap['CARAT']
-                                    ))
-                                , (route) => false);
-                          }
-
-                        },
-                        child: Container(
-                            height: 40,
-                            child: Center(
-                              child: Text("실시간 흥정",
-                                style: Body1.apply(
-                                    fontWeightDelta: 1
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(bottom: 8.0),
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            onTap: (up.selLog.reviewId == 0 ) ? () async {
+                              await Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) => ReviewWrite(
+                                        store_id: up.selLog.storeId,
+                                        order_id: up.selLog.id,
+                                      )));
+                            }
+                                :
+                                () {
+                              showToast("이미 리뷰를 작성 했습니다.");
+                            },
+                            child: Container(
+                              height: 40,
+                              child: Center(
+                                child: Text("리뷰작성",
+                                  style: Body1.apply(
+                                      fontWeightDelta: 1
+                                  ),
                                 ),
                               ),
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Color(0xFFDDDDDD),
+                                      width: 1
+                                  )
+                              ),
                             ),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Color(0xFFDDDDDD),
-                                  width: 1
-                              )
                           ),
                         ),
+                        whiteSpaceW(8.0),
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              if(up.selLog.playGame){
+                                showToast("게임을 이미 진행하였습니다.");
+                              } else {
+                                print("CARAT : ${pointMap['CARAT']}");
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) => BargainGame2(
+                                            orderId: up.selLog.id,
+                                            orderPayment: up.selLog.pay - (up.selLog.dl * 100),
+                                            totalCarat: pointMap['CARAT']
+                                        ))
+                                    , (route) => false);
+                              }
+
+                            },
+                            child: Container(
+                              height: 40,
+                              child: Center(
+                                child: Text("실시간 흥정",
+                                  style: Body1.apply(
+                                      fontWeightDelta: 1
+                                  ),
+                                ),
+                              ),
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Color(0xFFDDDDDD),
+                                      width: 1
+                                  )
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 8.0),
+                    width: MediaQuery.of(context).size.width,
+                    child: Text(
+                      "결제내역",
+                      style: Body1.apply(
+                          fontWeightDelta: 1
                       ),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 8.0),
-                width: MediaQuery.of(context).size.width,
-                child: Text(
-                  "결제내역",
-                  style: Body1.apply(
-                      fontWeightDelta: 1
+                    ),
                   ),
-                ),
-              ),
-              Column(
-                children: widget.ol.mainCatList.map((e) =>
-                  mainCatItem(e)
-                ).toList()
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 12.0),
-                width: MediaQuery.of(context).size.width,
-                height: 1,
-                color: Color(0xFFDDDDDD)
-              ),
-              Container(
-                padding: EdgeInsets.only(bottom: 12.0),
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  children: [
-                    Text("결제 총 금액",
-                      style: Subtitle2
+                  Column(
+                      children: up.selLog.mainCatList.map((e) =>
+                          mainCatItem(e)
+                      ).toList()
+                  ),
+                  Container(
+                      margin: EdgeInsets.symmetric(vertical: 12.0),
+                      width: MediaQuery.of(context).size.width,
+                      height: 1,
+                      color: Color(0xFFDDDDDD)
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(bottom: 12.0),
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      children: [
+                        Text("결제 총 금액",
+                            style: Subtitle2
+                        ),
+                        Spacer(),
+                        Text("${numberFormat.format(up.selLog.pay)}원",
+                            style: Subtitle2.apply(
+                                color: primary
+                            )
+                        ),
+                      ],
                     ),
-                    Spacer(),
-                    Text("${numberFormat.format(widget.ol.pay)}원",
-                      style: Subtitle2.apply(
-                        color: primary
-                      )
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(bottom: 12.0),
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      children: [
+                        Text("DL 사용",
+                            style: Body2.apply(
+                                color: black
+                            )
+                        ),
+                        Spacer(),
+                        Text("${numberFormat.format(up.selLog.dl)} DL",
+                            style: Body2.apply(
+                                color: black
+                            )
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.only(bottom: 12.0),
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  children: [
-                    Text("DL 사용",
-                        style: Body2.apply(
-                          color: black
-                        )
-                    ),
-                    Spacer(),
-                    Text("${numberFormat.format(widget.ol.dl)} DL",
-                        style: Body2.apply(
-                            color: black
-                        )
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.only(bottom: 12.0),
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  children: [
-                    Text("실시간 흥정",
-                        style: Body2.apply(
-                            color: black
-                        )
-                    ),
-                    Spacer(),
-                    Text(widget.ol.playGame ?
-                        widget.ol.pay == widget.ol.dl * 100 ?
-                            "DL 결제는 실시간 흥정이 제공되지 않습니다."
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(bottom: 12.0),
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      children: [
+                        Text("실시간 흥정",
+                            style: Body2.apply(
+                                color: black
+                            )
+                        ),
+                        Spacer(),
+                        Text(up.selLog.playGame ?
+                        up.selLog.pay == up.selLog.dl * 100 ?
+                        "DL 결제는 실시간 흥정이 제공되지 않습니다."
                             :
-                        "${numberFormat.format(widget.ol.gameQuantity)}DL 적립"
-                        :
+                        "${numberFormat.format(up.selLog.gameQuantity)}DL 적립"
+                            :
                         "아직 게임을 진행하지 않았습니다.",
-                        style: Body2.apply(
-                            color: black
+                            style: Body2.apply(
+                                color: black
+                            )
+                        ),
+                      ],
+                    ),
+                  ),
+                  whiteSpaceH(54),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 8.0),
+                    width: MediaQuery.of(context).size.width,
+                    child: Text(
+                        "결제방식",
+                        style: Body1.apply(
+                            fontWeightDelta: 1
                         )
                     ),
-                  ],
-                ),
-              ),
-              whiteSpaceH(54),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 8.0),
-                width: MediaQuery.of(context).size.width,
-                child: Text(
-                  "결제방식",
-                  style: Body1.apply(
-                    fontWeightDelta: 1
-                  )
-                ),
-              ),
-              whiteSpaceH(22),
-              Container(
-                width:MediaQuery.of(context).size.width,
-                child: Text(widget.ol.logType == "ORDER" ?
-                    widget.ol.bankInfo.cardName == "" ?
-                    "무통장 입금"
-                        :
-                    "신용카드 / ${widget.ol.bankInfo.cardName} / ${widget.ol.bankInfo.cardNumber}"
-                    :
-                    "현장 QR결제 진행",
-                  style: Body2.apply(
-                    color: black
                   ),
-                )
-              )
-            ],
+                  whiteSpaceH(22),
+                  Container(
+                      width:MediaQuery.of(context).size.width,
+                      child: Text(up.selLog.logType == "ORDER" ?
+                      up.selLog.bankInfo.cardName == "" ?
+                      "무통장 입금"
+                          :
+                      "신용카드 / ${up.selLog.bankInfo.cardName} / ${up.selLog.bankInfo.cardNumber}"
+                          :
+                      "현장 QR결제 진행",
+                        style: Body2.apply(
+                            color: black
+                        ),
+                      )
+                  )
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
+import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
@@ -114,11 +115,17 @@ class _ReviewWrite extends State<ReviewWrite> {
                                   scope,
                                   contentsController.text,
                                   widget.order_id,
-                              );
+                              ).then((value) async {
+                                if(value != 0) {
+                                  await Provider.of<UserProvider>(context, listen: false).updateServiceLogList(value, widget.order_id);
+
+                                  showToast("리뷰를 등록했습니다.");
+                                } else {
+                                  showToast("리뷰 등록에 실패 했습니다.");
+                                }
+                              });
 
                               Navigator.of(context).pop();
-
-                              showToast("리뷰를 등록했습니다.");
                             },
                             elevation: 0.0,
                             child: Text("완료",

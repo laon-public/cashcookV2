@@ -296,12 +296,13 @@ class StoreServiceProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> insertReview(int store_id, int scope, String contents, int order_id) async {
+  Future<int> insertReview(int store_id, int scope, String contents, int order_id) async {
     final response = await service.insertReview(store_id, scope, contents, order_id);
     if (isResponse(jsonDecode(response))) {
-      return true;
+      int review_id = json.decode(response)['data']['review_id'];
+      return review_id;
     }
-    return false;
+    return 0;
   }
 
   Future<bool> patchReview(int idx,int review_id,String type, String subtype) async {
