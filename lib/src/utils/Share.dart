@@ -32,7 +32,7 @@ void onKakaoStoreShare(String title, String imageUrl, String description) async 
         buttons: buttonList
     );
 
-    var uri = await LinkClient.instance.defaultWithWeb(temp);
+    Uri uri = await LinkClient.instance.defaultWithWeb(temp);
     await launchBrowserTab(uri);
   } catch(e) {
     print(e.toString());

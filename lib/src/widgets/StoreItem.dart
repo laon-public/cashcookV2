@@ -257,37 +257,19 @@ Widget storeItem(StoreModel store, BuildContext context) {
                     ),
                     whiteSpaceW(5),
                     (store.store.deliveryTime != null) ?
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 2, horizontal: 4),
-                      child: Center(
-                        child:Text("포장",
-                          style: TabsTagsStyle.apply(
-                            color: white
-                          )
-                        ),
-                      ),
-                      decoration: BoxDecoration(
-                          color: etcBlue,
-                          borderRadius: BorderRadius.all(Radius.circular(50.0))
-                      ),
+                    Image.asset(
+                      "assets/icon/isPacking.png",
+                      width: 27,
+                      height: 14,
                     )
                         :
                     Text(""),
                     whiteSpaceW(4),
                     (store.store.deliveryTime != null) ?
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 2, horizontal: 4),
-                      child: Center(
-                        child:Text("배달",
-                            style: TabsTagsStyle.apply(
-                                color: white
-                            )
-                        ),
-                      ),
-                      decoration: BoxDecoration(
-                          color: etcGreen,
-                          borderRadius: BorderRadius.all(Radius.circular(50.0))
-                      ),
+                    Image.asset(
+                      "assets/icon/isDelivery.png",
+                      width: 27,
+                      height: 14,
                     )
                         :
                     Text(""),

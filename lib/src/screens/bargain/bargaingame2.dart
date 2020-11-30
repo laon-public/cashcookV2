@@ -131,38 +131,38 @@ class _BargainGame2 extends State<BargainGame2> {
                     ),
                   ),
                   ),
-                  Consumer<CenterProvider>(
-                    builder: (context, cp, _){
-                      return Positioned(
-                        top: 0,
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: Center(
-                            child: Container(
-                              padding: EdgeInsets.all(16.0),
-                              child: Text(
-                                "오늘의 재원 ${cp.hojoFunds}원\n"
-                                    "재원한도 퍼센트 ${cp.limitGamePercentage}%",
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontFamily: 'noto',
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xFF333333)
-                                ),
-                              ),
-                              decoration: BoxDecoration(
-                                  color: white,
-                                  borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(20.0),
-                                    bottomRight: Radius.circular(20.0),
-                                  )
-                              ),
-                            ),
-                          )
-                        ),
-                      );
-                    },
-                  ),
+                  // Consumer<CenterProvider>(
+                  //   builder: (context, cp, _){
+                  //     return Positioned(
+                  //       top: 0,
+                  //       child: Container(
+                  //         width: MediaQuery.of(context).size.width,
+                  //         child: Center(
+                  //           child: Container(
+                  //             padding: EdgeInsets.all(16.0),
+                  //             child: Text(
+                  //               "오늘의 재원 ${cp.hojoFunds}원\n"
+                  //                   "재원한도 퍼센트 ${cp.limitGamePercentage}%",
+                  //               style: TextStyle(
+                  //                   fontSize: 20,
+                  //                   fontFamily: 'noto',
+                  //                   fontWeight: FontWeight.w600,
+                  //                   color: Color(0xFF333333)
+                  //               ),
+                  //             ),
+                  //             decoration: BoxDecoration(
+                  //                 color: white,
+                  //                 borderRadius: BorderRadius.only(
+                  //                   bottomLeft: Radius.circular(20.0),
+                  //                   bottomRight: Radius.circular(20.0),
+                  //                 )
+                  //             ),
+                  //           ),
+                  //         )
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
                   // (!gameLoad) ? Positioned.fill(
                   //     child: Opacity(
                   //       opacity: 0.7,

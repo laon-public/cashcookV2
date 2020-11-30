@@ -123,8 +123,6 @@ class _Home extends State<Home> {
         await P.Provider.of<StoreServiceProvider>(context, listen: false)
             .getStore(start, end);
       }
-
-      await P.Provider.of<CenterProvider>(context, listen: false).getAppInfo();
     });
     return
       WillPopScope(
