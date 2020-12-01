@@ -48,7 +48,6 @@ class _ReviewWrite extends State<ReviewWrite> {
     );
 
     return Scaffold(
-      resizeToAvoidBottomInset: true,
       backgroundColor: white,
       appBar: appBar,
       body:

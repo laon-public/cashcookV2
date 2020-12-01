@@ -92,7 +92,7 @@ class _MyPageState extends State<MyPage> {
       Scaffold(
           appBar: AppBar(
             backgroundColor: white,
-            elevation: 2.0,
+            elevation: 0.0,
             leading: widget.isHome ? null : IconButton(
               onPressed: () {
                 Navigator.of(context).pop();
@@ -887,8 +887,6 @@ class _MyPageState extends State<MyPage> {
     });
     return Consumer<UserProvider>(
         builder: (context, user, _) {
-
-
           return (user.isLoading) ?
           Container(
             width: MediaQuery.of(context).size.width,
@@ -905,88 +903,90 @@ class _MyPageState extends State<MyPage> {
               :
           Column(
               children: [
-                Container(
-                    padding: const EdgeInsets.only(top: 30.0, left: 15.0, right: 15.0, bottom: 10),
-                    decoration: BoxDecoration(
-                      color: white,
-                    ),
-                    child: InkWell(
-                      onTap: () async{
-                        await Navigator.of(context).pushNamed("/store/modify/store");
-                      },
-                      child:
-                      Container(
-                        child: Column(
-                          children: [
-                            Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Center(
-                                                  child: Text("${user.storeModel.store.name}", style: Headline)
-                                              ),
-                                              whiteSpaceW(10),
-                                              Icon(Icons.arrow_forward_ios, size: 24,color: Color(0xFF333333),),
-                                            ]
-                                        ),
-                                        whiteSpaceH(8.0),
-                                        Text("${user.storeModel.store.tel.substring(0,3)}-"
-                                            "${user.storeModel.store.tel.substring(3,7)}-"
-                                            "${user.storeModel.store.tel.substring(7,11)}\n",
-                                            style: Subtitle1),
-                                      ]
-                                  ),
-                                  Spacer(),
-                                  CachedNetworkImage(
-                                    imageUrl: user.storeModel.store.shop_img1,
-                                    imageBuilder: (context, img) => Container(
-                                        width: 64,
-                                        height: 64,
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(6),
-                                            image: DecorationImage(
-                                                image: img, fit: BoxFit.fill
-                                            )
-                                        )
-                                    ),
-                                  ),
-                                ]
-                            ),
-                            Row(
-                                children: [
-                                  InkWell(
-                                    onTap: (){
-                                      Map<String, dynamic> args = {
-                                        "point":"ADP",
-                                        "pointImg":"assets/icon/adp.png",
-                                        "dlAccount": user.pointMap['DL']
-                                      };
-                                      Navigator.of(context).pushNamed("/point/history", arguments: args);
-                                    },
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Image.asset("assets/icon/adp.png",height: 24, fit: BoxFit.contain,),
-                                        whiteSpaceW(5),
-                                        Text("${demicalFormat.format(user.pointMap['ADP'])} ADP",style: Body2.apply(color: black),),
-                                        Icon(Icons.arrow_forward_ios, color: black, size: 12,),
-                                      ],
-                                    ),
-                                  ),
-                                ]
-                            ),
-                          ],
+              InkWell(
+                onTap: () async{
+                  await Navigator.of(context).pushNamed("/store/modify/store");
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CachedNetworkImage(
+                        imageUrl: user.storeModel.store.shop_img1,
+                        imageBuilder: (context, img) => Container(
+                            width: 64,
+                            height: 64,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Color(0xFFDDDDDD),
+                                    width: 0.5
+                                ),
+                                borderRadius: BorderRadius.circular(6),
+                                image: DecorationImage(
+                                    image: img, fit: BoxFit.cover
+                                )
+                            )
                         ),
                       ),
-                    )
+                      whiteSpaceW(12.0),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("${user.storeModel.store.name}",
+                              style: Subtitle1.apply(
+                                  color: primary,
+                                  fontWeightDelta: 1
+                              )
+                          ),
+                          Text("${user.storeModel.store.tel.substring(0,3)}-"
+                              "${user.storeModel.store.tel.substring(3,7)}-"
+                              "${user.storeModel.store.tel.substring(7,11)}",
+                              style: Subtitle2.apply(
+                                  fontWeightDelta: -1
+                              )),
+                        ],
+                      ),
+                      Spacer(),
+                      Icon(Icons.arrow_forward_ios, size: 16, color: black,)
+                    ],
+                  ),
+                ),
+              ),
+
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                  child: Row(
+                      children: [
+                        InkWell(
+                          onTap: (){
+                            Map<String, dynamic> args = {
+                              "point":"ADP",
+                              "pointImg":"assets/icon/adp.png",
+                              "dlAccount": user.pointMap['DL']
+                            };
+                            Navigator.of(context).pushNamed("/point/history", arguments: args);
+                          },
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Image.asset("assets/icon/adp.png",height: 24, fit: BoxFit.contain,),
+                              whiteSpaceW(5),
+                              Text("${demicalFormat.format(user.pointMap['ADP'])} ADP",style: Body2.apply(color: black),),
+                              Icon(Icons.arrow_forward_ios, color: black, size: 12,),
+                            ],
+                          ),
+                        ),
+                      ]
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 1,
+                  color : Color(0xFFDDDDDD)
                 ),
                 Container(
                   color: white,
