@@ -348,39 +348,48 @@ class _OrderMenu extends State<OrderMenu> {
                                 whiteSpaceH(12)
                               ],
                             ) : Container(),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                    width: 16,
-                                    height: 16,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Color(0xFFDDDDDD),
-                                            width: 1
-                                        ),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(2.0)
-                                        )
-                                    ),
-                                    child: Theme(
-                                      data: ThemeData(unselectedWidgetColor: Colors.transparent,),
-                                      child: Checkbox(
-                                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                        activeColor: primary,
-                                        checkColor: primary,
-                                        value: isAgreeCheck,
-                                        onChanged: (value){
-                                          setState(() {
-                                            isAgreeCheck = value;
-                                          });
-                                        },
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  isAgreeCheck = !isAgreeCheck;
+                                });
+                              },
+                              child: Container(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                          width: 16,
+                                          height: 16,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Color(0xFFDDDDDD),
+                                                  width: 1
+                                              ),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(2.0)
+                                              )
+                                          ),
+                                          child: Theme(
+                                            data: ThemeData(unselectedWidgetColor: Colors.transparent,),
+                                            child: Checkbox(
+                                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                              activeColor: primary,
+                                              checkColor: primary,
+                                              value: isAgreeCheck,
+                                              onChanged: (value){
+                                                setState(() {
+                                                  isAgreeCheck = value;
+                                                });
+                                              },
+                                            ),
+                                          )
                                       ),
-                                    )
-                                ),
-                                whiteSpaceW(12),
-                                Text("개인정보 제 3자 제공 및 위탁동의",style: Body2,)
-                              ],
+                                      whiteSpaceW(12),
+                                      Text("개인정보 제 3자 제공 및 위탁동의",style: Body2,)
+                                    ],
+                                  )
+                              ),
                             ),
                             whiteSpaceH(53),
                           ],
