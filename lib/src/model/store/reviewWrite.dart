@@ -33,74 +33,85 @@ class _ReviewWrite extends State<ReviewWrite> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.store_id);
+    AppBar appBar = AppBar(
+      title: Text("리뷰 작성",
+        style: appBarDefaultText,
+      ),
+      elevation: 0.5,
+      centerTitle: true,
+      leading: IconButton(
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24,),
+      ),
+    );
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: white,
-      appBar: AppBar(
-        title: Text("리뷰 작성",
-          style: appBarDefaultText,
-        ),
-        elevation: 0.5,
-        centerTitle: true,
-      ),
+      appBar: appBar,
       body:
-        SingleChildScrollView(
-          child: Container(
-              padding: EdgeInsets.only(left: 10.0, right: 10.0),
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child:
-              Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    whiteSpaceH(15),
-                    Text(
-                      "평가 및 리뷰",
-                      style: Body1,
-                    ),
-                    whiteSpaceH(15.0),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          starImage(1),
-                          starImage(2),
-                          starImage(3),
-                          starImage(4),
-                          starImage(5),
-                        ]
-                    ),
-                    whiteSpaceH(30.0),
-                    Row(
-                        children:[
-                          whiteSpaceW(5.0),
-                          Text(
-                              "리뷰내용",
-                              style: Body2
-                          )
-                        ]
-                    ),
-                    whiteSpaceH(5.0),
-                    TextFormField(
-                      autofocus: false,
-                      maxLines: 6,
-                      controller: contentsController,
-                      style: Subtitle2.apply(fontWeightDelta: -1),
-                      decoration: InputDecoration(
-                          hintText: '리뷰를 적어주세요!',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                  color:Colors.black
-                              )
-                          )
+          SingleChildScrollView(
+            child:
+            Container(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      whiteSpaceH(12),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            starImage(1),
+                            starImage(2),
+                            starImage(3),
+                            starImage(4),
+                            starImage(5),
+                          ]
                       ),
-                    ),
-                    whiteSpaceH(40.0),
-                    Container(
+                      whiteSpaceH(4),
+                      Text("매장을 평가해주세요.",
+                          style: Body2
+                      ),
+                      whiteSpaceH(12.0),
+                      Container(
                         width: MediaQuery.of(context).size.width,
-                        height: 43,
-                        child:RaisedButton(
+                        height: 1,
+                        color: Color(0xFFDDDDDD),
+                        margin: EdgeInsets.only(bottom: 15),
+                      ),
+                      TextFormField(
+                        autofocus: false,
+                        maxLines: 6,
+                        controller: contentsController,
+                        style: Subtitle2.apply(
+                          fontWeightDelta: 1
+                        ),
+                        decoration: InputDecoration(
+                          hintStyle: Subtitle2.apply(
+                              color: third,
+                              fontWeightDelta: -2
+                          ),
+                          hintText: '리뷰를 50자 내외로 작성해주세요.',
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Colors.transparent)
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Colors.transparent)
+                          ),
+                        ),
+                      ),
+                      Spacer(),
+                      Container(
+                          padding: EdgeInsets.symmetric(vertical: 8),
+                          width: MediaQuery.of(context).size.width,
+                          height: 60,
+                          child:RaisedButton(
                             color: mainColor,
                             onPressed: () async {
                               print(contentsController.text);
@@ -111,10 +122,10 @@ class _ReviewWrite extends State<ReviewWrite> {
                               }
 
                               await Provider.of<StoreServiceProvider>(context, listen: false).insertReview(
-                                  widget.store_id,
-                                  scope,
-                                  contentsController.text,
-                                  widget.order_id,
+                                widget.store_id,
+                                scope,
+                                contentsController.text,
+                                widget.order_id,
                               ).then((value) async {
                                 if(value != 0) {
                                   await Provider.of<UserProvider>(context, listen: false).updateServiceLogList(value, widget.order_id);
@@ -129,23 +140,29 @@ class _ReviewWrite extends State<ReviewWrite> {
                             },
                             elevation: 0.0,
                             child: Text("완료",
-                                style: Body1.apply(
-                                  color: white,
-                                  fontWeightDelta: 3
-                                ))
-                        )
-                    )
-                  ]
-              )
-          ),
-        ),
+                                style: Subtitle2.apply(
+                                    color: white,
+                                    fontWeightDelta: 1
+                                )
+                            ),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(6)
+                                )
+                            ),
+                          )
+                      )
+                    ]
+                )
+            ),
+          )
     );
   }
 
   Widget starImage(idx) {
     return
       Container(
-        margin: EdgeInsets.only(right: 8.0),
+        margin: EdgeInsets.only(right: 4.0),
         child: InkWell(
             onTap: () {
               setState(() {
