@@ -4,6 +4,7 @@ import 'package:cashcook/src/model/usercheck.dart';
 import 'package:cashcook/src/provider/PointMgmtProvider.dart';
 import 'package:cashcook/src/provider/RecoProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
+import 'package:cashcook/src/screens/mypage/NewStore/franApply.dart';
 import 'package:cashcook/src/screens/mypage/points/integratedPoint.dart';
 import 'package:cashcook/src/screens/mypage/points/pointMgmt.dart';
 import 'package:cashcook/src/screens/mypage/points/pointMgmtUser.dart';
@@ -1002,6 +1003,14 @@ class _MyPageState extends State<MyPage> {
                                   sellDlCard(),
                                   whiteSpaceH(16.0),
                                   Tabs(name: "사업자정보 수정", routesName: "/store/modify/business",),
+                                  // RaisedButton(
+                                  //   onPressed: () {
+                                  //     Navigator.of(context).push(MaterialPageRoute(
+                                  //       builder: (context) => FranApply()
+                                  //     ));
+                                  //   },
+                                  //   child: Text("제휴매장 신청 테스트"),
+                                  // ),
                                   Tabs(name: "매장정보 수정", routesName: "/store/modify/store",),
                                   Tabs(name: "DL 결제 한도 설정", routesName: "/store/modify/limitDL",),
                                   whiteSpaceH(70.0),
