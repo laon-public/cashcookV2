@@ -32,7 +32,7 @@ class _ServiceDetail extends State<ServiceDetail> {
           appBar: AppBar(
             elevation: 0.5,
             title: Text(
-              "${up.selLog.storeName} 이용내역",
+              "상세 이용내역",
               style: appBarDefaultText,
             ),
             centerTitle: true,
@@ -44,275 +44,342 @@ class _ServiceDetail extends State<ServiceDetail> {
             ),
           ),
           body: Container(
-            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 4.0),
-                    width: MediaQuery.of(context).size.width,
-                    child: Text(
-                        DateFormat("yyyy.MM.dd").format(up.selLog.createdAt),
-                        style: Body2
-                    ),
-                  ),
-                  Container(
-                      padding: EdgeInsets.symmetric(vertical: 8.0),
-                      width: MediaQuery.of(context).size.width,
-                      height: 64,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          CachedNetworkImage(
-                            imageUrl: up.selLog.storeImg,
-                            imageBuilder: (context, img) => Container(
-                                width: 48,
-                                height: 48,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(6.0)
-                                    ),
-                                    image: DecorationImage(
-                                        image: img, fit: BoxFit.fill
-                                    )
-                                )
-                            ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(top: 24.0, bottom: 4.0),
+                          width: MediaQuery.of(context).size.width,
+                          child: Text(
+                              DateFormat("yyyy.MM.dd").format(up.selLog.createdAt),
+                              style: Body2.apply(
+                                color: secondary
+                              )
                           ),
-                          whiteSpaceW(13.0),
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 16.0),
+                          width: MediaQuery.of(context).size.width,
+                          height: 132,
+                          child: Column(
+                            children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 48,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Container(
-                                      child: Text(up.selLog.storeName,
-                                        style: Body1.apply(
-                                            fontWeightDelta: 2
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
+                                    CachedNetworkImage(
+                                      imageUrl: up.selLog.storeImg,
+                                      imageBuilder: (context, img) => Container(
+                                          width: 48,
+                                          height: 48,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: Color(0xFFDDDDDD),
+                                                width: 0.5,
+                                              ),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(6.0)
+                                              ),
+                                              image: DecorationImage(
+                                                  image: img, fit: BoxFit.cover
+                                              )
+                                          )
                                       ),
                                     ),
-                                    whiteSpaceW(12),
-                                    Text(DateFormat('kk:mm').format(up.selLog.createdAt),
-                                        style: Body2
+                                    whiteSpaceW(13.0),
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                            children: [
+                                              Text(up.selLog.storeName,
+                                                style: Body1.apply(
+                                                  color: black,
+                                                    fontWeightDelta: 3
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              whiteSpaceW(12),
+                                              Text(DateFormat('kk:mm').format(up.selLog.createdAt),
+                                                  style: Body2
+                                              ),
+                                            ],
+                                          ),
+                                          whiteSpaceH(3),
+                                          Text(up.selLog.content,
+                                            style:Body2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ],
+                                      ),
                                     ),
+                                    whiteSpaceW(13.0),
+                                    Container(
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Text("${numberFormat.format(up.selLog.pay)} 원",
+                                              style: Body1.apply(
+                                                color: secondary,
+                                                fontWeightDelta: 1
+                                              )
+                                          ),
+                                        ],
+                                      ),
+                                    )
                                   ],
                                 ),
-                                Expanded(
-                                  child: Text(up.selLog.content,
-                                    style:Body2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          whiteSpaceW(13.0),
-                          Container(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text("-${numberFormat.format(up.selLog.pay)} 원",
-                                    style: Subtitle1
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      )
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(bottom: 8.0),
-                    width: MediaQuery.of(context).size.width,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: InkWell(
-                            onTap: (up.selLog.reviewId == 0 ) ? () async {
-                              await Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (context) => ReviewWrite(
-                                        store_id: up.selLog.storeId,
-                                        order_id: up.selLog.id,
-                                      )));
-                            }
-                                :
-                                () {
-                              showToast("이미 리뷰를 작성 했습니다.");
-                            },
-                            child: Container(
-                              height: 40,
-                              child: Center(
-                                child: Text("리뷰작성",
-                                  style: Body1.apply(
-                                      fontWeightDelta: 1
-                                  ),
-                                ),
                               ),
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Color(0xFFDDDDDD),
-                                      width: 1
-                                  )
-                              ),
-                            ),
-                          ),
-                        ),
-                        whiteSpaceW(8.0),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              if(up.selLog.playGame){
-                                showToast("게임을 이미 진행하였습니다.");
-                              } else {
-                                print("CARAT : ${pointMap['CARAT']}");
-                                Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(
-                                        builder: (context) => BargainGame2(
-                                            orderId: up.selLog.id,
-                                            orderPayment: up.selLog.pay - (up.selLog.dl * 100),
-                                            totalCarat: pointMap['CARAT']
-                                        ))
-                                    , (route) => false);
-                              }
+                              whiteSpaceH(12),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: InkWell(
+                                      onTap: (up.selLog.reviewId == 0 ) ? () async {
+                                        await Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) => ReviewWrite(
+                                                  store_id: up.selLog.storeId,
+                                                  order_id: up.selLog.id,
+                                                )));
+                                      }
+                                          :
+                                          () {
+                                        showToast("이미 리뷰를 작성 했습니다.");
+                                      },
+                                      child: Container(
+                                        height: 40,
+                                        child: Center(
+                                          child: Text("리뷰작성",
+                                            style: Body1.apply(
+                                              color: secondary,
+                                            ),
+                                          ),
+                                        ),
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Color(0xFFDDDDDD),
+                                                width: 1
+                                            )
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  whiteSpaceW(8.0),
+                                  Expanded(
+                                    child: InkWell(
+                                      onTap: () {
+                                        if(up.selLog.playGame){
+                                          showToast("게임을 이미 진행하였습니다.");
+                                        } else {
+                                          print("CARAT : ${pointMap['CARAT']}");
+                                          Navigator.of(context).pushAndRemoveUntil(
+                                              MaterialPageRoute(
+                                                  builder: (context) => BargainGame2(
+                                                      orderId: up.selLog.id,
+                                                      orderPayment: up.selLog.pay - (up.selLog.dl * 100),
+                                                      totalCarat: pointMap['CARAT']
+                                                  ))
+                                              , (route) => false);
+                                        }
 
-                            },
-                            child: Container(
-                              height: 40,
-                              child: Center(
-                                child: Text("실시간 흥정",
-                                  style: Body1.apply(
-                                      fontWeightDelta: 1
-                                  ),
-                                ),
-                              ),
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Color(0xFFDDDDDD),
-                                      width: 1
+                                      },
+                                      child: Container(
+                                        height: 40,
+                                        child: Center(
+                                          child: Text("실시간 흥정",
+                                            style: Body1.apply(
+                                                color: secondary,
+                                            ),
+                                          ),
+                                        ),
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Color(0xFFDDDDDD),
+                                                width: 1
+                                            )
+                                        ),
+                                      ),
+                                    ),
                                   )
+                                ],
                               ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 19),
+                          width: MediaQuery.of(context).size.width,
+                          child: Text(
+                            "주문내역",
+                            style: Subtitle2.apply(
+                              fontWeightDelta: 1
                             ),
                           ),
+                        ),
+                        Column(
+                            children: up.selLog.mainCatList.map((e) =>
+                                mainCatItem(e)
+                            ).toList()
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(top: 24.0, bottom: 12.0),
+                          width: MediaQuery.of(context).size.width,
+                          child: Row(
+                            children: [
+                              Text("총 주문 금액",
+                                  style: Body1.apply(
+                                    color: black,
+                                      fontWeightDelta: 1
+                                  )
+                              ),
+                              Spacer(),
+                              Text("${numberFormat.format(up.selLog.pay)}원",
+                                  style: Body1.apply(
+                                      color: primary,
+                                      fontWeightDelta: 1
+                                  )
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                            margin: EdgeInsets.symmetric(vertical: 12.0),
+                            width: MediaQuery.of(context).size.width,
+                            height: 1,
+                            color: Color(0xFFDDDDDD)
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 12.0),
+                          width: MediaQuery.of(context).size.width,
+                          child: Row(
+                            children: [
+                              Text("DL 결제 수량",
+                                  style: Body1.apply(
+                                      color: black,
+                                    fontWeightDelta: 1
+                                  )
+                              ),
+                              whiteSpaceW(16),
+                              Text("${numberFormat.format(up.selLog.dl)} DL",
+                                  style: Body1.apply(
+                                      color: primary,
+                                    fontWeightDelta: 1
+                                  )
+                              ),
+                              Spacer(),
+                              Text("- ${numberFormat.format(up.selLog.dl * 100)}원",
+                                  style: Body1.apply(
+                                      color: secondary,
+                                    fontWeightDelta: 1
+                                  )
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 12.0),
+                          width: MediaQuery.of(context).size.width,
+                          child: Row(
+                            children: [
+                              Text("최종 결제 금액",
+                                  style: Subtitle2.apply(
+                                    fontWeightDelta: 1
+                                  )
+                              ),
+                              Spacer(),
+                              Text("${numberFormat.format(up.selLog.pay - (up.selLog.dl * 100))}원",
+                                  style: Subtitle2.apply(
+                                      color: primary,
+                                    fontWeightDelta: 1
+                                  )
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 12.0),
+                          width: MediaQuery.of(context).size.width,
+                          child: Row(
+                            children: [
+                              Text("* 실시간 흥정",
+                                  style: Body1.apply(
+                                      color: black,
+                                      fontWeightDelta: 1
+                                  )
+                              ),
+                              Spacer(),
+                              Text(up.selLog.playGame ?
+                              up.selLog.pay == up.selLog.dl * 100 ?
+                              "DL 결제는 실시간 흥정이 제공되지 않습니다."
+                                  :
+                              "${numberFormat.format(up.selLog.gameQuantity)}DL 적립"
+                                  :
+                              "아직 게임을 진행하지 않았습니다.",
+                                  style: Body1.apply(
+                                      color: primary,
+                                      fontWeightDelta: 1
+                                  )
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 8,
+                    color: Color(0xFFF2F2F2),
+                  ),
+                  whiteSpaceH(23),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 8.0),
+                          width: MediaQuery.of(context).size.width,
+                          child: Text(
+                              "결제방식",
+                              style: Subtitle2.apply(
+                                fontWeightDelta: 1
+                              )
+                          ),
+                        ),
+                        whiteSpaceH(22),
+                        Container(
+                            width:MediaQuery.of(context).size.width,
+                            child: Text(up.selLog.logType == "ORDER" ?
+                            up.selLog.bankInfo.cardName == "" ?
+                            "무통장 입금"
+                                :
+                            "신용카드 / ${up.selLog.bankInfo.cardName} / ${up.selLog.bankInfo.cardNumber}"
+                                :
+                            "현장 QR결제 진행",
+                              style: Body1.apply(
+                                  color: black
+                              ),
+                            )
                         )
                       ],
-                    ),
+                    )
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 8.0),
-                    width: MediaQuery.of(context).size.width,
-                    child: Text(
-                      "결제내역",
-                      style: Body1.apply(
-                          fontWeightDelta: 1
-                      ),
-                    ),
-                  ),
-                  Column(
-                      children: up.selLog.mainCatList.map((e) =>
-                          mainCatItem(e)
-                      ).toList()
-                  ),
-                  Container(
-                      margin: EdgeInsets.symmetric(vertical: 12.0),
-                      width: MediaQuery.of(context).size.width,
-                      height: 1,
-                      color: Color(0xFFDDDDDD)
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(bottom: 12.0),
-                    width: MediaQuery.of(context).size.width,
-                    child: Row(
-                      children: [
-                        Text("결제 총 금액",
-                            style: Subtitle2
-                        ),
-                        Spacer(),
-                        Text("${numberFormat.format(up.selLog.pay)}원",
-                            style: Subtitle2.apply(
-                                color: primary
-                            )
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(bottom: 12.0),
-                    width: MediaQuery.of(context).size.width,
-                    child: Row(
-                      children: [
-                        Text("DL 사용",
-                            style: Body2.apply(
-                                color: black
-                            )
-                        ),
-                        Spacer(),
-                        Text("${numberFormat.format(up.selLog.dl)} DL",
-                            style: Body2.apply(
-                                color: black
-                            )
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(bottom: 12.0),
-                    width: MediaQuery.of(context).size.width,
-                    child: Row(
-                      children: [
-                        Text("실시간 흥정",
-                            style: Body2.apply(
-                                color: black
-                            )
-                        ),
-                        Spacer(),
-                        Text(up.selLog.playGame ?
-                        up.selLog.pay == up.selLog.dl * 100 ?
-                        "DL 결제는 실시간 흥정이 제공되지 않습니다."
-                            :
-                        "${numberFormat.format(up.selLog.gameQuantity)}DL 적립"
-                            :
-                        "아직 게임을 진행하지 않았습니다.",
-                            style: Body2.apply(
-                                color: black
-                            )
-                        ),
-                      ],
-                    ),
-                  ),
-                  whiteSpaceH(54),
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 8.0),
-                    width: MediaQuery.of(context).size.width,
-                    child: Text(
-                        "결제방식",
-                        style: Body1.apply(
-                            fontWeightDelta: 1
-                        )
-                    ),
-                  ),
-                  whiteSpaceH(22),
-                  Container(
-                      width:MediaQuery.of(context).size.width,
-                      child: Text(up.selLog.logType == "ORDER" ?
-                      up.selLog.bankInfo.cardName == "" ?
-                      "무통장 입금"
-                          :
-                      "신용카드 / ${up.selLog.bankInfo.cardName} / ${up.selLog.bankInfo.cardNumber}"
-                          :
-                      "현장 QR결제 진행",
-                        style: Body2.apply(
-                            color: black
-                        ),
-                      )
-                  )
+                  whiteSpaceH(40)
                 ],
               ),
             ),
@@ -331,9 +398,11 @@ class _ServiceDetail extends State<ServiceDetail> {
           children:
           [
             Padding(
-                padding: EdgeInsets.symmetric(vertical: 12.0),
+                padding: EdgeInsets.only(top: 26),
                 child:Text(omc.menuName,
-                  style: Body2,
+                  style: Body2.apply(
+                    fontWeightDelta: 1
+                  ),
                   textAlign: TextAlign.start,
                 )
             ),
@@ -352,7 +421,7 @@ class _ServiceDetail extends State<ServiceDetail> {
   Widget subCatItem(OrderSubCat osc) {
     return
       Padding(
-          padding: EdgeInsets.only(bottom: 10.0),
+          padding: EdgeInsets.symmetric(vertical: 15.0),
           child:Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -363,7 +432,7 @@ class _ServiceDetail extends State<ServiceDetail> {
                           Expanded(
                             child:Text(
                                 "${osc.menuName}",
-                                style: Body2.apply(
+                                style: Body1.apply(
                                   color: black
                                 )
                             ),
@@ -372,7 +441,8 @@ class _ServiceDetail extends State<ServiceDetail> {
                             child:Text(
                                 "${numberFormat.format(osc.price)}원",
                                 style: Body2.apply(
-                                    color: black
+                                    color: third,
+                                  fontWeightDelta: 1,
                                 )
                             ),
                           ),
@@ -389,8 +459,8 @@ class _ServiceDetail extends State<ServiceDetail> {
                                 height: 24,
                                 child: Center(
                                     child: Text(
-                                        "${osc.amount}",
-                                        style: Body2.apply(
+                                        "X ${osc.amount}",
+                                        style: Body1.apply(
                                             color: black
                                         )
                                     )
@@ -408,8 +478,9 @@ class _ServiceDetail extends State<ServiceDetail> {
                             "${numberFormat.format(osc.price *
                                 osc.amount)}원",
                             textAlign: TextAlign.end,
-                            style: Body2.apply(
-                                color: black
+                            style: Body1.apply(
+                                color: secondary,
+                              fontWeightDelta: 1
                             )
                         )
                     )
