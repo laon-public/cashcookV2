@@ -4,6 +4,7 @@ import 'package:cashcook/src/utils/CustomBottomNavBar.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -24,7 +25,7 @@ class _Scrap extends State<Scrap> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("찜한매장",
+        title: Text("찜 매장",
             style: appBarDefaultText),
         leading: widget.isHome ? null : IconButton(
           onPressed: () {
@@ -45,35 +46,33 @@ class _Scrap extends State<Scrap> {
     });
     return Stack(
       children: [
-        SingleChildScrollView(
-          child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              child:
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                child: Consumer<StoreServiceProvider>(
-                    builder: (context, sp, _) {
-                      return (sp.isLoading) ?
-                      Center(
-                          child: CircularProgressIndicator(
-                              valueColor: new AlwaysStoppedAnimation<Color>(primary)
-                          )
-                      )
-                          :
-                      Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
+        Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child:
+            Container(
+              padding: EdgeInsets.only(bottom: 65),
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: Consumer<StoreServiceProvider>(
+                  builder: (context, sp, _) {
+                    return (sp.isLoading) ?
+                    Center(
+                        child: CircularProgressIndicator(
+                            valueColor: new AlwaysStoppedAnimation<Color>(primary)
+                        )
+                    )
+                        :
+                    SingleChildScrollView(
+                      child: Column(
                           children:
                           sp.scrapList.map((e) =>
                               scrapItem(e)
                           ).toList()
-                      );
-                    }
-                ),
-              )
-          ),
+                      )
+                    );
+                  }
+              ),
+            )
         ),
         widget.isHome ? CustomBottomNavBar(context, "scrap") : Container()
       ],
@@ -93,67 +92,172 @@ class _Scrap extends State<Scrap> {
         ));
       },
       child: Container(
-        padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: Color(0xFFF7F7F7),
+              width: 1
+            )
+          )
+        ),
+        padding: EdgeInsets.all(16),
         width: MediaQuery.of(context).size.width,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              flex: 1,
-              child: CachedNetworkImage(
+              CachedNetworkImage(
                 imageUrl: scrap.store.shop_img1,
-                fit: BoxFit.fill,
-                width: 64,
-                height: 64,
+                imageBuilder: (context, img) => Container(
+                    width: 68,
+                    height: 68,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Color(0xFFDDDDDD),
+                          width: 0.5,
+                        ),
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(6.0)
+                        ),
+                        image: DecorationImage(
+                            image: img, fit: BoxFit.cover
+                        )
+                    )
+                ),
               ),
-            ),
-            whiteSpaceW(10),
+            whiteSpaceW(12),
             Expanded(
-                flex: 4,
-                child:Container(
-                    height: 50,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(scrap.store.name,
-                              style: Body1,
+                            Row(
+                              children: [
+                                Text(scrap.store.name,
+                                    style: Body1.apply(
+                                        fontWeightDelta: 1
+                                    )
+                                ),
+                                whiteSpaceW(5),
+                                (scrap.store.deliveryTime != null) ?
+                                Image.asset(
+                                  "assets/icon/isPacking.png",
+                                  width: 27,
+                                  height: 14,
+                                )
+                                    :
+                                Text(""),
+                                whiteSpaceW(4),
+                                (scrap.store.deliveryTime != null) ?
+                                Image.asset(
+                                  "assets/icon/isDelivery.png",
+                                  width: 27,
+                                  height: 14,
+                                )
+                                    :
+                                Text(""),
+                              ],
                             ),
-                            whiteSpaceW(10),
-                            Text(scrap.store.category_name + "/" + scrap.store.category_sub_name,
-                              style: Caption.apply(
-                                color: primary
-                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Image.asset("assets/icon/star_full_color.png",
+                                    width: 12,
+                                    height: 12,
+                                    color: etcYellow
+                                ),
+                                whiteSpaceW(2.0),
+                                Text(
+                                  "${NumberFormat("#.#").format(scrap.store.scope)}",
+                                  style: Caption.apply(color: secondary),
+                                ),
+                                Text(" · ",
+                                    style: Caption.apply(color: secondary)
+                                ),
+                                Text(
+                                  "DL ",
+                                  style: Caption.apply(color: etcYellow, fontWeightDelta: 1),
+                                ),
+                                Text(
+                                  (scrap.store.limitDL == null) ? " 결제한도가 없습니다." : "${scrap.store.limitDL}%",
+                                  style: Caption.apply(color: secondary),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                        Text(scrap.store.short_description,
-                            style: Body2.apply(
-                              color: secondary
-                            )
-                        )
-                      ],
-                    )
-                )
-            ),
-            Row(
-              children: [
-                InkWell(
-                  onTap: () {
-                    Provider.of<StoreServiceProvider>(context, listen: false).cancleScrap(scrap.id);
-                  },
-                  child: Image.asset(
-                    "assets/icon/delete.png",
-                    width: 48,
-                    height: 48,
-                    color: black,
-                    fit: BoxFit.fill,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Provider.of<StoreServiceProvider>(context, listen: false).cancleScrap(scrap.id);
+                        },
+                        child: Image.asset(
+                          "assets/resource/public/close.png",
+                          width: 20,
+                          height: 20,
+                          color: black,
+                        ),
+                      )
+                    ],
                   ),
-                )
-              ],
+                  Text(scrap.store.short_description,
+                    style: Body2,
+                    textAlign: TextAlign.start,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("${scrap.store.category_name} / ${scrap.store.category_sub_name}",
+                        style: Caption.apply(color: mainColor),),
+                      whiteSpaceW(10.0),
+                      (scrap.store.deliveryTime == null) ?
+                      Text("배달없음",
+                          style: Caption.apply(color: secondary)
+                      )
+                          :
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("배달 ",
+                              style: Caption.apply(color: secondary)
+                          ),
+                          Image.asset(
+                              "assets/icon/time-dark.png",
+                              width: 12,
+                              height: 12,
+                              color: secondary
+                          ),
+                          Text("  ${scrap.store.deliveryTime}",
+                              style: Caption.apply(color: secondary)
+                          )
+                        ],
+                      ),
+                      Text(" · ",
+                          style: Caption.apply(color: secondary)
+                      ),
+                      (scrap.store.minOrderAmount == null) ?
+                      Text("최소주문금액 없음",
+                          style: Caption.apply(color: secondary)
+                      )
+                          :
+                      Text("최소주문 ${scrap.store.minOrderAmount}원",
+                          style: Caption.apply(color: secondary)
+                      )
+                      ,
+                    ],
+                  )
+                ],
+              ),
             )
           ],
         ),

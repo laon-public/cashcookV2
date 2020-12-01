@@ -112,7 +112,10 @@ Widget MenuItem(int bigIdx,int idx,MenuModel mm, BuildContext context) {
                   children: [
                     Center(
                       child: Image.asset(
-                          "assets/icon/cashcook_logo.png"
+                          "assets/icon/cashcook_logo.png",
+                        width: 48,
+                        height: 48,
+                        fit: BoxFit.cover,
                       ),
                     ),
                     Positioned(

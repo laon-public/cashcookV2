@@ -172,8 +172,40 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                           Stack(
                                             children: [
                                               CachedNetworkImage(
+                                                imageUrl: widget.store.store.shop_img1,
+                                                fit: BoxFit.cover,
+                                                width: MediaQuery.of(context).size.width,
+                                                height: MediaQuery.of(context).size.height,
+                                              ),
+                                              Opacity(
+                                                opacity: 0.2,
+                                                child: ShaderMask(
+                                                  shaderCallback: (Rect bounds) {
+                                                    return LinearGradient(
+                                                      begin: Alignment.topCenter,
+                                                      end: Alignment.bottomCenter,
+                                                      colors: [
+                                                        Colors.black,
+                                                        Colors.black,
+                                                        Colors.transparent,
+                                                      ],
+                                                    ).createShader(bounds);
+                                                  },
+                                                  blendMode: BlendMode.dstIn,
+                                                  child: Container(
+                                                      color: black,
+                                                      width: MediaQuery.of(context).size.width,
+                                                      height: MediaQuery.of(context).size.height
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Stack(
+                                            children: [
+                                              CachedNetworkImage(
                                                 imageUrl: widget.store.store.shop_img2,
-                                                fit: BoxFit.fill,
+                                                fit: BoxFit.cover,
                                                 width: MediaQuery.of(context).size.width,
                                                 height: MediaQuery.of(context).size.height,
                                               ),
@@ -205,39 +237,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                             children: [
                                               CachedNetworkImage(
                                                 imageUrl: widget.store.store.shop_img3,
-                                                fit: BoxFit.fill,
-                                                width: MediaQuery.of(context).size.width,
-                                                height: MediaQuery.of(context).size.height,
-                                              ),
-                                              Opacity(
-                                                opacity: 0.2,
-                                                child: ShaderMask(
-                                                  shaderCallback: (Rect bounds) {
-                                                    return LinearGradient(
-                                                      begin: Alignment.topCenter,
-                                                      end: Alignment.bottomCenter,
-                                                      colors: [
-                                                        Colors.black,
-                                                        Colors.black,
-                                                        Colors.transparent,
-                                                      ],
-                                                    ).createShader(bounds);
-                                                  },
-                                                  blendMode: BlendMode.dstIn,
-                                                  child: Container(
-                                                      color: black,
-                                                      width: MediaQuery.of(context).size.width,
-                                                      height: MediaQuery.of(context).size.height
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Stack(
-                                            children: [
-                                              CachedNetworkImage(
-                                                imageUrl: widget.store.store.shop_img1,
-                                                fit: BoxFit.fill,
+                                                fit: BoxFit.cover,
                                                 width: MediaQuery.of(context).size.width,
                                                 height: MediaQuery.of(context).size.height,
                                               ),
@@ -272,33 +272,25 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                       Positioned(
                                           bottom: 45,
                                           left: 28,
-                                          child: Opacity(
-                                              opacity: 0.4,
-                                              child: Consumer<CarouselProvider>(
+                                          child:Consumer<CarouselProvider>(
                                                 builder: (context, cp, _){
                                                   return Container(
                                                     padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 1.0),
-                                                    child: Center(
-                                                      child: Opacity(
-                                                          opacity: 1,
-                                                          child:Text("${cp.nowPage}/3",
-                                                            style: TextStyle(
-                                                                fontSize: 10,
-                                                                fontFamily: 'noto',
-                                                                color: white
-                                                            ),
-                                                          )
+                                                    child: Text("${cp.nowPage}/3",
+                                                      style: TextStyle(
+                                                          fontSize: 10,
+                                                          fontFamily: 'noto',
+                                                          color: white
                                                       ),
                                                     ),
                                                     decoration: BoxDecoration(
-                                                        color: black,
+                                                        color: black.withOpacity(0.4),
                                                         borderRadius: BorderRadius.all(
                                                             Radius.circular(3.0)
                                                         )
                                                     ),
                                                   );
                                                 },
-                                              )
                                           )
                                       )
                                     ],

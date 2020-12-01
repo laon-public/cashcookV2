@@ -237,7 +237,7 @@ Widget storeItem(StoreModel store, BuildContext context) {
                         Radius.circular(6.0)
                     ),
                     image: DecorationImage(
-                        image: img, fit: BoxFit.fill
+                        image: img, fit: BoxFit.cover
                     )
                 )
             ),

@@ -29,7 +29,7 @@ void onKakaoStoreShare(String title, String imageUrl, String description) async 
               webUrl: Uri.parse("https://play.google.com/store/apps/details?id=com.hozo.cashcook.cashcook")
             )
         ),
-        buttons: buttonList
+        buttons: buttonList,
     );
 
     Uri uri = await LinkClient.instance.defaultWithWeb(temp);

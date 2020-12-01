@@ -47,11 +47,12 @@ class _ServiceList extends State<ServiceList> {
     // TODO: implement build
     return WillPopScope(
         child: Scaffold(
+          backgroundColor: white,
             appBar: AppBar(
               elevation: 0.5,
               centerTitle: true,
               title: Text(
-                "서비스 이용내역",
+                "이용내역",
                 style: appBarDefaultText,
               ),
               leading: widget.afterGame ? IconButton(
@@ -74,7 +75,7 @@ class _ServiceList extends State<ServiceList> {
             body: Stack(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(top: 16.0, right: 16.0, left: 16.0, bottom: widget.isHome ? 60.0 : 16.0),
+                  padding: EdgeInsets.only(bottom: widget.isHome ? 60.0 : 16.0),
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height,
@@ -154,7 +155,7 @@ class _ServiceList extends State<ServiceList> {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.symmetric(vertical: 4.0),
+          padding: EdgeInsets.only(top: 24, bottom: 4, left: 16.0),
           width: MediaQuery.of(context).size.width,
           child: Text(
             sll.date,
@@ -181,7 +182,15 @@ class _ServiceList extends State<ServiceList> {
         );
       },
       child: Container(
-          padding: EdgeInsets.symmetric(vertical: 8.0),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: Color(0xFFF7F7F7),
+              width: 1
+            )
+          )
+        ),
+          padding: EdgeInsets.all(16.0),
           width: MediaQuery.of(context).size.width,
           height: 85,
           child: Row(
@@ -194,11 +203,15 @@ class _ServiceList extends State<ServiceList> {
                     width: 48,
                     height: 48,
                     decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Color(0xFFDDDDDD),
+                          width: 0.5,
+                        ),
                         borderRadius: BorderRadius.all(
                             Radius.circular(6.0)
                         ),
                         image: DecorationImage(
-                            image: img, fit: BoxFit.fill
+                            image: img, fit: BoxFit.cover
                         )
                     )
                 ),
@@ -210,6 +223,7 @@ class _ServiceList extends State<ServiceList> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(ol.storeName,
                               style: Body1.apply(
@@ -223,6 +237,7 @@ class _ServiceList extends State<ServiceList> {
                           ),
                         ],
                       ),
+                      whiteSpaceH(3),
                       Text(ol.content,
                           style:Body2,
                           overflow: TextOverflow.ellipsis,
@@ -238,15 +253,19 @@ class _ServiceList extends State<ServiceList> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text("-${numberFormat.format(ol.pay)} 원",
-                            style: Subtitle1
+                        Text("${numberFormat.format(ol.pay)}원",
+                            style: Body1.apply(
+                              color: secondary,
+                              fontWeightDelta: 1
+                            )
                         ),
                         (ol.dl == 0) ?
                         Container()
                         :
-                        Text("-${numberFormat.format(ol.dl)} DL",
-                            style: Subtitle1.apply(
-                              color: primary
+                        Text("${numberFormat.format(ol.dl)} DL",
+                            style: Body1.apply(
+                                color: primary,
+                                fontWeightDelta: 1
                             )
                         ),
                       ],
