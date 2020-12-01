@@ -47,6 +47,7 @@ class StoreServiceProvider with ChangeNotifier {
   List<StoreModel> store = [];
   s.StoreService service_2 = s.StoreService();
   bool lookServiceBar = false;
+  bool orderLoading = false;
 
   // Cat Search Service;
   List<StoreMinify> storeMiniList = [];
@@ -83,11 +84,13 @@ class StoreServiceProvider with ChangeNotifier {
 
   void clearOrderAmount() {
     bankInfo = null;
+    orderLoading = false;
     orderAmount = 0;
   }
 
   void orderComplete() {
     bankInfo = null;
+    orderLoading = false;
     orderAmount = initAmount;
   }
 
@@ -104,6 +107,9 @@ class StoreServiceProvider with ChangeNotifier {
   }
 
   Future<bool> setOrderMap(String store_id, String logType) async {
+    orderLoading = true;
+    notifyListeners();
+
     Map<String, dynamic> orderMap = {};
 
     orderMap['storeId'] = store_id;

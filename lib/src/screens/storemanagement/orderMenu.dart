@@ -47,420 +47,396 @@ class _OrderMenu extends State<OrderMenu> {
     Map<String, dynamic> pointMap =  Provider.of<UserProvider>(context, listen: false).pointMap;
     StoreModel store = widget.store == null ? Provider.of<StoreProvider>(context, listen: false).selStore : widget.store;
     // TODO: implement build
-    return Scaffold(
-        appBar: AppBar(
-            elevation: 1,
+    return Stack(
+      children: [
+        Scaffold(
+            appBar: AppBar(
+                elevation: 1,
+                backgroundColor: Colors.white,
+                centerTitle: true,
+                title: Text("주문서 작성",
+                    style: appBarDefaultText
+                )
+            ),
             backgroundColor: Colors.white,
-            centerTitle: true,
-            title: Text("주문서 작성",
-                style: appBarDefaultText
-            )
-        ),
-        backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        whiteSpaceH(23),
-                        Text("주문내역",
-                            style: Subtitle2.apply(
-                                fontWeightDelta: 1
-                            )),
-                        whiteSpaceH(26),
-                        Consumer<StoreServiceProvider>(
-                            builder: (context, ss, _) {
-                              return orderList(ss.orderList);
-                            }
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 1,
-                          color: Color(0xFFF7F7F7),
-                        ),
-                        whiteSpaceH(22),
-                        Consumer<StoreServiceProvider>(
-                            builder: (context, ss, _){
-                              return Row(
-                                  children: [
-                                    Expanded(
-                                        child: Text(
-                                          "총 주문 금액",
-                                          style: Body1.apply(
-                                              color: black,
-                                              fontWeightDelta: 1
-                                          ),
-                                          textAlign: TextAlign.start,
+            body: SingleChildScrollView(
+                child: Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            whiteSpaceH(23),
+                            Text("주문내역",
+                                style: Subtitle2.apply(
+                                    fontWeightDelta: 1
+                                )),
+                            whiteSpaceH(26),
+                            Consumer<StoreServiceProvider>(
+                                builder: (context, ss, _) {
+                                  return orderList(ss.orderList);
+                                }
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 1,
+                              color: Color(0xFFF7F7F7),
+                            ),
+                            whiteSpaceH(22),
+                            Consumer<StoreServiceProvider>(
+                                builder: (context, ss, _){
+                                  return Row(
+                                      children: [
+                                        Expanded(
+                                            child: Text(
+                                              "총 주문 금액",
+                                              style: Body1.apply(
+                                                  color: black,
+                                                  fontWeightDelta: 1
+                                              ),
+                                              textAlign: TextAlign.start,
+                                            )
+                                        ),
+                                        Expanded(
+                                            child: Text(
+                                              "${numberFormat.format(ss.orderPay)}원",
+                                              style: Body1.apply(
+                                                  color: primary,
+                                                  fontWeightDelta: 1
+                                              ),
+                                              textAlign: TextAlign.end,
+                                            )
                                         )
-                                    ),
-                                    Expanded(
-                                        child: Text(
-                                          "${numberFormat.format(ss.orderPay)}원",
+                                      ]
+                                  );
+                                }
+                            ),
+                            whiteSpaceH(22),
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 1,
+                              color: Color(0xFFDDDDDD),
+                            ),
+                            whiteSpaceH(24),
+                            Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  whiteSpaceH(8),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text("DL 결제",
                                           style: Body1.apply(
+                                              fontWeightDelta: 1
+                                          )
+                                      ),
+                                      whiteSpaceW(10),
+                                      Text("${demicalFormat.format(pointMap['DL'])} DL 보유",
+                                          style: Body2.apply(
+                                              fontWeightDelta: 1,
+                                              color: primary
+                                          )
+                                      ),
+                                      whiteSpaceW(5),
+                                      Text(
+                                          store.store.limitDL == null ?
+                                          "* 결제한도가 없는 매장 입니다."
+                                              :
+                                          "* 해당매장의 결제한도는 ${store.store.limitDL}% DL 입니다.",
+                                          style: TabsTagsStyle.apply(
                                               color: primary,
                                               fontWeightDelta: 1
-                                          ),
-                                          textAlign: TextAlign.end,
-                                        )
-                                    )
-                                  ]
-                              );
-                            }
-                        ),
-                        whiteSpaceH(22),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 1,
-                          color: Color(0xFFDDDDDD),
-                        ),
-                        whiteSpaceH(24),
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              whiteSpaceH(8),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text("DL 결제",
-                                      style: Body1.apply(
-                                          fontWeightDelta: 1
-                                      )
-                                  ),
-                                  whiteSpaceW(10),
-                                  Text("${demicalFormat.format(pointMap['DL'])} DL 보유",
-                                      style: Body2.apply(
-                                          fontWeightDelta: 1,
-                                          color: primary
-                                      )
-                                  ),
-                                  whiteSpaceW(5),
-                                  Text(
-                                      store.store.limitDL == null ?
-                                      "* 결제한도가 없는 매장 입니다."
-                                          :
-                                      "* 해당매장의 결제한도는 ${store.store.limitDL}% DL 입니다.",
-                                      style: TabsTagsStyle.apply(
-                                          color: primary,
-                                          fontWeightDelta: 1
-                                      )
-                                  ),
-                                ],
-                              ),
-                              whiteSpaceH(16),
-                              Consumer<StoreServiceProvider>(
-                                builder: (context, ssp, _){
-                                  return
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                                      child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          children: [
-                                            Expanded(
-                                                flex: 4,
-                                                child: Row(
-                                                    children: [
-                                                      Expanded(
-                                                        flex: 3,
-                                                        child:
-                                                        Row(
-                                                            children: [
-                                                              Text(
-                                                                  "DL 결제 수량",
-                                                                  style: Body1.apply(
-                                                                      color: black,
-                                                                      fontWeightDelta: 1
-                                                                  )
-                                                              ),
-                                                              whiteSpaceW(12.0),
-                                                              RaisedButton(
-                                                                color: ssp.dlCtrl.text == "" || ssp.dlCtrl.text == "0" ? white : primary,
-                                                                onPressed: () {
-                                                                  showDLDialog();
-                                                                },
-                                                                child: Text(
-                                                                    "${ssp.dlCtrl.text == "" || ssp.dlCtrl.text == "0" ? "DL 사용" : "${numberFormat.format(int.parse(ssp.dlCtrl.text))}DL"}",
-                                                                    style: Body1.apply(
-                                                                      color : ssp.dlCtrl.text == "" || ssp.dlCtrl.text == "0" ? secondary : white,
-                                                                    )
-                                                                ),
-                                                                elevation: 0.0,
-                                                                shape: RoundedRectangleBorder(
-                                                                    borderRadius: BorderRadius.circular(2),
-                                                                    side: BorderSide(
-                                                                        color: ssp.dlCtrl.text == "" || ssp.dlCtrl.text == "0" ? Color(0xFFDDDDDD) : primary
-                                                                    )
-                                                                ),
-                                                              )
-                                                            ]
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                          flex: 2,
-                                                          child:
-                                                          Row(
-                                                            children: [
-                                                              Expanded(
-                                                                child: Text(
-                                                                  "- ${numberFormat.format(int.parse(ssp.dlCtrl.text == "" ? "0" : ssp.dlCtrl.text) * 100)}원",
-                                                                  style: Body1.apply(
-                                                                      color: secondary,
-                                                                      fontWeightDelta: 1
-                                                                  ),
-                                                                  textAlign: TextAlign.end,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          )
-                                                      ),
-                                                    ]
-                                                )
-                                            ),
-                                          ]
-                                      ),
-                                    );
-                                },
-                              ),
-                              whiteSpaceH(24),
-                              Consumer<StoreServiceProvider>(
-                                  builder: (context, ss, _){
-                                    return Row(
-                                        children: [
-                                          Expanded(
-                                              child: Text(
-                                                "최종 결제 금액",
-                                                style: Body1.apply(
-                                                    color: black,
-                                                    fontWeightDelta: 1
-                                                ),
-                                                textAlign: TextAlign.start,
-                                              )
-                                          ),
-                                          Expanded(
-                                              child: Text(
-                                                "${numberFormat.format(ss.orderPay - (int.parse(ss.dlCtrl.text == "" ? "0" : ss.dlCtrl.text) * 100))}원",
-                                                style: Subtitle2.apply(
-                                                    color: primary,
-                                                    fontWeightDelta: 1
-                                                ),
-                                                textAlign: TextAlign.end,
-                                              )
                                           )
-                                        ]
-                                    );
-                                  }
-                              ),
-                            ]
-                        ),
-                        whiteSpaceH(24),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 8,
-                    color: Color(0xFFF2F2F2),
-                  ),
-                  whiteSpaceH(24),
-                  // 결제 방식 위젯
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Column(
-                      children: [
-                        Consumer<StoreServiceProvider>(
-                          builder: (context, ssp, _) {
-                            return Row(
-                                children: [
-                                  Expanded(
-                                      child: Text(
-                                        (ssp.orderPay > (int.parse(ssp.dlCtrl.text == "" ? "0" : ssp.dlCtrl.text) * 100)) ? "결제 방식"
-                                            :
-                                        "DL 결제가 진행됩니다.\n"
-                                            "DL 결제는 실시간 흥정 혜택이 없습니다.",
-                                        style: (ssp.orderPay > (int.parse(ssp.dlCtrl.text == "" ? "0" : ssp.dlCtrl.text) * 100)) ?
-                                        Subtitle2.apply(
-                                            fontWeightDelta: 1
-                                        )
-                                            :
-                                        Subtitle2.apply(
-                                            color: primary
-                                        ),
-                                        textAlign: (ssp.orderPay > (int.parse(ssp.dlCtrl.text == "" ? "0" : ssp.dlCtrl.text) * 100)) ? TextAlign.start : TextAlign.center,
-                                      )
+                                      ),
+                                    ],
                                   ),
-                                ]
-                            );
-                          },
-                        ),
-                        whiteSpaceH(22),
-                        Consumer<StoreServiceProvider>(
-                          builder: (context, ssp, _){
-                            return (ssp.orderPay > (int.parse(ssp.dlCtrl.text == "" ? "0" : ssp.dlCtrl.text) * 100)) ?
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: method("신용카드", 0),
-                                ),
-                                Expanded(
-                                  child: method("무통장입금", 1),
-                                ),
-                              ],
-                            )
-                                :
-                            Container();
-                          },
-                        ),
-                        whiteSpaceH(25),
-                        currentMethod == 1 ?
-                        Column(
-                          children: [
-                            whiteSpaceH(15),
-                            DropdownButton(
-                              isExpanded: true,
-                              icon: Icon(Icons.arrow_drop_down, color: primary,),
-                              iconSize: 24,
-                              elevation: 16,
-                              underline: Container(
-                                height: 2,
-                                color: Color(0xFFDDDDDD),
-                              ),
-                              value: "${store.bank.bank} / "
-                                  + "${store.store.name} / "
-                                  + "${store.bank.number}" ,
-                              items: ["${store.bank.bank} / "
-                                  + "${store.store.name} / "
-                                  + "${store.bank.number}"].map((value) {
-                                return DropdownMenuItem(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }
-                              ).toList(),
-                              onChanged: (value){
-                              },
-                            ),
-                            whiteSpaceH(12)
-                          ],
-                        ) : Container(),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                                width: 16,
-                                height: 16,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Color(0xFFDDDDDD),
-                                        width: 1
-                                    ),
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(2.0)
-                                    )
-                                ),
-                                child: Theme(
-                                  data: ThemeData(unselectedWidgetColor: Colors.transparent,),
-                                  child: Checkbox(
-                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                    activeColor: primary,
-                                    checkColor: primary,
-                                    value: isAgreeCheck,
-                                    onChanged: (value){
-                                      setState(() {
-                                        isAgreeCheck = value;
-                                      });
+                                  whiteSpaceH(16),
+                                  Consumer<StoreServiceProvider>(
+                                    builder: (context, ssp, _){
+                                      return
+                                        Padding(
+                                          padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                                          child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              children: [
+                                                Expanded(
+                                                    flex: 4,
+                                                    child: Row(
+                                                        children: [
+                                                          Expanded(
+                                                            flex: 3,
+                                                            child:
+                                                            Row(
+                                                                children: [
+                                                                  Text(
+                                                                      "DL 결제 수량",
+                                                                      style: Body1.apply(
+                                                                          color: black,
+                                                                          fontWeightDelta: 1
+                                                                      )
+                                                                  ),
+                                                                  whiteSpaceW(12.0),
+                                                                  RaisedButton(
+                                                                    color: ssp.dlCtrl.text == "" || ssp.dlCtrl.text == "0" ? white : primary,
+                                                                    onPressed: () {
+                                                                      showDLDialog();
+                                                                    },
+                                                                    child: Text(
+                                                                        "${ssp.dlCtrl.text == "" || ssp.dlCtrl.text == "0" ? "DL 사용" : "${numberFormat.format(int.parse(ssp.dlCtrl.text))}DL"}",
+                                                                        style: Body1.apply(
+                                                                          color : ssp.dlCtrl.text == "" || ssp.dlCtrl.text == "0" ? secondary : white,
+                                                                        )
+                                                                    ),
+                                                                    elevation: 0.0,
+                                                                    shape: RoundedRectangleBorder(
+                                                                        borderRadius: BorderRadius.circular(2),
+                                                                        side: BorderSide(
+                                                                            color: ssp.dlCtrl.text == "" || ssp.dlCtrl.text == "0" ? Color(0xFFDDDDDD) : primary
+                                                                        )
+                                                                    ),
+                                                                  )
+                                                                ]
+                                                            ),
+                                                          ),
+                                                          Expanded(
+                                                              flex: 2,
+                                                              child:
+                                                              Row(
+                                                                children: [
+                                                                  Expanded(
+                                                                    child: Text(
+                                                                      "- ${numberFormat.format(int.parse(ssp.dlCtrl.text == "" ? "0" : ssp.dlCtrl.text) * 100)}원",
+                                                                      style: Body1.apply(
+                                                                          color: secondary,
+                                                                          fontWeightDelta: 1
+                                                                      ),
+                                                                      textAlign: TextAlign.end,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              )
+                                                          ),
+                                                        ]
+                                                    )
+                                                ),
+                                              ]
+                                          ),
+                                        );
                                     },
                                   ),
-                                )
+                                  whiteSpaceH(24),
+                                  Consumer<StoreServiceProvider>(
+                                      builder: (context, ss, _){
+                                        return Row(
+                                            children: [
+                                              Expanded(
+                                                  child: Text(
+                                                    "최종 결제 금액",
+                                                    style: Body1.apply(
+                                                        color: black,
+                                                        fontWeightDelta: 1
+                                                    ),
+                                                    textAlign: TextAlign.start,
+                                                  )
+                                              ),
+                                              Expanded(
+                                                  child: Text(
+                                                    "${numberFormat.format(ss.orderPay - (int.parse(ss.dlCtrl.text == "" ? "0" : ss.dlCtrl.text) * 100))}원",
+                                                    style: Subtitle2.apply(
+                                                        color: primary,
+                                                        fontWeightDelta: 1
+                                                    ),
+                                                    textAlign: TextAlign.end,
+                                                  )
+                                              )
+                                            ]
+                                        );
+                                      }
+                                  ),
+                                ]
                             ),
-                            whiteSpaceW(12),
-                            Text("개인정보 제 3자 제공 및 위탁동의",style: Body2,)
+                            whiteSpaceH(24),
                           ],
                         ),
-                        whiteSpaceH(53),
-                      ],
-                    ),
-                  ),
-                  Consumer<StoreServiceProvider>(
-                      builder: (context, ss, _){
-                        return Container(
-                            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                            width: MediaQuery.of(context).size.width,
-                            height: 60,
-                            child:
-                            RaisedButton(
-                              padding: EdgeInsets.symmetric(vertical: 11),
-                                color: primary,
-                                elevation: 0.0,
-                                onPressed: () async {
-                                  if(isAgreeCheck){
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 8,
+                        color: Color(0xFFF2F2F2),
+                      ),
+                      whiteSpaceH(24),
+                      // 결제 방식 위젯
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Column(
+                          children: [
+                            Consumer<StoreServiceProvider>(
+                              builder: (context, ssp, _) {
+                                return Row(
+                                    children: [
+                                      Expanded(
+                                          child: Text(
+                                            (ssp.orderPay > (int.parse(ssp.dlCtrl.text == "" ? "0" : ssp.dlCtrl.text) * 100)) ? "결제 방식"
+                                                :
+                                            "DL 결제가 진행됩니다.\n"
+                                                "DL 결제는 실시간 흥정 혜택이 없습니다.",
+                                            style: (ssp.orderPay > (int.parse(ssp.dlCtrl.text == "" ? "0" : ssp.dlCtrl.text) * 100)) ?
+                                            Subtitle2.apply(
+                                                fontWeightDelta: 1
+                                            )
+                                                :
+                                            Subtitle2.apply(
+                                                color: primary
+                                            ),
+                                            textAlign: (ssp.orderPay > (int.parse(ssp.dlCtrl.text == "" ? "0" : ssp.dlCtrl.text) * 100)) ? TextAlign.start : TextAlign.center,
+                                          )
+                                      ),
+                                    ]
+                                );
+                              },
+                            ),
+                            whiteSpaceH(22),
+                            Consumer<StoreServiceProvider>(
+                              builder: (context, ssp, _){
+                                return (ssp.orderPay > (int.parse(ssp.dlCtrl.text == "" ? "0" : ssp.dlCtrl.text) * 100)) ?
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: method("신용카드", 0),
+                                    ),
+                                    Expanded(
+                                      child: method("무통장입금", 1),
+                                    ),
+                                  ],
+                                )
+                                    :
+                                Container();
+                              },
+                            ),
+                            whiteSpaceH(25),
+                            currentMethod == 1 ?
+                            Column(
+                              children: [
+                                whiteSpaceH(15),
+                                DropdownButton(
+                                  isExpanded: true,
+                                  icon: Icon(Icons.arrow_drop_down, color: primary,),
+                                  iconSize: 24,
+                                  elevation: 16,
+                                  underline: Container(
+                                    height: 2,
+                                    color: Color(0xFFDDDDDD),
+                                  ),
+                                  value: "${store.bank.bank} / "
+                                      + "${store.store.name} / "
+                                      + "${store.bank.number}" ,
+                                  items: ["${store.bank.bank} / "
+                                      + "${store.store.name} / "
+                                      + "${store.bank.number}"].map((value) {
+                                    return DropdownMenuItem(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }
+                                  ).toList(),
+                                  onChanged: (value){
+                                  },
+                                ),
+                                whiteSpaceH(12)
+                              ],
+                            ) : Container(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                    width: 16,
+                                    height: 16,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Color(0xFFDDDDDD),
+                                            width: 1
+                                        ),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(2.0)
+                                        )
+                                    ),
+                                    child: Theme(
+                                      data: ThemeData(unselectedWidgetColor: Colors.transparent,),
+                                      child: Checkbox(
+                                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                        activeColor: primary,
+                                        checkColor: primary,
+                                        value: isAgreeCheck,
+                                        onChanged: (value){
+                                          setState(() {
+                                            isAgreeCheck = value;
+                                          });
+                                        },
+                                      ),
+                                    )
+                                ),
+                                whiteSpaceW(12),
+                                Text("개인정보 제 3자 제공 및 위탁동의",style: Body2,)
+                              ],
+                            ),
+                            whiteSpaceH(53),
+                          ],
+                        ),
+                      ),
+                      Consumer<StoreServiceProvider>(
+                          builder: (context, ss, _){
+                            return Container(
+                                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                                width: MediaQuery.of(context).size.width,
+                                height: 60,
+                                child:
+                                RaisedButton(
+                                  padding: EdgeInsets.symmetric(vertical: 11),
+                                  color: primary,
+                                  elevation: 0.0,
+                                  onPressed: (!ss.orderLoading) ? () async {
+                                    if(isAgreeCheck){
 
-                                    if((int.parse(ss.dlCtrl.text == "" ? "0" : ss.dlCtrl.text) * 100) == ss.orderPay){
-                                      await ss.setOrderMap(widget.store_id, "ORDER");
-                                      await ss.orderComplete();
+                                      if((int.parse(ss.dlCtrl.text == "" ? "0" : ss.dlCtrl.text) * 100) == ss.orderPay){
+                                        await ss.setOrderMap(widget.store_id, "ORDER");
+                                        await ss.orderComplete();
                                         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
                                           isHome: true, afterGame: true,
                                         )), (route) => false);
+                                      } else {
+                                        showGameDialog();
+                                      }
                                     } else {
-                                      showGameDialog();
+                                      showToast("개인정보 이용동의를 해주셔야 합니다.");
                                     }
-                                    // if((int.parse(ss.dlCtrl.text == "" ? "0" : ss.dlCtrl.text) * 100) == ss.orderPay){
-                                    //
-                                    //   ss.setOrderMap(widget.store_id, "ORDER");
-                                    //   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
-                                    //     isHome: true, afterGame: true,
-                                    //   )), (route) => false);
-                                    // } else {
-                                    //   var orderPayment = ss.orderPay - (int.parse(ss.dlCtrl.text) * 100);
-                                    //
-                                    //   if(currentMethod == 1){ // 무통장입금 결제
-                                    //     // ss.setOrderMap(widget.store_id, "ORDER");
-                                    //     // ss.orderComplete();
-                                    //
-                                    //
-                                    //
-                                    //   } else {  // 신용카드 결제
-                                    //     await Navigator.of(context).push(MaterialPageRoute(
-                                    //         builder: (context) =>
-                                    //             Buy(
-                                    //                 name: widget.name,
-                                    //                 pay: ss.orderPay - (int.parse(ss.dlCtrl.text == "" ? "0":ss.dlCtrl.text) * 100),
-                                    //                 id: widget.store_id,
-                                    //                 paymentType: paymentType[currentMethod],
-                                    //                 dl: (int.parse(ss.dlCtrl.text == "" ? "0":ss.dlCtrl.text))
-                                    //             )));
-                                    //     ss.orderComplete();
-                                    //     showGameDialog(orderPayment);
-                                    //   }
-                                    // }
-
-                                  } else {
-                                    showToast("개인정보 이용동의를 해주셔야 합니다.");
                                   }
-                                },
-                                child: Text(
-                                    "결제하기",
-                                    style: Subtitle2.apply(
-                                      color: white,
-                                      fontWeightDelta: 1
-                                    )
-                                ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(6.0),
+                                  :
+                                  null,
+                                  child: Text(
+                                      (!ss.orderLoading) ? "결제하기" : "주문 처리 중 입니다.",
+                                      style: Subtitle2.apply(
+                                          color: white,
+                                          fontWeightDelta: 1
+                                      )
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(6.0),
+                                      )
+                                  ),
                                 )
-                              ),
-                            )
-                        );
-                      }
+                            );
+                          }
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                )
             )
-        )
+        ),
+      ],
     );
   }
 
@@ -468,6 +444,7 @@ class _OrderMenu extends State<OrderMenu> {
     Map<String, dynamic> pointMap =  Provider.of<UserProvider>(context, listen: false).pointMap;
     showDialog( 
       context: context,
+      barrierDismissible: false,
       builder: (context) =>
           AlertDialog(
             shape: RoundedRectangleBorder(
@@ -491,7 +468,8 @@ class _OrderMenu extends State<OrderMenu> {
                 return Container(
                     width: 240,
                     height: 230,
-                    child: Column(
+                    child: (!ssp.orderLoading) ?
+                    Column(
                       children: [
                         Text("${widget.store.store.name}에서 ${numberFormat.format(ssp.orderPay)}원을\n"
                             "${numberFormat.format(ssp.orderPay - (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text) * 100))}원과 ${numberFormat.format(int.parse(ssp.dlCtrl.text))}DL로 각 각 결제합니다.",
@@ -538,24 +516,28 @@ class _OrderMenu extends State<OrderMenu> {
                               Expanded(
                                 child: InkWell(
                                   onTap: () async {
-                                    if(currentMethod == 1){ // 무통장입금 결제
-                                      await ssp.setOrderMap(widget.store_id, "ORDER");
-                                      ssp.orderComplete();
+                                    if(!ssp.orderLoading) {
+                                      if(currentMethod == 1){ // 무통장입금 결제
+                                        await ssp.setOrderMap(widget.store_id, "ORDER");
+                                        ssp.orderComplete();
 
-                                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
-                                        isHome : true, afterGame : true,
-                                      )), (routes) => false);
-                                    } else {  // 신용카드 결제
-                                      Navigator.of(context).push(MaterialPageRoute(
-                                          builder: (context) =>
-                                              Buy(
+                                        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
+                                          isHome : true, afterGame : true,
+                                        )), (routes) => false);
+                                      } else {  // 신용카드 결제
+                                        Navigator.of(context).push(MaterialPageRoute(
+                                            builder: (context) =>
+                                                Buy(
                                                   name: widget.name,
                                                   pay: ssp.orderPay - (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text) * 100),
                                                   id: widget.store_id,
                                                   paymentType: paymentType[currentMethod],
                                                   dl: (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text)),
-                                                isPlayGame: false,
-                                              )));
+                                                  isPlayGame: false,
+                                                )));
+                                      }
+                                    } else {
+                                      showToast("주문이 처리되는 중 입니다.");
                                     }
                                   },
                                   child: Container(
@@ -583,26 +565,29 @@ class _OrderMenu extends State<OrderMenu> {
                               Expanded(
                                 child: InkWell(
                                   onTap: () async {
-                                    if(currentMethod == 1){ // 무통장입금 결제
-                                      await ssp.setOrderMap(widget.store_id, "ORDER");
-                                      ssp.orderComplete();
+                                    if(!ssp.orderLoading) {
+                                      if(currentMethod == 1){ // 무통장입금 결제
+                                        await ssp.setOrderMap(widget.store_id, "ORDER");
+                                        ssp.orderComplete();
 
-                                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => BargainGame2(
-                                        orderPayment: ssp.orderPay - (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text) * 100),
-                                          totalCarat: pointMap['CARAT'])), (route) => false);
-                                    } else {  // 신용카드 결제
-                                      Navigator.of(context).push(MaterialPageRoute(
-                                          builder: (context) =>
-                                              Buy(
+                                        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => BargainGame2(
+                                            orderPayment: ssp.orderPay - (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text) * 100),
+                                            totalCarat: pointMap['CARAT'])), (route) => false);
+                                      } else {  // 신용카드 결제
+                                        Navigator.of(context).push(MaterialPageRoute(
+                                            builder: (context) =>
+                                                Buy(
                                                   name: widget.name,
                                                   pay: ssp.orderPay - (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text) * 100),
                                                   id: widget.store_id,
                                                   paymentType: paymentType[currentMethod],
                                                   dl: (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text)),
-                                                isPlayGame: true,
-                                              )));
+                                                  isPlayGame: true,
+                                                )));
+                                      }
+                                    } else {
+                                      showToast("주문이 처리되는 중 입니다.");
                                     }
-
                                   },
                                   child: Container(
                                     width: 64,
@@ -630,7 +615,40 @@ class _OrderMenu extends State<OrderMenu> {
                           ),
                         )
                       ],
-                    )
+                    ) :
+                    Center(
+                        child: Material(
+                          type: MaterialType.transparency,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 3 / 4,
+                            height: MediaQuery.of(context).size.height * 2 / 4,
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  CircularProgressIndicator(
+                                      valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
+                                  ),
+                                  whiteSpaceH(20),
+                                  Text(
+                                      "주문이 처리되는 중 입니다.",
+                                      style: Body1.apply(
+                                          color: black
+                                      )
+                                  )
+                                ],
+                              ),
+                            ),
+                            decoration: BoxDecoration(
+                                color: white,
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(20.0)
+                                )
+                            ),
+                          ),
+                        )
+                    ),
                 );
               }
             ),
@@ -899,6 +917,7 @@ class _OrderMenu extends State<OrderMenu> {
     StoreModel store = widget.store == null ? Provider.of<StoreProvider>(context, listen: false).selStore : widget.store;
     showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (context) {
           return AlertDialog(
             shape: RoundedRectangleBorder(
