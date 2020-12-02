@@ -66,8 +66,7 @@ class History extends StatelessWidget {
           icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24, color: black,),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+      body: Container(
         child: body(context),
       ),
     );
@@ -77,9 +76,12 @@ class History extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 26.0),
-          child: RetentionPoint(context),
+        RetentionPoint(context),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 24),
+          width: MediaQuery.of(context).size.width,
+          height: 8,
+          color: Color(0xFFF2F2F2)
         ),
         historyTitle(),
         Flexible(child: historyList()),
@@ -90,30 +92,32 @@ class History extends StatelessWidget {
   Widget RetentionPoint(context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.only(top: 24, bottom: 16),
+      padding: const EdgeInsets.only(top: 12, bottom: 16),
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
+            padding: const EdgeInsets.only(bottom: 4),
             // child: Text("현재 보유 ${point == "DL" ? "DL" : point}",
               child: Text("현재 보유 ${point == "DL" ? "DL" : point == "CARAT" ? "CARAT" : point == "RP" ? "CP" : point}",
               style: Body1.apply(
-                color: primary
+                color: third
               ),),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(pointImg, fit: BoxFit.contain, width: 24,),
-              whiteSpaceW(12),
               Consumer<UserProvider>(
                 builder: (context, user, _){
                   return RichText(
                     text: TextSpan(
-                        style: Headline,
+                        style: Subtitle1.apply(
+                          fontWeightDelta: 2
+                        ),
                         children: [
                           TextSpan(text: "${demicalFormat.format(user.nowPoint)} "),
-                          TextSpan(text: "${point == "DL" ? "DL" : point == "CARAT" ? "CARAT" : point == "RP" ? "CP" : point}", style: Body1)
+                          TextSpan(text: "${point == "DL" ? "DL" : point == "CARAT" ? "CARAT" : point == "RP" ? "CP" : point}", style: Subtitle2.apply(
+                            fontWeightDelta: 1
+                          ))
                         ]
                     ),
                   );
@@ -122,7 +126,7 @@ class History extends StatelessWidget {
 
             ],
           ),
-          whiteSpaceH(4.0),
+          whiteSpaceH(8.0),
           btn(point, context),
         ],
       ),
@@ -150,10 +154,10 @@ class History extends StatelessWidget {
             )
           );
         },
-        child: Text("충전하기", style: Body1,),
-        padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+        child: Text("충전하기", style: Body1.apply(color:primary),),
+        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 22),
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(2),
             side: BorderSide(color: Color(0xffdddddd))
         ),
         color: Colors.white,
@@ -174,10 +178,10 @@ class History extends StatelessWidget {
 
               await Navigator.of(context).pushNamed("/point/$path", arguments: args);
             },
-            child: Text("DL 구매", style: Body1,),
-            padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+            child: Text("DL 구매", style: Body1.apply(color:primary),),
+            padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 22),
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(2),
                 side: BorderSide(color: Color(0xffdddddd))
             ),
             color: Colors.white,
@@ -204,10 +208,10 @@ class History extends StatelessWidget {
                   )
               );
             },
-            child: Text("충전하기", style: Body1,),
-            padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+            child: Text("충전하기", style: Body1.apply(color:primary),),
+            padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 22),
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(2),
                 side: BorderSide(color: Color(0xffdddddd))
             ),
             color: Colors.white,
@@ -220,8 +224,14 @@ class History extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text("전체 내역"),
-        Text("최신순")
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 3),
+          child: Text("전체 내역",
+              style: Subtitle2.apply(
+                  fontWeightDelta: 1
+              )
+          ),
+        ),
       ],
     );
   }
@@ -234,7 +244,7 @@ class History extends StatelessWidget {
           itemBuilder: (context, idx) {
             if(idx < users.result.length){
               return Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
+                  padding: const EdgeInsets.only(top: 24.0),
                   child: historyItem(users.result[idx])
               );
             }
@@ -264,26 +274,30 @@ class History extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(bottom: 12.0),
-          child: Text(DateFormat("yy.MM.dd").format(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Text(DateFormat("yyyy.MM.dd").format(
               DateTime.parse( data['date'].toString())),
             style: Body2
           ),
         ),
         Column(
           children: histories.map((e) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 17.0),
+            return Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Color(0xFFF7F7F7),
+                    width: 1,
+                  )
+                )
+              ),
+              padding: EdgeInsets.symmetric(vertical: 18, horizontal: 16),
               child: Row(
                 children: [
-                  Expanded(
-                    flex: 1,
-                    child : Padding(
-                      padding: const EdgeInsets.only(right: 13.0),
-                      child: Image.asset(
-                        pointImg, width: 48, fit: BoxFit.contain,),
-                    ),
-                  ),
+                Image.asset(
+                  pointImg, width: 36, height: 36, fit: BoxFit.contain
+                ),
+                  whiteSpaceW(12.0),
                   Expanded(
                     flex: 3,
                     child: Row(
@@ -325,11 +339,12 @@ class History extends StatelessWidget {
                   Expanded(
                     flex: 3,
                     child: Text("${e['price']} ${point == "DL" ? "DL" : point == "CARAT" ? "CR" : "CP"}",
-                      style: Subtitle1.apply(
+                      style: Body1.apply(
                           color: e['type'] == "충전" ?
                           mainColor
                               :
-                          third
+                          third,
+                        fontWeightDelta: 1
                       ),
                         textAlign: TextAlign.end,),
                   )
