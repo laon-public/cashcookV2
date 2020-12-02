@@ -38,4 +38,8 @@ class StoreApplyProvider extends ChangeNotifier {
   Future postMenu(int bigId, String menuName, String menuPrice, PickedFile menuImg) async {
     await service.postMenu(bigId, menuName, menuPrice, menuImg);
   }
+
+  Future patchMenu(int id, String menuName, String menuPrice, PickedFile menuImg) async {
+    await service.patchMenu(id, menuName, menuPrice, menuImg);
+  }
 }

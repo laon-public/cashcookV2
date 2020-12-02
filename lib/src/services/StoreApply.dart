@@ -41,4 +41,22 @@ class StoreApplyService {
 
     print(res.data);
   }
+
+  Future<String> patchMenu(int id, String menuName, String menuPrice, PickedFile menuImg) async {
+    Map<String, dynamic> data = {
+      "id" : id,
+      "menuName" : menuName,
+      "menuPrice" : menuPrice,
+      "menuImg" : MultipartFile.fromFileSync(File(menuImg.path).absolute.path)
+    };
+
+    Response res = await dio.patch(cookURL + "/franchises/v2/menu",
+        data: FormData.fromMap(data),
+        options: Options(
+          headers: {"Authorization": "BEARER ${dataStorage.token}"},
+        )
+    );
+
+    print(res.data);
+  }
 }

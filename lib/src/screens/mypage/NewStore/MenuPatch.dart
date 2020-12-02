@@ -1,9 +1,15 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cashcook/src/model/store/menu.dart';
+import 'package:cashcook/src/provider/StoreApplyProvider.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class MenuPatch extends StatefulWidget {
   final MenuModel menu;
@@ -15,6 +21,18 @@ class MenuPatch extends StatefulWidget {
 }
 
 class _MenuPatch extends State<MenuPatch> {
+  TextEditingController nameCtrl;
+  TextEditingController priceCtrl;
+  PickedFile imgCtrl;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    nameCtrl = TextEditingController(text: widget.menu.name);
+    priceCtrl = TextEditingController(text: widget.menu.price.toString());
+  }
+
   @override
   Widget build(BuildContext context) {
     AppBar appBar = AppBar(
@@ -46,27 +64,104 @@ class _MenuPatch extends State<MenuPatch> {
                   padding: EdgeInsets.symmetric(vertical: 16.0),
                   child: Row(
                     children: [
-                      Container(
-                        child: Image.asset(
-                          "assets/icon/cashcook_logo.png",
+                      InkWell(
+                        onTap: () async {
+                          PickedFile pickedImg = await ImagePicker().getImage(source: ImageSource.gallery);
+
+                          if(pickedImg != null) {
+                            setState(() {
+                              imgCtrl = pickedImg;
+                            });
+                          }
+                        },
+                        child: widget.menu.imgUrl == null ?
+                        imgCtrl == null ?
+                        Container(
                           width: 48,
                           height: 48,
-                          fit: BoxFit.cover,
-                        ),
-                        decoration: BoxDecoration(
+                          child: Center(
+                            child: Image.asset(
+                              "assets/resource/public/plus.png",
+                              width: 24,
+                              height: 24,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                              color: Color(0xFFF7F7F7),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(6.0)
+                              ),
+                              border: Border.all(
+                                  color: Color(0xFFDDDDDD),
+                                  width: 0.5
+                              )
+                          ),
+                        )
+                        :
+                        Container(
+                          width: 48,
+                          height: 48,
+                          child: Image.file(
+                            File(imgCtrl.path),
+                            fit: BoxFit.cover,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Color(0xFFF7F7F7),
                             borderRadius: BorderRadius.all(
                                 Radius.circular(6.0)
                             ),
                             border: Border.all(
                                 color: Color(0xFFDDDDDD),
                                 width: 0.5
-                            )
+                            ),
+                          ),
+                        )
+                            :
+                        imgCtrl == null ?
+                        CachedNetworkImage(
+                          imageUrl: widget.menu.imgUrl,
+                          imageBuilder: (context, img) => Container(
+                              width: 48,
+                              height: 48,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(6.0)
+                                  ),
+                                  border: Border.all(
+                                      color: Color(0xFFDDDDDD),
+                                      width: 0.5
+                                  ),
+                                  image: DecorationImage(
+                                      image: img, fit: BoxFit.fill
+                                  )
+                              )
+                          ),
+                        )
+                            :
+                        Container(
+                          width: 48,
+                          height: 48,
+                          child: Image.file(
+                            File(imgCtrl.path),
+                            fit: BoxFit.cover,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Color(0xFFF7F7F7),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(6.0)
+                            ),
+                            border: Border.all(
+                                color: Color(0xFFDDDDDD),
+                                width: 0.5
+                            ),
+                          ),
                         ),
                       ),
                       whiteSpaceW(16.0),
                       Expanded(
                           child: TextFormField(
-                            initialValue: widget.menu.name,
+                            controller: nameCtrl,
                             style: Body1.apply(
                                 color: black,
                                 fontWeightDelta: 1
@@ -108,7 +203,7 @@ class _MenuPatch extends State<MenuPatch> {
                           ),
                           Expanded(
                             child: TextFormField(
-                              initialValue: widget.menu.price.toString(),
+                              controller: priceCtrl,
                               textAlign: TextAlign.end,
                               style: Subtitle2.apply(
                                   fontWeightDelta: -2
@@ -140,7 +235,9 @@ class _MenuPatch extends State<MenuPatch> {
                   padding: EdgeInsets.symmetric(vertical: 8),
                   child: RaisedButton(
                     elevation: 0,
-                    onPressed: () {},
+                    onPressed: () {
+                      Provider.of<StoreApplyProvider>(context, listen: false).patchMenu(widget.menu.id, nameCtrl.text, priceCtrl.text, imgCtrl);
+                    },
                     color: primary,
                     child: Text("수정하기",
                       style: Subtitle2.apply(
