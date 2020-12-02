@@ -16,7 +16,15 @@ Widget CustomBottomNavBar(BuildContext context, String pageName) {
     child: Container(
         width: MediaQuery.of(context).size.width,
         height: 60,
-        color: white,
+        decoration: BoxDecoration(
+          color: white,
+          boxShadow: [
+            BoxShadow(
+                color: deActivatedGrey,
+              blurRadius: 3
+            )
+          ],
+        ),
         child: Row(
           children: [
             Expanded(

@@ -43,7 +43,7 @@ class _QrCreate extends State<QrCreate> {
           ),
         ),
         title: Text(
-          "현장 결제",
+          "결제하기",
           style: appBarDefaultText,
         ),
       ),
@@ -61,39 +61,30 @@ class _QrCreate extends State<QrCreate> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              whiteSpaceH(40),
               Container(
                 width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.only(top: 6, bottom: 30),
+                padding: EdgeInsets.only(top: 23, bottom: 35),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      "현장결제의 경우, 반드시\n결제를 완료한 이후 진행 바랍니다.",
+                      "고객이 결제한\n금액을 입력해주세요.",
                       textAlign: TextAlign.start,
-                      style: Body1
+                      style: Subtitle1
                     ),
-                    whiteSpaceW(12),
-                    Container(
-                      child: Image.asset(
-                        "assets/resource/public/payment.png",
-                        width: 48,
-                        height: 48,
-                      ),
-                    )
                   ],
                 ),
               ),
               Text(
-                "결제금액",
+                "현장결제금액",
                 style: Body2
               ),
-              whiteSpaceH(4),
+              whiteSpaceH(8),
               Row(
                 children: [
                   Image.asset("assets/resource/public/krw-coin.png",
-                      width: 40, height: 40),
-                  whiteSpaceW(8),
+                      width: 36, height: 36),
+                  whiteSpaceW(12),
                   Expanded(
                     child: Container(
                       width: MediaQuery.of(context).size.width,
@@ -103,7 +94,9 @@ class _QrCreate extends State<QrCreate> {
                         textInputAction: TextInputAction.done,
                         keyboardType: TextInputType.number,
                         controller: payController,
-                        style: Body1,
+                        style: Subtitle2.apply(
+                            fontWeightDelta: -2
+                        ),
                         inputFormatters: <TextInputFormatter>[
                           WhitelistingTextInputFormatter.digitsOnly
                         ],
@@ -115,26 +108,23 @@ class _QrCreate extends State<QrCreate> {
                             dlController.text = "";
                           }
                         },
-                        cursorColor: mainColor,
                         textAlign: TextAlign.end,
                         decoration: InputDecoration(
-                            filled: true,
-                            suffixText: " 원",
-                            suffixStyle: Body1,
-                            fillColor: white,
-                            enabledBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(0),
-                                borderSide:
-                                    BorderSide(color: Color(0xFFDDDDDD))),
-                            counterText: "",
-                            border: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Color(0xFFDDDDDD)),
-                                borderRadius: BorderRadius.circular(0)),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: mainColor),
-                                borderRadius: BorderRadius.circular(0)),
-                            contentPadding: EdgeInsets.symmetric(horizontal: 8.0)),
+                          filled: true,
+                          suffixText: " 원",
+                          suffixStyle: Subtitle2.apply(
+                            fontWeightDelta: -2
+                          ),
+                          fillColor: white,
+                          counterText: "",
+                          contentPadding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
+                          border: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xffdddddd), width: 1.0),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: black, width: 2.0),
+                          ),
+                        ),
                       ),
                     ),
                   )
@@ -153,15 +143,18 @@ class _QrCreate extends State<QrCreate> {
               Expanded(
                 child: Container(),
               ),
-              whiteSpaceH(24),
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: 40,
+                height: 60,
+                padding: EdgeInsets.symmetric(vertical: 8),
                 child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(6)
+                    )
+                  ),
                   onPressed: (payController.text.isNotEmpty && int.parse(payController.text) >= 1000)
                        ? () async {
-
-                    print(1112);
                     int price = int.parse(payController.text == "" ? 0: payController.text);
                     int dilling = 0;
                     String payment = "NORMAL";
@@ -197,14 +190,14 @@ class _QrCreate extends State<QrCreate> {
                   child: Center(
                     child: Text(
                       "QR코드 생성",
-                      style: Body1.apply(
-                        color: white
-                      ),
+                      style: Subtitle2.apply(
+                        color: white,
+                        fontWeightDelta: 1
+                      )
                     ),
                   ),
                 ),
               ),
-              whiteSpaceH(56)
             ],
           ),
         ),
