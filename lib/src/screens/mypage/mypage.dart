@@ -999,10 +999,10 @@ class _MyPageState extends State<MyPage> {
                                 children: [
                                   agencyCheck == 1 ? BizInfo() : BizSelect(),
                                   QrCard(),
-                                  HistoryCard(),
+                                  FranHistoryCard(),
                                   sellDlCard(),
-                                  whiteSpaceH(16.0),
-                                  Tabs(name: "사업자정보 수정", routesName: "/store/modify/business",),
+                                  whiteSpaceH(24.0),
+                                  Tabs(name: "사업자 정보 수정", routesName: "/store/modify/business",),
                                   // RaisedButton(
                                   //   onPressed: () {
                                   //     Navigator.of(context).push(MaterialPageRoute(
@@ -1030,15 +1030,9 @@ class _MyPageState extends State<MyPage> {
   Widget HistoryCard(){
     return InkWell(
       onTap: (){
-        if(view == "My"){
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => pointMgmtUser()
-          ));
-        } else {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => pointMgmt()
-          ));
-        }
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => pointMgmtUser()
+        ));
       },
       child: Container(
         width: double.infinity,
@@ -1055,6 +1049,35 @@ class _MyPageState extends State<MyPage> {
               Text("이용내역",style: Subtitle2),
               Spacer(),
               Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 24,),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget FranHistoryCard(){
+    return InkWell(
+      onTap: (){
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => pointMgmt()
+        ));
+      },
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: white,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset("assets/icon/market.png", width: 24,height: 24, fit: BoxFit.fill,),
+              SizedBox(width: 12,),
+              Text("매출내역",style: Subtitle2),
+              Spacer(),
+              Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 16,),
             ],
           ),
         ),
@@ -1105,15 +1128,15 @@ class _MyPageState extends State<MyPage> {
           color: white,
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+          padding: const EdgeInsets.symmetric(vertical: 12),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset("assets/icon/left_payment.png", height: 42, fit: BoxFit.contain,),
+              Image.asset("assets/icon/s_master.png", width: 24, height: 24, fit: BoxFit.fill,),
               SizedBox(width: 12,),
               Text("총판 등록",style: Subtitle2),
               Spacer(),
-              Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 24,),
+              Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 16,),
             ],
           ),
         ),
@@ -1132,15 +1155,15 @@ class _MyPageState extends State<MyPage> {
           color: white,
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+          padding: const EdgeInsets.symmetric(vertical: 12),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset("assets/icon/left_payment.png", height: 42, fit: BoxFit.contain,),
+              Image.asset("assets/icon//s_master.png", width: 24, height: 24, fit: BoxFit.fill,),
               SizedBox(width: 12,),
               Text("총판 정보",style: Subtitle2),
               Spacer(),
-              Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 24,),
+              Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 16,),
             ],
           ),
         ),
@@ -1161,15 +1184,15 @@ class _MyPageState extends State<MyPage> {
           color: white,
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+          padding: const EdgeInsets.symmetric(vertical: 12),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset("assets/resource/map/qr.png", height: 42, fit: BoxFit.contain,),
+              Image.asset("assets/icon/qr_create.png", width: 24, height: 24, fit: BoxFit.fill,),
               SizedBox(width: 12,),
-              Text("결제QR 생성",style: Subtitle2),
+              Text("QR코드 생성",style: Subtitle2),
               Spacer(),
-              Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 24,),
+              Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 16,),
             ],
           ),
         ),
@@ -1199,15 +1222,15 @@ class _MyPageState extends State<MyPage> {
           color: white,
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+          padding: const EdgeInsets.symmetric(vertical: 12),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset("assets/icon/DL 2.png", height: 42, fit: BoxFit.contain,),
+              Image.asset("assets/icon/sell.png", width: 24,height: 24, fit: BoxFit.fill,),
               SizedBox(width: 12,),
               Text("DL 판매",style: Subtitle2),
               Spacer(),
-              Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 24,),
+              Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size:16,),
             ],
           ),
         ),
@@ -1417,9 +1440,9 @@ class Tabs extends StatelessWidget {
         color: white,
         child: Row(
           children: [
-            Text(name,style: Body1,),
+            Text(name,style: Subtitle2.apply(fontWeightDelta: -1),),
             Spacer(),
-            Icon(Icons.arrow_forward_ios, size: 24, color: Color(0xff444444),)
+            Icon(Icons.arrow_forward_ios, size: 16, color: Color(0xff444444),)
           ],
         ),
       ),
