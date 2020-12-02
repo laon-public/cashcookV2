@@ -217,103 +217,122 @@ class _MyPageState extends State<MyPage> {
               SingleChildScrollView(
                 child: Column(
                     children: [
-                      Container(
-                          padding: const EdgeInsets.only(top: 30.0, left: 12.0, right: 12.0, bottom: 10),
-                          decoration: BoxDecoration(
-                            color: white,
-                          ),
-                          child: InkWell(
-                            onTap: () async{
-                              await Navigator.pushNamed(context, "/userState");
-                            },
-                            child:
-                            Container(
-                              child: Column(
+                      InkWell(
+                        onTap: () async {
+                          await Navigator.pushNamed(context, "/userState");
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(16),
+                          width: MediaQuery.of(context).size.width,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                "assets/icon/s_maker.png",
+                                width: 48,
+                                height: 48,
+                              ),
+                              whiteSpaceW(12),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
-                                      children: [
-                                        RichText(
-                                          text: TextSpan(
-                                              style: Subtitle2,
-                                              children: [
-                                                TextSpan(text:"${user.loginUser.name}", style: Headline),
-                                                TextSpan(text:" 님\n"),
-                                                TextSpan(text:"반갑습니다.")
-                                              ]
-                                          ),
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text("${user.loginUser.name} ",
+                                        style: Subtitle1.apply(
+                                            color: primary,
+                                            fontWeightDelta: 2
                                         ),
-                                        Spacer(),
-                                        Icon(Icons.arrow_forward_ios, size: 24,color: black),
-                                      ]
+                                      ),
+                                      Text("님",
+                                          style: Subtitle1
+                                      )
+                                    ],
                                   ),
-                                  whiteSpaceH(40),
-                                  Row(
-                                      children: [
-                                        InkWell(
-                                          onTap: (){
-                                            Map<String, dynamic> args = {
-                                              "point":"RP",
-                                              "pointImg":"assets/icon/c_point.png"
-                                            };
-                                            Navigator.of(context).pushNamed("/point/history", arguments: args);
-                                          },
-                                          child: Row(
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: [
-                                              Image.asset("assets/icon/c_point.png",height: 24, fit: BoxFit.contain,),
-                                              whiteSpaceW(5),
-                                              Text("${demicalFormat.format(user.pointMap['RP'])} CP",style: Body2.apply(color: black),),
-                                              Icon(Icons.arrow_forward_ios, color: black, size: 12,),
-                                            ],
-                                          ),
-                                        ),
-                                        whiteSpaceW(20),
-                                        InkWell(
-                                          onTap: (){
-                                            Map<String, dynamic> args = {
-                                              "point":"DL",
-                                              "pointImg":"assets/icon/DL 2.png"
-                                            };
-                                            Navigator.of(context).pushNamed("/point/history", arguments: args);
-                                          },
-                                          child: Row(
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: [
-                                              Image.asset("assets/icon/DL 2.png",height: 24, fit: BoxFit.contain,),
-                                              whiteSpaceW(5),
-                                              Text("${demicalFormat.format(user.pointMap['DL'])} DL",style: Body2.apply(color: black),),
-                                              Icon(Icons.arrow_forward_ios, color: black, size: 12,),
-                                            ],
-                                          ),
-                                        ),
-                                        whiteSpaceW(20),
-                                        InkWell(
-                                          onTap: (){
-                                            Map<String, dynamic> args = {
-                                              "point":"CARAT",
-                                              "pointImg":"assets/icon/carat.jpg"
-                                            };
-                                            Navigator.of(context).pushNamed("/point/history", arguments: args);
-                                          },
-                                          child: Row(
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: [
-                                              Image.asset("assets/icon/carat.jpg",height: 24, fit: BoxFit.contain,),
-                                              whiteSpaceW(5),
-                                              Text("${demicalFormat.format(user.pointMap['CARAT'])} CR",style: Body2.apply(color: black),),
-                                              Icon(Icons.arrow_forward_ios, color: black, size: 12,),
-                                            ],
-                                          ),
-                                        ),
-                                      ]
-                                  ),
+                                  Text("반갑습니다.",
+                                      style: Subtitle1
+                                  )
                                 ],
                               ),
-                            ),
-                          )
+                              Spacer(),
+                              Icon(Icons.arrow_forward_ios, size: 16,color: black),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 12),
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                        child: Row(
+                            children: [
+                              InkWell(
+                                onTap: (){
+                                  Map<String, dynamic> args = {
+                                    "point":"RP",
+                                    "pointImg":"assets/icon/c_point.png"
+                                  };
+                                  Navigator.of(context).pushNamed("/point/history", arguments: args);
+                                },
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Image.asset("assets/icon/c_point.png",height: 24, fit: BoxFit.contain,),
+                                    whiteSpaceW(5),
+                                    Text("${demicalFormat.format(user.pointMap['RP'])} CP",style: Body2.apply(color: black),),
+                                    Icon(Icons.arrow_forward_ios, color: black, size: 12,),
+                                  ],
+                                ),
+                              ),
+                              whiteSpaceW(20),
+                              InkWell(
+                                onTap: (){
+                                  Map<String, dynamic> args = {
+                                    "point":"DL",
+                                    "pointImg":"assets/icon/DL 2.png"
+                                  };
+                                  Navigator.of(context).pushNamed("/point/history", arguments: args);
+                                },
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Image.asset("assets/icon/DL 2.png",height: 24, fit: BoxFit.contain,),
+                                    whiteSpaceW(5),
+                                    Text("${demicalFormat.format(user.pointMap['DL'])} DL",style: Body2.apply(color: black),),
+                                    Icon(Icons.arrow_forward_ios, color: black, size: 12,),
+                                  ],
+                                ),
+                              ),
+                              whiteSpaceW(20),
+                              InkWell(
+                                onTap: (){
+                                  Map<String, dynamic> args = {
+                                    "point":"CARAT",
+                                    "pointImg":"assets/icon/carat.jpg"
+                                  };
+                                  Navigator.of(context).pushNamed("/point/history", arguments: args);
+                                },
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Image.asset("assets/icon/carat.jpg",height: 24, fit: BoxFit.contain,),
+                                    whiteSpaceW(5),
+                                    Text("${demicalFormat.format(user.pointMap['CARAT'])} CR",style: Body2.apply(color: black),),
+                                    Icon(Icons.arrow_forward_ios, color: black, size: 12,),
+                                  ],
+                                ),
+                              ),
+                            ]
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 1,
+                        color: Color(0xFFDDDDDD)
                       ),
                       Column(
                           children:[
@@ -326,22 +345,22 @@ class _MyPageState extends State<MyPage> {
                                       RecoCard(),
                                       easyPayCard(),
                                       scrapCard(),
-                                      SizedBox(height: 16,),
+                                      SizedBox(height: 24,),
                                       Tabs(name: "공지사항", routesName: "/notice",),
                                       // CustomerCenter(),
                                       Tabs(name: "FAQ", routesName: "/faq",),
                                       Tabs(name: "서비스 문의", routesName: "/inquiry",),
-                                      Tabs(name: "약관 및 정책", routesName: "",),
                                       Tabs(name: "앱정보", routesName: "/appinfomation",),
-
-
-                                      SizedBox(height: 40,),
+                                      Tabs(name: "약관 및 정책", routesName: "",),
+                                      SizedBox(height: 24,),
                                     ]
                                 )
                             ),
                             (!user.loginUser.isFran) ? Tabs2(name: "제휴매장 등록하기", routesName: "/store/apply1",img: "assets/icon/shop.png",): SizedBox(),
                             SizedBox(height: 12,),
-                            Tabs2(name: "캐시링크 가기", routesName: "cashlink",img: "assets/icon/cashlink-icon.png",),
+                            // Tabs2(name: "캐시링크 가기", routesName: "cashlink",img: "assets/icon/cashlink-icon.png",),
+                            CashTabs(),
+                            SizedBox(height: 34),
                             SizedBox(height: 60,),
                           ]
                       )
@@ -909,7 +928,7 @@ class _MyPageState extends State<MyPage> {
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  padding: EdgeInsets.all(16),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -1040,15 +1059,15 @@ class _MyPageState extends State<MyPage> {
           color: white,
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+          padding: const EdgeInsets.symmetric(vertical: 12),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset("assets/icon/recommend.png", height: 42, fit: BoxFit.contain,),
+              Image.asset("assets/icon/list_color.png", width: 24,height: 24, fit: BoxFit.fill, color: primary),
               SizedBox(width: 12,),
               Text("이용내역",style: Subtitle2),
               Spacer(),
-              Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 24,),
+              Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 16,),
             ],
           ),
         ),
@@ -1101,15 +1120,15 @@ class _MyPageState extends State<MyPage> {
           color: white,
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+          padding: const EdgeInsets.symmetric(vertical: 12),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset("assets/icon/card_blue.png", height: 42, fit: BoxFit.contain,),
+              Image.asset("assets/icon/pay.png", width: 24, height: 24, fit: BoxFit.fill,),
               SizedBox(width: 12,),
               Text("간편결제 관리",style: Subtitle2),
               Spacer(),
-              Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 24,),
+              Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 16,),
             ],
           ),
         ),
@@ -1159,7 +1178,7 @@ class _MyPageState extends State<MyPage> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset("assets/icon//s_master.png", width: 24, height: 24, fit: BoxFit.fill,),
+              Image.asset("assets/icon/s_master.png", width: 24, height: 24, fit: BoxFit.fill,),
               SizedBox(width: 12,),
               Text("총판 정보",style: Subtitle2),
               Spacer(),
@@ -1252,16 +1271,16 @@ class _MyPageState extends State<MyPage> {
           color: white,
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+          padding: const EdgeInsets.symmetric(vertical: 12),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
 //              Image.asset("assets/icon/friends-wt.png", height: 32, fit: BoxFit.contain,),
-              Image.asset("assets/icon/recommend.png", height: 42, fit: BoxFit.contain,),
+              Image.asset("assets/icon/friends.png", width: 28,height: 28, fit: BoxFit.fill,),
               SizedBox(width: 12,),
-              Text("추천인 관리",style: Subtitle2),
+              Text("추천회원 관리",style: Subtitle2),
               Spacer(),
-              Icon(Icons.arrow_forward_ios, color: Colors.black, size: 24,),
+              Icon(Icons.arrow_forward_ios, color: Colors.black, size: 16,),
             ],
           ),
         ),
@@ -1283,15 +1302,15 @@ class _MyPageState extends State<MyPage> {
           color: white,
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+          padding: const EdgeInsets.symmetric(vertical: 12),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset("assets/icon/recommend.png", height: 42, fit: BoxFit.contain,),
+              Image.asset("assets/icon/steam-color2.png", width: 24,height: 24, fit: BoxFit.fill,),
               SizedBox(width: 12,),
               Text("찜한 매장",style: Subtitle2),
               Spacer(),
-              Icon(Icons.arrow_forward_ios, color: Colors.black, size: 24,),
+              Icon(Icons.arrow_forward_ios, color: Colors.black, size: 16,),
             ],
           ),
         ),
@@ -1476,6 +1495,29 @@ class Tabs2 extends StatelessWidget {
             Text(name,style: Body1,),
             Spacer(),
             Image.asset(img,width: 48, fit: BoxFit.contain,),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CashTabs extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
+      child: InkWell(
+        onTap: () async{
+            await launch("http://cashlink.kr");
+        },
+        child: Row(
+          children: [
+            Image.asset("assets/icon/to-cashlink.png",width: 36, height: 36, fit: BoxFit.fill,),
+            whiteSpaceW(12),
+            Text("캐시링크 가기",style: Subtitle2.apply(fontWeightDelta: -1),),
+            Spacer(),
+            Icon(Icons.arrow_forward_ios, color: Colors.black, size: 16,),
           ],
         ),
       ),
