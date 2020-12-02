@@ -59,4 +59,20 @@ class StoreApplyService {
 
     print(res.data);
   }
+
+  Future<String> postBigMenu(int storeId, String name) async {
+    Map<String, dynamic> data = {
+      "storeId" : storeId,
+      "name" : name,
+    };
+
+    Response res = await dio.post(cookURL + "/franchises/v2/bigMenu",
+        data: FormData.fromMap(data),
+        options: Options(
+          headers: {"Authorization": "BEARER ${dataStorage.token}"},
+        )
+    );
+
+    print(res.data);
+  }
 }

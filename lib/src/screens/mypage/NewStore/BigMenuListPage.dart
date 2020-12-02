@@ -81,7 +81,9 @@ class _BigMenuListPage extends State<BigMenuListPage> {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => BigMenuApply()
+                        builder: (context) => BigMenuApply(
+                          storeId: widget.store_id,
+                        )
                       )
                     );
                   },
@@ -129,13 +131,18 @@ class _BigMenuListPage extends State<BigMenuListPage> {
             ),
             whiteSpaceW(6),
             Expanded(
-              child: Text(bmm.menuList.length == 0 ? "빨간점"
+              child: Text(bmm.menuList.length == 0 ? "●"
                   :
               bmm.menuList.length == 1 ?
               bmm.menuList[0].name
                   :
               "${bmm.menuList[0].name} 외 ${bmm.menuList.length -1}개"  ,
-                style: Body2,
+                style: bmm.menuList.length == 0 ?
+                Body2.apply(
+                  color: Colors.red
+                )
+                :
+                Body2,
                 overflow: TextOverflow.ellipsis,
               ),
             ),

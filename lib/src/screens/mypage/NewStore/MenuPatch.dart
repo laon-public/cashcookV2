@@ -204,6 +204,7 @@ class _MenuPatch extends State<MenuPatch> {
                           Expanded(
                             child: TextFormField(
                               controller: priceCtrl,
+                              keyboardType: TextInputType.number,
                               textAlign: TextAlign.end,
                               style: Subtitle2.apply(
                                   fontWeightDelta: -2

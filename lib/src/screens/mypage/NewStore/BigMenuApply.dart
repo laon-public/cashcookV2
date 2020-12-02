@@ -1,15 +1,23 @@
+import 'package:cashcook/src/provider/StoreApplyProvider.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BigMenuApply extends StatefulWidget {
+  final int storeId;
+
+  BigMenuApply({this.storeId});
+
   @override
   _BigMenuApply createState() => _BigMenuApply();
 }
 
 class _BigMenuApply extends State<BigMenuApply> {
+  TextEditingController nameCtrl = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     AppBar appBar = AppBar(
@@ -43,6 +51,7 @@ class _BigMenuApply extends State<BigMenuApply> {
               ),
               whiteSpaceH(4),
               TextFormField(
+                controller: nameCtrl,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
                   border: UnderlineInputBorder(
@@ -60,7 +69,9 @@ class _BigMenuApply extends State<BigMenuApply> {
                 padding: EdgeInsets.symmetric(vertical: 8),
                 child: RaisedButton(
                   elevation: 0,
-                  onPressed: () {},
+                  onPressed: () {
+                    Provider.of<StoreApplyProvider>(context, listen: false).postBigMenu(widget.storeId, nameCtrl.text);
+                  },
                   color: primary,
                   child: Text("완료",
                     style: Subtitle2.apply(

@@ -46,7 +46,7 @@ Widget BigMenuItem(int bigIdx,BigMenuModel bmm, BuildContext context){
             Consumer<StoreServiceProvider>(
               builder: (context, ssp, _){
                 return Container(
-                  transform: Matrix4.translationValues(0.0, bigIdx == 0 ? 0.0 : -95.0, 0.0),
+                  transform: Matrix4.translationValues(0.0, -95.0 * bigIdx, 0.0),
                   child: StickyHeaderBuilder(
                     builder: (BuildContext context, double stuckAmount) {
                       stuckAmount = 1.0 - stuckAmount.clamp(0.0, 1.0);
