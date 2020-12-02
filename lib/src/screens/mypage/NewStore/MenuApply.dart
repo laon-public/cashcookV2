@@ -1,16 +1,30 @@
-import 'package:cashcook/src/model/store/menu.dart';
+import 'dart:io';
+
+import 'package:cashcook/src/provider/StoreApplyProvider.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class MenuApply extends StatefulWidget {
+  final int bigId;
+
+  MenuApply({this.bigId});
+
   @override
   _MenuApply createState() => _MenuApply();
 }
 
 class _MenuApply extends State<MenuApply> {
+
+  TextEditingController nameCtrl = TextEditingController();
+  TextEditingController priceCtrl = TextEditingController();
+  PickedFile imgCtrl;
+
+
   @override
   Widget build(BuildContext context) {
     AppBar appBar = AppBar(
@@ -24,7 +38,7 @@ class _MenuApply extends State<MenuApply> {
         onPressed: () {
           Navigator.of(context).pop();
         },
-        icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24, color: black,),
+        icon: Image.asset("assets/resource/public/close.png", width: 24, height: 24, color: black,),
       ),
     );
     // TODO: implement build
@@ -43,8 +57,16 @@ class _MenuApply extends State<MenuApply> {
                   child: Row(
                     children: [
                       InkWell(
-                        onTap: () {},
-                        child: Container(
+                        onTap: () async {
+                          PickedFile pickedImg = await ImagePicker().getImage(source: ImageSource.gallery);
+
+                          if(pickedImg != null) {
+                            setState(() {
+                              imgCtrl = pickedImg;
+                            });
+                          }
+                        },
+                        child: imgCtrl == null ? Container(
                           width: 48,
                           height: 48,
                           child: Center(
@@ -65,7 +87,27 @@ class _MenuApply extends State<MenuApply> {
                                   width: 0.5
                               )
                           ),
-                        ),
+                        )
+                        :
+                        Container(
+                          width: 48,
+                          height: 48,
+                          child: Image.file(
+                              File(imgCtrl.path),
+                              fit: BoxFit.cover,
+                            ),
+                          decoration: BoxDecoration(
+                              color: Color(0xFFF7F7F7),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(6.0)
+                              ),
+                              border: Border.all(
+                                  color: Color(0xFFDDDDDD),
+                                  width: 0.5
+                              ),
+                          ),
+                        )
+                        ,
                       ),
                       whiteSpaceW(16.0),
                       Expanded(
@@ -74,7 +116,13 @@ class _MenuApply extends State<MenuApply> {
                                 color: black,
                                 fontWeightDelta: 1
                             ),
+                            controller: nameCtrl,
                             decoration: InputDecoration(
+                              hintStyle: Body1.apply(
+                                color: secondary,
+                                fontWeightDelta: 1
+                              ),
+                              hintText: "메뉴명을 입력해주세요",
                               enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Colors.transparent
@@ -115,6 +163,8 @@ class _MenuApply extends State<MenuApply> {
                               style: Subtitle2.apply(
                                   fontWeightDelta: -2
                               ),
+                              controller: priceCtrl,
+                              keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 suffixText: "원",
                                 suffixStyle: Subtitle2.apply(
@@ -142,9 +192,12 @@ class _MenuApply extends State<MenuApply> {
                   padding: EdgeInsets.symmetric(vertical: 8),
                   child: RaisedButton(
                     elevation: 0,
-                    onPressed: () {},
+                    onPressed: () {
+                      print("=========추가 시작===========");
+                      Provider.of<StoreApplyProvider>(context, listen: false).postMenu(widget.bigId, nameCtrl.text, priceCtrl.text, imgCtrl);
+                    },
                     color: primary,
-                    child: Text("수정하기",
+                    child: Text("메뉴 추가",
                       style: Subtitle2.apply(
                           color: white,
                           fontWeightDelta: 1

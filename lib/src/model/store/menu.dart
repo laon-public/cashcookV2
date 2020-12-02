@@ -3,6 +3,7 @@ class MenuModel {
   final String name;
   final int price;
   bool isCheck = false;
+  String imgUrl;
   int count = 1;
 
   MenuModel({
@@ -16,6 +17,7 @@ class MenuModel {
       this.name = json['menu_name'],
       this.price = json['menu_price'],
       this.isCheck = false,
+      this.imgUrl = json['menu_img'],
       this.count = 1;
 }
 

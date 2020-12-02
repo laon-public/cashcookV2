@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cashcook/src/model/store/menu.dart';
 import 'package:cashcook/src/screens/mypage/NewStore/MenuApply.dart';
 import 'package:cashcook/src/screens/mypage/NewStore/MenuPatch.dart';
@@ -69,7 +70,9 @@ class _MenuListPage extends State<MenuListPage> {
                     onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => MenuApply()
+                            builder: (context) => MenuApply(
+                              bigId: widget.bigMenu.id,
+                            )
                           )
                         );
                     },
@@ -110,6 +113,7 @@ class _MenuListPage extends State<MenuListPage> {
         padding: EdgeInsets.all(16),
         child: Row(
           children: [
+            (menu.imgUrl == null) ?
             Container(
               child: Image.asset(
                 "assets/icon/cashcook_logo.png",
@@ -126,7 +130,27 @@ class _MenuListPage extends State<MenuListPage> {
                   width: 0.5
                 )
               ),
-            ),
+            )
+            :
+              CachedNetworkImage(
+                imageUrl: menu.imgUrl,
+                imageBuilder: (context, img) => Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(6.0)
+                        ),
+                        border: Border.all(
+                            color: Color(0xFFDDDDDD),
+                            width: 0.5
+                        ),
+                        image: DecorationImage(
+                            image: img, fit: BoxFit.fill
+                        )
+                    )
+                ),
+              ),
             whiteSpaceW(16.0),
             Expanded(
               child: Text(menu.name,

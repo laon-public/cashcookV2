@@ -34,4 +34,8 @@ class StoreApplyProvider extends ChangeNotifier {
     File image = File(imageList[0].path);
     String res = await service.imageTest(image.absolute.path);
   }
+
+  Future postMenu(int bigId, String menuName, String menuPrice, PickedFile menuImg) async {
+    await service.postMenu(bigId, menuName, menuPrice, menuImg);
+  }
 }

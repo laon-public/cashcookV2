@@ -1020,7 +1020,7 @@ class _MyPageState extends State<MyPage> {
                                   agencyCheck == 1 ? BizInfo() : BizSelect(),
                                   QrCard(),
                                   FranHistoryCard(),
-                                  MenuApplyCard(),
+                                  // MenuApplyCard(),
                                   sellDlCard(),
                                   whiteSpaceH(24.0),
                                   Tabs(name: "사업자 정보 수정", routesName: "/store/modify/business",),
@@ -1050,8 +1050,8 @@ class _MyPageState extends State<MyPage> {
   //메뉴 수정
   Widget MenuApplyCard() {
     return InkWell(
-      onTap: (){
-        Navigator.of(context).push(MaterialPageRoute(
+      onTap: () async {
+        await Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => BigMenuListPage(
               store_id: Provider.of<UserProvider>(context, listen:false).storeModel.id,
             )
