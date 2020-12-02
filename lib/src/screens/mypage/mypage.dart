@@ -4,8 +4,8 @@ import 'package:cashcook/src/model/usercheck.dart';
 import 'package:cashcook/src/provider/PointMgmtProvider.dart';
 import 'package:cashcook/src/provider/RecoProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
+import 'package:cashcook/src/screens/mypage/NewStore/BigMenuListPage.dart';
 import 'package:cashcook/src/screens/mypage/NewStore/franApply.dart';
-import 'package:cashcook/src/screens/mypage/NewStore/menuApply.dart';
 import 'package:cashcook/src/screens/mypage/points/integratedPoint.dart';
 import 'package:cashcook/src/screens/mypage/points/pointMgmt.dart';
 import 'package:cashcook/src/screens/mypage/points/pointMgmtUser.dart';
@@ -1020,7 +1020,7 @@ class _MyPageState extends State<MyPage> {
                                   agencyCheck == 1 ? BizInfo() : BizSelect(),
                                   QrCard(),
                                   FranHistoryCard(),
-                                  // MenuApplyCard(),
+                                  MenuApplyCard(),
                                   sellDlCard(),
                                   whiteSpaceH(24.0),
                                   Tabs(name: "사업자 정보 수정", routesName: "/store/modify/business",),
@@ -1052,7 +1052,7 @@ class _MyPageState extends State<MyPage> {
     return InkWell(
       onTap: (){
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => MenuApply(
+            builder: (context) => BigMenuListPage(
               store_id: Provider.of<UserProvider>(context, listen:false).storeModel.id,
             )
         ));

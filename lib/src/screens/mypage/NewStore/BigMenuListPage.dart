@@ -1,22 +1,23 @@
 import 'package:cashcook/src/model/store/menu.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
-import 'package:cashcook/src/screens/mypage/NewStore/menuApply2.dart';
+import 'package:cashcook/src/screens/mypage/NewStore/BigMenuApply.dart';
+import 'package:cashcook/src/screens/mypage/NewStore/MenuListPage.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class MenuApply extends StatefulWidget {
+class BigMenuListPage extends StatefulWidget {
   final int store_id;
 
-  MenuApply({this.store_id});
+  BigMenuListPage({this.store_id});
 
   @override
-  _MenuApply createState() => _MenuApply();
+  _BigMenuListPage createState() => _BigMenuListPage();
 }
 
-class _MenuApply extends State<MenuApply> {
+class _BigMenuListPage extends State<BigMenuListPage> {
   @override
   void initState() {
     // TODO: implement initState
@@ -77,7 +78,13 @@ class _MenuApply extends State<MenuApply> {
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: RaisedButton(
                   elevation: 0,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => BigMenuApply()
+                      )
+                    );
+                  },
                   color: primary,
                   child: Text("대메뉴 추가",
                     style: Subtitle2.apply(
@@ -104,7 +111,7 @@ class _MenuApply extends State<MenuApply> {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => MenuApplySecond(
+            builder: (context) => MenuListPage(
               bigMenu: bmm,
             )
           )

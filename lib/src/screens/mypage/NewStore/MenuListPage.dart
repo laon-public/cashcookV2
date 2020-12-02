@@ -1,5 +1,6 @@
 import 'package:cashcook/src/model/store/menu.dart';
-import 'package:cashcook/src/screens/mypage/NewStore/menuPatch.dart';
+import 'package:cashcook/src/screens/mypage/NewStore/MenuApply.dart';
+import 'package:cashcook/src/screens/mypage/NewStore/MenuPatch.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
@@ -7,16 +8,16 @@ import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class MenuApplySecond extends StatefulWidget {
+class MenuListPage extends StatefulWidget {
   final BigMenuModel bigMenu;
 
-  MenuApplySecond({this.bigMenu});
+  MenuListPage({this.bigMenu});
 
   @override
-  _MenuApplySecond createState() => _MenuApplySecond();
+  _MenuListPage createState() => _MenuListPage();
 }
 
-class _MenuApplySecond extends State<MenuApplySecond> {
+class _MenuListPage extends State<MenuListPage> {
   @override
   Widget build(BuildContext context) {
     AppBar appBar = AppBar(
@@ -65,7 +66,13 @@ class _MenuApplySecond extends State<MenuApplySecond> {
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: RaisedButton(
                     elevation: 0,
-                    onPressed: () {},
+                    onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => MenuApply()
+                          )
+                        );
+                    },
                     color: primary,
                     child: Text("메뉴 추가",
                       style: Subtitle2.apply(
