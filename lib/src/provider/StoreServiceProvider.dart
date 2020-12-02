@@ -211,7 +211,11 @@ class StoreServiceProvider with ChangeNotifier {
   }
 
   void fetchMenu(int store_id) async {
+    menuList.clear();
+    notifyListeners();
+
     final response = await service.fetchMenu(store_id);
+
 
     dynamic _bigMenuList = json.decode(response)['data']['list'];
 

@@ -457,7 +457,30 @@ class _FranApply extends State<FranApply> {
                     ],
                   )
                 ),
-              )
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.symmetric(vertical: 8.0),
+                child: RaisedButton(
+                  elevation: 0.0,
+                  onPressed: () {
+                    Provider.of<StoreApplyProvider>(context, listen: false).submitImg();
+                  },
+                  color: primary,
+                  padding: EdgeInsets.symmetric(vertical: 11),
+                  child: Text("사진 테스팅",
+                    style: Subtitle2.apply(
+                        color: white,
+                        fontWeightDelta: 1
+                    ),
+                  ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(6)
+                      )
+                  ),
+                ),
+              ),
             ],
           ),
         ),
