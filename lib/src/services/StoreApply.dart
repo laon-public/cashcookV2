@@ -94,4 +94,15 @@ class StoreApplyService {
 
     print(res.data);
   }
+
+  Future<String> fetchContent(int storeId) async {
+    Response<List<int>> res = await dio.get(cookURL + "/franchises/v2/content/$storeId",
+        options: Options(
+          headers: {"Authorization": "BEARER ${dataStorage.token}"},
+          responseType: ResponseType.bytes
+        )
+    );
+
+    return utf8.decode(res.data);
+  }
 }

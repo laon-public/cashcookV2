@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cashcook/src/model/store/content.dart';
 import 'package:cashcook/src/provider/StoreApplyProvider.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
@@ -11,8 +12,9 @@ import 'package:provider/provider.dart';
 
 class ContentApply extends StatefulWidget {
   final int storeId;
+  final String comment;
 
-  ContentApply({this.storeId});
+  ContentApply({this.storeId, this.comment});
 
   @override
   _ContentApply createState() => _ContentApply();
@@ -22,6 +24,17 @@ class _ContentApply extends State<ContentApply> {
   List<PickedFile> contentsImgList = [];
   TextEditingController contentCtrl = new TextEditingController();
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<StoreApplyProvider>(context, listen: false).fetchContent(widget.storeId);
+    });
+    setState(() {
+      contentCtrl.text = widget.comment;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,15 +75,27 @@ class _ContentApply extends State<ContentApply> {
                     whiteSpaceH(4),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          Row(
-                            children: contentsImgList.map((e) =>
-                              imageItem(e)
-                            ).toList(),
-                          ),
-                          imagePlusItem(),
-                        ],
+                      child: Consumer<StoreApplyProvider>(
+                        builder: (context, sap, _){
+                          return Row(
+                            children: [
+                              (sap.contentsList.length == 0) ? 
+                                  Container()
+                              :
+                                  Row(
+                                    children: sap.contentsList.map((e) =>
+                                        contentImageItem(e)
+                                    ).toList(),
+                                  ),
+                              Row(
+                                children: contentsImgList.map((e) =>
+                                    imageItem(e)
+                                ).toList(),
+                              ),
+                              imagePlusItem(),
+                            ],
+                          );
+                        },
                       ),
                     ),
                     whiteSpaceH(20),
@@ -146,6 +171,34 @@ class _ContentApply extends State<ContentApply> {
           ),
         ),
       )
+    );
+  }
+
+  Widget contentImageItem(ContentModel content) {
+    return InkWell(
+      onTap: () {
+      },
+      child: Container(
+        margin: EdgeInsets.only(right: 8.0),
+        width: 104,
+        height: 104,
+        decoration: BoxDecoration(
+            color: Color(0xFFF7F7F7),
+            borderRadius: BorderRadius.all(
+                Radius.circular(4)
+            ),
+            border: Border.all(
+                color: Color(0xFFDDDDDD),
+                width: 1
+            ),
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: NetworkImage(
+                content.imgUrl
+              ),
+            )
+        ),
+      ),
     );
   }
 

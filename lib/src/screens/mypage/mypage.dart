@@ -1056,6 +1056,7 @@ class _MyPageState extends State<MyPage> {
         await Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => ContentApply(
               storeId: Provider.of<UserProvider>(context, listen:false).storeModel.id,
+              comment: Provider.of<UserProvider>(context, listen:false).storeModel.store.comment,
             )
         ));
       },
