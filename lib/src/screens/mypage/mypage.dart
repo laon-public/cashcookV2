@@ -1054,7 +1054,9 @@ class _MyPageState extends State<MyPage> {
     return InkWell(
       onTap: () async {
         await Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ContentApply()
+            builder: (context) => ContentApply(
+              storeId: Provider.of<UserProvider>(context, listen:false).storeModel.id,
+            )
         ));
       },
       child: Container(

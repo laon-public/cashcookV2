@@ -46,4 +46,8 @@ class StoreApplyProvider extends ChangeNotifier {
   Future postBigMenu(int storeId, String name) async {
     await service.postBigMenu(storeId, name);
   }
+
+  Future patchContent(int storeId, List<PickedFile> imgList) async {
+    await service.patchContent(storeId, imgList);
+  }
 }

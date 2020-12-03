@@ -75,4 +75,23 @@ class StoreApplyService {
 
     print(res.data);
   }
+
+  Future<String> patchContent(int storeId, List<PickedFile> imgList) async {
+    Map<String, dynamic> data = {
+      "storeId" : storeId
+    };
+    FormData form = FormData.fromMap(data);
+    imgList.forEach((element) {
+      form.files.add(MapEntry("contentImgs", MultipartFile.fromFileSync(File(element.path).absolute.path)));
+    });
+
+    Response res = await dio.patch(cookURL + "/franchises/v2/content",
+        data: form,
+        options: Options(
+          headers: {"Authorization": "BEARER ${dataStorage.token}"},
+        )
+    );
+
+    print(res.data);
+  }
 }

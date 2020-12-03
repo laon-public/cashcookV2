@@ -1,13 +1,19 @@
 import 'dart:io';
 
+import 'package:cashcook/src/provider/StoreApplyProvider.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class ContentApply extends StatefulWidget {
+  final int storeId;
+
+  ContentApply({this.storeId});
+
   @override
   _ContentApply createState() => _ContentApply();
 }
@@ -125,7 +131,9 @@ class _ContentApply extends State<ContentApply> {
                         Radius.circular(6.0)
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                      Provider.of<StoreApplyProvider>(context, listen: false).patchContent(widget.storeId, contentsImgList);
+                  },
                   child: Text("수정하기",
                       style: Subtitle2.apply(
                           color: white,
