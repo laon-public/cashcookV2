@@ -5,6 +5,7 @@ import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/dialog.dart';
+import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,8 +13,10 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 class QrCheck extends StatefulWidget {
   final String uuid;
+  final String storeName;
+  final int pay;
 
-  QrCheck(this.uuid);
+  QrCheck({this.uuid, this.storeName, this.pay});
 
   @override
   _QrCheck createState() => _QrCheck();
@@ -68,74 +71,102 @@ class _QrCheck extends State<QrCheck> {
         ),
         body: Container(
           width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom - appBar.preferredSize.height,
+          height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - appBar.preferredSize.height,
           color: white,
-          padding: EdgeInsets.only(top: 50,left: 16, right: 16),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                  width: 315,
-                  height: 315,
-                  child:
-                    Stack(
-                      children: [
-                        Positioned.fill(
-                            child: Container(
-                              padding: EdgeInsets.all(60),
-                              child: QrImage(
-                                data: widget.uuid,
-                                version: QrVersions.auto,
-                                size: 160.0,
-                              ),
-                              decoration: BoxDecoration(
-                                  color: white,
-                                  border: Border.all(color: mainColor, width: 10),
-                                  shape: BoxShape.circle
-                              ),
-                            )
-                        ),
-                        Positioned(
-                            bottom: 0,
-                            right: 30,
-                            child: CachedNetworkImage(
-                              imageUrl: user.storeModel.store.shop_img1,
-                              imageBuilder: (context, img) => Container(
-                                width: 64,
-                                height: 64,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                    image: img, fit: BoxFit.fill
-                                  )
-                                )
-                              ),
-                            )
-                        )
-                      ]
+                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 1 / 6),
+                child: Column(
+                  children: [
+                    QrImage(
+                        data: widget.uuid,
+                        version: QrVersions.auto,
+                        size: 160
+                    ),
+                    whiteSpaceH(12),
+                    Text(widget.storeName,
+                      style: Body1.apply(
+                        color: black,
+                        fontWeightDelta: 3
+                      )
+                    ),
+                    Text("${numberFormat.format(widget.pay)}원",
+                      style: Subtitle1.apply(
+                        color: primary,
+                        fontWeightDelta: 1
+                      )
                     )
+                  ],
+                )
+
               ),
-              Expanded(
-                child: Container(),
-              ),
+              // Container(
+              //     width: 315,
+              //     height: 315,
+              //     child:
+              //       Stack(
+              //         children: [
+              //           Positioned.fill(
+              //               child: Container(
+              //                 padding: EdgeInsets.all(60),
+              //                 child: QrImage(
+              //                   data: widget.uuid,
+              //                   version: QrVersions.auto,
+              //                   size: 160.0,
+              //                 ),
+              //                 decoration: BoxDecoration(
+              //                     color: white,
+              //                     border: Border.all(color: mainColor, width: 10),
+              //                     shape: BoxShape.circle
+              //                 ),
+              //               )
+              //           ),
+              //           Positioned(
+              //               bottom: 0,
+              //               right: 30,
+              //               child: CachedNetworkImage(
+              //                 imageUrl: user.storeModel.store.shop_img1,
+              //                 imageBuilder: (context, img) => Container(
+              //                   width: 64,
+              //                   height: 64,
+              //                   decoration: BoxDecoration(
+              //                     shape: BoxShape.circle,
+              //                     image: DecorationImage(
+              //                       image: img, fit: BoxFit.fill
+              //                     )
+              //                   )
+              //                 ),
+              //               )
+              //           )
+              //         ]
+              //       )
+              // ),
+              Spacer(),
               Container(
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 width: MediaQuery.of(context).size.width,
-                height: 40,
+                height: 60,
                 child: RaisedButton(
-                  color: mainColor,
+                  color: primary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(6.0)
+                    )
+                  ),
                   onPressed: () {
                     qrDialog();
                   },
                   elevation: 0.0,
                   child: Center(
-                    child: Text('완료', style: Body1.apply(
+                    child: Text('완료', style: Subtitle2.apply(
                       color: white,
-                    ),),
+                      fontWeightDelta: 1
+                    )
+                      ,),
                   ),
                 ),
               ),
-              whiteSpaceH(56)
             ],
           ),
         ),

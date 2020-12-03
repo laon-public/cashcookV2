@@ -180,7 +180,11 @@ class _QrCreate extends State<QrCreate> {
 
                           }else{
                             print(" 100원 단위 없음 : ${payController.text.substring( payController.text.length-3 , payController.text.length)}");
-                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => QrCheck(uuid)));
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => QrCheck(
+                              uuid: uuid,
+                              pay: int.parse(payController.text),
+                              storeName: myStore.store.name,
+                            )));
                           }
                     }
 
