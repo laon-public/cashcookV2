@@ -2,6 +2,7 @@ import 'package:cashcook/src/model/account.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
@@ -34,13 +35,16 @@ class _RPExchangeState extends State<RPExchange> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("CP 환전하기",
-          style: TextStyle(
-            fontSize: 14,
-            fontFamily: 'noto',
-            fontWeight: FontWeight.w600
-          )),
+          style: appBarDefaultText
+        ),
         centerTitle: true,
         elevation: 1.0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24,),
+        ),
       ),
       body: body(),
     );

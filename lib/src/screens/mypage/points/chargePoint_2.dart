@@ -51,14 +51,19 @@ class _ChargePoint2State extends State<ChargePoint2> {
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("포인트 충전",
+        title: Text("${widget.pointType} 충전",
           style: appBarDefaultText
+        ),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24,),
         ),
         centerTitle: true,
         elevation: 1.0,
       ),
-      body: Padding(
-        padding: EdgeInsets.only(right: 16, left: 16, bottom: 16),
+      body: Container(
         child: SingleChildScrollView(
           child:
           Consumer<UserProvider>(
@@ -66,48 +71,41 @@ class _ChargePoint2State extends State<ChargePoint2> {
               return Column(
                 children: [
                   Container(
-                    padding: EdgeInsets.only(top: 20),
+                    margin: EdgeInsets.only(top: 26),
+                    padding: EdgeInsets.symmetric(vertical: 14, horizontal: 16),
                     width: MediaQuery.of(context).size.width,
-                    height: 104,
-                    child: Row(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("보유 ${widget.pointType}",
-                              style: Subtitle1,
-                            ),
-                            whiteSpaceH(4.0),
-                            Row(
-                              children: [
-                                Image.asset(
-                                  widget.pointType == "CARAT" ? "assets/icon/carat.jpg" : "assets/icon/adp.png",
-                                  width: 24,
-                                  height: 24,
-                                ),
-                                whiteSpaceW(12.0),
-                                Text("${numberFormat.format(point[widget.pointType])} ${widget.pointType}",
-                                  style: Body1,
-                                ),
-                              ],
-                            )
-                          ],
+                        Text("현재 보유 ${widget.pointType}",
+                          style: Body1.apply(
+                              color: secondary
+                          ),
                         ),
-                        Spacer(),
-                        Image.asset(
-                          "assets/icon/study_payment.png",
-                          width: 64,
-                          height: 64,
+                        whiteSpaceH(4.0),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text("${numberFormat.format(point[widget.pointType])} ",
+                              style: Subtitle1.apply(
+                                  fontWeightDelta: 2
+                              ),
+                            ),
+                            Text("${widget.pointType}",
+                              style: Subtitle2.apply(
+                                  fontWeightDelta: 1
+                              ),
+                            ),
+                          ],
                         )
                       ],
                     ),
                   ),
                   Container(
+                    margin: EdgeInsets.only(top: 24),
+                    padding: EdgeInsets.symmetric(horizontal: 16),
                     width: MediaQuery.of(context).size.width,
-                    height: 102,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,7 +113,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
                         Text("충전수량",
                             style: Body2
                         ),
-                        whiteSpaceH(4.0),
+                        whiteSpaceH(8.0),
                         Row(
                           children: [
                             Image.asset(
@@ -123,7 +121,8 @@ class _ChargePoint2State extends State<ChargePoint2> {
                               width: 40,
                               height: 40,
                             ),
-                            Flexible(
+                            whiteSpaceW(12),
+                            Expanded(
                               child: TextFormField(
                                 textAlign: TextAlign.end,
                                 style: Subtitle2.apply(
@@ -136,7 +135,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
                                 controller: up.chargeQuantityCtrl,
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
-                                  suffixText: widget.pointType == "CARAT" ? "CARAT" : "ADP",
+                                  suffixText: widget.pointType == "CARAT" ? " CARAT" : " ADP",
                                   suffixStyle: Subtitle2.apply(
                                     fontWeightDelta: -2
                                   ),
@@ -145,14 +144,14 @@ class _ChargePoint2State extends State<ChargePoint2> {
                                     borderSide: BorderSide(color: Color(0xffdddddd), width: 1.0),
                                   ),
                                   focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: mainColor, width: 1.0),
+                                    borderSide: BorderSide(color: black, width: 2.0),
                                   ),
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        whiteSpaceH(3.0),
+                        whiteSpaceH(6.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -166,127 +165,106 @@ class _ChargePoint2State extends State<ChargePoint2> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(bottom: 30.0),
                     width: MediaQuery.of(context).size.width,
-                    height: 102,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    margin: EdgeInsets.only(top: 24),
+                    padding: EdgeInsets.all(16),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text("DL결제",
-                                style: Body2
-                            ),
-                            whiteSpaceW(5.0),
-                            Text("* ${numberFormat.format(point['DL'])} DL 보유 중",
-                                style: TabsTagsStyle.apply(
-                                  color: primary,
-                                  fontWeightDelta: 2
-                                )
-                            )
-                          ],
+                        Text(
+                          "DL 결제 수량",
+                          style: Body1.apply(
+                            color: black,
+                            fontWeightDelta: 1
+                          )
                         ),
-                        whiteSpaceH(4.0),
-                        Row(
-                          children: [
-                            Image.asset(
-                              "assets/icon/DL 2.png",
-                              width: 40,
-                              height: 40,
+                        whiteSpaceW(12),
+                        RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(2)
                             ),
-                            Flexible(
-                              child: TextFormField(
-                                textAlign: TextAlign.end,
-                                style: Subtitle2.apply(
-                                  fontWeightDelta: -2
-                                ),
-                                onChanged: (value) {
-                                  up.setDlPay();
-                                },
-                                cursorColor: Color(0xff000000),
-                                controller: up.dlQuantityCtrl,
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  suffixText: " DL",
-                                  suffixStyle: Subtitle2.apply(
-                                      fontWeightDelta: -2
-                                  ),
-                                  contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
-                                  border: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Color(0xffdddddd), width: 1.0),
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: mainColor, width: 1.0),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        whiteSpaceH(3.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                                "= ${numberFormat.format(up.dlPay)} DL",
-                                style: Body2
+                            side: BorderSide(
+                              color: up.dlQuantityCtrl.text == "" ? Color(0xFFDDDDDD) : primary,
+                              width: 1,
                             )
-                          ],
+                          ),
+                          color: up.dlQuantityCtrl.text == "" ? white : primary,
+                          elevation: 0.0,
+                          onPressed: () {
+                            showDLDialog();
+                          },
+                          child: Text(
+                              up.dlQuantityCtrl.text == "" ? "DL 사용" : "${up.dlQuantityCtrl.text}DL",
+                            style: Body1.apply(
+                              color:  up.dlQuantityCtrl.text == "" ? secondary : white
+                            )
+                          ),
+                        ),
+                        Spacer(),
+                        Text("- ${numberFormat.format(up.dlPay * 100)}원",
+                          style: Body1.apply(
+                            color: secondary,
+                            fontWeightDelta: 1
+                          )
                         ),
                       ],
                     ),
                   ),
+                  whiteSpaceH(12),
                   Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 1,
-                    color: Color(0xFFDDDDDD),
-                  ),
-                  whiteSpaceH(8),
-                  Container(
-                    padding: EdgeInsets.only(bottom: 30.0),
+                    padding: EdgeInsets.symmetric(vertical: 13, horizontal: 16),
                     width: MediaQuery.of(context).size.width,
                     child: Row(
                         children: [
-                          Expanded(
-                            flex:1,
-                              child: Text(
-                                "총 결제 금액",
-                                style: Subtitle2,
-                                textAlign: TextAlign.start,
-                              )
+                          Text(
+                            "최종 결제 금액",
+                            style: Body1.apply(
+                              color: black,
+                              fontWeightDelta: 1
+                            ),
+                            textAlign: TextAlign.start,
                           ),
-                          Expanded(
-                            flex: 2,
-                              child: Text(
-                                ((up.chargePay - (up.dlPay * 100))) < 0 ?
-                                "결제금액보다 많을 수 없습니다."
+                          Spacer(),
+                          Text(
+                            ((up.chargePay - (up.dlPay * 100))) < 0 ?
+                            "결제금액보다 많을 수 없습니다."
                                 :
-                                (point['DL'] < up.dlPay) ?
-                                "보유DL보다 많습니다."
+                            (point['DL'] < up.dlPay) ?
+                            "보유DL보다 많습니다."
                                 :
-                                "${numberFormat.format((up.chargePay - (up.dlPay * 100)))}원",
-                                style: Subtitle2.apply(
-                                  color: primary
-                                ),
-                                textAlign: TextAlign.end,
-                              )
+                            "${numberFormat.format((up.chargePay - (up.dlPay * 100)))}원",
+                            style: Subtitle2.apply(
+                                color: primary,
+                              fontWeightDelta: 1
+                            ),
+                            textAlign: TextAlign.end,
                           )
                         ]
                     ),
                   ),
+                  whiteSpaceH(12),
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "결제방식",
-                          style: Subtitle2,
-                        ),
-                        whiteSpaceH(9.0),
-                        Row(
+                    height: 8,
+                    color: Color(0xFFF2F2F2),
+                  ),
+                  whiteSpaceH(12),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: 11, horizontal: 16),
+                          width: MediaQuery.of(context).size.width,
+                          child: Text(
+                            "결제방식",
+                            style: Subtitle2,
+                          ),
+                      ),
+                      whiteSpaceH(12.0),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: Row(
                           children: [
                             Expanded(
                               child: method("신용카드",0),
@@ -295,35 +273,38 @@ class _ChargePoint2State extends State<ChargePoint2> {
                               child: method("무통장입금", 1),
                             ),
                           ],
-                        ),
-                        whiteSpaceH(20.0),
-                      ],
-                    ),
+                        )
+                      ),
+                      whiteSpaceH(20.0),
+                    ],
                   ),
                   methodType == 1 ?
-                      DropdownButton(
-                        isExpanded: true,
-                        icon: Icon(Icons.arrow_drop_down, color: mainColor,),
-                        iconSize: 24,
-                        elevation: 16,
-                        underline: Container(
-                          height: 2,
-                          color: Color(0xFFDDDDDD),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: DropdownButton(
+                          isExpanded: true,
+                          icon: Icon(Icons.arrow_drop_down, color: black,),
+                          iconSize: 24,
+                          elevation: 16,
+                          underline: Container(
+                            height: 1,
+                            color: Color(0xFFDDDDDD),
+                          ),
+                          value: "우리은행 / (주)트라이아트 / 00-000000-000",
+                          items: ["우리은행 / (주)트라이아트 / 00-000000-000"].map((value) {
+                            return DropdownMenuItem(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }
+                          ).toList(),
+                          onChanged: (value){
+                          },
                         ),
-                        value: "우리은행 / (주)트라이아트 / 00-000000-000",
-                        items: ["우리은행 / (주)트라이아트 / 00-000000-000"].map((value) {
-                          return DropdownMenuItem(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }
-                        ).toList(),
-                        onChanged: (value){
-                        },
-                      ): Container(),
+                      )
+                      : Container(),
                   Container(
-                    margin: EdgeInsets.only(top: 40),
-                    height: 70,
+                    padding: EdgeInsets.symmetric(horizontal: 16),
                     width: MediaQuery.of(context).size.width,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -345,14 +326,18 @@ class _ChargePoint2State extends State<ChargePoint2> {
                     ),
                   ),
                   agreePolicy(),
-                  whiteSpaceH(24.0),
+                  whiteSpaceH(53.0),
                   Container(
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                     width: MediaQuery.of(context).size.width,
-                    height: 40,
-                    color: primary,
+                    height: 60,
                     child: RaisedButton(
-                      color: mainColor,
+                      color: primary,
+                      elevation: 0.0,
                       disabledColor: Color(0xFFDDDDDD),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(6.0))
+                      ),
                       onPressed: up.chargePay < payLimit || !isAgree || ((up.chargePay - (up.dlPay * 100))) < 0 || (point['DL'] < up.dlPay)? null : () async {
                         if (paymentType[methodType] == "CREDIT_CARD") {
                           if((up.chargePay - (up.dlPay * 100)) <= 0){
@@ -410,10 +395,11 @@ class _ChargePoint2State extends State<ChargePoint2> {
                           Navigator.of(context).pop();
                         }
                       },
-                      child: Text("결제하기",
-                        style: Body1.apply(
-                          color: white
-                        ),
+                      child: Text("완료",
+                        style: Subtitle2.apply(
+                          color: white,
+                          fontWeightDelta: 1
+                        )
                       ),
                     )
                   )
@@ -427,32 +413,41 @@ class _ChargePoint2State extends State<ChargePoint2> {
   }
 
   Widget agreePolicy() {
-
     return Container(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          // 전체선택
-          Theme(
-            data: ThemeData(unselectedWidgetColor: Color(0xFFDDDDDD),  ),
-            child:
-            Checkbox(
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              activeColor: mainColor,
-              checkColor: mainColor,
-              value: isAgree,
-              onChanged: (value) {
-                setState(() {
-                  isAgree = value;
-                });
-              },
+      margin: EdgeInsets.only(top:12),
+      child: InkWell(
+        onTap: () {
+          setState(() {
+            isAgree = !isAgree;
+          });
+        },
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            // 전체선택
+            Theme(
+              data: ThemeData(unselectedWidgetColor: Color(0xFFDDDDDD),  ),
+              child:
+              Checkbox(
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                activeColor: mainColor,
+                checkColor: mainColor,
+                value: isAgree,
+                onChanged: (value) {
+                  setState(() {
+                    isAgree = value;
+                  });
+                },
+              ),
             ),
-          ),
-          Text(
-            "개인정보 제 3자 제공 및 위탁동의",
-            style: Body2
-          )
-        ],
+            Text(
+                "개인정보 제 3자 제공 및 위탁동의",
+                style: Body1.apply(
+                  color: third
+                )
+            )
+          ],
+        ),
       ),
     );
   }
@@ -465,6 +460,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
         });
       },
       child: Container(
+
         height: 40,
         padding: const EdgeInsets.symmetric(
           vertical: 10,
@@ -472,33 +468,39 @@ class _ChargePoint2State extends State<ChargePoint2> {
         decoration: BoxDecoration(
             border: Border.all(
                 color: this.methodType == methodType ?
-                  mainColor
+                  primary
                   :
-                    Color(0xFFDDDDDD)
+                    deActivatedGrey
             )),
         child: Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-
             children: [
-              Theme(
-                data: ThemeData(unselectedWidgetColor: Colors.transparent,
+              AnimatedContainer(
+                width: methodType == this.methodType ? 20 : 0,
+                height: methodType == this.methodType ? 16 : 0,
+                child: Theme(
+                  data: ThemeData(
+                    unselectedWidgetColor: Colors.transparent,
+                  ),
+                  child:
+                  Checkbox(
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    activeColor: Colors.transparent,
+                    checkColor: primary,
+                    value: methodType == this.methodType,
+                    onChanged: (value) {},
+                  ),
                 ),
-                child:
-                Checkbox(
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  activeColor: Colors.transparent,
-                  checkColor: primary,
-                  value: methodType == this.methodType,
-                  onChanged: (value) {},
-                ),
+                duration: Duration(milliseconds: 300),
               ),
+
               Text(
                 text,
                 style: Body1.apply(
                     color: methodType == this.methodType
-                        ? mainColor
-                        : Color(0xff888888)
+                        ? black
+                        : third
                 )
               ),
             ],
@@ -506,5 +508,164 @@ class _ChargePoint2State extends State<ChargePoint2> {
         ),
       ),
     );
+  }
+
+  showDLDialog() {
+    Map<String, dynamic> pointMap =  Provider.of<UserProvider>(context, listen: false).pointMap;
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20)),
+            title: Text("DL 사용",
+              style: Body1.apply(
+                  fontWeightDelta: 3
+              ),
+              textAlign: TextAlign.center,
+            ),
+            content:
+            Container(
+              width: 240,
+              height: 220,
+              child: Column(
+                children: [
+                  Consumer<UserProvider>(
+                    builder: (context, up, _){
+                      return Text(
+                        "총 충전 금액 ${numberFormat.format(up.chargePay)}원 중\n"
+                            + "DL로 결제할 수량을 입력하세요.",
+                        style: Body1,
+                        textAlign: TextAlign.center,
+                      );
+                    },
+                  ),
+                  Consumer<UserProvider>(
+                    builder: (context, up, _) {
+                      return Container(
+                        margin: EdgeInsets.only(top: 25.0, bottom: 20.0),
+                        width: 192,
+                        height: 44,
+                        child:
+                        TextFormField(
+                          cursorColor: Color(0xff000000),
+                          controller: up.dlQuantityCtrl,
+                          keyboardType: TextInputType.number,
+                          textAlign: TextAlign.center,
+                          onChanged: (value) {
+                            up.setDlPay();
+                          },
+                          style: Subtitle2.apply(
+                              fontWeightDelta: -2
+                          ),
+                          decoration: InputDecoration(
+                            suffixText: "개",
+                            suffixStyle: Body1.apply(
+                                color: secondary
+                            ),
+                            contentPadding: EdgeInsets.all(12.0),
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            border: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color(0xFFDDDDDD)
+                                )
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: primary
+                                )
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  whiteSpaceH(20),
+                  Consumer<UserProvider>(
+                    builder: (context, up, _) {
+                      return Center(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ClipOval(
+                                child:Container(
+                                  width: 64,
+                                  height: 64,
+                                  decoration: BoxDecoration(
+                                      color: white,
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color: Color(0xFFDDDDDD),
+                                          width: 1
+                                      )
+                                  ),
+                                  child: Center(
+                                      child: Material(
+                                        color: Colors.transparent,
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text("취소",
+                                              style:Body1.apply(
+                                                  color: secondary,
+                                                  fontWeightDelta: 3
+                                              )
+                                          ),
+                                        ),
+                                      )
+                                  ),
+                                )
+                            ),
+                            whiteSpaceW(20.0),
+
+                            ClipOval(
+                                child:Container(
+                                  width: 64,
+                                  height: 64,
+                                  decoration: BoxDecoration(
+                                      color:mainColor,
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color: primary,
+                                          width: 1
+                                      )
+                                  ),
+                                  child: Center(
+                                      child: Material(
+                                        color: Colors.transparent,
+                                        child: InkWell(
+                                          onTap: () {
+                                            if(pointMap['DL'] < int.parse(up.dlQuantityCtrl.text)){
+                                              showToast("보유 DL보다 많습니다.");
+                                            } else if((int.parse(up.dlQuantityCtrl.text) * 100) > up.chargePay) {
+                                              showToast("결제금액 보다 많습니다.");
+                                            } else {
+                                              Navigator.pop(context);
+                                            }
+                                          },
+                                          child: Text("확인",
+                                              style:Body1.apply(
+                                                  color: white,
+                                                  fontWeightDelta: 3
+                                              )
+                                          ),
+                                        ),
+                                      )
+                                  ),
+                                )
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  )
+                ],
+              ),
+            ),
+          );
+        });
   }
 }
