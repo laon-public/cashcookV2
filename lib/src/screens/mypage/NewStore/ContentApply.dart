@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ContentApply extends StatefulWidget {
   @override
@@ -10,6 +13,10 @@ class ContentApply extends StatefulWidget {
 }
 
 class _ContentApply extends State<ContentApply> {
+  List<PickedFile> contentsImgList = [];
+  TextEditingController contentCtrl = new TextEditingController();
+
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -43,7 +50,7 @@ class _ContentApply extends State<ContentApply> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("매장사진 2/10",
+                    Text("매장사진 ${contentsImgList.length}/10",
                       style: Body2,
                     ),
                     whiteSpaceH(4),
@@ -51,14 +58,12 @@ class _ContentApply extends State<ContentApply> {
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: [
+                          Row(
+                            children: contentsImgList.map((e) =>
+                              imageItem(e)
+                            ).toList(),
+                          ),
                           imagePlusItem(),
-                          imagePlusItem(),
-                          imagePlusItem(),
-                          imagePlusItem(),
-                          imagePlusItem(),
-                          imagePlusItem(),
-                          imagePlusItem(),
-                          imagePlusItem(),imagePlusItem(),imagePlusItem(),
                         ],
                       ),
                     ),
@@ -86,12 +91,12 @@ class _ContentApply extends State<ContentApply> {
                       child: TextFormField(
                         maxLength: 100,
                         maxLines: 50,
+                        controller: contentCtrl,
                         style: Subtitle1.apply(
                           fontWeightDelta: 1
                         ),
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(left: 28,),
-                          counterText: "",
                           border: UnderlineInputBorder(
                             borderSide:
                             BorderSide(color: Colors.transparent),
@@ -100,21 +105,14 @@ class _ContentApply extends State<ContentApply> {
                             borderSide:
                             BorderSide(color: Colors.transparent),
                           ),
+                          counterStyle: TabsTagsStyle,
                         ),
                       ),
                     ),
                   )
                 )
               ),
-              whiteSpaceH(10),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.only(right: 16),
-                child: Text("76/100자",
-                  style: TabsTagsStyle,
-                  textAlign: TextAlign.end,
-                )
-              ),
+
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: 60,
@@ -143,9 +141,51 @@ class _ContentApply extends State<ContentApply> {
     );
   }
 
+  Widget imageItem(PickedFile img) {
+    return InkWell(
+      onTap: () {
+        int idx = contentsImgList.indexOf(img);
+
+        setState(() {
+          contentsImgList.removeAt(idx);
+        });
+      },
+      child: Container(
+        margin: EdgeInsets.only(right: 8.0),
+        width: 104,
+        height: 104,
+        decoration: BoxDecoration(
+            color: Color(0xFFF7F7F7),
+            borderRadius: BorderRadius.all(
+                Radius.circular(4)
+            ),
+            border: Border.all(
+                color: Color(0xFFDDDDDD),
+                width: 1
+            ),
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: FileImage(
+                File(img.path)
+              ),
+            )
+        ),
+      ),
+    );
+  }
+
   Widget imagePlusItem() {
     return InkWell(
-      onTap: () {},
+      onTap: () async {
+        PickedFile pickedImg = await ImagePicker().getImage(source: ImageSource.gallery);
+
+        if(pickedImg != null) {
+          setState(() {
+            contentsImgList.add(pickedImg);
+          });
+
+        }
+      },
       child: Container(
         margin: EdgeInsets.only(right: 8.0),
         width: 104,
