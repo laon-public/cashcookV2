@@ -35,6 +35,7 @@ class StoreServiceProvider with ChangeNotifier {
   int pay = 0;
   BankInfo bankInfo;
   int lookIdx = -1;
+  bool isMenuLoading = false;
 
   // reviewService
   List<ReviewModel> reviewList = [];
@@ -200,6 +201,18 @@ class StoreServiceProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void startMenuLoading() {
+    isMenuLoading = true;
+
+    notifyListeners();
+  }
+
+  void stopMenuLoading() {
+    isMenuLoading = false;
+
+    notifyListeners();
+  }
+
   void showView() {
     isView = true;
     notifyListeners();
@@ -234,8 +247,8 @@ class StoreServiceProvider with ChangeNotifier {
 
     reviewAvg = 0.0;
     reviewList.clear();
-    startLoading();
     if(num == 0){
+      startMenuLoading();
       final response = await service.fetchMenu(store_id);
 
       dynamic _bigMenuList = json.decode(response)['data']['list'];
@@ -245,15 +258,12 @@ class StoreServiceProvider with ChangeNotifier {
             _bigMenu
         ));
       }
+      stopMenuLoading();
 
-      // menuList.forEach((e) {
-      //   print("bigMenu is " + e.name );
-      //   e.menuList.forEach((e) {
-      //     print("menu is " + e.name);
-      //   });
-      // });
-
+    } else if(num == 1) {
+      notifyListeners();
     } else if(num == 2){
+      startLoading();
       final response = await service.fetchReview(store_id);
 
       dynamic _reviewList = json.decode(response)['data']['list'];
@@ -264,9 +274,8 @@ class StoreServiceProvider with ChangeNotifier {
           reviewList.add(ReviewModel.fromJson(_review));
         }
       }
+      stopLoading();
     }
-
-    stopLoading();
   }
 
   void reviewListSelect() async{

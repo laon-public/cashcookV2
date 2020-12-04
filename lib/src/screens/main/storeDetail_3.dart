@@ -35,9 +35,6 @@ class _StoreDetail3 extends State<StoreDetail3> {
     // TODO: implement initState
     super.initState();
     Provider.of<StoreServiceProvider>(context, listen: false).clearOrderAmount();
-    scrollController.addListener(() {
-      print(scrollController.position.pixels);
-    });
   }
 
   @override
