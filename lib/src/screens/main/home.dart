@@ -425,9 +425,9 @@ class _Home extends State<Home> {
                 height: 6,
                 color: Color(0xFFF2F2F2)
             ),
-            whiteSpaceH(20),
+            whiteSpaceH(10),
             Container(
-              padding: EdgeInsets.only(left: 20, right: 20),
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
               child: Container(
                 child: Column(
                   children: [

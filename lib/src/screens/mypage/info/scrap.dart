@@ -106,25 +106,25 @@ class _Scrap extends State<Scrap> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-              CachedNetworkImage(
-                imageUrl: scrap.store.shop_img1,
-                imageBuilder: (context, img) => Container(
-                    width: 68,
-                    height: 68,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Color(0xFFDDDDDD),
-                          width: 0.5,
-                        ),
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(6.0)
-                        ),
-                        image: DecorationImage(
-                            image: img, fit: BoxFit.cover
-                        )
-                    )
-                ),
+            Container(
+              width: 68,
+              height: 68,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(6)
+                  ),
+                  border: Border.all(
+                      color: Color(0xFFDDDDDD),
+                      width: 0.5
+                  ),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(
+                      scrap.store.shop_img1,
+                    ),
+                  )
               ),
+            ),
             whiteSpaceW(12),
             Expanded(
               child: Column(

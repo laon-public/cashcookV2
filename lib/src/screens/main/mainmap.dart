@@ -10,17 +10,13 @@ import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/search.dart';
-import 'package:cashcook/src/screens/main/storeDetail.dart';
-import 'package:cashcook/src/screens/main/storeDetail_2.dart';
 import 'package:cashcook/src/screens/main/storeDetail_3.dart';
 import 'package:cashcook/src/screens/mypage/points/pointMgmt.dart';
 import 'package:cashcook/src/screens/qr/qr.dart';
-import 'package:cashcook/src/screens/mypage/mypage.dart';
 import 'package:cashcook/src/services/Search.dart';
 import 'package:cashcook/src/utils/Share.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
-import 'package:cashcook/src/utils/datastorage.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
@@ -255,18 +251,23 @@ class _MainMap extends State<MainMap> {
                                           onTap: () {
                                             showBigImage(sp.selStore.store.shop_img1);
                                           },
-                                          child: CachedNetworkImage(
-                                            imageUrl: sp.selStore.store.shop_img1,
-                                            imageBuilder: (context, img) => Container(
-                                                width: 64,
-                                                height: 64,
-                                                decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
-                                                        Radius.circular(6.0)
-                                                    ),
-                                                    image: DecorationImage(
-                                                        image: img, fit: BoxFit.fill
-                                                    )
+                                          child:
+                                          Container(
+                                            width: 64,
+                                            height: 64,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(6)
+                                                ),
+                                                border: Border.all(
+                                                    color: Color(0xFFDDDDDD),
+                                                    width: 0.5
+                                                ),
+                                                image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image: NetworkImage(
+                                                    sp.selStore.store.shop_img1,
+                                                  ),
                                                 )
                                             ),
                                           ),
@@ -491,18 +492,23 @@ class _MainMap extends State<MainMap> {
                                             onTap: () {
                                               showBigImage(sp.selStore.store.shop_img1);
                                             },
-                                            child: CachedNetworkImage(
-                                              imageUrl: sp.selStore.store.shop_img1,
-                                              imageBuilder: (context, img) => Container(
-                                                  width: 64,
-                                                  height: 64,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.all(
-                                                          Radius.circular(6.0)
-                                                      ),
-                                                      image: DecorationImage(
-                                                          image: img, fit: BoxFit.fill
-                                                      )
+                                            child:
+                                            Container(
+                                              width: 64,
+                                              height: 64,
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(6)
+                                                  ),
+                                                  border: Border.all(
+                                                      color: Color(0xFFDDDDDD),
+                                                      width: 0.5
+                                                  ),
+                                                  image: DecorationImage(
+                                                    fit: BoxFit.cover,
+                                                    image: NetworkImage(
+                                                      sp.selStore.store.shop_img1,
+                                                    ),
                                                   )
                                               ),
                                             ),
@@ -722,11 +728,18 @@ class _MainMap extends State<MainMap> {
                                                   onTap: () {
                                                     showBigImage(sp.selStore.store.shop_img1);
                                                   },
-                                                    child: CachedNetworkImage(
-                                                      imageUrl: sp.selStore.store.shop_img1,
-                                                      fit: BoxFit.fill,
+                                                    child:
+                                                    Container(
                                                       width: MediaQuery.of(context).size.width/3.5,
                                                       height: 130,
+                                                      decoration: BoxDecoration(
+                                                          image: DecorationImage(
+                                                            fit: BoxFit.cover,
+                                                            image: NetworkImage(
+                                                              sp.selStore.store.shop_img1,
+                                                            ),
+                                                          )
+                                                      ),
                                                     ),
                                                   ),
                                                 ),

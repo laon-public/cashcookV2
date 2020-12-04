@@ -197,22 +197,22 @@ class _ServiceList extends State<ServiceList> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CachedNetworkImage(
-                imageUrl: ol.storeImg,
-                imageBuilder: (context, img) => Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Color(0xFFDDDDDD),
-                          width: 0.5,
-                        ),
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(6.0)
-                        ),
-                        image: DecorationImage(
-                            image: img, fit: BoxFit.cover
-                        )
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(6)
+                    ),
+                    border: Border.all(
+                        color: Color(0xFFDDDDDD),
+                        width: 0.5
+                    ),
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(
+                        ol.storeImg,
+                      ),
                     )
                 ),
               ),

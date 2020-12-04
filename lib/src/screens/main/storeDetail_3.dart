@@ -172,8 +172,8 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                         items: [
                                           Stack(
                                             children: [
-                                              CachedNetworkImage(
-                                                imageUrl: widget.store.store.shop_img1,
+                                              Image.network(
+                                                widget.store.store.shop_img1,
                                                 fit: BoxFit.cover,
                                                 width: MediaQuery.of(context).size.width,
                                                 height: MediaQuery.of(context).size.height,
@@ -204,8 +204,8 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                           ),
                                           Stack(
                                             children: [
-                                              CachedNetworkImage(
-                                                imageUrl: widget.store.store.shop_img2,
+                                              Image.network(
+                                                widget.store.store.shop_img2,
                                                 fit: BoxFit.cover,
                                                 width: MediaQuery.of(context).size.width,
                                                 height: MediaQuery.of(context).size.height,
@@ -236,8 +236,8 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                           ),
                                           Stack(
                                             children: [
-                                              CachedNetworkImage(
-                                                imageUrl: widget.store.store.shop_img3,
+                                              Image.network(
+                                                widget.store.store.shop_img3,
                                                 fit: BoxFit.cover,
                                                 width: MediaQuery.of(context).size.width,
                                                 height: MediaQuery.of(context).size.height,

@@ -3,8 +3,6 @@ import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/provider/CarouselProvider.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
-import 'package:cashcook/src/screens/main/storeDetail.dart';
-import 'package:cashcook/src/screens/main/storeDetail_2.dart';
 import 'package:cashcook/src/screens/main/storeDetail_3.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
@@ -218,27 +216,26 @@ Widget storeItem(StoreModel store, BuildContext context) {
     },
     child: Container(
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.all(16.0),
-      height: 120,
+      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CachedNetworkImage(
-            imageUrl: store.store.shop_img1,
-            imageBuilder: (context, img) => Container(
-                width: 68,
-                height: 68,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Color(0xFFDDDDDD),
-                      width: 0.5,
-                    ),
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(6.0)
-                    ),
-                    image: DecorationImage(
-                        image: img, fit: BoxFit.cover
-                    )
+          Container(
+            width: 68,
+            height: 68,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(
+                    Radius.circular(6)
+                ),
+                border: Border.all(
+                    color: Color(0xFFDDDDDD),
+                    width: 0.5
+                ),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(
+                    store.store.shop_img1,
+                  ),
                 )
             ),
           ),

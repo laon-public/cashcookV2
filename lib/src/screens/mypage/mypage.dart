@@ -934,20 +934,22 @@ class _MyPageState extends State<MyPage> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      CachedNetworkImage(
-                        imageUrl: user.storeModel.store.shop_img1,
-                        imageBuilder: (context, img) => Container(
-                            width: 64,
-                            height: 64,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Color(0xFFDDDDDD),
-                                    width: 0.5
-                                ),
-                                borderRadius: BorderRadius.circular(6),
-                                image: DecorationImage(
-                                    image: img, fit: BoxFit.cover
-                                )
+                      Container(
+                        width: 64,
+                        height: 64,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(6)
+                            ),
+                            border: Border.all(
+                                color: Color(0xFFDDDDDD),
+                                width: 0.5
+                            ),
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(
+                                user.storeModel.store.shop_img1,
+                              ),
                             )
                         ),
                       ),
