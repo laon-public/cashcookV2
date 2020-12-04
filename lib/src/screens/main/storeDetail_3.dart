@@ -593,7 +593,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                           Expanded(
                                                             child:InkWell(
                                                                 onTap: () async {
-                                                                  await Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(0, widget.store.id);
+                                                                  await ss.setServiceNum(0, widget.store.id);
                                                                   if(scrollController.position.pixels > 480) {
                                                                     scrollController.jumpTo(480);
                                                                   }
@@ -617,7 +617,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                           Expanded(
                                                             child:InkWell(
                                                               onTap: () {
-                                                                Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(1, widget.store.id);
+                                                                ss.setServiceNum(1, widget.store.id);
 
                                                                 if(scrollController.position.pixels > 480) {
                                                                   scrollController.jumpTo(480);
@@ -642,7 +642,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                           Expanded(
                                                             child:InkWell(
                                                                 onTap: () async {
-                                                                  await Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(2, widget.store.id);
+                                                                  await ss.setServiceNum(2, widget.store.id);
 
                                                                   if(scrollController.position.pixels > 480) {
                                                                     scrollController.jumpTo(480);
@@ -651,16 +651,29 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                                 },
                                                                 child: Container(
                                                                   padding: EdgeInsets.symmetric(vertical: 10.0),
-                                                                  child: Text(
-                                                                    "리뷰",
-                                                                    textAlign: TextAlign.center,
-                                                                    style: Body1.apply(
-                                                                        fontWeightDelta: 1,
-                                                                        color: ss.serviceNum == 2 ?
-                                                                        black
-                                                                            :
-                                                                        third
-                                                                    )
+                                                                  child: Row(
+                                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                                    children: [
+                                                                        Text(
+                                                                        "리뷰",
+                                                                          style: Body1.apply(
+                                                                          fontWeightDelta: 1,
+                                                                          color: ss.serviceNum == 2 ?
+                                                                          black
+                                                                              :
+                                                                          third
+                                                                          )
+                                                                        ),
+                                                                      (ss.serviceNum == 2 && ss.reviewList.length != 0) ?
+                                                                        Text(
+                                                                          " ${ss.reviewList.length}",
+                                                                            style: Body1.apply(
+                                                                                fontWeightDelta: 1,
+                                                                                color: primary
+                                                                            )
+                                                                        ):
+                                                                          Text("")
+                                                                     ]
                                                                   ),
                                                                 )
                                                             ),
