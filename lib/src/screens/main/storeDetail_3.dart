@@ -35,6 +35,9 @@ class _StoreDetail3 extends State<StoreDetail3> {
     // TODO: implement initState
     super.initState();
     Provider.of<StoreServiceProvider>(context, listen: false).clearOrderAmount();
+    scrollController.addListener(() {
+      print(scrollController.position.pixels);
+    });
   }
 
   @override
@@ -48,6 +51,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
               body: SafeArea(
                 child: Container(
                     child:ListView.builder(
+                      controller: scrollController,
                       itemBuilder: (context, index) {
                         return StickyHeaderBuilder(
                             overlapHeaders: true,
@@ -569,6 +573,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                 Consumer<StoreServiceProvider>(
                                     builder: (context, ss, _){
                                       return StickyHeaderBuilder(
+
                                         builder: (BuildContext context, double stuckAmount) {
                                           return Container(
                                               margin: EdgeInsets.only(
@@ -592,6 +597,9 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                             child:InkWell(
                                                                 onTap: () async {
                                                                   await Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(0, widget.store.id);
+                                                                  if(scrollController.position.pixels > 480) {
+                                                                    scrollController.jumpTo(480);
+                                                                  }
                                                                 },
                                                                 child: Container(
                                                                   padding: EdgeInsets.symmetric(vertical: 10.0),
@@ -613,6 +621,10 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                             child:InkWell(
                                                               onTap: () {
                                                                 Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(1, widget.store.id);
+
+                                                                if(scrollController.position.pixels > 480) {
+                                                                  scrollController.jumpTo(480);
+                                                                }
                                                               },
                                                               child: Container(
                                                                 padding: EdgeInsets.symmetric(vertical: 10.0),
@@ -634,6 +646,11 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                             child:InkWell(
                                                                 onTap: () async {
                                                                   await Provider.of<StoreServiceProvider>(context, listen: false).setServiceNum(2, widget.store.id);
+
+                                                                  if(scrollController.position.pixels > 480) {
+                                                                    scrollController.jumpTo(480);
+                                                                  }
+
                                                                 },
                                                                 child: Container(
                                                                   padding: EdgeInsets.symmetric(vertical: 10.0),
@@ -655,7 +672,6 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                       ),
                                                     ],
                                                   ),
-
                                                   Positioned(
                                                     bottom: 0,
                                                     child: Container(

@@ -199,7 +199,6 @@ class _Home extends State<Home> {
                     Container(
                       width: MediaQuery.of(context).size.width,
                       height: 140,
-                      color: primary,
                       child: CarouselSlider(
                         options: CarouselOptions(
                           initialPage: 0,
@@ -217,15 +216,19 @@ class _Home extends State<Home> {
                           Image.asset(
                             "assets/resource/ad/banner1.png",
                             width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height,
                             fit: BoxFit.cover,
                           ),
                           Image.asset(
                             "assets/resource/ad/banner2.png",
                             width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height,
                             fit: BoxFit.cover,
                           ),
                           Image.asset(
                             "assets/resource/ad/banner3.png",
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height,
                             fit: BoxFit.cover,
                           ),
                         ],
