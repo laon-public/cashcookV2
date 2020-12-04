@@ -26,19 +26,14 @@ class SearchService{
     return utf8.decode(response.bodyBytes);
   }
 
-  Future<PlaceDetail> getPlaceDetail(String placeId) async {
+  Future<String> getPlaceDetail(String placeId) async {
     final String baseUrl =
         'https://maps.googleapis.com/maps/api/place/details/json';
     String url =
         '$baseUrl?key=AIzaSyCRO8sSK3KhbmVE7XjcsmQdbQAvDy0Yyjo&place_id=$placeId&language=ko';
 
     final http.Response response = await http.get(url);
-    final responseData = json.decode(response.body);
-    final result = responseData['result'];
 
-    final PlaceDetail placeDetail = PlaceDetail.fromGoogleJson(result);
-    print(placeDetail.toMap());
-
-    return placeDetail;
+    return response.body;
   }
 }

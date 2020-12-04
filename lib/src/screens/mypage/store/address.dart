@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:cashcook/src/screens/mypage/store/searchAddress.dart';
 import 'package:cashcook/src/utils/FromAsset.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/utils/geocoder.dart';
@@ -9,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:cashcook/src/widgets/showToast.dart';
+import 'package:cashcook/src/widgets/whitespace.dart';
 
 class FindAddress extends StatefulWidget {
   @override
@@ -38,7 +41,7 @@ class _FindAddressState extends State<FindAddress> {
         zoom: 14);
 
     final icon = await getBitmapDescriptorFromAssetBytes(
-        "assets/icon/my_mk.png", 48);
+        "assets/icon/my_mk.png", 96);
 
     markers.add(Marker(
       markerId: MarkerId("1"),
@@ -63,7 +66,7 @@ class _FindAddressState extends State<FindAddress> {
   moveMarker(LatLng latLng) async{
 
     final icon = await getBitmapDescriptorFromAssetBytes(
-        "assets/icon/my_mk.png", 48);
+        "assets/icon/my_mk.png", 96);
 
     Marker marker = Marker(
       markerId: MarkerId("1"),
@@ -111,7 +114,7 @@ class _FindAddressState extends State<FindAddress> {
     args = ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     return Scaffold(
       appBar: AppBar(
-        title: Text("주소찾기",
+        title: Text("주소 설정",
             style: appBarDefaultText),
         leading: IconButton(
           onPressed: () {
@@ -131,25 +134,78 @@ class _FindAddressState extends State<FindAddress> {
       children: [
         mapLoad ? googleMap() : SizedBox(),
         Positioned(
-          top: 16,
-          left: 16,
-          right: 16,
-          child: Container(
-            width: double.infinity,
-            height: 40,
-            padding: const EdgeInsets.only(left: 8),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(6),
-              boxShadow: [
-                BoxShadow(
-                  offset: Offset(0,0),
-                  blurRadius: 8,
-                  color: Color(0xff000000).withOpacity(0.15),
+          top: 12,
+          child: InkWell(
+            onTap: () async {
+                final res = await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => SearchAddress(
+                      initQuery: address,
+                    )
+                  )
+                );
+
+                if(res != null) {
+                  print(res['lat']);
+                  print(res['lng']);
+
+                  LatLng  coords = LatLng(res['lat'], res['lng']);
+
+                  moveMarker(coords);
+
+
+                  googleMapController.animateCamera(
+                    CameraUpdate.newLatLng(
+                      coords
+                    ),
+                  );
+                }
+
+            },
+            child: Container(
+                width: MediaQuery.of(context).size.width-32,
+                margin: EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
                 ),
-              ],
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      "assets/resource/main/search_blue.png",
+                      width: 24,
+                      height: 24,
+                      color: primary,
+                    ),
+                    whiteSpaceW(8),
+                    Expanded(
+                      child: Text(
+                        address != "" && address.contains("대한민국") ? address.split("대한민국 ")[1] : address,
+                        style: Subtitle2.apply(
+                            color:black,
+                            fontWeightDelta: 1
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    whiteSpaceW(8),
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          address = "";
+                        });
+                      },
+                      child: Image.asset(
+                        "assets/icon/cancle.png",
+                        width: 24,
+                        height: 24,
+                      ),
+                    ),
+                  ],
+                )
             ),
-            child: Align(child: Text(address, style: Body2.apply(color:black)),alignment: Alignment.centerLeft,),
           ),
         ),
         Positioned(
@@ -157,30 +213,24 @@ class _FindAddressState extends State<FindAddress> {
           left: (MediaQuery.of(context).size.width / 2) - (56 / 2),
               child: InkWell(
                 onTap: (){
+                  if(address == ""){
+                    showToast("주소가 설정되어 있지 않습니다.");
+
+                    return;
+                  }
                   args['getData'](address, lat, lon);
                   Navigator.of(context).pop(address);
                 },
                 child: Container(
-                  width: 56,
-                  height: 56,
+                  padding: EdgeInsets.symmetric(vertical: 21, horizontal: 17),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: primary,
                     shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        offset: Offset(0,0),
-                        blurRadius: 8,
-                        color: Colors.black.withOpacity(0.15)
-                      ),
-                    ],
                   ),
-                  child: Center(child: Text("선택", style: Body1.apply(color: primary, fontWeightDelta: 1),),),
+                  child: Text("설정", style: Subtitle2.apply(color: white, fontWeightDelta: 1),)
                 ),
               ),
         ),
-//        Center(
-//          child: Image.asset("assets/icon/marker.png", width: 48, fit: BoxFit.cover,),
-//        ),
       ],
     );
   }
