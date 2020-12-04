@@ -2,7 +2,9 @@
 import 'dart:math';
 import 'package:cashcook/src/provider/CenterProvider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
+import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -131,38 +133,55 @@ class _BargainGame2 extends State<BargainGame2> {
                     ),
                   ),
                   ),
-                  // Consumer<CenterProvider>(
-                  //   builder: (context, cp, _){
-                  //     return Positioned(
-                  //       top: 0,
-                  //       child: Container(
-                  //         width: MediaQuery.of(context).size.width,
-                  //         child: Center(
-                  //           child: Container(
-                  //             padding: EdgeInsets.all(16.0),
-                  //             child: Text(
-                  //               "오늘의 재원 ${cp.hojoFunds}원\n"
-                  //                   "재원한도 퍼센트 ${cp.limitGamePercentage}%",
-                  //               style: TextStyle(
-                  //                   fontSize: 20,
-                  //                   fontFamily: 'noto',
-                  //                   fontWeight: FontWeight.w600,
-                  //                   color: Color(0xFF333333)
-                  //               ),
-                  //             ),
-                  //             decoration: BoxDecoration(
-                  //                 color: white,
-                  //                 borderRadius: BorderRadius.only(
-                  //                   bottomLeft: Radius.circular(20.0),
-                  //                   bottomRight: Radius.circular(20.0),
-                  //                 )
-                  //             ),
-                  //           ),
-                  //         )
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
+                  Consumer<CenterProvider>(
+                    builder: (context, cp, _){
+                      return Positioned(
+                        top: 20,
+                        child: Container(
+
+                          padding: EdgeInsets.symmetric(horizontal: 22),
+                          width: MediaQuery.of(context).size.width,
+                          child: Center(
+                            child: Container(
+                              padding: EdgeInsets.all(5),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "금일 재원 : ${numberFormat.format(int.parse(cp.hojoFunds == "" ? "0" : cp.hojoFunds))}원 ㆍ "
+                                        "당첨 한도 : ${cp.limitGamePercentage}%",
+                                    style: Body2.apply(
+                                      color: white,
+                                      shadows: [
+                                        Shadow(
+                                          offset: Offset(1, 1),
+                                          blurRadius: 1.0,
+                                          color: black
+                                        ),
+                                      ]
+                                    )
+                                  ),
+                                  Text("")
+                                ],
+                              ),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topRight,
+                                  end: Alignment.topLeft,
+                                  colors: [
+                                    Colors.transparent,
+                                    black.withOpacity(0.3),
+                                    black.withOpacity(0.3),
+                                    Colors.transparent,
+                                  ]
+                                ),
+                              ),
+                            ),
+                          )
+                        ),
+                      );
+                    },
+                  ),
                   // (!gameLoad) ? Positioned.fill(
                   //     child: Opacity(
                   //       opacity: 0.7,

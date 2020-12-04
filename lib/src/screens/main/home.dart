@@ -480,7 +480,7 @@ class _Home extends State<Home> {
                   Column(
                     children: ssp.store.map((e) {
                       return storeItem(e, context);
-                    }).toList() ,
+                    }).toList(),
                   ),
                 );
               },

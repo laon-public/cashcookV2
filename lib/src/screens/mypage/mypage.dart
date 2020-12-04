@@ -1021,7 +1021,7 @@ class _MyPageState extends State<MyPage> {
                                   agencyCheck == 1 ? BizInfo() : BizSelect(),
                                   QrCard(),
                                   FranHistoryCard(),
-                                  ContentApplyCard(),
+                                  // ContentApplyCard(),
                                   // MenuApplyCard(),
                                   sellDlCard(),
                                   whiteSpaceH(24.0),
