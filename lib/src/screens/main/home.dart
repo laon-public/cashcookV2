@@ -198,11 +198,11 @@ class _Home extends State<Home> {
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width,
-                      height: 140,
+                      height: MediaQuery.of(context).size.width * 2 / 5,
                       child: CarouselSlider(
                         options: CarouselOptions(
                           initialPage: 0,
-                          height: 140,
+                          height: MediaQuery.of(context).size.width * 2 / 5,
                           autoPlay: true,
                           autoPlayInterval: Duration(seconds: 3),
                           autoPlayAnimationDuration: Duration(milliseconds:1000),
