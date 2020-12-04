@@ -190,22 +190,8 @@ Widget storeItem(StoreModel store, BuildContext context) {
       await Provider.of<StoreServiceProvider>(
           context, listen: false).setServiceNum(
           0, store.id);
-      // Navigator.of(context).push(
-      //   MaterialPageRoute(
-      //     builder: (context) => StoreDetail(
-      //       store: store,
-      //     )
-      //   )
-      // );
       await Provider.of<CarouselProvider>(context, listen:false).changePage(1);
       await Provider.of<StoreProvider>(context, listen: false).setAppbar(false);
-      // Navigator.of(context).push(
-      //   MaterialPageRoute(
-      //     builder: (context) => StoreDetail2(
-      //       store: store,
-      //     )
-      //   )
-      // );
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => StoreDetail3(
@@ -376,6 +362,152 @@ Widget storeItem(StoreModel store, BuildContext context) {
                     ,
                   ],
                 ),
+              ],
+            ),
+          )
+        ],
+      ),
+    ),
+  );
+}
+
+Widget storeItemRow(StoreModel store, BuildContext context) {
+  return InkWell(
+    onTap: () async {
+      await Provider.of<StoreServiceProvider>(
+          context, listen: false).setServiceNum(
+          0, store.id);
+      await Provider.of<CarouselProvider>(context, listen:false).changePage(1);
+      await Provider.of<StoreProvider>(context, listen: false).setAppbar(false);
+      Navigator.of(context).push(
+          MaterialPageRoute(
+              builder: (context) => StoreDetail3(
+                  store:store
+              )
+          )
+      );
+    },
+    child: Container(
+      width: MediaQuery.of(context).size.width * 3 / 4,
+      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 68,
+            height: 68,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(
+                    Radius.circular(6)
+                ),
+                border: Border.all(
+                    color: Color(0xFFDDDDDD),
+                    width: 0.5
+                ),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(
+                    store.store.shop_img1,
+                  ),
+                )
+            ),
+          ),
+          whiteSpaceW(12),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(store.store.name,
+                        style: Body1.apply(
+                            fontWeightDelta: 1
+                        )
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset("assets/icon/star_full_color.png",
+                        width: 12,
+                        height: 12,
+                        color: etcYellow
+                    ),
+                    whiteSpaceW(2.0),
+                    Text(
+                      "${NumberFormat("#.#").format(store.store.scope)}",
+                      style: Caption.apply(color: secondary),
+                    ),
+                    Text(" · ",
+                        style: Caption.apply(color: secondary)
+                    ),
+                    Text(
+                      "DL ",
+                      style: Caption.apply(color: etcYellow, fontWeightDelta: 1),
+                    ),
+                    Text(
+                      (store.store.limitDL == null) ? "100%" : "${store.store.limitDL}%",
+                      style: Caption.apply(color: secondary),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("${store.store.category_name} / ${store.store.category_sub_name}",
+                      style: Caption.apply(color: mainColor),),
+                    whiteSpaceW(10.0),
+                    (store.store.deliveryTime == null) ?
+                    Text("배달없음",
+                        style: Caption.apply(color: secondary)
+                    )
+                        :
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text("배달 ",
+                            style: Caption.apply(color: secondary)
+                        ),
+                        Image.asset(
+                            "assets/icon/time-dark.png",
+                            width: 12,
+                            height: 12,
+                            color: secondary
+                        ),
+                        Text("  ${store.store.deliveryTime}",
+                            style: Caption.apply(color: secondary)
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+                whiteSpaceH(6),
+                Row(
+                  children: [
+                    (store.store.deliveryTime != null) ?
+                    Image.asset(
+                      "assets/icon/isPacking.png",
+                      width: 27,
+                      height: 14,
+                    )
+                        :
+                    Text(""),
+                    whiteSpaceW(4),
+                    (store.store.deliveryTime != null) ?
+                    Image.asset(
+                      "assets/icon/isDelivery.png",
+                      width: 27,
+                      height: 14,
+                    )
+                        :
+                    Text(""),
+                  ],
+                )
               ],
             ),
           )

@@ -425,7 +425,7 @@ class _Home extends State<Home> {
                 height: 6,
                 color: Color(0xFFF2F2F2)
             ),
-            whiteSpaceH(10),
+            whiteSpaceH(12),
             Container(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
               child: Container(
@@ -477,6 +477,7 @@ class _Home extends State<Home> {
                     )
                 )
                     :
+                    //Column Version
                 Container(
                   width: MediaQuery.of(context).size.width,
                   child:
@@ -486,6 +487,28 @@ class _Home extends State<Home> {
                     }).toList(),
                   ),
                 );
+                   // Row Version 4 Sort
+                // Container(
+                //   width: MediaQuery.of(context).size.width,
+                //   height: 360,
+                //   child:
+                //       ListView.builder(
+                //           shrinkWrap: true,
+                //           scrollDirection: Axis.horizontal,
+                //           itemCount: (ssp.store.length / 4).ceil(),
+                //           itemBuilder:(context, index) {
+                //             return Column(
+                //               children: ssp.store.getRange(4 * index, ssp.store.length < (4 * (index + 1)) ?
+                //                 ssp.store.length
+                //                   :
+                //               (4 * (index + 1))
+                //               ).map((e) =>
+                //                 storeItemRow(e, context)
+                //               ).toList()
+                //             );
+                //           },
+                //       ),
+                // );
               },
             ),
           ],
