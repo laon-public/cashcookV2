@@ -50,6 +50,7 @@ class StoreModel {
             store_time: json['store']['store_time'],
             useDL: json['store']['useDL'],
             limitDL: json['store']['limitDL'],
+            limitType: json['store']['limitType'],
             category_code: json['store']['category_code'],
             category_name: json['store']['category_name'],
             category_sub_code: json['store']['category_sub_code'],
@@ -82,6 +83,7 @@ class Store {
   final String store_time;
   final bool useDL;
   final String limitDL;
+  final String limitType;
   final String category_code;
   final String category_name;
   final String category_sub_code;
@@ -104,6 +106,7 @@ class Store {
       this.store_time,
       this.useDL,
       this.limitDL,
+        this.limitType,
       this.category_code,
       this.category_name,
       this.category_sub_code,

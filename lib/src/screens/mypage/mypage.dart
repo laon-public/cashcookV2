@@ -48,6 +48,8 @@ class _MyPageState extends State<MyPage> {
   @override
   void initState() {
     super.initState();
+
+    Provider.of<UserProvider>(context, listen: false).fetchMyInfo(context);
   }
 
   @override
@@ -111,8 +113,9 @@ class _MyPageState extends State<MyPage> {
                   child: Row(
                     children: [
                       InkWell(
-                        onTap: () {
+                        onTap: () async {
                           if(view != "My") {
+                            await Provider.of<UserProvider>(context, listen:false).fetchMyInfo(context);
                             setState(() {
                               view = "My";
                             });
@@ -125,10 +128,12 @@ class _MyPageState extends State<MyPage> {
                       ),
                       whiteSpaceW(20.0),
                       InkWell(
-                        onTap: () {
+                        onTap: () async {
                           if(!userCheck.isFran)
                             _showDialog();
                           else {
+                            await Provider.of<UserProvider>(context, listen:false).fetchMyInfo(context);
+                            agencyCheck = await Provider.of<UserProvider>(context, listen: false).selectMyAgency();
                             if(view != "Store"){
                               setState(() {
                                 view = "Store";
@@ -197,9 +202,9 @@ class _MyPageState extends State<MyPage> {
   }
 
   Widget myPageForm() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<UserProvider>(context, listen:false).fetchMyInfo(context);
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //   Provider.of<UserProvider>(context, listen:false).fetchMyInfo(context);
+    // });
     return Consumer<UserProvider>(
         builder: (context, user, _){
           return (user.isLoading) ?
@@ -902,10 +907,10 @@ class _MyPageState extends State<MyPage> {
   }
 
   Widget storeForm(){
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      Provider.of<UserProvider>(context, listen:false).fetchMyInfo(context);
-      agencyCheck = await Provider.of<UserProvider>(context, listen: false).selectMyAgency();
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+    //   Provider.of<UserProvider>(context, listen:false).fetchMyInfo(context);
+    //   agencyCheck = await Provider.of<UserProvider>(context, listen: false).selectMyAgency();
+    // });
     return Consumer<UserProvider>(
         builder: (context, user, _) {
           return (user.isLoading) ?

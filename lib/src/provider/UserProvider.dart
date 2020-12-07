@@ -511,12 +511,13 @@ class UserProvider with ChangeNotifier {
     return json['data']['cnt'];
   }
 
-  void changeLimitDL(bool switchType, String store_id, String limitDL) async {
+  void changeLimitDL(bool switchType, String store_id, String limitDL, String limitType) async {
     print("SwitchType : $switchType");
     final response = await service.changeLimitDL({
       "switch" : switchType ? 'on' : 'off',
       "store_id" : store_id,
-      "limitDL" : limitDL
+      "limitDL" : limitDL,
+      "limitType" : limitType,
     });
 
     Map<String, dynamic> json = jsonDecode(response);

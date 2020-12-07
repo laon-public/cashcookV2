@@ -33,10 +33,10 @@ class _limitDLState extends State<limitDL> {
         limitState = false;
         limitQuantityCtrl.text = "";
       } else {
+        limitType = myStore.store.limitType.toLowerCase();
         limitState = true;
         limitQuantityCtrl.text = myStore.store.limitDL;
       }
-      limitType = "percentage";
 
       if(limitType != "percentage"){
         cashView = limitQuantityCtrl.text == "" ? 0 :
@@ -252,8 +252,9 @@ class _limitDLState extends State<limitDL> {
                             readOnly: !limitState,
                             onChanged: (value) {
                               setState(() {
-                                limitQuantityCtrl.text = value;
+                                cashView = int.parse(value) * 100;
                               });
+
                             },
                             decoration: InputDecoration(
                               suffixText: "DL ${limitType == "percentage" ? "%" : "개"}",
@@ -298,15 +299,27 @@ class _limitDLState extends State<limitDL> {
                           return;
                         }
 
-                        if(limitState && (int.parse(limitQuantityCtrl.text) <= 10 || int.parse(limitQuantityCtrl.text) > 50)){
-                          showToast("결제한도는 10% ~ 50% 내로 설정 가능합니다.");
-                          return;
+                        if(limitType == "percentage") {
+                          if (limitState &&
+                              (int.parse(limitQuantityCtrl.text) < 10 ||
+                                  int.parse(limitQuantityCtrl.text) > 50)) {
+                            showToast("결제한도는 10% ~ 50% 내로 설정 가능합니다.");
+                            return;
+                          }
                         }
+                        // } else {
+                        //   if(limitState && (int.parse(limitQuantityCtrl.text) < 10000 || int.parse(limitQuantityCtrl.text) > 100000)){
+                        //     showToast("결제한도는 100DL ~ 100000원 내로 설정 가능합니다.");
+                        //     return;
+                        //   }
+                        // }
+
 
                         await Provider.of<UserProvider>(context, listen: false).changeLimitDL(
                             limitState,
                             myStore.id.toString(),
-                            limitQuantityCtrl.text
+                            limitQuantityCtrl.text,
+                          limitType
                         );
 
                         await Provider.of<UserProvider>(context, listen: false).fetchMyInfo(context);

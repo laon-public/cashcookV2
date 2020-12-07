@@ -170,7 +170,7 @@ class _QrPayment extends State<QrPayment> {
                 Container(
                   width: MediaQuery.of(context).size.width,
                   child: Text(
-                      qp.store.store.limitDL == null ?
+                      qp.store.store.limitType == "NONE" ?
                       "* 결제한도가 없는 매장 입니다."
                           :
                       "* 해당매장의 결제한도는 ${qp.store.store.limitDL}% DL 입니다.",
@@ -187,7 +187,7 @@ class _QrPayment extends State<QrPayment> {
                   child: RaisedButton(
                       elevation: 0.0,
                       onPressed: (qp.paymentModel.price < (int.parse(qp.paymentEditModel.dlCtrl.text == "" ? "0" : qp.paymentEditModel.dlCtrl.text) * 100))
-                            || (qp.store.store.limitDL != null &&
+                            || (qp.store.store.limitDL != "NONE" &&
                               (qp.paymentModel.price * int.parse(qp.store.store.limitDL) / 100).round() < (int.parse(qp.paymentEditModel.dlCtrl.text) * 100))?
                           null
                           :
