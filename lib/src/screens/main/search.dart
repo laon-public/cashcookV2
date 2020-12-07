@@ -95,13 +95,11 @@ class _SearchPage extends State<SearchPage> {
                       );
                     },
                     decoration: InputDecoration(
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                        color: primary),
+                      border: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xffdddddd), width: 1.0),
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: primary),
+                        borderSide: BorderSide(color: black, width: 2.0),
                       ),
                       prefixIcon: InkWell(
                         onTap: () {},

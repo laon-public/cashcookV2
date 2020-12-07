@@ -171,7 +171,7 @@ class _MainMap extends State<MainMap> {
                             if(details.delta.dy > 0) {
                               await sp.hideDetailView();
                             } else {
-                              if (!Provider.of<StoreServiceProvider>(context,listen: false).isLoading) {
+                              if (!Provider.of<StoreServiceProvider>(context,listen: false).isMenuLoading) {
                                 await Provider.of<StoreServiceProvider>(
                                     context, listen: false).setServiceNum(
                                     0, sp.selStore.id);
