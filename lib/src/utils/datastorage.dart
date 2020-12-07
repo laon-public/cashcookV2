@@ -15,6 +15,7 @@ class DataStorage {
     _oauthCode = value;
   }
 
+  String autoLogin = "";
   String token = "";
 //
 //  String get token => _token;
