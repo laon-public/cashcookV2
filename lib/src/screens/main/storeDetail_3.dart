@@ -103,11 +103,18 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                   );
                                                   widget.store.scrap.scrap = "0";
                                                 },
-                                                child: Image.asset(
+                                                child: widget.store.scrap.scrap == "0" ? Image.asset(
                                                   "assets/resource/main/steam.png",
                                                   width: 24,
                                                   height: 24,
-                                                  color: widget.store.scrap.scrap == "0" ? Color.lerp(white, black, stuckAmount) : mainColor,
+                                                  color:  Color.lerp(white, black, stuckAmount),
+                                                )
+                                                :
+                                                Image.asset(
+                                                  "assets/resource/main/steam-color.png",
+                                                  width: 24,
+                                                  height: 24,
+                                                  color:  Color.lerp(white, primary, stuckAmount),
                                                 ),
                                               );
                                             },

@@ -49,17 +49,10 @@ class _Invitation extends State {
                     fontWeightDelta: -1
                   )
                 ),
-                whiteSpaceW(10.0),
-                Image.asset(
-                  "assets/icon/left_payment.png",
-                  width: 48,
-                  height: 48,
-                  fit: BoxFit.fill,
-                )
               ],
             ),
             whiteSpaceH(20),
-            Text("휴대폰에 저장된 연락처를 가입자와 대조하여\n자동으로 나의 직접추천회원으로 등록해드립니다.",
+            Text("휴대폰에 저장된 연락처를 선택해주세요.\n자동으로 나의 직접추천회원으로 등록이됩니다.",
                 style: Body2
             ),
           Spacer(),

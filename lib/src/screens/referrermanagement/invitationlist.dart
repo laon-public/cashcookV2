@@ -70,12 +70,6 @@ class _InvitationList extends State<InvitationList> {
                                 fontWeightDelta: -1
                               )
                             ),
-                            whiteSpaceW(5.0),
-                            Image.asset(
-                              "assets/icon/left_payment.png",
-                              width: 48,
-                              height: 48,
-                            )
                           ],
                         ),
                       ),
