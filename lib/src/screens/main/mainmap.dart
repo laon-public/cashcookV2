@@ -78,7 +78,7 @@ class _MainMap extends State<MainMap> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await Provider.of<UserProvider>(context,listen: false).fetchMyInfo(context);
+      await Provider.of<UserProvider>(context,listen: false).fetchMyInfo();
 
       my = Provider.of<UserProvider>(context, listen: false).loginUser;
       pointMap = Provider.of<UserProvider>(context, listen: false).pointMap;

@@ -49,7 +49,7 @@ class _MyPageState extends State<MyPage> {
   void initState() {
     super.initState();
 
-    Provider.of<UserProvider>(context, listen: false).fetchMyInfo(context);
+    Provider.of<UserProvider>(context, listen: false).fetchMyInfo();
   }
 
   @override
@@ -115,7 +115,7 @@ class _MyPageState extends State<MyPage> {
                       InkWell(
                         onTap: () async {
                           if(view != "My") {
-                            await Provider.of<UserProvider>(context, listen:false).fetchMyInfo(context);
+                            await Provider.of<UserProvider>(context, listen:false).fetchMyInfo();
                             setState(() {
                               view = "My";
                             });
@@ -132,7 +132,7 @@ class _MyPageState extends State<MyPage> {
                           if(!userCheck.isFran)
                             _showDialog();
                           else {
-                            await Provider.of<UserProvider>(context, listen:false).fetchMyInfo(context);
+                            await Provider.of<UserProvider>(context, listen:false).fetchMyInfo();
                             agencyCheck = await Provider.of<UserProvider>(context, listen: false).selectMyAgency();
                             if(view != "Store"){
                               setState(() {

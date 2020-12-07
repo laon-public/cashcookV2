@@ -1,10 +1,16 @@
-import 'dart:io';
+import 'dart:convert';
 
+import 'package:cashcook/src/model/usercheck.dart';
+import 'package:cashcook/src/provider/AuthProvider.dart';
+import 'package:cashcook/src/provider/CenterProvider.dart';
+import 'package:cashcook/src/provider/UserProvider.dart';
+import 'package:cashcook/src/screens/center/appConfirm.dart';
+import 'package:cashcook/src/screens/referrermanagement/firstbiz.dart';
 import 'package:cashcook/src/services/API.dart';
 import 'package:cashcook/src/utils/datastorage.dart';
-import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:webview_cookie_manager/webview_cookie_manager.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -41,20 +47,33 @@ class _Login2 extends State<Login2> {
             print("now Page ===> $url");
 
             if(url.contains("?") && url.split("?")[0] == loginSuccessUrl) {
-              // List<Cookie> cookies = await cookieManager.getCookies(url);
-              // for(Cookie cookie in cookies) {
-              //   print("${cookie.name} ===> ${cookie.value}");
-              //
-              //   if(cookie.name == "remember-me") {
-              //     print("자동 로그인 확인용");
-              //     break;
-              //   }
-              // }
-
               Uri uri = Uri.parse(url);
               String code = uri.queryParameters['code'];
 
-              print(code);
+              String response = await Provider.of<AuthProvider>(context, listen: false).authToken(code);
+              Map<String, dynamic> json = jsonDecode(response);
+              if(json['access_token'] != null){
+                dataStorage.token = json['access_token'];
+
+                await Provider.of<UserProvider>(context, listen: false).fetchMyInfo();
+
+                UserCheck user = Provider.of<UserProvider>(context, listen: false).loginUser;
+
+                if(user.isFirstLogin != true) {
+                  Provider.of<CenterProvider>(context, listen: false).startLoading();
+                  Navigator.of(context)
+                  // .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
+                  // .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Home()), (route) => false);
+                      .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => AppConfirm()), (route) => false);
+                } else {
+                  Navigator.of(context)
+                      .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => FirstBiz()), (route) => false);
+                }
+              } else {
+                // 토큰 얻기 실패
+                await cookieManager.clearCookies();
+                this.webViewController.loadUrl(baseUrl + "oauth/authorize?client_id=cashcook&redirect_uri=" + loginSuccessUrl + "&response_type=code");
+              }
             }
           },
           onPageFinished: (url) {

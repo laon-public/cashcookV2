@@ -172,7 +172,7 @@ class _Buy extends State<Buy> {
             if (!response) {
               Fluttertoast.showToast(msg: "에러");
             } else {
-              await Provider.of<UserProvider>(context, listen:false).fetchMyInfo(context);
+              await Provider.of<UserProvider>(context, listen:false).fetchMyInfo();
               await Provider.of<UserProvider>(context, listen: false).getAccountsHistory(widget.point, 0);
 
               Fluttertoast.showToast(msg: "충전이 완료되었습니다.");

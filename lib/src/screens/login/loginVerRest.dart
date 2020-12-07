@@ -1,5 +1,6 @@
 import 'package:cashcook/src/provider/AuthProvider.dart';
 import 'package:cashcook/src/provider/CenterProvider.dart';
+import 'package:cashcook/src/provider/RestAuthProvider.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/center/appConfirm.dart';
@@ -34,7 +35,7 @@ class _LoginVerRest extends State<LoginVerRest> {
     // TODO: implement build
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
         if(!isOpen){
-          await Provider.of<AuthProvider>(context, listen: false).authRequest();
+          await Provider.of<RestAuthProvider>(context, listen: false).authRequest();
         }
         setState(() {
           isOpen = true;
@@ -59,7 +60,7 @@ class _LoginVerRest extends State<LoginVerRest> {
         child: Stack(
           children: [
             Center(
-            child: Consumer<AuthProvider>(
+            child: Consumer<RestAuthProvider>(
               builder: (context, auth, _){
                 // if(auth.isSuccess) {
                 //   pageMove();
@@ -138,7 +139,7 @@ class _LoginVerRest extends State<LoginVerRest> {
                                   if(usernameCtrl.text == "" || passwordCtrl.text == "") {
                                     showToast("계정정보를 모두 입력해주세요!");
                                   } else {
-                                    Provider.of<AuthProvider>(context, listen: false).authIn(usernameCtrl.text, passwordCtrl.text);
+                                    Provider.of<RestAuthProvider>(context, listen: false).authIn(usernameCtrl.text, passwordCtrl.text);
                                   }
                                 },
                                 child: Text("로그인",
@@ -230,7 +231,7 @@ class _LoginVerRest extends State<LoginVerRest> {
               },
               ),
             ),
-            Consumer<AuthProvider>(
+            Consumer<RestAuthProvider>(
               builder: (context, auth, _){
                 return auth.isAuthing ?
                 Positioned.fill(
@@ -284,7 +285,7 @@ class _LoginVerRest extends State<LoginVerRest> {
                     Container();
               }
             ),
-            Consumer<AuthProvider>(
+            Consumer<RestAuthProvider>(
               builder: (context, auth, _){
                 WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
                   if(!auth.isEnd && auth.isSuccess){
@@ -302,10 +303,10 @@ class _LoginVerRest extends State<LoginVerRest> {
   }
 
   pageMove() async {
-    await Provider.of<AuthProvider>(context, listen: false).setEnd(true);
+    await Provider.of<RestAuthProvider>(context, listen: false).setEnd(true);
     await Provider.of<StoreProvider>(context, listen: false).clearMap();
     await Provider.of<CenterProvider>(context, listen: false).startLoading();
-    await Provider.of<UserProvider>(context,listen: false).fetchMyInfo(context);
+    await Provider.of<UserProvider>(context,listen: false).fetchMyInfo();
     Navigator.of(context)
         .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => AppConfirm()), (route) => false);
   }

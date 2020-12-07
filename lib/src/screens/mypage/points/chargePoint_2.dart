@@ -353,7 +353,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
                             if (!response) {
                               showToast("에러");
                             } else {
-                              await Provider.of<UserProvider>(context, listen:false).fetchMyInfo(context);
+                              await Provider.of<UserProvider>(context, listen:false).fetchMyInfo();
                               await Provider.of<UserProvider>(context, listen: false).getAccountsHistory(widget.pointType, 0);
                               showToast("충전이 완료되었습니다.");
                             }
@@ -388,7 +388,7 @@ class _ChargePoint2State extends State<ChargePoint2> {
                           if (!response) {
                             showToast("에러");
                           } else {
-                            await Provider.of<UserProvider>(context, listen:false).fetchMyInfo(context);
+                            await Provider.of<UserProvider>(context, listen:false).fetchMyInfo();
                             await Provider.of<UserProvider>(context, listen: false).getAccountsHistory(widget.pointType, 0);
                             showToast("충전이 완료되었습니다.");
                           }

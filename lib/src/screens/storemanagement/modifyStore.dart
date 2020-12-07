@@ -673,7 +673,7 @@ class _ModifyStoreState extends State<ModifyStore> {
 
                 await Provider.of<StoreProvider>(context, listen: false).clearMap();
                 await Provider.of<StoreProvider>(context, listen: false).hideDetailView();
-                await Provider.of<UserProvider>(context, listen: false).fetchMyInfo(context);
+                await Provider.of<UserProvider>(context, listen: false).fetchMyInfo();
 
                 Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
               }

@@ -94,7 +94,7 @@ class _Home extends State<Home> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await P.Provider.of<UserProvider>(context,listen: false).fetchMyInfo(context);
+      await P.Provider.of<UserProvider>(context,listen: false).fetchMyInfo();
     });
   }
 

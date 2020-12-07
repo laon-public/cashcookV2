@@ -1,4 +1,5 @@
 import 'package:cashcook/src/provider/AuthProvider.dart';
+import 'package:cashcook/src/provider/RestAuthProvider.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
@@ -35,7 +36,7 @@ class _Register extends State<Register> {
         height: MediaQuery.of(context).size.height,
 
         child: SingleChildScrollView(
-          child: Consumer<AuthProvider>(
+          child: Consumer<RestAuthProvider>(
             builder: (context, auth, _){
               return Column(
                 children: [
@@ -236,7 +237,7 @@ class _Register extends State<Register> {
                     height: 35,
                     child: TextFormField(
                       onChanged: (value) {
-                        Provider.of<AuthProvider>(context, listen: false).changeFormValue(key, value);
+                        Provider.of<RestAuthProvider>(context, listen: false).changeFormValue(key, value);
                       },
                       cursorColor: Color(0xff000000),
                       decoration: InputDecoration(
@@ -268,7 +269,7 @@ class _Register extends State<Register> {
                     ),
                     onPressed: () async {
                       if(key == "phone") {
-                        await Provider.of<AuthProvider>(context, listen: false).requestSms();
+                        await Provider.of<RestAuthProvider>(context, listen: false).requestSms();
                       }
                     },
                     child: Text(btnText,
@@ -308,7 +309,7 @@ class _Register extends State<Register> {
           margin: EdgeInsets.only(bottom: 16.0),
           child: TextFormField(
             onChanged: (value) {
-              Provider.of<AuthProvider>(context, listen: false).changeFormValue(key, value);
+              Provider.of<RestAuthProvider>(context, listen: false).changeFormValue(key, value);
             },
             obscureText: key == "password" || key == "password_confirm" ? true : false,
             cursorColor: Color(0xff000000),

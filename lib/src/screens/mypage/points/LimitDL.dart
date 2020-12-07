@@ -322,7 +322,7 @@ class _limitDLState extends State<limitDL> {
                           limitType
                         );
 
-                        await Provider.of<UserProvider>(context, listen: false).fetchMyInfo(context);
+                        await Provider.of<UserProvider>(context, listen: false).fetchMyInfo();
                         await Provider.of<StoreProvider>(context, listen: false).clearMap();
 
                         Navigator.of(context).pop();

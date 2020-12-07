@@ -38,7 +38,7 @@ class _MyUpdate extends State<MyUpdate> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    P.Provider.of<UserProvider>(context, listen: false).fetchMyInfo(context);
+    P.Provider.of<UserProvider>(context, listen: false).fetchMyInfo();
   }
 
   mainMapMove() {

@@ -194,7 +194,7 @@ class UserProvider with ChangeNotifier {
     stopLoading();
   }
 
-  Future<void> fetchMyInfo(context) async {
+  Future<void> fetchMyInfo() async {
     startLoading();
     print("fetch");
     var response = await provider.authCheck(dataStorage.token);
@@ -248,15 +248,12 @@ class UserProvider with ChangeNotifier {
         if(franchise['status'] == 'DENY') {
           Fluttertoast.showToast(msg: "매장 권한이 상실되었습니다. ADP를 충전해주세요.");
         }
-        await P.Provider.of<UserProvider>(context, listen: false)
-            .setStoreModel(StoreModel.fromJson(franchise));
+        await setStoreModel(StoreModel.fromJson(franchise));
       } else {
-        await P.Provider.of<UserProvider>(context, listen: false)
-            .setStoreModel(null);
+        await setStoreModel(null);
       }
 
-      await P.Provider.of<UserProvider>(context, listen: false)
-          .setLoginUser(userCheck);
+      await setLoginUser(userCheck);
 
       response = await service.getUserAccounts();
       Map<String, dynamic> accountsJson = jsonDecode(response);

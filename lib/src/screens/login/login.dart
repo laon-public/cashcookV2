@@ -170,7 +170,7 @@ class _Login extends State<Login> {
 
               if (userCheck.username != "") {
                 P.Provider.of<UserProvider>(context,listen: false).setLoginUser(userCheck);
-                await P.Provider.of<UserProvider>(context,listen: false).fetchMyInfo(context);
+                await P.Provider.of<UserProvider>(context,listen: false).fetchMyInfo();
                 dynamic franchise = json.decode(value)['data']['franchise'];
 
                  if(franchise != null) {
