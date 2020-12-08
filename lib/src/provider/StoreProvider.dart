@@ -284,8 +284,8 @@ class StoreProvider with ChangeNotifier{
     return isReturn;
   }
 
-  Future<bool> patchStore(Map<String, String> data, String bn_uri, String shop1_uri, String shop2_uri, String shop3_uri) async {
-    bool isReturn = await service.patchStore(data, bn_uri, shop1_uri, shop2_uri, shop3_uri);
+  Future<bool> patchStore(Map<String, String> data, String bn_uri) async {
+    bool isReturn = await service.patchStore(data, bn_uri);
     return isReturn;
   }
 

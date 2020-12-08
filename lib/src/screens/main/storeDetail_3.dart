@@ -185,6 +185,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                 fit: BoxFit.cover,
                                                 width: MediaQuery.of(context).size.width,
                                                 height: MediaQuery.of(context).size.height,
+
                                               ),
                                               Opacity(
                                                 opacity: 0.2,

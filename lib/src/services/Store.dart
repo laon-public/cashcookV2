@@ -42,8 +42,7 @@ class StoreService {
     return false;
   }
 
-  Future<bool> patchStore(Map<String, String> data, String bn_path,
-      String shop1_path, String shop2_path, String shop3_path) async {
+  Future<bool> patchStore(Map<String, String> data, String bn_path) async {
     FormData formData = new FormData();
     if (bn_path != "") {
       formData = new FormData.fromMap({
@@ -51,9 +50,9 @@ class StoreService {
       });
     }
 
-    (shop1_path != "" && shop1_path != null) ? formData.files.add(MapEntry("new_shop_img1", MultipartFile.fromFileSync(shop1_path))) : print("no Shop img1");
-    (shop2_path != "" && shop2_path != null) ? formData.files.add(MapEntry("new_shop_img2", MultipartFile.fromFileSync(shop2_path))) : print("no Shop img2");
-    (shop3_path != "" && shop3_path != null) ? formData.files.add(MapEntry("new_shop_img3", MultipartFile.fromFileSync(shop3_path))) : print("no Shop img3");
+    (data['shop_uri1'] != null && data['shop_uri1'] != "") ? formData.files.add(MapEntry("new_shop_img1", MultipartFile.fromFileSync(data['shop_uri1']))) : print("no Shop img1");
+    (data['shop_uri2'] != null && data['shop_uri2'] != "") ? formData.files.add(MapEntry("new_shop_img2", MultipartFile.fromFileSync(data['shop_uri2']))) : print("no Shop img2");
+    (data['shop_uri3'] != null && data['shop_uri3'] != "") ? formData.files.add(MapEntry("new_shop_img3", MultipartFile.fromFileSync(data['shop_uri3']))) : print("no Shop img3");
 
     formData.fields.addAll(data.entries);
     print(formData.fields);

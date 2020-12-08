@@ -44,6 +44,12 @@ class _ModifyStoreState extends State<ModifyStore> {
 
   TextEditingController commentCtrl = TextEditingController();
 
+  String shop1_uri = "";
+
+  String shop2_uri = "";
+
+  String shop3_uri = "";
+
   @override
   void initState() {
 
@@ -63,6 +69,10 @@ class _ModifyStoreState extends State<ModifyStore> {
     addressCtrl.text = store.address.address;
     detailCtrl.text = store.address.detail;
 
+    shop1_uri = store.store.shop_img1;
+    shop2_uri = store.store.shop_img2;
+    shop3_uri = store.store.shop_img3;
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await Provider.of<StoreProvider>(context, listen: false).fetchEditMenu(
           Provider.of<UserProvider>(context, listen: false).storeModel.id
@@ -73,11 +83,7 @@ class _ModifyStoreState extends State<ModifyStore> {
     });
   }
 
-  String shop1_uri = "";
 
-  String shop2_uri = "";
-
-  String shop3_uri = "";
 
   setShop1Uri(String uri){
     shop1_uri = uri;
@@ -385,12 +391,24 @@ class _ModifyStoreState extends State<ModifyStore> {
             alignment: Alignment.centerLeft,
           ),
         ),
-        Row(
-          children: [
-            Pictures(setShop1Uri),
-            Pictures(setShop2Uri),
-            Pictures(setShop3Uri),
-          ],
+        Container(
+          width: MediaQuery.of(context).size.width,
+          child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child:Row(
+                children: [
+                  Pictures(
+                      onSetUri: setShop1Uri,
+                      initUri: shop1_uri,),
+                  Pictures(
+                    onSetUri: setShop2Uri,
+                    initUri: shop2_uri,),
+                  Pictures(
+                    onSetUri: setShop3Uri,
+                    initUri: shop3_uri,),
+                ],
+              )
+          ),
         ),
         Padding(
           padding: const EdgeInsets.only(top:40.0),
@@ -618,12 +636,19 @@ class _ModifyStoreState extends State<ModifyStore> {
 
   Widget nextBtn(context){
     return Container(
-      width: double.infinity,
-      height: 40,
+      width: MediaQuery.of(context).size.width,
+      height: 60,
+      padding: EdgeInsets.symmetric(vertical: 8),
       child:
       Consumer<StoreServiceProvider>(
         builder: (context, ssp, _) {
           return RaisedButton(
+            elevation: 0.0,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                    Radius.circular(6.0)
+                )
+            ),
             onPressed: () async {
               StoreModel store = Provider.of<UserProvider>(context,listen: false).storeModel;
 
@@ -662,14 +687,25 @@ class _ModifyStoreState extends State<ModifyStore> {
 
               if( telCtrl1.text.length < 3 || telCtrl2.text.length < 4 ||  telCtrl3.text.length < 4 ){
                 Fluttertoast.showToast(msg: "전화 번호의 자릿수가 부족 합니다.");
-              }else{
+              }
 
-                bool isReturn = await Provider.of<StoreProvider>(context,listen: false).patchStore(data, "", shop1_uri, shop2_uri, shop3_uri);
+              if( store.store.shop_img1 != shop1_uri) {
+                data['shop_uri1'] = shop1_uri;
+              }
+
+              if( store.store.shop_img2 != shop2_uri) {
+                data['shop_uri2'] = shop2_uri;
+              }
+
+              if( store.store.shop_img3 != shop3_uri) {
+                data['shop_uri3'] = shop3_uri;
+              }
+
+                bool isReturn = await Provider.of<StoreProvider>(context,listen: false).patchStore(data, "");
 
                 if(isReturn){
                   Fluttertoast.showToast(msg: "가맹점 수정이 성공하였습니다.");
-                  DefaultCacheManager cacheManager = new DefaultCacheManager();
-                  cacheManager.emptyCache();
+                  PaintingBinding.instance.imageCache.clear();
                 }else {
                   Fluttertoast.showToast(msg: "가맹점 수정이 실패하였습니다.");
 
@@ -680,11 +716,13 @@ class _ModifyStoreState extends State<ModifyStore> {
                 await Provider.of<UserProvider>(context, listen: false).fetchMyInfo();
 
                 Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
-              }
-
-            },
-            child: Text("수정"),
-            textColor: Colors.white,
+                },
+            child: Text("수정",
+              style: Subtitle2.apply(
+                  color: white,
+                  fontWeightDelta: 1
+              ),
+            ),
             color: mainColor,
           );
         },
@@ -803,8 +841,9 @@ class _ModifyStoreState extends State<ModifyStore> {
 class Pictures extends StatefulWidget {
 
   final Function(String str) onSetUri;
+  final String initUri;
 
-  Pictures(this.onSetUri);
+  Pictures({this.onSetUri, this.initUri});
 
   @override
   _PicturesState createState() => _PicturesState();
@@ -813,63 +852,59 @@ class Pictures extends StatefulWidget {
 class _PicturesState extends State<Pictures> {
   final picker = ImagePicker();
   File _image;
-  String filePath = "";
+  String filePath;
+
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
     setState(() {
       _image = File(pickedFile.path);
-      filePath = pickedFile.path.split("/").last;
+      // filePath = pickedFile.path.split("/").last;
+      filePath = _image.absolute.path;
       widget.onSetUri(_image.absolute.path);
     });
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    filePath = widget.initUri;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 5),
-      child: Column(
-        children: [
-          Container(
-            height: 40,
-            decoration:
-            BoxDecoration(border: Border.all(color: Color(0xffdddddd))),
-            child: Row(
-              children: [
-                Flexible(
-                  child: Container(
-                    height: 40,
-                    color: Color(0xffeeeeee),
-                    child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          filePath,
-                          overflow: TextOverflow.ellipsis,
-                        )),
+    return InkWell(
+      child:
+            Container(
+              width: 104,
+              height: 104,
+              margin: EdgeInsets.only(right: 8.0),
+              decoration: BoxDecoration(
+                  color: deActivatedGrey,
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(6)
                   ),
-                ),
-                InkWell(
-                  child: Container(
-                    width: 80,
-                    color: mainColor,
-                    child: Center(
-                      child: Text("파일첨부", style:
-                      Body2.apply(
-                        color: white
+                  border: Border.all(
+                      color: third,
+                      width: 0.5
+                  ),
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: filePath == widget.initUri ?
+                      NetworkImage(
+                        widget.initUri,
                       )
-                      ),
-                    ),
+                          :
+                      FileImage(
+                          File(filePath)
+                      )
                   ),
-                  onTap: () {
-                    getImage();
-                  },
-                ),
-              ],
+              ),
             ),
-          ),
-        ],
-      ),
+      onTap: () {
+        getImage();
+      },
     );
   }
 }

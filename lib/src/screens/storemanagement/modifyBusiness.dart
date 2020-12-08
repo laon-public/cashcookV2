@@ -362,7 +362,7 @@ class _ModifyBusiness extends State<ModifyBusiness> {
               Fluttertoast.showToast(msg: "전화 번호의 자릿수가 부족 합니다.");
             }else{
 
-              bool isReturn = await Provider.of<StoreProvider>(context,listen: false).patchStore(data, blUri, "", "", "");
+              bool isReturn = await Provider.of<StoreProvider>(context,listen: false).patchStore(data, blUri);
               if(isReturn){
                 Fluttertoast.showToast(msg: "사업자정보 수정이 성공하였습니다.");
               }else {
