@@ -173,7 +173,7 @@ class _QrPayment extends State<QrPayment> {
                       qp.store.store.limitType == "NONE" ?
                       "* 결제한도가 없는 매장 입니다."
                           :
-                      "* 해당매장의 결제한도는 ${qp.store.store.limitDL}% DL 입니다.",
+                      "* 해당매장의 결제한도는 ${(qp.store.store.limitType == "PERCENTAGE") ? "${qp.store.store.limitDL}%" : "${numberFormat.format(int.parse(qp.store.store.limitDL))}"} DL 입니다.",
                       style: Body2.apply(
                         color: primary
                       ),
@@ -188,7 +188,10 @@ class _QrPayment extends State<QrPayment> {
                       elevation: 0.0,
                       onPressed: (qp.paymentModel.price < (int.parse(qp.paymentEditModel.dlCtrl.text == "" ? "0" : qp.paymentEditModel.dlCtrl.text) * 100))
                             || (qp.store.store.limitDL != "NONE" &&
-                              (qp.paymentModel.price * int.parse(qp.store.store.limitDL) / 100).round() < (int.parse(qp.paymentEditModel.dlCtrl.text) * 100))?
+                              ( qp.store.store.limitType == "CASH" &&
+                                  (int.parse(qp.store.store.limitDL) < (int.parse(qp.paymentEditModel.dlCtrl.text)))) ||
+                              ( qp.store.store.limitType == "PERCENTAGE" &&
+                                  (qp.paymentModel.price * int.parse(qp.store.store.limitDL) / 100).round() < (int.parse(qp.paymentEditModel.dlCtrl.text) * 100)))?
                           null
                           :
                           () {

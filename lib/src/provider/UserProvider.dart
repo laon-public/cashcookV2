@@ -196,7 +196,6 @@ class UserProvider with ChangeNotifier {
 
   Future<void> fetchMyInfo() async {
     startLoading();
-    print("fetch");
     var response = await provider.authCheck(dataStorage.token);
     dynamic authCheck = json.decode(response)['data']['user'];
     int sex = 0;

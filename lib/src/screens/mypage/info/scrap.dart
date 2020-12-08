@@ -2,6 +2,7 @@ import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/screens/main/storeDetail_3.dart';
 import 'package:cashcook/src/utils/CustomBottomNavBar.dart';
 import 'package:cashcook/src/utils/colors.dart';
+import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -187,7 +188,11 @@ class _Scrap extends State<Scrap> {
                                   style: Caption.apply(color: etcYellow, fontWeightDelta: 1),
                                 ),
                                 Text(
-                                  (scrap.store.limitDL == null) ? " 결제한도가 없습니다." : "${scrap.store.limitDL}%",
+                                  (scrap.store.limitDL == null) ? " 결제한도가 없습니다." :
+                                  (scrap.store.limitType == "PERCENTAGE") ?
+                                  "${scrap.store.limitDL}%"
+                                      :
+                                  "${numberFormat.format(int.parse(scrap.store.limitDL))}DL",
                                   style: Caption.apply(color: secondary),
                                 ),
                               ],

@@ -56,7 +56,13 @@ class _OrderMenu extends State<OrderMenu> {
                 centerTitle: true,
                 title: Text("주문서 작성",
                     style: appBarDefaultText
-                )
+                ),
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24,),
+              ),
             ),
             backgroundColor: Colors.white,
             body: SingleChildScrollView(
@@ -145,7 +151,7 @@ class _OrderMenu extends State<OrderMenu> {
                                           store.store.limitDL == null ?
                                           "* 결제한도가 없는 매장 입니다."
                                               :
-                                          "* 해당매장의 결제한도는 ${store.store.limitDL}% DL 입니다.",
+                                          "* 해당매장의 결제한도는 ${(store.store.limitType == "PERCENTAGE") ? "${store.store.limitDL}%" : "${numberFormat.format(int.parse(store.store.limitDL))}"} DL 입니다.",
                                           style: TabsTagsStyle.apply(
                                               color: primary,
                                               fontWeightDelta: 1
@@ -1048,18 +1054,30 @@ class _OrderMenu extends State<OrderMenu> {
                                         color: Colors.transparent,
                                         child: InkWell(
                                           onTap: () {
-                                            if(store.store.limitDL != null &&
-                                                (ssp.orderPay / 100) * (int.parse(store.store.limitDL) /100)
+                                            if(store.store.limitDL != null){
+                                              if(widget.store.store.limitType == "PERCENTAGE") {
+                                                if((ssp.orderPay / 100) * (int.parse(store.store.limitDL) /100)
                                                     <
-                                                    int.parse(ssp.dlCtrl.text)){
-                                              showToast("해당 매장의 결제한도보다 많습니다.");
+                                                    int.parse(ssp.dlCtrl.text)) {
+                                                  showToast("해당 매장의 결제한도보다 많습니다.");
+                                                  return;
+                                                }
+                                              } else {
+                                                if(int.parse(widget.store.store.limitDL) < int.parse(ssp.dlCtrl.text)) {
+                                                  showToast("해당 매장의 결제한도보다 많습니다.");
+                                                  return;
+                                                }
+                                              }
+
                                             } else if(pointMap['DL'] < int.parse(ssp.dlCtrl.text)){
                                               showToast("보유 DL보다 많습니다.");
+                                              return;
                                             } else if((int.parse(ssp.dlCtrl.text) * 100) > ssp.orderPay) {
                                               showToast("결제금액 보다 많습니다.");
-                                            } else {
-                                              Navigator.pop(context);
+                                              return;
                                             }
+
+                                            Navigator.pop(context);
                                           },
                                           child: Text("확인",
                                               style:Body1.apply(

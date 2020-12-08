@@ -11,6 +11,7 @@ import 'package:cashcook/src/utils/Share.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/StoreServiceItem.dart';
+import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
@@ -367,7 +368,12 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                       )
                                                   ),
                                                   whiteSpaceW(4.0),
-                                                  Text("${widget.store.store.limitDL == null ? "100" : widget.store.store.limitDL }%",
+                                                  Text((widget.store.store.limitDL == null) ? "100%" :
+                                                  (widget.store.store.limitType == "PERCENTAGE") ?
+                                                      "${widget.store.store.limitDL}%"
+                                                      :
+                                                      "${numberFormat.format(int.parse(widget.store.store.limitDL))}DL"
+                                                    ,
                                                     style: Body1.apply(color: secondary),
                                                     textAlign: TextAlign.center,
                                                   )

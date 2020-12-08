@@ -49,7 +49,10 @@ class _MyPageState extends State<MyPage> {
   void initState() {
     super.initState();
 
-    Provider.of<UserProvider>(context, listen: false).fetchMyInfo();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<UserProvider>(context, listen: false).fetchMyInfo();
+    });
+
   }
 
   @override
@@ -1382,7 +1385,7 @@ class _MyPageState extends State<MyPage> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset("assets/icon/steam-color2.png", width: 24,height: 24, fit: BoxFit.fill,),
+              Image.asset("assets/icon/steam-color2.png", width: 24,height: 24, fit: BoxFit.fill, color: primary),
               SizedBox(width: 12,),
               Text("찜한 매장",style: Subtitle2),
               Spacer(),

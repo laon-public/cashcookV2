@@ -35,8 +35,13 @@ class _Login2 extends State<Login2> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: viewWeb ?
-      WebView(
+      Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+        child: WebView(
           initialUrl: baseUrl + "oauth/authorize?client_id=cashcook&redirect_uri=" + loginSuccessUrl + "&response_type=code",
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: (controller) {
@@ -79,6 +84,7 @@ class _Login2 extends State<Login2> {
           onPageFinished: (url) {
             print("Page Finished");
           },
+        ),
       )
           :
       Container(),

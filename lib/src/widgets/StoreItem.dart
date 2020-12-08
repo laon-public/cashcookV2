@@ -6,6 +6,7 @@ import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/screens/main/storeDetail_3.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
+import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -80,7 +81,7 @@ Widget storeMiniItem(StoreMinify store, BuildContext context) {
                           "assets/resource/main/steam-color.png",
                           width: 20,
                           height: 20,
-                          color: mainColor
+                          color: primary
                         ),
                       )
                           :
@@ -268,6 +269,7 @@ Widget storeItem(StoreModel store, BuildContext context) {
                             "assets/resource/main/steam-color.png",
                             width: 20,
                             height: 20,
+                            color: primary
                           ),
                         )
                             :
@@ -307,7 +309,11 @@ Widget storeItem(StoreModel store, BuildContext context) {
                       style: Caption.apply(color: etcYellow, fontWeightDelta: 1),
                     ),
                     Text(
-                      (store.store.limitDL == null) ? " 결제한도가 없습니다." : "${store.store.limitDL}%",
+                      (store.store.limitDL == null) ? " 결제한도가 없습니다." :
+                      (store.store.limitType == "PERCENTAGE") ?
+                      "${store.store.limitDL}%"
+                      :
+                      "${numberFormat.format(int.parse(store.store.limitDL))}DL",
                       style: Caption.apply(color: secondary),
                     ),
                   ],

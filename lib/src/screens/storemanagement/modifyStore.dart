@@ -385,9 +385,13 @@ class _ModifyStoreState extends State<ModifyStore> {
             alignment: Alignment.centerLeft,
           ),
         ),
-        Pictures(setShop1Uri),
-        Pictures(setShop2Uri),
-        Pictures(setShop3Uri),
+        Row(
+          children: [
+            Pictures(setShop1Uri),
+            Pictures(setShop2Uri),
+            Pictures(setShop3Uri),
+          ],
+        ),
         Padding(
           padding: const EdgeInsets.only(top:40.0),
           child: nextBtn(context),
