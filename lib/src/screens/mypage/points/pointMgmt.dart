@@ -168,45 +168,17 @@ class _pointMgmtState extends State<pointMgmt> {
                                     flex: 1,
                                     child:
                                     Padding(
-                                      padding: const EdgeInsets.only(top: 30.0, left: 12.0, right: 12.0, bottom: 30.0),
-                                      child:Column(
-                                        children: [
-                                          Text("광고주 포인트",
-                                              style: Caption.apply(
-                                                color: secondary
-                                              )
-                                          ),
-                                          whiteSpaceH(5),
-                                          Text("${numberFormat.format(pm.adp)} ADP",
-                                              style: Caption.apply(
-                                                  color:black,
-                                                fontWeightDelta: 3
-                                              )
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    width: 1,
-                                    height: 24,
-                                    color: deActivatedGrey,
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child:
-                                    Padding(
                                       padding: const EdgeInsets.only(top: 15.0, left: 12.0, right: 12.0, bottom: 15.0),
                                       child:Column(
                                         children: [
                                           Text("총 현장결제",
-                                              style: Caption.apply(
+                                              style: Body2.apply(
                                                   color: secondary
                                               )
                                           ),
                                           whiteSpaceH(5),
                                           Text("${numberFormat.format(pm.pay)}원",
-                                              style: Caption.apply(
+                                              style: Body1.apply(
                                                   color:black,
                                                   fontWeightDelta: 3
                                               )
@@ -228,13 +200,13 @@ class _pointMgmtState extends State<pointMgmt> {
                                       child:Column(
                                         children: [
                                           Text("총 DL 결제",
-                                              style: Caption.apply(
+                                              style: Body2.apply(
                                                   color: secondary
                                               )
                                           ),
                                           whiteSpaceH(5),
                                           Text("${numberFormat.format(pm.dl)} DL",
-                                              style: Caption.apply(
+                                              style: Body1.apply(
                                                   color:black,
                                                   fontWeightDelta: 3
                                               )
@@ -247,6 +219,40 @@ class _pointMgmtState extends State<pointMgmt> {
                             )
                         ),
                       ),
+                      whiteSpaceH(8),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 16),
+                        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFF2F2F2),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(4),
+                          ),
+                        ),
+                        child:
+                        Consumer<PointMgmtProvider>(
+                            builder: (context, pm, _){
+                              return Row(
+                                  children: [
+                                    Text("광고주 포인트",
+                                        style: Body2.apply(
+                                            color: secondary
+                                        )
+                                    ),
+                                    Spacer(),
+                                    Text("${numberFormat.format(pm.adp)} ADP",
+                                        style: Body1.apply(
+                                            color: black,
+                                            fontWeightDelta: 3
+                                        )
+                                    ),
+                                  ]
+                              );
+                            }
+                        ),
+                      ),
+                      whiteSpaceH(12),
                       Padding(
                           padding: EdgeInsets.symmetric(vertical: 16, horizontal: 32),
                           child:
