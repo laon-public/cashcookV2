@@ -8,7 +8,9 @@ import 'package:cashcook/src/screens/center/appConfirm.dart';
 import 'package:cashcook/src/screens/referrermanagement/firstbiz.dart';
 import 'package:cashcook/src/services/API.dart';
 import 'package:cashcook/src/utils/datastorage.dart';
+import 'package:cashcook/src/utils/webViewScroll.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_cookie_manager/webview_cookie_manager.dart';
@@ -35,15 +37,18 @@ class _Login2 extends State<Login2> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: viewWeb ?
       Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-        child: WebView(
+        child:WebView(
           initialUrl: baseUrl + "oauth/authorize?client_id=cashcook&redirect_uri=" + loginSuccessUrl + "&response_type=code",
           javascriptMode: JavascriptMode.unrestricted,
+            gestureRecognizers: [
+                 Factory(() => PlatformViewVerticalGestureRecognizer()),
+               ].toSet(),
           onWebViewCreated: (controller) {
             this.webViewController = controller;
           },

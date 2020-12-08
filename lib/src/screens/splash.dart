@@ -77,8 +77,8 @@ class _Splash extends State<Splash> {
   pageMove() async {
     await Provider.of<StoreProvider>(context, listen: false).clearMap();
     Navigator.of(context)
-        // .pushReplacement(MaterialPageRoute(builder: (context) => Login()));
-    .pushReplacement(MaterialPageRoute(builder: (context) => Login2()));
+        .pushReplacement(MaterialPageRoute(builder: (context) => Login()));
+    // .pushReplacement(MaterialPageRoute(builder: (context) => Login2()));
         // .pushReplacement(MaterialPageRoute(builder: (context) => LoginVerRest()));
   }
 

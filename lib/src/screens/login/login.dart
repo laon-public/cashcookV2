@@ -52,30 +52,13 @@ class _Login extends State<Login> {
     print("initState123");
     // TODO: implement initState
     super.initState();
-    cookieManager.clearCookies();
     flutterWebviewPlugin.onUrlChanged.listen((String url) async {
       print("url : " + url);
-      showToast("autoLogin 체크한다.");
-      showToast(dataStorage.autoLogin);
-
-      if(dataStorage.autoLogin != "") {
-        print("autoLogin 체크");
-        print(dataStorage.autoLogin);
-        showToast(dataStorage.autoLogin);
-        cookieManager.setCookies([
-          Cookie("remember-me", dataStorage.autoLogin)
-            ..domain = "http://192.168.1.227"
-            ..path = "/auth_api"
-            ..httpOnly = true
-        ]);
-      }
-
+      
       if (url == baseUrl) {
         print("로그인실패123");
 
-        webViewController.clearCache();
-
-
+        // webViewController.clearCache();
 
         webViewController.loadUrl(baseUrl + "oauth/authorize?client_id=cashcook&redirect_uri=" + loginSuccessUrl + "&response_type=code");
         Navigator.of(context).pushAndRemoveUntil(
@@ -90,8 +73,6 @@ class _Login extends State<Login> {
       List<String> code = List();
       if (url.contains("code") && !url.contains("oauth")) {
         final List<Cookie> gotCookie = await cookieManager.getCookies(url);
-
-        String rememberMe;
         for(Cookie cookie in gotCookie) {
           print(cookie);
 
@@ -101,7 +82,6 @@ class _Login extends State<Login> {
           print(cookie.name == "remember-me");
           if(cookie.name == "remember-me") {
             print("여기에 안 걸릴 수도 있어");
-            dataStorage.autoLogin = cookie.value;
           }
         }
 

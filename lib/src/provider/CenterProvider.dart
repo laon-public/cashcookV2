@@ -20,6 +20,7 @@ class CenterProvider with ChangeNotifier{
   String appVersion = "";
   String nextAppVersion = "";
   String hojoFunds = "";
+  String gameUserQuantity = "";
   int limitGamePercentage = 0;
   Pageing pageing = null;
 
@@ -163,6 +164,8 @@ class CenterProvider with ChangeNotifier{
   void enterGame() async {
     String res = await service.enterGame();
 
-    Map<String, dynamic> json = jsonDecode(res);
+    gameUserQuantity = json.decode(res)['data']['policy']['value'];
+
+    notifyListeners();
   }
 }

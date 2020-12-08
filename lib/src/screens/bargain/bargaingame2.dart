@@ -188,7 +188,6 @@ class _BargainGame2 extends State<BargainGame2> {
                       return Positioned(
                         top: 50,
                         child: Container(
-
                             padding: EdgeInsets.symmetric(horizontal: 22),
                             width: MediaQuery.of(context).size.width,
                             child: Center(
@@ -198,8 +197,7 @@ class _BargainGame2 extends State<BargainGame2> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                        "금일 이용자 수 : ${numberFormat.format(int.parse(cp.hojoFunds == "" ? "0" : cp.hojoFunds))}원 ㆍ "
-                                            "최대 한도 : ${cp.limitGamePercentage}%",
+                                        "금일 이용자 수 : ${numberFormat.format(int.parse(cp.gameUserQuantity))}명",
                                         style: Body2.apply(
                                             color: white,
                                             shadows: [
