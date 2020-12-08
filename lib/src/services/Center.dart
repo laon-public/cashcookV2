@@ -30,13 +30,12 @@ class CenterService{
 
  Future<String> getInquiry(page) async {
    print("get");
-   print(dataStorage.token);
- final response = await Dio().get(cookURL+"/inquiries/me?page=$page", options: Options(
-   headers: {
-     "Authorization": "BEARER ${dataStorage.token}"
-   }
- ));
- return response.toString();
+   final response = await Dio().get(cookURL+"/inquiries/me?page=$page", options: Options(
+     headers: {
+       "Authorization": "BEARER ${dataStorage.token}"
+     }
+   ));
+  return response.toString();
  }
 
  Future<String> putInquiry(inquiry_id) async {
@@ -60,6 +59,15 @@ class CenterService{
    final response = await client.get(cookURL+"/policy/funds",
       headers:  {
         "Authorization": "BEARER ${dataStorage.token}"
+      });
+   return utf8.decode(response.bodyBytes);
+ }
+
+ Future<String> enterGame() async {
+   print("enterGame");
+   final response = await client.patch(cookURL + "/policy/enterGame",
+       headers:  {
+         "Authorization": "BEARER ${dataStorage.token}"
       });
    return utf8.decode(response.bodyBytes);
  }

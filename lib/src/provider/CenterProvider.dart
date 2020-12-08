@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 import 'package:cashcook/src/services/Center.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart';
 import 'package:package_info/package_info.dart';
 
 class CenterProvider with ChangeNotifier{
@@ -157,5 +158,11 @@ class CenterProvider with ChangeNotifier{
 
     print("게임 Percentage 한도 ==> $limitGamePercentage");
     notifyListeners();
+  }
+
+  void enterGame() async {
+    String res = await service.enterGame();
+
+    Map<String, dynamic> json = jsonDecode(res);
   }
 }

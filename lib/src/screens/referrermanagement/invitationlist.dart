@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cashcook/src/model/phone.dart';
 import 'package:cashcook/src/provider/PhoneProvider.dart';
 import 'package:cashcook/src/utils/colors.dart';
@@ -15,17 +17,38 @@ class InvitationList extends StatefulWidget {
 }
 
 class _InvitationList extends State<InvitationList> {
+  TextEditingController searchCtrl;
+
+  Timer _debounce;
+  int _debouncetime = 750;
+
+  String filterKeyword;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     Provider.of<PhoneProvider>(context, listen: false).fetchPhoneList();
+    this.searchCtrl = TextEditingController();
+    this.searchCtrl.addListener(_onSearchChanged);
+    filterKeyword = "";
+  }
+
+  _onSearchChanged() {
+    if(_debounce?.isActive ?? false) _debounce.cancel();
+    _debounce = Timer(Duration(milliseconds: _debouncetime), () {
+      if(searchCtrl.text != filterKeyword) {
+        setState(() {
+          filterKeyword = searchCtrl.text;
+        });
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: white,
@@ -98,6 +121,55 @@ class _InvitationList extends State<InvitationList> {
                           ),
                         ),
                       ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              controller: searchCtrl,
+                              autofocus: false,
+                              cursorColor: Color(0xff000000),
+                              style: Subtitle2,
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.all(12.0),
+                                border: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Color(0xffdddddd), width: 1.0),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: black, width: 2.0),
+                                ),
+                                prefixIcon: InkWell(
+                                  onTap: () {},
+                                  child: Container(
+                                    padding: EdgeInsets.all(12.0),
+                                    child: Image.asset(
+                                      "assets/resource/main/search_blue.png",
+                                      width: 24,
+                                      height: 24,
+                                      color: primary,
+                                    ),
+                                  ),
+                                ),
+                                suffixIcon: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      searchCtrl.text = "";
+                                      filterKeyword = "";
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(12.0),
+                                    child: Image.asset(
+                                      "assets/icon/cancle.png",
+                                      width: 24,
+                                      height: 24,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                       Padding(
                         padding: EdgeInsets.only(top: 10, left: 0, right: 20),
                         child: Row(
@@ -124,12 +196,12 @@ class _InvitationList extends State<InvitationList> {
                       ),
                       Expanded(
                           child: Container(
-                            child: InvitationItemList(phoneProvider.phoneList),
+                            child: InvitationItemList(phoneList: phoneProvider.phoneList, filterKeyword: filterKeyword,),
                           )
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        height: 50,
+                        height: 60,
                         child: RaisedButton(
                           disabledColor: subBlue,
                           onPressed: phoneProvider.checkCnt != 0? () async {
@@ -138,14 +210,14 @@ class _InvitationList extends State<InvitationList> {
                               Navigator.of(context).pop(true);
                           } : null,
                           elevation: 0.0,
-                          color: mainColor,
+                          color: primary,
                           child: Center(
                             child: Text(
                               "초대하기",
-                              style: Body1.apply(
-                                fontWeightDelta: 1,
-                                color: white
-                              ),
+                              style: Subtitle2.apply(
+                                  color: white,
+                                  fontWeightDelta: 1
+                              )
                             ),
                           ),
                         ),
@@ -161,8 +233,9 @@ class _InvitationList extends State<InvitationList> {
 
 class InvitationItemList extends StatefulWidget {
   final List<PhoneModel> phoneList;
+  final String filterKeyword;
 
-  InvitationItemList(this.phoneList);
+  InvitationItemList({this.phoneList, this.filterKeyword});
 
   @override
   _InvitationItemListState createState() => _InvitationItemListState(phoneList);
@@ -187,7 +260,7 @@ class _InvitationItemListState extends State<InvitationItemList> {
       ListView.builder(
           itemCount: phoneList.length,
           itemBuilder: (BuildContext context, int index) {
-            return Container(
+            return phoneList[index].name.contains(widget.filterKeyword) ? Container(
               padding: EdgeInsets.only(right: 20.0, left: 5.0),
               child: Center(
                 child: Row(
@@ -237,7 +310,9 @@ class _InvitationItemListState extends State<InvitationItemList> {
                   ],
                 ),
               ),
-            );
+            )
+            :
+            Container();
           }
       );
   }

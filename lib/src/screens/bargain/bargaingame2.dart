@@ -49,6 +49,7 @@ class _BargainGame2 extends State<BargainGame2> {
     print("BargainGame initState");
     print("orderPayment ${widget.orderPayment}");
     print("total_carat ${widget.totalCarat}");
+    Provider.of<CenterProvider>(context, listen: false).enterGame();
     DefaultCacheManager().emptyCache();
     _unityWidgetController = null;
     gameLoad = false;
@@ -178,6 +179,55 @@ class _BargainGame2 extends State<BargainGame2> {
                               ),
                             ),
                           )
+                        ),
+                      );
+                    },
+                  ),
+                  Consumer<CenterProvider>(
+                    builder: (context, cp, _){
+                      return Positioned(
+                        top: 50,
+                        child: Container(
+
+                            padding: EdgeInsets.symmetric(horizontal: 22),
+                            width: MediaQuery.of(context).size.width,
+                            child: Center(
+                              child: Container(
+                                padding: EdgeInsets.all(5),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                        "금일 이용자 수 : ${numberFormat.format(int.parse(cp.hojoFunds == "" ? "0" : cp.hojoFunds))}원 ㆍ "
+                                            "최대 한도 : ${cp.limitGamePercentage}%",
+                                        style: Body2.apply(
+                                            color: white,
+                                            shadows: [
+                                              Shadow(
+                                                  offset: Offset(1, 1),
+                                                  blurRadius: 1.0,
+                                                  color: black
+                                              ),
+                                            ]
+                                        )
+                                    ),
+                                    Text("")
+                                  ],
+                                ),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                      begin: Alignment.topRight,
+                                      end: Alignment.topLeft,
+                                      colors: [
+                                        Colors.transparent,
+                                        black.withOpacity(0.3),
+                                        black.withOpacity(0.3),
+                                        Colors.transparent,
+                                      ]
+                                  ),
+                                ),
+                              ),
+                            )
                         ),
                       );
                     },

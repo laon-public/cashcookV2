@@ -34,7 +34,7 @@ class _Invitation extends State {
         ),
       ),
       body: Container(
-        padding: EdgeInsets.only(left: 15.0, right: 15.0, top: 20.0),
+        padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 20.0),
         height: MediaQuery.of(context).size.height,
         color: white,
         child: Column(
@@ -56,39 +56,37 @@ class _Invitation extends State {
                 style: Body2
             ),
           Spacer(),
-          Container(
-                width: MediaQuery.of(context).size.width,
-                color: white,
-                padding: EdgeInsets.only(bottom: 20.0),
-                child: Column(
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 40,
-                      child: RaisedButton(
-                        onPressed: () async {
-                          final bool result = await Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => InvitationList())
-                          );
-                          if(result){
-                            Navigator.of(context).pop();
-                          }
-                        },
-                        elevation: 0.0,
-                        color: mainColor,
-                        child: Center(
-                          child: Text(
-                            "확인",
-                            style: Body2.apply(
-                              color: white
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 60,
+              padding: EdgeInsets.symmetric(vertical: 8),
+              child: RaisedButton(
+                onPressed: () async {
+                  final bool result = await Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => InvitationList())
+                  );
+                  if(result){
+                    Navigator.of(context).pop();
+                  }
+                },
+                elevation: 0.0,
+                color: primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(6.0)
+                  )
+                ),
+                child: Center(
+                  child: Text(
+                      "확인",
+                      style: Subtitle2.apply(
+                          color: white,
+                          fontWeightDelta: 1
+                      )
+                  ),
                 ),
               ),
+            ),
           ],
         ),
       ),
