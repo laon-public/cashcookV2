@@ -54,7 +54,7 @@ class _Login extends State<Login> {
     super.initState();
     flutterWebviewPlugin.onUrlChanged.listen((String url) async {
       print("url : " + url);
-      
+
       if (url == baseUrl) {
         print("로그인실패123");
 
