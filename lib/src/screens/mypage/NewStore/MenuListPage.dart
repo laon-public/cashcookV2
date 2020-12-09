@@ -115,12 +115,6 @@ class _MenuListPage extends State<MenuListPage> {
           children: [
             (menu.imgUrl == null) ?
             Container(
-              child: Image.asset(
-                "assets/icon/cashcook_logo.png",
-                width: 48,
-                height: 48,
-                fit: BoxFit.cover,
-              ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(
                   Radius.circular(6.0)
@@ -128,29 +122,35 @@ class _MenuListPage extends State<MenuListPage> {
                 border: Border.all(
                   color: Color(0xFFDDDDDD),
                   width: 0.5
+                ),
+                image: DecorationImage(
+                    fit: BoxFit.cover,
+                  image: AssetImage(
+                    "assets/icon/cashcook_logo.png",
+                  )
                 )
               ),
             )
             :
-              CachedNetworkImage(
-                imageUrl: menu.imgUrl,
-                imageBuilder: (context, img) => Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(6.0)
-                        ),
-                        border: Border.all(
-                            color: Color(0xFFDDDDDD),
-                            width: 0.5
-                        ),
-                        image: DecorationImage(
-                            image: img, fit: BoxFit.fill
-                        )
-                    )
-                ),
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(6.0)
+                  ),
+                  border: Border.all(
+                      color: Color(0xFFDDDDDD),
+                      width: 0.5
+                  ),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(
+                    menu.imgUrl,
+                  )
+                )
               ),
+            ),
             whiteSpaceW(16.0),
             Expanded(
               child: Text(menu.name,

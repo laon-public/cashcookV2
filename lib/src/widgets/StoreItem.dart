@@ -81,7 +81,7 @@ Widget storeMiniItem(StoreMinify store, BuildContext context) {
                           "assets/resource/main/steam-color.png",
                           width: 20,
                           height: 20,
-                          color: primary
+                          color: etcYellow
                         ),
                       )
                           :
@@ -269,7 +269,7 @@ Widget storeItem(StoreModel store, BuildContext context) {
                             "assets/resource/main/steam-color.png",
                             width: 20,
                             height: 20,
-                            color: primary
+                            color: etcYellow
                           ),
                         )
                             :

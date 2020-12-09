@@ -2,6 +2,7 @@ import 'package:cashcook/src/model/store/menu.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/screens/mypage/NewStore/BigMenuApply.dart';
 import 'package:cashcook/src/screens/mypage/NewStore/MenuListPage.dart';
+import 'package:cashcook/src/screens/mypage/mypage.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
@@ -10,8 +11,9 @@ import 'package:provider/provider.dart';
 
 class BigMenuListPage extends StatefulWidget {
   final int store_id;
+  final bool isPatch;
 
-  BigMenuListPage({this.store_id});
+  BigMenuListPage({this.store_id, this.isPatch = false});
 
   @override
   _BigMenuListPage createState() => _BigMenuListPage();
@@ -38,7 +40,17 @@ class _BigMenuListPage extends State<BigMenuListPage> {
       elevation: 0.5,
       leading: IconButton(
         onPressed: () {
-          Navigator.of(context).pop();
+          if(widget.isPatch) {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => MyPage(
+                  isHome: true,
+                )
+              )
+            , (route) => false);
+          } else {
+            Navigator.of(context).pop();
+          }
         },
         icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24, color: black,),
       ),

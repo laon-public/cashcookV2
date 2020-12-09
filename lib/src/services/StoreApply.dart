@@ -47,17 +47,18 @@ class StoreApplyService {
       "id" : id,
       "menuName" : menuName,
       "menuPrice" : menuPrice,
-      "menuImg" : MultipartFile.fromFileSync(File(menuImg.path).absolute.path)
+      "menuImg" : menuImg == null ? null : MultipartFile.fromFileSync(File(menuImg.path).absolute.path)
     };
 
-    Response res = await dio.patch(cookURL + "/franchises/v2/menu",
+    Response<List<int>> res = await dio.patch(cookURL + "/franchises/v2/menu",
         data: FormData.fromMap(data),
         options: Options(
           headers: {"Authorization": "BEARER ${dataStorage.token}"},
+            responseType: ResponseType.bytes
         )
     );
 
-    print(res.data);
+    return utf8.decode(res.data);
   }
 
   Future<String> postBigMenu(int storeId, String name) async {

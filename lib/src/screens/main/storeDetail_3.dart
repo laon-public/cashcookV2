@@ -115,7 +115,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                   "assets/resource/main/steam-color.png",
                                                   width: 24,
                                                   height: 24,
-                                                  color:  Color.lerp(white, primary, stuckAmount),
+                                                  color:  Color.lerp(white, etcYellow, stuckAmount),
                                                 ),
                                               );
                                             },

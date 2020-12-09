@@ -190,8 +190,6 @@ Widget MenuItem(int bigIdx,int idx,MenuModel mm, BuildContext context) {
 }
 
 Widget reviewForm(BuildContext context, StoreModel store) {
-  StoreProvider sp = Provider.of<StoreProvider>(context, listen: false);
-  StoreModel selStore = store == null ? sp.selStore : store;
   return Consumer<StoreServiceProvider>(
       builder: (context, ss, __){
         return Container(
@@ -396,7 +394,7 @@ Widget hateImage(idx,review_id,isHate,BuildContext context) {
           "assets/icon/hate_color.png",
           width: 16,
           height: 16,
-          color: primary
+          color: etcYellow
       )
   );
 }
@@ -426,7 +424,7 @@ Widget likeImage(idx,review_id,isLike, BuildContext context) {
         "assets/icon/like_color.png",
         width: 16,
         height: 16,
-        color: primary,
+        color: etcYellow,
       )
   );
 }

@@ -3,8 +3,12 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cashcook/src/model/store/menu.dart';
 import 'package:cashcook/src/provider/StoreApplyProvider.dart';
+import 'package:cashcook/src/provider/StoreServiceProvider.dart';
+import 'package:cashcook/src/provider/UserProvider.dart';
+import 'package:cashcook/src/screens/mypage/NewStore/BigMenuListPage.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
+import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -119,23 +123,24 @@ class _MenuPatch extends State<MenuPatch> {
                         )
                             :
                         imgCtrl == null ?
-                        CachedNetworkImage(
-                          imageUrl: widget.menu.imgUrl,
-                          imageBuilder: (context, img) => Container(
-                              width: 48,
-                              height: 48,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(6.0)
-                                  ),
-                                  border: Border.all(
-                                      color: Color(0xFFDDDDDD),
-                                      width: 0.5
-                                  ),
-                                  image: DecorationImage(
-                                      image: img, fit: BoxFit.fill
-                                  )
+                        Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: Color(0xFFF7F7F7),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(6.0)
+                            ),
+                            border: Border.all(
+                                color: Color(0xFFDDDDDD),
+                                width: 0.5
+                            ),
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(
+                                widget.menu.imgUrl,
                               )
+                            )
                           ),
                         )
                             :
@@ -237,7 +242,29 @@ class _MenuPatch extends State<MenuPatch> {
                   child: RaisedButton(
                     elevation: 0,
                     onPressed: () {
-                      Provider.of<StoreApplyProvider>(context, listen: false).patchMenu(widget.menu.id, nameCtrl.text, priceCtrl.text, imgCtrl);
+                      Provider.of<StoreApplyProvider>(context, listen: false).patchMenu(widget.menu.id, nameCtrl.text, priceCtrl.text, imgCtrl).then((value) async
+                      {
+                        if(value) {
+                          showToast("메뉴가 수정되었습니다.");
+
+                          int store_id = Provider.of<UserProvider>(context, listen: false).storeModel.id;
+
+                          PaintingBinding.instance.imageCache.clear();
+
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                              builder: (context) => BigMenuListPage(
+                                store_id: store_id,
+                                isPatch: true,
+                              )
+                            )
+                          , (route) => false);
+                        }
+                        else {
+                          showToast("메뉴 수정에 실패했습니다.");
+                          Navigator.of(context).pop();
+                        }
+                      });
                     },
                     color: primary,
                     child: Text("수정하기",

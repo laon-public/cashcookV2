@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cashcook/src/model/store/content.dart';
 import 'package:cashcook/src/services/StoreApply.dart';
+import 'package:cashcook/src/utils/responseCheck.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -42,8 +43,16 @@ class StoreApplyProvider extends ChangeNotifier {
     await service.postMenu(bigId, menuName, menuPrice, menuImg);
   }
 
-  Future patchMenu(int id, String menuName, String menuPrice, PickedFile menuImg) async {
-    await service.patchMenu(id, menuName, menuPrice, menuImg);
+  Future<bool> patchMenu(int id, String menuName, String menuPrice, PickedFile menuImg) async {
+    String res = await service.patchMenu(id, menuName, menuPrice, menuImg);
+
+    Map<String, dynamic> json = jsonDecode(res);
+
+    if(isResponse(json)){
+      return true;
+    }
+
+    return false;
   }
 
   Future postBigMenu(int storeId, String name) async {
