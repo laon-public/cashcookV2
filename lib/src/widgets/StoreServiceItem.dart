@@ -110,14 +110,6 @@ Widget MenuItem(int bigIdx,int idx,MenuModel mm, BuildContext context) {
                 height: 48,
                 child: Stack(
                   children: [
-                    Center(
-                      child: Image.asset(
-                          "assets/icon/cashcook_logo.png",
-                        width: 48,
-                        height: 48,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
                     Positioned(
                       top: 0,
                       right: 0,
@@ -152,14 +144,21 @@ Widget MenuItem(int bigIdx,int idx,MenuModel mm, BuildContext context) {
                   ],
                 ),
                 decoration: BoxDecoration(
+                    color: Color(0xFFF7F7F7),
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(6.0)
+                    ),
                     border: Border.all(
                         color: Color(0xFFDDDDDD),
-                        width: 1
+                        width: 0.5
                     ),
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(12.0)
+                    image: mm.imgUrl == null ? null : DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(
+                            mm.imgUrl
+                        )
                     )
-                ),
+                )
               ),
               whiteSpaceW(16.0),
               Expanded(

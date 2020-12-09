@@ -135,9 +135,9 @@ class _MyPageState extends State<MyPage> {
                           if(!userCheck.isFran)
                             _showDialog();
                           else {
-                            await Provider.of<UserProvider>(context, listen:false).fetchMyInfo();
-                            agencyCheck = await Provider.of<UserProvider>(context, listen: false).selectMyAgency();
                             if(view != "Store"){
+                              await Provider.of<UserProvider>(context, listen:false).fetchMyInfo();
+                              agencyCheck = await Provider.of<UserProvider>(context, listen: false).selectMyAgency();
                               setState(() {
                                 view = "Store";
                               });
