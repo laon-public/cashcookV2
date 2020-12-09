@@ -504,7 +504,7 @@ class UserProvider with ChangeNotifier {
     print(json);
     print(isResponse(json));
 
-    return json['resultMsg']['cnt'];
+    return json['data']['cnt'];
   }
 
   void changeLimitDL(bool switchType, String store_id, String limitDL, String limitType) async {

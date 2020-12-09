@@ -1,7 +1,17 @@
+import 'dart:convert';
+
+import 'package:cashcook/src/model/usercheck.dart';
+import 'package:cashcook/src/provider/AuthProvider.dart';
+import 'package:cashcook/src/provider/CenterProvider.dart';
+import 'package:cashcook/src/provider/UserProvider.dart';
+import 'package:cashcook/src/screens/center/appConfirm.dart';
+import 'package:cashcook/src/screens/referrermanagement/firstbiz.dart';
 import 'package:cashcook/src/services/API.dart';
+import 'package:cashcook/src/utils/datastorage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class Login3 extends StatefulWidget {
@@ -18,16 +28,56 @@ class _Login3 extends State<Login3> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    cookieManager.clearCookies();
+    // 로그인 CSS 확인할 때 사용
+    // cookieManager.clearCookies();
 
     flutterWebviewPlugin = FlutterWebviewPlugin();
 
     // Plugin 메커니즘 정의
-    flutterWebviewPlugin.onUrlChanged.listen((String url) {
-      switch(url) {
+    flutterWebviewPlugin.onUrlChanged.listen((String url) async {
+      String chkUrl = url;
+      if(chkUrl.contains("?"))
+        chkUrl = chkUrl.split("?")[0];
+
+      switch(chkUrl) {
         case loginSuccessUrl :
+          Uri uri = Uri.parse(url);
+          String code = uri.queryParameters['code'];
 
+          String response = await Provider.of<AuthProvider>(context, listen: false).authToken(code);
+          Map<String, dynamic> json = jsonDecode(response);
+          if(json['access_token'] != null) {
+            dataStorage.token = json['access_token'];
 
+            await Provider.of<UserProvider>(context, listen: false)
+                .fetchMyInfo();
+
+            UserCheck user = Provider
+                .of<UserProvider>(context, listen: false)
+                .loginUser;
+
+            if (user.isFirstLogin != true) {
+              Provider.of<CenterProvider>(context, listen: false)
+                  .startLoading();
+              Navigator.of(context)
+                  .pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => AppConfirm()), (
+                  route) => false);
+            } else {
+              Navigator.of(context)
+                  .pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => FirstBiz()), (
+                  route) => false);
+            }
+          } else {
+            flutterWebviewPlugin.launch(baseUrl + "oauth/authorize?client_id=cashcook&redirect_uri=" + loginSuccessUrl + "&response_type=code");
+          }
+
+          break;
+        case baseUrl :
+          flutterWebviewPlugin.launch(baseUrl + "oauth/authorize?client_id=cashcook&redirect_uri=" + loginSuccessUrl + "&response_type=code");
+
+          break;
       }
     });
 
