@@ -303,15 +303,17 @@ class _BargainGame2 extends State<BargainGame2> {
     final Random random = new Random();
     List<String> list = [];
     int limitPercentage = Provider.of<CenterProvider>(context, listen: false).limitGamePercentage;
-    String userQuantity = Provider.of<CenterProvider>(context, listen: false).gameUserQuantity;
+    String _userQuantity = Provider.of<CenterProvider>(context, listen: false).gameUserQuantity;
     print("limitPercentage : $limitPercentage");
     Map<String, int> percentageMap = {};
+
+    String userQuantity = (int.parse(_userQuantity) % 500).toString();
     Map<String, int> userQuantityPercentageMap = {
-      "3" : 50,
-      "4" : 60,
-      "5" : 70,
-      "6" : 80,
-      "7" : 90,
+      "100" : 50,
+      "200" : 60,
+      "300" : 70,
+      "400" : 80,
+      "0" : 90,
     };
     int initPer = 10;
     if(userQuantityPercentageMap[userQuantity] != null && (userQuantityPercentageMap[userQuantity] + 10) <= limitPercentage) {

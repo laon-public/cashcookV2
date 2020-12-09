@@ -8,7 +8,7 @@ class AuthProvider with ChangeNotifier {
   Client client = Client();
 
   Future<String> authToken(String code) async {
-    final response = await client.post(baseUrl + "oauth/token", body: {
+    final response = await client.post(baseUrl + "/oauth/token", body: {
       "client_id": "cashcook",
       "client_secret": "Laonpp00..L",
       "grant_type": "authorization_code",

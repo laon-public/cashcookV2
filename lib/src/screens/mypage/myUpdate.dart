@@ -88,7 +88,7 @@ class _MyUpdate extends State<MyUpdate> {
                   UserProvider userProvider = P.Provider.of<UserProvider>(context,listen: false);
                   UserCheck userCheck = userProvider.loginUser;
                   print(userCheck.name);
-                  webViewController.loadUrl(baseUrl + "users/modify/modifyInfo?client_id=cashcook" + "&username=${userCheck.username}",
+                  webViewController.loadUrl(baseUrl + "/users/modify/modifyInfo?client_id=cashcook" + "&username=${userCheck.username}",
                       headers: {"Authorization": "BEARER ${dataStorage.token}"});
                   this.webViewController = webViewController;
                 },
@@ -105,7 +105,7 @@ class _MyUpdate extends State<MyUpdate> {
                   print(webViewController.canGoBack().toString());
                   if (url == baseUrl) {
 //                  webViewController.clearCache();
-                    webViewController.loadUrl(baseUrl + "users/modify/modifyInfo?client_id=cashcook");
+                    webViewController.loadUrl(baseUrl + "/users/modify/modifyInfo?client_id=cashcook");
                     if (widget.authCheck != 1) {
                       showToast("회원정보수정에 실패하였습니다.");
                     }
@@ -115,7 +115,7 @@ class _MyUpdate extends State<MyUpdate> {
                   print("onPageFinished");
                   print("url : $url");
                   List<String> code = List();
-                    if (url == baseUrl + "users/modify/success") {
+                    if (url == baseUrl + "/users/modify/success") {
                     print(dataStorage.token);
                     Navigator.of(context).pop();
                   }

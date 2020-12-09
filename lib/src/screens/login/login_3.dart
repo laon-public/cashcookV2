@@ -8,6 +8,7 @@ import 'package:cashcook/src/screens/center/appConfirm.dart';
 import 'package:cashcook/src/screens/referrermanagement/firstbiz.dart';
 import 'package:cashcook/src/services/API.dart';
 import 'package:cashcook/src/utils/datastorage.dart';
+import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
@@ -36,6 +37,7 @@ class _Login3 extends State<Login3> {
     // Plugin 메커니즘 정의
     flutterWebviewPlugin.onUrlChanged.listen((String url) async {
       String chkUrl = url;
+      print(url);
       if(chkUrl.contains("?"))
         chkUrl = chkUrl.split("?")[0];
 
@@ -70,12 +72,13 @@ class _Login3 extends State<Login3> {
                   route) => false);
             }
           } else {
-            flutterWebviewPlugin.launch(baseUrl + "oauth/authorize?client_id=cashcook&redirect_uri=" + loginSuccessUrl + "&response_type=code");
+            flutterWebviewPlugin.launch(baseUrl + "/oauth/authorize?client_id=cashcook&redirect_uri=" + loginSuccessUrl + "&response_type=code");
           }
-
           break;
-        case baseUrl :
-          flutterWebviewPlugin.launch(baseUrl + "oauth/authorize?client_id=cashcook&redirect_uri=" + loginSuccessUrl + "&response_type=code");
+
+        case baseUrl + "/":
+          showToast("페이지를 불러오는데 실패했습니다.\n로그인 페이지로 이동합니다.");
+          flutterWebviewPlugin.reloadUrl(baseUrl + "/oauth/authorize?client_id=cashcook&redirect_uri=" + loginSuccessUrl + "&response_type=code");
 
           break;
       }
@@ -96,7 +99,7 @@ class _Login3 extends State<Login3> {
         height: MediaQuery.of(context).size.height,
         padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
         child: WebviewScaffold(
-          url : baseUrl + "oauth/authorize?client_id=cashcook&redirect_uri=" + loginSuccessUrl + "&response_type=code",
+          url : baseUrl + "/oauth/authorize?client_id=cashcook&redirect_uri=" + loginSuccessUrl + "&response_type=code",
           clearCookies: false,
         )
       )

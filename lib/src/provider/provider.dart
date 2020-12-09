@@ -8,7 +8,7 @@ import 'package:cashcook/src/services/API.dart';
 
 class Provider {
   Client client = Client();
-  final getToken = "oauth/token";
+  final getToken = "/oauth/token";
 
   Future<String> authToken() async {
 //    final response = await client.post("$baseUrl$getToken", body: {

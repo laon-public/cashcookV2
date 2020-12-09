@@ -33,7 +33,7 @@ class _Logout extends State<Logout>{
 
       if(webViewController != null) {
         webViewController.clearCache();
-        webViewController.loadUrl(baseUrl + "users/logout");
+        webViewController.loadUrl(baseUrl + "/users/logout");
       }
 //        await provider.authToken().then((value) async {
 //            dynamic authToken = null;
@@ -61,7 +61,7 @@ class _Logout extends State<Logout>{
                 WebView(
                   onWebViewCreated: (webViewController) {
                     print("onWebViewCreated123");
-                    webViewController.loadUrl(baseUrl + "users/logout");
+                    webViewController.loadUrl(baseUrl + "/users/logout");
                   },
 
                   onPageStarted: (url) {

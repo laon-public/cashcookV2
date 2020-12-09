@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 class AuthService{
   http.Client client = http.Client();
   String userCheckUrl = "/users/me";
-  final getToken = "oauth/token";
+  final getToken = "/oauth/token";
 
   Future<String> authToken() async {
 //    final response = await client.post("$baseUrl$getToken", body: {
