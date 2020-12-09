@@ -49,7 +49,6 @@ class _BargainGame2 extends State<BargainGame2> {
     print("BargainGame initState");
     print("orderPayment ${widget.orderPayment}");
     print("total_carat ${widget.totalCarat}");
-    Provider.of<CenterProvider>(context, listen: false).enterGame();
     DefaultCacheManager().emptyCache();
     _unityWidgetController = null;
     gameLoad = false;
@@ -197,7 +196,7 @@ class _BargainGame2 extends State<BargainGame2> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                        "금일 이용자 수 : ${numberFormat.format(int.parse(cp.gameUserQuantity))}명",
+                                        "금일 이용자 수 : ${numberFormat.format(int.parse(cp.gameUserQuantity == "" ? "0" : cp.gameUserQuantity))}명",
                                         style: Body2.apply(
                                             color: white,
                                             shadows: [
@@ -286,13 +285,14 @@ class _BargainGame2 extends State<BargainGame2> {
 
   void onUnityCreated(controller) {
     showToast("게임이 실행되는 중 입니다.");
-    this._unityWidgetController = controller;
-
-    if(this.mounted) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await Provider.of<CenterProvider>(context, listen: false).enterGame();
       setState(() {
         gameLoad = true;
       });
-    }
+    });
+    this._unityWidgetController = controller;
+
   }
 
   void onUnityUnloaded(controller){
@@ -303,18 +303,59 @@ class _BargainGame2 extends State<BargainGame2> {
     final Random random = new Random();
     List<String> list = [];
     int limitPercentage = Provider.of<CenterProvider>(context, listen: false).limitGamePercentage;
+    String userQuantity = Provider.of<CenterProvider>(context, listen: false).gameUserQuantity;
     print("limitPercentage : $limitPercentage");
     Map<String, int> percentageMap = {};
-    for(int per=10; per<=100; per += 10){
-      if(per <= limitPercentage) {
-        percentageMap.addAll({
-          "$per": (((per - 1) / 30).floor()) + 1
-        });
-        list.add("$per");
-      } else {
-        break;
-      }
+    Map<String, int> userQuantityPercentageMap = {
+      "3" : 50,
+      "4" : 60,
+      "5" : 70,
+      "6" : 80,
+      "7" : 90,
+    };
+    int initPer = 10;
+    if(userQuantityPercentageMap[userQuantity] != null && (userQuantityPercentageMap[userQuantity] + 10) <= limitPercentage) {
+      initPer = userQuantityPercentageMap[userQuantity];
     }
+
+    if(initPer == 10) {
+      for (int per = initPer; per <= 100; per += 10) {
+        if (per <= limitPercentage) {
+          percentageMap.addAll({
+            "$per": (((per - 1) / 30).floor()) + 1
+          });
+          list.add("$per");
+        } else {
+          break;
+        }
+      }
+    } else {
+      if(initPer == 90) {
+        for (int per = initPer; per <= initPer + 10; per+= 10) {
+          if (per <= limitPercentage) {
+            percentageMap.addAll({
+              "$per": 1
+            });
+            list.add("$per");
+          } else {
+            break;
+          }
+        }
+      } else {
+        for (int per = initPer; per < initPer + 10; per+= 10) {
+          if (per <= limitPercentage) {
+            percentageMap.addAll({
+              "$per": 1
+            });
+            list.add("$per");
+          } else {
+            break;
+          }
+        }
+      }
+
+    }
+
     print("percentageMap.toString");
     print(percentageMap.toString());
 
@@ -352,21 +393,17 @@ class _BargainGame2 extends State<BargainGame2> {
   void onUnityMessage(controller, message) async {
     if(message.toString() == "quit"){ //나가기
       print("나가기");
-      if(this.mounted){
-        setState(() {
-          isReplay = false;
-          isQuit = true;
-        });
-      }
+      setState(() {
+        isReplay = false;
+        isQuit = true;
+      });
     } else if(message.toString() == "Recharge") { // 캐럿 부족
       print("캐럿 부족");
     } else { // 한번더하기
       print("한번더");
-      if(this.mounted) {
-        setState(() {
-          isReplay = true;
-        });
-      }
+      setState(() {
+        isReplay = true;
+      });
 
     }
   }
