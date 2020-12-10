@@ -93,7 +93,7 @@ class _BigMenuListPage extends State<BigMenuListPage> {
                         isDelete ?
                             InkWell(
                               onTap: () {
-                                ssp.allChange(!allCheck);
+                                ssp.allChange(!allCheck, "bigMenu");
                                 setState(() {
                                   allCheck = !allCheck;
                                 });
@@ -139,14 +139,14 @@ class _BigMenuListPage extends State<BigMenuListPage> {
                           () {
                         sap.deleteBigMenu().then((value) {
                           if(value) {
-                            showToast("선택하신 메뉴가 삭제되었습니다.");
+                            showToast("선택하신 대메뉴가 삭제되었습니다.");
 
                             sap.fetchBigMenu(widget.store_id);
                             setState(() {
                               isDelete = false;
                             });
                           } else {
-                            showToast("메뉴 삭제에 실패 하였습니다.");
+                            showToast("대메뉴 삭제에 실패 하였습니다.");
                           }
                         });
                       }

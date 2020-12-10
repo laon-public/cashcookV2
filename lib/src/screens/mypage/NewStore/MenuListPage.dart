@@ -7,6 +7,7 @@ import 'package:cashcook/src/screens/mypage/NewStore/MenuPatch.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
+import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,10 +23,15 @@ class MenuListPage extends StatefulWidget {
 }
 
 class _MenuListPage extends State<MenuListPage> {
+  bool isDelete = false;
+  bool allCheck = false;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    isDelete = false;
+    allCheck = false;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await Provider.of<StoreApplyProvider>(context, listen: false).fetchMenu(widget.bigMenu.id);
     });
@@ -46,6 +52,26 @@ class _MenuListPage extends State<MenuListPage> {
         },
         icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24, color: black,),
       ),
+      actions: [
+        InkWell(
+          onTap: () {
+            setState(() {
+              isDelete = !isDelete;
+            });
+          },
+          child: Container(
+              padding: EdgeInsets.only(right: 15),
+              child: Center(
+                child: Text(isDelete ? "" : "편집",
+                  style: Body1.apply(
+                    color: secondary,
+                    fontWeightDelta: 1,
+                  ),
+                ),
+              )
+          ),
+        )
+      ],
     );
 
     // TODO: implement build
@@ -67,11 +93,33 @@ class _MenuListPage extends State<MenuListPage> {
                       height: MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top,
                       child: SingleChildScrollView(
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            isDelete ?
+                            InkWell(
+                              onTap: () {
+                                sap.allChange(!allCheck, "menu");
+                                setState(() {
+                                  allCheck = !allCheck;
+                                });
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                                child: Text("전체선택",
+                                  style: Body1.apply(
+                                      color: primary,
+                                      fontWeightDelta: 1
+                                  ),
+                                ),
+                              ),
+                            )
+                                : Container(),
                             Column(
-                                children: sap.menuList.map((e) =>
-                                    MenuItem(e)
-                                ).toList()
+                                children: sap.menuList.map((e) {
+                                  int idx = sap.menuList.indexOf(e);
+
+                                  return MenuItem(e,idx);
+                                }).toList()
                             ),
                             whiteSpaceH(60)
                           ],
@@ -80,64 +128,119 @@ class _MenuListPage extends State<MenuListPage> {
                   );
                 },
               ),
-              Positioned(
-                bottom: 0,
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 60,
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: RaisedButton(
-                    elevation: 0,
-                    onPressed: () async {
-                        await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => MenuApply(
-                              bigId: widget.bigMenu.id,
-                            )
-                          )
-                        );
+              Consumer<StoreApplyProvider>(
+                builder: (context, sap, _){
+                  return Positioned(
+                    bottom: 0,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 60,
+                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      child: RaisedButton(
+                        elevation: 0,
+                        onPressed:isDelete ?
+                        sap.chkQuantity == 0 ?
+                        null
+                            :
+                            () {
+                          sap.deleteMenu().then((value) {
+                            if(value) {
+                              showToast("선택하신 메뉴가 삭제되었습니다.");
 
-                        await Provider.of<StoreApplyProvider>(context, listen: false).fetchMenu(widget.bigMenu.id);
-                    },
-                    color: primary,
-                    child: Text("메뉴 추가",
-                      style: Subtitle2.apply(
-                          color: white,
-                          fontWeightDelta: 1
+                              sap.fetchMenu(widget.bigMenu.id);
+                              setState(() {
+                                isDelete = false;
+                              });
+                            } else {
+                              showToast("메뉴 삭제에 실패 하였습니다.");
+                            }
+                          });
+                        }
+                            :
+                            () async {
+                          await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => MenuApply(
+                                    bigId: widget.bigMenu.id,
+                                  )
+                              )
+                          );
+
+                          await Provider.of<StoreApplyProvider>(context, listen: false).fetchMenu(widget.bigMenu.id);
+                        },
+                        color: primary,
+                        disabledColor: deActivatedGrey,
+                        child: Text(isDelete ? "삭제하기" : "메뉴 추가",
+                          style: Subtitle2.apply(
+                              color: white,
+                              fontWeightDelta: 1
+                          ),
+                        ),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(6)
+                            )
+                        ),
                       ),
                     ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(6)
-                        )
-                    ),
-                  ),
-                ),
+                  );
+                },
               )
+
             ],
           )
       ),
     );
   }
 
-  Widget MenuItem(MenuModel menu) {
+  Widget MenuItem(MenuModel menu, int idx) {
     return InkWell(
       onTap: () async {
-        await Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => MenuPatch(
-              menu: menu,
-            )
-          )
-        );
+        if(!isDelete) {
+          await Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) =>
+                      MenuPatch(
+                        menu: menu,
+                      )
+              )
+          );
 
-        await Provider.of<StoreApplyProvider>(context, listen: false).fetchMenu(widget.bigMenu.id);
+          await Provider.of<StoreApplyProvider>(context, listen: false)
+              .fetchMenu(widget.bigMenu.id);
+        }
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.all(16),
         child: Row(
           children: [
+            Consumer<StoreApplyProvider>(
+              builder: (context, sap, _){
+                return AnimatedContainer(
+                    width: isDelete ? 20 : 0,
+                    height: isDelete ? 16 : 0,
+                    duration: Duration(milliseconds: 250),
+                    child: Theme(
+                      data: ThemeData(unselectedWidgetColor: isDelete ? Color(0xFFDDDDDD) : Colors.transparent,),
+                      child:
+                      Checkbox(
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        activeColor: mainColor,
+                        checkColor: white,
+                        value: menu.isCheck,
+                        onChanged: (value) {
+                          sap.changeMenuCheck(value, idx);
+                        },
+                      ),
+                    )
+                );
+              },
+            ),
+            AnimatedContainer(
+              width: isDelete ? 12 : 0,
+              duration: Duration(milliseconds: 250),
+            ),
             (menu.imgUrl == null) ?
             Container(
               width: 48,
@@ -150,6 +253,12 @@ class _MenuListPage extends State<MenuListPage> {
                 border: Border.all(
                   color: Color(0xFFDDDDDD),
                   width: 0.5
+                ),
+                image: DecorationImage(
+                  scale: 2,
+                  image: AssetImage(
+                    "assets/resource/public/close.png",
+                  )
                 ),
               ),
             )

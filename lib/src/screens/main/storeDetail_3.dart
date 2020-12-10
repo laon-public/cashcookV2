@@ -608,8 +608,8 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                             child:InkWell(
                                                                 onTap: () async {
                                                                   await ss.setServiceNum(0, widget.store.id);
-                                                                  if(scrollController.position.pixels > 480) {
-                                                                    scrollController.jumpTo(480);
+                                                                  if(scrollController.position.pixels > 486) {
+                                                                    scrollController.jumpTo(486);
                                                                   }
                                                                 },
                                                                 child: Container(
@@ -633,8 +633,8 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                               onTap: () {
                                                                 ss.setServiceNum(1, widget.store.id);
 
-                                                                if(scrollController.position.pixels > 480) {
-                                                                  scrollController.jumpTo(480);
+                                                                if(scrollController.position.pixels > 486) {
+                                                                  scrollController.jumpTo(486);
                                                                 }
                                                               },
                                                               child: Container(
@@ -658,8 +658,8 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                                 onTap: () async {
                                                                   await ss.setServiceNum(2, widget.store.id);
 
-                                                                  if(scrollController.position.pixels > 480) {
-                                                                    scrollController.jumpTo(480);
+                                                                  if(scrollController.position.pixels > 486) {
+                                                                    scrollController.jumpTo(486);
                                                                   }
 
                                                                 },

@@ -66,16 +66,13 @@ Widget BigMenuItem(int bigIdx,BigMenuModel bmm, BuildContext context){
                         ),
                       );
                     },
-                    content: Padding(
-                        padding: EdgeInsets.only(right: 20.0),
-                        child:Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children:
-                            bmm.menuList.map((e) =>
-                                MenuItem(bigIdx,idx++,e, context)
-                            ).toList()
-                        )
-                    ),
+                    content: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children:
+                        bmm.menuList.map((e) =>
+                            MenuItem(bigIdx,idx++,e, context)
+                        ).toList()
+                    )
                   ),
                 );
               },
@@ -100,7 +97,7 @@ Widget MenuItem(int bigIdx,int idx,MenuModel mm, BuildContext context) {
             )
           )
         ),
-        padding: EdgeInsets.only(left: 16.0),
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
         width: MediaQuery.of(context).size.width,
         height: 80,
         child: Row(
@@ -130,6 +127,7 @@ Widget MenuItem(int bigIdx,int idx,MenuModel mm, BuildContext context) {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: Color(0xFFDDDDDD),
+
                         ),
                         // Checkbox(
                         //   activeColor: mainColor,
@@ -152,7 +150,15 @@ Widget MenuItem(int bigIdx,int idx,MenuModel mm, BuildContext context) {
                         color: Color(0xFFDDDDDD),
                         width: 0.5
                     ),
-                    image: mm.imgUrl == null ? null : DecorationImage(
+                    image: mm.imgUrl == null ?
+                    DecorationImage(
+                        scale: 2,
+                        image: AssetImage(
+                          "assets/resource/public/close.png",
+                        )
+                    )
+                        :
+                    DecorationImage(
                         fit: BoxFit.cover,
                         image: NetworkImage(
                             mm.imgUrl
