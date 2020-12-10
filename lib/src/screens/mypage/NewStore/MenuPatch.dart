@@ -241,7 +241,7 @@ class _MenuPatch extends State<MenuPatch> {
                   padding: EdgeInsets.symmetric(vertical: 8),
                   child: RaisedButton(
                     elevation: 0,
-                    onPressed: () {
+                    onPressed: (nameCtrl.text != "" && priceCtrl.text != "") ?  () {
                       Provider.of<StoreApplyProvider>(context, listen: false).patchMenu(widget.menu.id, nameCtrl.text, priceCtrl.text, imgCtrl).then((value) async
                       {
                         if(value) {
@@ -255,7 +255,8 @@ class _MenuPatch extends State<MenuPatch> {
                           Navigator.of(context).pop();
                         }
                       });
-                    },
+                    } : null,
+                    disabledColor: deActivatedGrey,
                     color: primary,
                     child: Text("수정하기",
                       style: Subtitle2.apply(

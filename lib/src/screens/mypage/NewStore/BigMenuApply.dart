@@ -70,7 +70,7 @@ class _BigMenuApply extends State<BigMenuApply> {
                 padding: EdgeInsets.symmetric(vertical: 8),
                 child: RaisedButton(
                   elevation: 0,
-                  onPressed: () {
+                  onPressed: (nameCtrl.text != "") ? () {
                     Provider.of<StoreApplyProvider>(context, listen: false).postBigMenu(widget.storeId, nameCtrl.text).then((value) {
                       if (value) {
                         showToast("${nameCtrl.text}가 추가 되었습니다.");
@@ -80,7 +80,8 @@ class _BigMenuApply extends State<BigMenuApply> {
                         Navigator.of(context).pop();
                       }
                     });
-                  },
+                  } : null,
+                  disabledColor: deActivatedGrey,
                   color: primary,
                   child: Text("완료",
                     style: Subtitle2.apply(

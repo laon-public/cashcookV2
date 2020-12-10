@@ -193,7 +193,7 @@ class _MenuApply extends State<MenuApply> {
                   padding: EdgeInsets.symmetric(vertical: 8),
                   child: RaisedButton(
                     elevation: 0,
-                    onPressed: () {
+                    onPressed: (nameCtrl.text != "" && priceCtrl.text != "") ? () {
                       Provider.of<StoreApplyProvider>(context, listen: false).postMenu(widget.bigId, nameCtrl.text, priceCtrl.text, imgCtrl).then((value) {
                         if (value) {
                           showToast("${nameCtrl.text}가 추가 되었습니다.");
@@ -205,7 +205,7 @@ class _MenuApply extends State<MenuApply> {
                           Navigator.of(context).pop();
                         }
                       });
-                    },
+                    } : null,
                     color: primary,
                     child: Text("메뉴 추가",
                       style: Subtitle2.apply(
