@@ -25,7 +25,6 @@ class _MenuApply extends State<MenuApply> {
   TextEditingController priceCtrl = TextEditingController();
   PickedFile imgCtrl;
 
-
   @override
   Widget build(BuildContext context) {
     AppBar appBar = AppBar(
@@ -194,17 +193,21 @@ class _MenuApply extends State<MenuApply> {
                   child: RaisedButton(
                     elevation: 0,
                     onPressed: (nameCtrl.text != "" && priceCtrl.text != "") ? () {
-                      Provider.of<StoreApplyProvider>(context, listen: false).postMenu(widget.bigId, nameCtrl.text, priceCtrl.text, imgCtrl).then((value) {
-                        if (value) {
-                          showToast("${nameCtrl.text}가 추가 되었습니다.");
-                          PaintingBinding.instance.imageCache.clear();
+                      if(imgCtrl == null) {
+                        showEmptyImgDialog();
+                      } else {
+                        Provider.of<StoreApplyProvider>(context, listen: false).postMenu(widget.bigId, nameCtrl.text, priceCtrl.text, imgCtrl).then((value) {
+                          if (value) {
+                            showToast("${nameCtrl.text}가 추가 되었습니다.");
+                            PaintingBinding.instance.imageCache.clear();
 
-                          Navigator.of(context).pop();
-                        } else {
-                          showToast("메뉴가 추가에 실패했습니다.");
-                          Navigator.of(context).pop();
-                        }
-                      });
+                            Navigator.of(context).pop();
+                          } else {
+                            showToast("메뉴가 추가에 실패했습니다.");
+                            Navigator.of(context).pop();
+                          }
+                        });
+                      }
                     } : null,
                     color: primary,
                     child: Text("메뉴 추가",
@@ -225,5 +228,123 @@ class _MenuApply extends State<MenuApply> {
           ),
         )
     );
+  }
+
+  showEmptyImgDialog() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20)),
+            title: Text("알림",
+              style: Body1.apply(
+                  fontWeightDelta: 3
+              ),
+              textAlign: TextAlign.center,
+            ),
+            content:
+            Container(
+              width: 240,
+              height: 220,
+              child: Column(
+                children: [
+                  Text("이미지를 등록하지 않으셨습니다.\n"
+                      "그대로 진행할까요?",
+                    style: Body1.apply(
+                      color: black,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+              whiteSpaceH(60),
+              Center(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                        ClipOval(
+                            child:Container(
+                              width: 64,
+                              height: 64,
+                              decoration: BoxDecoration(
+                                  color: white,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                      color: Color(0xFFDDDDDD),
+                                      width: 1
+                                  )
+                              ),
+                              child: Center(
+                                  child: Material(
+                                    color: Colors.transparent,
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.of(context).pop(false);
+                                      },
+                                      child: Text("취소",
+                                          style:Body1.apply(
+                                              color: secondary,
+                                              fontWeightDelta: 3
+                                          )
+                                      ),
+                                    ),
+                                  )
+                              ),
+                            )
+                        ),
+                        whiteSpaceW(20.0),
+                        ClipOval(
+                            child:Container(
+                              width: 64,
+                              height: 64,
+                              decoration: BoxDecoration(
+                                  color:mainColor,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                      color: primary,
+                                      width: 1
+                                  )
+                              ),
+                              child: Center(
+                                  child: Material(
+                                    color: Colors.transparent,
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.of(context).pop(true);
+                                      },
+                                      child: Text("확인",
+                                          style:Body1.apply(
+                                              color: white,
+                                              fontWeightDelta: 3
+                                          )
+                                      ),
+                                    ),
+                                  )
+                              ),
+                            )
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        }).then((value) {
+        if(value){
+          Provider.of<StoreApplyProvider>(context, listen: false).postMenu(widget.bigId, nameCtrl.text, priceCtrl.text, imgCtrl).then((value) {
+            if (value) {
+              showToast("${nameCtrl.text}가 추가 되었습니다.");
+              PaintingBinding.instance.imageCache.clear();
+
+              Navigator.of(context).pop();
+            } else {
+              showToast("메뉴가 추가에 실패했습니다.");
+              Navigator.of(context).pop();
+            }
+          });
+        }
+    });
   }
 }

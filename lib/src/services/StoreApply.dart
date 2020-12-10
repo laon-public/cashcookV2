@@ -51,7 +51,7 @@ class StoreApplyService {
       "bigId" : bigId,
       "menuName" : menuName,
       "menuPrice" : menuPrice,
-      "menuImg" : MultipartFile.fromFileSync(File(menuImg.path).absolute.path)
+      "menuImg" : menuImg == null ? null : MultipartFile.fromFileSync(File(menuImg.path).absolute.path)
     };
 
     Response<List<int>> res = await dio.post(cookURL + "/franchises/v2/menu",
