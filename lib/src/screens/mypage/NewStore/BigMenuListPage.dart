@@ -1,6 +1,7 @@
 import 'package:cashcook/src/model/store/menu.dart';
 import 'package:cashcook/src/provider/StoreApplyProvider.dart';
 import 'package:cashcook/src/screens/mypage/NewStore/BigMenuApply.dart';
+import 'package:cashcook/src/screens/mypage/NewStore/BigMenuPatch.dart';
 import 'package:cashcook/src/screens/mypage/NewStore/MenuListPage.dart';
 import 'package:cashcook/src/screens/mypage/mypage.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
@@ -60,7 +61,7 @@ class _BigMenuListPage extends State<BigMenuListPage> {
           child: Container(
             padding: EdgeInsets.only(right: 15),
             child: Center(
-              child: Text(isDelete ? "" : "편집",
+              child: Text(isDelete ? "완료" : "편집",
                 style: Body1.apply(
                   color: secondary,
                   fontWeightDelta: 1,
@@ -254,7 +255,28 @@ class _BigMenuListPage extends State<BigMenuListPage> {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            Icon(Icons.arrow_forward_ios, size: isDelete ? 0 : 16, color: black,)
+            isDelete ?
+                InkWell(
+                  onTap: () async {
+                    await Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => BigMenuPatch(
+                          bigMenu: bmm,
+                        )
+                      )
+                    );
+
+                    await Provider.of<StoreApplyProvider>(context, listen: false).fetchBigMenu(widget.store_id);
+                  },
+                  child: Text("수정",
+                    style: Body1.apply(
+                        color: primary,
+                        fontWeightDelta: 1
+                    ),
+                  ),
+                )
+                :
+            Icon(Icons.arrow_forward_ios, size: isDelete ? 0 : 16, color: black,),
           ],
         ),
       ),

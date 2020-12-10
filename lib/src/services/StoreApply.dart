@@ -87,6 +87,23 @@ class StoreApplyService {
     return utf8.decode(res.data);
   }
 
+  Future<String> patchBigMenu(int id, String menuName) async {
+    Map<String, dynamic> data = {
+      "id" : id,
+      "name" : menuName,
+    };
+
+    Response<List<int>> res = await dio.patch(cookURL + "/franchises/v2/bigMenu",
+        data: FormData.fromMap(data),
+        options: Options(
+            headers: {"Authorization": "BEARER ${dataStorage.token}"},
+            responseType: ResponseType.bytes
+        )
+    );
+
+    return utf8.decode(res.data);
+  }
+
   Future<String> patchMenu(int id, String menuName, String menuPrice, PickedFile menuImg) async {
     Map<String, dynamic> data = {
       "id" : id,

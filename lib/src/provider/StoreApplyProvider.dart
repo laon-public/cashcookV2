@@ -194,6 +194,18 @@ class StoreApplyProvider extends ChangeNotifier {
     return false;
   }
 
+  Future<bool> patchBigMenu(int id, String menuName) async {
+    String res = await service.patchBigMenu(id, menuName);
+
+    Map<String, dynamic> json = jsonDecode(res);
+
+    if(isResponse(json)){
+      return true;
+    }
+
+    return false;
+  }
+
   Future<bool> patchMenu(int id, String menuName, String menuPrice, PickedFile menuImg) async {
     String res = await service.patchMenu(id, menuName, menuPrice, menuImg);
 

@@ -62,7 +62,7 @@ class _MenuListPage extends State<MenuListPage> {
           child: Container(
               padding: EdgeInsets.only(right: 15),
               child: Center(
-                child: Text(isDelete ? "" : "편집",
+                child: Text(isDelete ? "완료" : "편집",
                   style: Body1.apply(
                     color: secondary,
                     fontWeightDelta: 1,
@@ -220,7 +220,7 @@ class _MenuListPage extends State<MenuListPage> {
                 return AnimatedContainer(
                     width: isDelete ? 20 : 0,
                     height: isDelete ? 16 : 0,
-                    duration: Duration(milliseconds: 250),
+                    duration: Duration(milliseconds: 300),
                     child: Theme(
                       data: ThemeData(unselectedWidgetColor: isDelete ? Color(0xFFDDDDDD) : Colors.transparent,),
                       child:
@@ -239,7 +239,7 @@ class _MenuListPage extends State<MenuListPage> {
             ),
             AnimatedContainer(
               width: isDelete ? 12 : 0,
-              duration: Duration(milliseconds: 250),
+              duration: Duration(milliseconds: 300),
             ),
             (menu.imgUrl == null) ?
             Container(
@@ -298,7 +298,33 @@ class _MenuListPage extends State<MenuListPage> {
                 color: secondary,
                 fontWeightDelta: 1
               ),
-            )
+            ),
+            isDelete ?
+                Row(
+                  children: [
+                    whiteSpaceW(16),
+                    InkWell(
+                      onTap: () async {
+                        await Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => MenuPatch(
+                                  menu: menu,
+                                )
+                            )
+                        );
+
+                        await Provider.of<StoreApplyProvider>(context, listen: false).fetchMenu(widget.bigMenu.id);
+                      },
+                      child: Text("수정",
+                        style: Body1.apply(
+                            color: primary,
+                            fontWeightDelta: 1
+                        ),
+                      ),
+                    )
+                  ],
+                )
+            : Container()
           ],
         ),
         decoration: BoxDecoration(
