@@ -16,6 +16,7 @@ class StoreApplyProvider extends ChangeNotifier {
   // Menu
   List<BigMenuModel> bigMenuList = [];
   List<MenuModel> menuList = [];
+  int chkQuantity = 0;
 
   // Content
   List<ContentModel> contentsList = [];
@@ -45,7 +46,61 @@ class StoreApplyProvider extends ChangeNotifier {
     String res = await service.imageTest(image.absolute.path);
   }
 
+  Future<bool> deleteBigMenu() async {
+    String bigMenuIds = "";
+    int _tmpChkQuantity = 0;
+
+    bigMenuList.forEach((element) {
+      if(element.isCheck){
+        if(_tmpChkQuantity+1 == chkQuantity){
+          bigMenuIds += element.id.toString();
+          return;
+        } else {
+          bigMenuIds += "${element.id.toString()},";
+          _tmpChkQuantity++;
+        }
+      }
+    });
+
+    String res = await service.deleteBigMenu(bigMenuIds);
+    Map<String, dynamic> json = jsonDecode(res);
+
+    if(isResponse(json)){
+      return true;
+    }
+
+    return false;
+  }
+
+  Future allChange(bool value) async {
+    if(value) {
+      bigMenuList.forEach((element) {
+        element.isCheck = value;
+        chkQuantity++;
+      });
+    } else {
+      bigMenuList.forEach((element) {
+        element.isCheck = value;
+        chkQuantity--;
+      });
+    }
+    notifyListeners();
+  }
+
+  Future changeBigMenuCheck(bool value, int idx) async {
+    bigMenuList[idx].isCheck = value;
+
+    if(value) {
+      chkQuantity++;
+    } else {
+      chkQuantity--;
+    }
+
+    notifyListeners();
+  }
+
   Future fetchBigMenu(int storeId) async {
+    chkQuantity = 0;
     bigMenuList.clear();
     notifyListeners();
 

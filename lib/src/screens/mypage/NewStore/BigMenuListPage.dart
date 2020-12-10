@@ -5,7 +5,9 @@ import 'package:cashcook/src/screens/mypage/NewStore/MenuListPage.dart';
 import 'package:cashcook/src/screens/mypage/mypage.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
+import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,10 +21,15 @@ class BigMenuListPage extends StatefulWidget {
 }
 
 class _BigMenuListPage extends State<BigMenuListPage> {
+  bool isDelete = false;
+  bool allCheck = false;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    isDelete = false;
+    allCheck = false;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await Provider.of<StoreApplyProvider>(context, listen: false).fetchBigMenu(widget.store_id);
     });
@@ -43,15 +50,33 @@ class _BigMenuListPage extends State<BigMenuListPage> {
         },
         icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24, color: black,),
       ),
+      actions: [
+        InkWell(
+          onTap: () {
+            setState(() {
+              isDelete = !isDelete;
+            });
+          },
+          child: Container(
+            padding: EdgeInsets.only(right: 15),
+            child: Center(
+              child: Text(isDelete ? "" : "편집",
+                style: Body1.apply(
+                  color: secondary,
+                  fontWeightDelta: 1,
+                ),
+              ),
+            )
+          ),
+        )
+      ],
     );
     // TODO: implement build
     return Scaffold(
       backgroundColor: white,
       appBar: appBar,
       body: Container(
-        padding: EdgeInsets.only(
-          top: 12
-        ),
+        padding: EdgeInsets.only(top: 12),
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top,
         child: Stack(
@@ -63,47 +88,97 @@ class _BigMenuListPage extends State<BigMenuListPage> {
                 builder: (context, ssp, _) {
                   return SingleChildScrollView(
                     child: Column(
-                      children: ssp.bigMenuList.map((e) =>
-                        BigMenuItem(e)
-                      ).toList(),
-                    ),
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        isDelete ?
+                            InkWell(
+                              onTap: () {
+                                ssp.allChange(!allCheck);
+                                setState(() {
+                                  allCheck = !allCheck;
+                                });
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                                child: Text("전체선택",
+                                  style: Body1.apply(
+                                      color: primary,
+                                      fontWeightDelta: 1
+                                  ),
+                                ),
+                              ),
+                            )
+                         : Container(),
+                        Column(
+                          children: ssp.bigMenuList.map((e) {
+                            int idx = ssp.bigMenuList.indexOf(e);
+
+                            return BigMenuItem(e, idx);
+                          }).toList(),
+                        ),
+                      ],
+                    )
                   );
                 },
               ),
             ),
-            Positioned(
-              bottom: 0,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: 60,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: RaisedButton(
-                  elevation: 0,
-                  onPressed: () async {
-                    await Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => BigMenuApply(
-                          storeId: widget.store_id,
-                        )
-                      )
-                    );
+            Consumer<StoreApplyProvider>(
+              builder: (context, sap, _){
+                return Positioned(
+                  bottom: 0,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 60,
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: RaisedButton(
+                      elevation: 0,
+                      onPressed: isDelete ?
+                          sap.chkQuantity == 0 ?
+                              null
+                              :
+                          () {
+                        sap.deleteBigMenu().then((value) {
+                          if(value) {
+                            showToast("선택하신 메뉴가 삭제되었습니다.");
 
-                    await Provider.of<StoreApplyProvider>(context, listen: false).fetchBigMenu(widget.store_id);
-                  },
-                  color: primary,
-                  child: Text("대메뉴 추가",
-                    style: Subtitle2.apply(
-                      color: white,
-                      fontWeightDelta: 1
+                            sap.fetchBigMenu(widget.store_id);
+                            setState(() {
+                              isDelete = false;
+                            });
+                          } else {
+                            showToast("메뉴 삭제에 실패 하였습니다.");
+                          }
+                        });
+                      }
+                          :
+                          () async {
+                        await Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => BigMenuApply(
+                                  storeId: widget.store_id,
+                                )
+                            )
+                        );
+
+                        await Provider.of<StoreApplyProvider>(context, listen: false).fetchBigMenu(widget.store_id);
+                      },
+                      disabledColor: deActivatedGrey,
+                      color: primary,
+                      child: Text(isDelete ? "삭제하기" : "대메뉴 추가",
+                        style: Subtitle2.apply(
+                            color: white,
+                            fontWeightDelta: 1
+                        ),
+                      ),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                              Radius.circular(6)
+                          )
+                      ),
                     ),
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(6)
-                    )
-                  ),
-                ),
-              ),
+                );
+              },
             )
           ],
         )
@@ -111,24 +186,52 @@ class _BigMenuListPage extends State<BigMenuListPage> {
     );
   }
 
-  Widget BigMenuItem(BigMenuModel bmm){
+  Widget BigMenuItem(BigMenuModel bmm, int idx){
     return InkWell(
       onTap: () async {
-        await Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => MenuListPage(
-              bigMenu: bmm,
-            )
-          )
-        );
+        if(!isDelete) {
+          await Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) => MenuListPage(
+                    bigMenu: bmm,
+                  )
+              )
+          );
 
-        await Provider.of<StoreApplyProvider>(context, listen: false).fetchBigMenu(widget.store_id);
+          await Provider.of<StoreApplyProvider>(context, listen: false).fetchBigMenu(widget.store_id);
+        }
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.symmetric(vertical: 13, horizontal: 16),
         child: Row(
           children: [
+            Consumer<StoreApplyProvider>(
+              builder: (context, sap, _){
+                return AnimatedContainer(
+                    width: isDelete ? 20 : 0,
+                    height: isDelete ? 16 : 0,
+                    duration: Duration(milliseconds: 250),
+                    child: Theme(
+                      data: ThemeData(unselectedWidgetColor: isDelete ? Color(0xFFDDDDDD) : Colors.transparent,),
+                      child:
+                      Checkbox(
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        activeColor: mainColor,
+                        checkColor: white,
+                        value: bmm.isCheck,
+                        onChanged: (value) {
+                          sap.changeBigMenuCheck(value, idx);
+                        },
+                      ),
+                    )
+                );
+              },
+            ),
+            AnimatedContainer(
+                width: isDelete ? 12 : 0,
+                duration: Duration(milliseconds: 250),
+            ),
             Text(bmm.name,
                 style: Subtitle2.apply(
                     fontWeightDelta: -1
@@ -151,7 +254,7 @@ class _BigMenuListPage extends State<BigMenuListPage> {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            Icon(Icons.arrow_forward_ios, size: 16, color: black,)
+            Icon(Icons.arrow_forward_ios, size: isDelete ? 0 : 16, color: black,)
           ],
         ),
       ),

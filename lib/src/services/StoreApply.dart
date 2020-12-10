@@ -24,6 +24,17 @@ class StoreApplyService {
     print(res.data.toString());
   }
 
+  Future<String> deleteBigMenu(String bigMenuIds) async {
+    Response<List<int>> res = await dio.delete(cookURL + "/franchises/v2/bigMenu?bigMenuIds=$bigMenuIds",
+        options: Options(
+            headers: {"Authorization": "BEARER ${dataStorage.token}"},
+            responseType: ResponseType.bytes
+        )
+    );
+
+    return utf8.decode(res.data);
+  }
+
   Future<String> fetchBigMenu(int storeId) async {
     Response<List<int>> res = await dio.get(cookURL + "/franchises/v2/bigMenu?storeId=$storeId",
         options: Options(

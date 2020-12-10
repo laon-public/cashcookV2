@@ -140,20 +140,17 @@ class _MenuListPage extends State<MenuListPage> {
           children: [
             (menu.imgUrl == null) ?
             Container(
+              width: 48,
+              height: 48,
               decoration: BoxDecoration(
+                color: deActivatedGrey,
                 borderRadius: BorderRadius.all(
-                  Radius.circular(6.0)
+                  Radius.circular(12.0)
                 ),
                 border: Border.all(
                   color: Color(0xFFDDDDDD),
                   width: 0.5
                 ),
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                  image: AssetImage(
-                    "assets/icon/cashcook_logo.png",
-                  )
-                )
               ),
             )
             :
@@ -162,7 +159,7 @@ class _MenuListPage extends State<MenuListPage> {
               height: 48,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(
-                      Radius.circular(6.0)
+                      Radius.circular(12.0)
                   ),
                   border: Border.all(
                       color: Color(0xFFDDDDDD),
@@ -194,6 +191,11 @@ class _MenuListPage extends State<MenuListPage> {
               ),
             )
           ],
+        ),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(color: Color(0xFFF7F7F7), width: 1)
+          )
         ),
       ),
     );

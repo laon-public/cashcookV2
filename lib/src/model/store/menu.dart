@@ -35,6 +35,7 @@ class BigMenuModel {
   int id;
   String name;
   List<MenuModel> menuList;
+  bool isCheck; // delete 용
 
   BigMenuModel({
     this.id,
@@ -46,5 +47,6 @@ class BigMenuModel {
     :
       this.id = json['id'],
       this.name = json['big_name'],
-      this.menuList = (json['menuList'] as List).map((e) => MenuModel.fromJson(e)).toList();
+      this.menuList = (json['menuList'] as List).map((e) => MenuModel.fromJson(e)).toList(),
+      this.isCheck = false;
 }

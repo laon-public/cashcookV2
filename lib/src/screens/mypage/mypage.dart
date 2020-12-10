@@ -1032,7 +1032,7 @@ class _MyPageState extends State<MyPage> {
                                   QrCard(),
                                   FranHistoryCard(),
                                   // ContentApplyCard(),
-                                  MenuApplyCard(),
+                                  // MenuApplyCard(),
                                   sellDlCard(),
                                   whiteSpaceH(24.0),
                                   Tabs(name: "사업자 정보 수정", routesName: "/store/modify/business",),
