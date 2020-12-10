@@ -372,7 +372,7 @@ class _MainMap extends State<MainMap> {
                                             child:RaisedButton(
                                                 color: white,
                                                 onPressed: () async {
-                                                  await Navigator.of(context).pushNamed("/store/modify/store");
+                                                  await Navigator.of(context).pushNamed("/store/modify/routes");
                                                   googleMapController
                                                       .getVisibleRegion()
                                                       .then((value) async {

@@ -6,6 +6,7 @@ import 'package:cashcook/src/screens/center/serviceInquiry.dart';
 import 'package:cashcook/src/screens/center/serviceInquiryWrite.dart';
 import 'package:cashcook/src/screens/main/home.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
+import 'package:cashcook/src/screens/mypage/NewStore/StoreModifyRoute.dart';
 import 'package:cashcook/src/screens/mypage/points/DL/dlSend.dart';
 import 'package:cashcook/src/screens/mypage/points/LimitDL.dart';
 import 'package:cashcook/src/screens/mypage/points/RP/rpExchange.dart';
@@ -40,7 +41,7 @@ final routes = {
   "/inquiry": (context) => Inquiry(),
   "/inquiry/write": (context) => InquiryWrite(),
   "/store/modify/business":(context) => ModifyBusiness(),
-  "/store/modify/store": (context) => ModifyStore(),
+  "/store/modify/routes": (context) => StoreModifyRoute(),
   "/store/modify/limitDL": (context) => limitDL(),
   "/userState" : (context) => UserState(),
   "/myUpdate" : (context) => MyUpdate(),

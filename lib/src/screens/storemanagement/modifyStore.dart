@@ -114,6 +114,12 @@ class _ModifyStoreState extends State<ModifyStore> {
         title: Text("매장정보 수정",
           style: appBarDefaultText
         ),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24,),
+        ),
         centerTitle: true,
         elevation: 0.0,
       ),

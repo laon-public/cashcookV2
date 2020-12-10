@@ -934,7 +934,7 @@ class _MyPageState extends State<MyPage> {
               children: [
               InkWell(
                 onTap: () async{
-                  await Navigator.of(context).pushNamed("/store/modify/store");
+                  await Navigator.of(context).pushNamed("/store/modify/routes");
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width,
@@ -1044,7 +1044,7 @@ class _MyPageState extends State<MyPage> {
                                   //   },
                                   //   child: Text("제휴매장 신청 테스트"),
                                   // ),
-                                  Tabs(name: "매장정보 수정", routesName: "/store/modify/store",),
+                                  Tabs(name: "매장정보 수정", routesName: "/store/modify/routes",),
                                   Tabs(name: "DL 결제 한도 설정", routesName: "/store/modify/limitDL",),
                                   whiteSpaceH(70.0),
                                 ]

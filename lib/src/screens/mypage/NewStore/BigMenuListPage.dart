@@ -1,5 +1,5 @@
 import 'package:cashcook/src/model/store/menu.dart';
-import 'package:cashcook/src/provider/StoreServiceProvider.dart';
+import 'package:cashcook/src/provider/StoreApplyProvider.dart';
 import 'package:cashcook/src/screens/mypage/NewStore/BigMenuApply.dart';
 import 'package:cashcook/src/screens/mypage/NewStore/MenuListPage.dart';
 import 'package:cashcook/src/screens/mypage/mypage.dart';
@@ -11,9 +11,8 @@ import 'package:provider/provider.dart';
 
 class BigMenuListPage extends StatefulWidget {
   final int store_id;
-  final bool isPatch;
 
-  BigMenuListPage({this.store_id, this.isPatch = false});
+  BigMenuListPage({this.store_id});
 
   @override
   _BigMenuListPage createState() => _BigMenuListPage();
@@ -25,7 +24,7 @@ class _BigMenuListPage extends State<BigMenuListPage> {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await Provider.of<StoreServiceProvider>(context, listen: false).fetchMenu(widget.store_id);
+      await Provider.of<StoreApplyProvider>(context, listen: false).fetchBigMenu(widget.store_id);
     });
   }
 
@@ -40,17 +39,7 @@ class _BigMenuListPage extends State<BigMenuListPage> {
       elevation: 0.5,
       leading: IconButton(
         onPressed: () {
-          if(widget.isPatch) {
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => MyPage(
-                  isHome: true,
-                )
-              )
-            , (route) => false);
-          } else {
-            Navigator.of(context).pop();
-          }
+          Navigator.of(context).pop();
         },
         icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24, color: black,),
       ),
@@ -70,11 +59,11 @@ class _BigMenuListPage extends State<BigMenuListPage> {
             Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top - 60,
-              child: Consumer<StoreServiceProvider>(
+              child: Consumer<StoreApplyProvider>(
                 builder: (context, ssp, _) {
                   return SingleChildScrollView(
                     child: Column(
-                      children: ssp.menuList.map((e) =>
+                      children: ssp.bigMenuList.map((e) =>
                         BigMenuItem(e)
                       ).toList(),
                     ),
@@ -90,14 +79,16 @@ class _BigMenuListPage extends State<BigMenuListPage> {
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: RaisedButton(
                   elevation: 0,
-                  onPressed: () {
-                    Navigator.of(context).push(
+                  onPressed: () async {
+                    await Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => BigMenuApply(
                           storeId: widget.store_id,
                         )
                       )
                     );
+
+                    await Provider.of<StoreApplyProvider>(context, listen: false).fetchBigMenu(widget.store_id);
                   },
                   color: primary,
                   child: Text("대메뉴 추가",
@@ -122,14 +113,16 @@ class _BigMenuListPage extends State<BigMenuListPage> {
 
   Widget BigMenuItem(BigMenuModel bmm){
     return InkWell(
-      onTap: () {
-        Navigator.of(context).push(
+      onTap: () async {
+        await Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => MenuListPage(
               bigMenu: bmm,
             )
           )
         );
+
+        await Provider.of<StoreApplyProvider>(context, listen: false).fetchBigMenu(widget.store_id);
       },
       child: Container(
         width: MediaQuery.of(context).size.width,

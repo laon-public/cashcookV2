@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/model/store/menu.dart';
+import 'package:cashcook/src/provider/StoreApplyProvider.dart';
 import 'package:cashcook/src/screens/mypage/NewStore/MenuApply.dart';
 import 'package:cashcook/src/screens/mypage/NewStore/MenuPatch.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
@@ -8,6 +10,7 @@ import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MenuListPage extends StatefulWidget {
   final BigMenuModel bigMenu;
@@ -19,6 +22,15 @@ class MenuListPage extends StatefulWidget {
 }
 
 class _MenuListPage extends State<MenuListPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await Provider.of<StoreApplyProvider>(context, listen: false).fetchMenu(widget.bigMenu.id);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     AppBar appBar = AppBar(
@@ -48,16 +60,25 @@ class _MenuListPage extends State<MenuListPage> {
           height: MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top,
           child: Stack(
             children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top - 60,
-                child: SingleChildScrollView(
-                  child: Column(
-                      children: widget.bigMenu.menuList.map((e) =>
-                        MenuItem(e)
-                      ).toList()
-                  ),
-                )
+              Consumer<StoreApplyProvider>(
+                builder: (context, sap, _){
+                  return Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Column(
+                                children: sap.menuList.map((e) =>
+                                    MenuItem(e)
+                                ).toList()
+                            ),
+                            whiteSpaceH(60)
+                          ],
+                        )
+                      )
+                  );
+                },
               ),
               Positioned(
                 bottom: 0,
@@ -67,14 +88,16 @@ class _MenuListPage extends State<MenuListPage> {
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: RaisedButton(
                     elevation: 0,
-                    onPressed: () {
-                        Navigator.of(context).push(
+                    onPressed: () async {
+                        await Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => MenuApply(
                               bigId: widget.bigMenu.id,
                             )
                           )
                         );
+
+                        await Provider.of<StoreApplyProvider>(context, listen: false).fetchMenu(widget.bigMenu.id);
                     },
                     color: primary,
                     child: Text("메뉴 추가",
@@ -99,14 +122,16 @@ class _MenuListPage extends State<MenuListPage> {
 
   Widget MenuItem(MenuModel menu) {
     return InkWell(
-      onTap: () {
-        Navigator.of(context).push(
+      onTap: () async {
+        await Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => MenuPatch(
               menu: menu,
             )
           )
         );
+
+        await Provider.of<StoreApplyProvider>(context, listen: false).fetchMenu(widget.bigMenu.id);
       },
       child: Container(
         width: MediaQuery.of(context).size.width,

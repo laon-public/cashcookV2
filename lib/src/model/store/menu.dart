@@ -21,6 +21,16 @@ class MenuModel {
       this.count = 1;
 }
 
+class BigMenuMinify {
+  int id;
+  String name;
+
+  BigMenuMinify.fromJson(Map<String, dynamic> json)
+    :
+      this.id = json['id'],
+      this.name = json['big_name'];
+}
+
 class BigMenuModel {
   int id;
   String name;

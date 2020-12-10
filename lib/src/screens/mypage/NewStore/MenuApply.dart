@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cashcook/src/provider/StoreApplyProvider.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
+import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -193,8 +194,17 @@ class _MenuApply extends State<MenuApply> {
                   child: RaisedButton(
                     elevation: 0,
                     onPressed: () {
-                      print("=========추가 시작===========");
-                      Provider.of<StoreApplyProvider>(context, listen: false).postMenu(widget.bigId, nameCtrl.text, priceCtrl.text, imgCtrl);
+                      Provider.of<StoreApplyProvider>(context, listen: false).postMenu(widget.bigId, nameCtrl.text, priceCtrl.text, imgCtrl).then((value) {
+                        if (value) {
+                          showToast("${nameCtrl.text}가 추가 되었습니다.");
+                          PaintingBinding.instance.imageCache.clear();
+
+                          Navigator.of(context).pop();
+                        } else {
+                          showToast("메뉴가 추가에 실패했습니다.");
+                          Navigator.of(context).pop();
+                        }
+                      });
                     },
                     color: primary,
                     child: Text("메뉴 추가",

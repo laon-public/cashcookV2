@@ -1,6 +1,7 @@
 import 'package:cashcook/src/provider/StoreApplyProvider.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
+import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +71,15 @@ class _BigMenuApply extends State<BigMenuApply> {
                 child: RaisedButton(
                   elevation: 0,
                   onPressed: () {
-                    Provider.of<StoreApplyProvider>(context, listen: false).postBigMenu(widget.storeId, nameCtrl.text);
+                    Provider.of<StoreApplyProvider>(context, listen: false).postBigMenu(widget.storeId, nameCtrl.text).then((value) {
+                      if (value) {
+                        showToast("${nameCtrl.text}가 추가 되었습니다.");
+                        Navigator.of(context).pop();
+                      } else {
+                        showToast("대메뉴 추가에 실패했습니다.");
+                        Navigator.of(context).pop();
+                      }
+                    });
                   },
                   color: primary,
                   child: Text("완료",

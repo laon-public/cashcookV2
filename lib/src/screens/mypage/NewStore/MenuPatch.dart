@@ -246,19 +246,9 @@ class _MenuPatch extends State<MenuPatch> {
                       {
                         if(value) {
                           showToast("메뉴가 수정되었습니다.");
-
-                          int store_id = Provider.of<UserProvider>(context, listen: false).storeModel.id;
-
                           PaintingBinding.instance.imageCache.clear();
 
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                              builder: (context) => BigMenuListPage(
-                                store_id: store_id,
-                                isPatch: true,
-                              )
-                            )
-                          , (route) => false);
+                          Navigator.of(context).pop();
                         }
                         else {
                           showToast("메뉴 수정에 실패했습니다.");

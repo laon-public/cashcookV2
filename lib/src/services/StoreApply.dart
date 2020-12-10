@@ -24,6 +24,28 @@ class StoreApplyService {
     print(res.data.toString());
   }
 
+  Future<String> fetchBigMenu(int storeId) async {
+    Response<List<int>> res = await dio.get(cookURL + "/franchises/v2/bigMenu?storeId=$storeId",
+        options: Options(
+          headers: {"Authorization": "BEARER ${dataStorage.token}"},
+            responseType: ResponseType.bytes
+        )
+    );
+
+    return utf8.decode(res.data);
+  }
+
+  Future<String> fetchMenu(int bigId) async {
+    Response<List<int>> res = await dio.get(cookURL + "/franchises/v2/menu?bigId=$bigId",
+        options: Options(
+            headers: {"Authorization": "BEARER ${dataStorage.token}"},
+            responseType: ResponseType.bytes
+        )
+    );
+
+    return utf8.decode(res.data);
+  }
+
   Future<String> postMenu(int bigId, String menuName, String menuPrice, PickedFile menuImg) async {
     Map<String, dynamic> data = {
       "bigId" : bigId,
@@ -32,14 +54,15 @@ class StoreApplyService {
       "menuImg" : MultipartFile.fromFileSync(File(menuImg.path).absolute.path)
     };
 
-    Response res = await dio.post(cookURL + "/franchises/v2/menu",
+    Response<List<int>> res = await dio.post(cookURL + "/franchises/v2/menu",
       data: FormData.fromMap(data),
       options: Options(
         headers: {"Authorization": "BEARER ${dataStorage.token}"},
+          responseType: ResponseType.bytes
       )
     );
 
-    print(res.data);
+    return utf8.decode(res.data);
   }
 
   Future<String> patchMenu(int id, String menuName, String menuPrice, PickedFile menuImg) async {
@@ -67,14 +90,15 @@ class StoreApplyService {
       "name" : name,
     };
 
-    Response res = await dio.post(cookURL + "/franchises/v2/bigMenu",
+    Response<List<int>> res = await dio.post(cookURL + "/franchises/v2/bigMenu",
         data: FormData.fromMap(data),
         options: Options(
           headers: {"Authorization": "BEARER ${dataStorage.token}"},
+            responseType: ResponseType.bytes
         )
     );
 
-    print(res.data);
+    return utf8.decode(res.data);
   }
 
   Future<String> patchContent(int storeId, List<PickedFile> imgList) async {

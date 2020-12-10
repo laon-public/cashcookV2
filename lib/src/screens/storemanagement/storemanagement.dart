@@ -75,7 +75,7 @@ class _StoreManagement extends State<StoreManagement> {
             children: [
               InkWell(
                 onTap: (){
-                  Navigator.of(context).pushNamed("/store/modify/store");
+                  Navigator.of(context).pushNamed("/store/modify/routes");
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width,
