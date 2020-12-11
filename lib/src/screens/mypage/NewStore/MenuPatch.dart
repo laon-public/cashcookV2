@@ -235,41 +235,60 @@ class _MenuPatch extends State<MenuPatch> {
                   ),
                 ),
                 Spacer(),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 60,
-                  padding: EdgeInsets.symmetric(vertical: 8),
-                  child: RaisedButton(
-                    elevation: 0,
-                    onPressed: (nameCtrl.text != "" && priceCtrl.text != "") ?  () {
-                      Provider.of<StoreApplyProvider>(context, listen: false).patchMenu(widget.menu.id, nameCtrl.text, priceCtrl.text, imgCtrl).then((value) async
-                      {
-                        if(value) {
-                          showToast("메뉴가 수정되었습니다.");
-                          PaintingBinding.instance.imageCache.clear();
+                Consumer<StoreApplyProvider>(
+                  builder: (context, sap, _){
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 60,
+                      padding: EdgeInsets.symmetric(vertical: 8),
+                      child: RaisedButton(
+                        elevation: 0,
+                        onPressed: (nameCtrl.text != "" && priceCtrl.text != "") ?  () {
+                          if(sap.isPatching) {
+                            showToast("수정 중 입니다.");
+                          } else {
+                            sap.patchMenu(widget.menu.id, nameCtrl.text, priceCtrl.text, imgCtrl).then((value) async
+                            {
+                              if(value) {
+                                showToast("메뉴가 수정되었습니다.");
+                                PaintingBinding.instance.imageCache.clear();
 
-                          Navigator.of(context).pop();
-                        }
-                        else {
-                          showToast("메뉴 수정에 실패했습니다.");
-                          Navigator.of(context).pop();
-                        }
-                      });
-                    } : null,
-                    disabledColor: deActivatedGrey,
-                    color: primary,
-                    child: Text("수정하기",
-                      style: Subtitle2.apply(
-                          color: white,
-                          fontWeightDelta: 1
-                      ),
-                    ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(6)
+                                Navigator.of(context).pop();
+                              }
+                              else {
+                                showToast("메뉴 수정에 실패했습니다.");
+                                Navigator.of(context).pop();
+                              }
+                            });
+                          }
+                        } : null,
+                        disabledColor: deActivatedGrey,
+                        color: (sap.isPatching) ? deActivatedGrey : primary,
+                        child: (sap.isPatching) ?
+                        Center(
+                          child: Container(
+                              width: 12,
+                              height: 12,
+                              child: CircularProgressIndicator(
+                                  valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
+                              )
+                          ),
                         )
-                    ),
-                  ),
+                            :
+                        Text("수정하기",
+                          style: Subtitle2.apply(
+                              color: white,
+                              fontWeightDelta: 1
+                          ),
+                        ),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(6)
+                            )
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),

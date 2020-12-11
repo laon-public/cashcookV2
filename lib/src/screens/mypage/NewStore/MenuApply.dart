@@ -186,42 +186,63 @@ class _MenuApply extends State<MenuApply> {
                   ),
                 ),
                 Spacer(),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 60,
-                  padding: EdgeInsets.symmetric(vertical: 8),
-                  child: RaisedButton(
-                    elevation: 0,
-                    onPressed: (nameCtrl.text != "" && priceCtrl.text != "") ? () {
-                      if(imgCtrl == null) {
-                        showEmptyImgDialog();
-                      } else {
-                        Provider.of<StoreApplyProvider>(context, listen: false).postMenu(widget.bigId, nameCtrl.text, priceCtrl.text, imgCtrl).then((value) {
-                          if (value) {
-                            showToast("${nameCtrl.text}가 추가 되었습니다.");
-                            PaintingBinding.instance.imageCache.clear();
-
-                            Navigator.of(context).pop();
+                Consumer<StoreApplyProvider>(
+                  builder: (context, sap, _){
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 60,
+                      padding: EdgeInsets.symmetric(vertical: 8),
+                      child: RaisedButton(
+                        elevation: 0,
+                        onPressed: (nameCtrl.text != "" && priceCtrl.text != "") ? () {
+                          if(sap.isPosting) {
+                            showToast("메뉴 추가를 진행 중 입니다.");
                           } else {
-                            showToast("메뉴가 추가에 실패했습니다.");
-                            Navigator.of(context).pop();
+                            if(imgCtrl == null) {
+                              showEmptyImgDialog();
+                            } else {
+                              sap.postMenu(widget.bigId, nameCtrl.text, priceCtrl.text, imgCtrl).then((value) {
+                                if (value) {
+                                  showToast("${nameCtrl.text}가 추가 되었습니다.");
+                                  PaintingBinding.instance.imageCache.clear();
+
+                                  Navigator.of(context).pop();
+                                } else {
+                                  showToast("메뉴가 추가에 실패했습니다.");
+                                  Navigator.of(context).pop();
+                                }
+                              });
+                            }
                           }
-                        });
-                      }
-                    } : null,
-                    color: primary,
-                    child: Text("메뉴 추가",
-                      style: Subtitle2.apply(
-                          color: white,
-                          fontWeightDelta: 1
-                      ),
-                    ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(6)
+                        } : null,
+                        color: (sap.isPosting)  ? deActivatedGrey : primary,
+                        disabledColor: deActivatedGrey,
+                        child:
+                        (sap.isPosting) ?
+                        Center(
+                          child: Container(
+                              width: 12,
+                              height: 12,
+                              child: CircularProgressIndicator(
+                                  valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
+                              )
+                          ),
                         )
-                    ),
-                  ),
+                            :
+                        Text("메뉴 추가",
+                          style: Subtitle2.apply(
+                              color: white,
+                              fontWeightDelta: 1
+                          ),
+                        ),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(6)
+                            )
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),

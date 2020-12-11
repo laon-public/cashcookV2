@@ -64,37 +64,57 @@ class _BigMenuApply extends State<BigMenuApply> {
                 ),
               ),
               Spacer(),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 60,
-                padding: EdgeInsets.symmetric(vertical: 8),
-                child: RaisedButton(
-                  elevation: 0,
-                  onPressed: (nameCtrl.text != "") ? () {
-                    Provider.of<StoreApplyProvider>(context, listen: false).postBigMenu(widget.storeId, nameCtrl.text).then((value) {
-                      if (value) {
-                        showToast("${nameCtrl.text}가 추가 되었습니다.");
-                        Navigator.of(context).pop();
-                      } else {
-                        showToast("대메뉴 추가에 실패했습니다.");
-                        Navigator.of(context).pop();
-                      }
-                    });
-                  } : null,
-                  disabledColor: deActivatedGrey,
-                  color: primary,
-                  child: Text("완료",
-                    style: Subtitle2.apply(
-                        color: white,
-                        fontWeightDelta: 1
-                    ),
-                  ),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(6)
+              Consumer<StoreApplyProvider>(
+                builder: (context, sap, _){
+                  return Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 60,
+                    padding: EdgeInsets.symmetric(vertical: 8),
+                    child: RaisedButton(
+                      elevation: 0,
+                      onPressed: (nameCtrl.text != "") ? () {
+                        if(sap.isPosting) {
+                          showToast("메뉴 추가를 진행 중 입니다.");
+                        } else {
+                          sap.postBigMenu(widget.storeId, nameCtrl.text).then((value) {
+                            if (value) {
+                              showToast("${nameCtrl.text}가 추가 되었습니다.");
+                              Navigator.of(context).pop();
+                            } else {
+                              showToast("대메뉴 추가에 실패했습니다.");
+                              Navigator.of(context).pop();
+                            }
+                          });
+                        }
+                      } : null,
+                      disabledColor: deActivatedGrey,
+                      color: sap.isPosting ? deActivatedGrey : primary,
+                      child:
+                      sap.isPosting ?
+                      Center(
+                        child: Container(
+                            width: 12,
+                            height: 12,
+                            child: CircularProgressIndicator(
+                                valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
+                            )
+                        ),
                       )
-                  ),
-                ),
+                          :
+                      Text("대메뉴 추가",
+                        style: Subtitle2.apply(
+                            color: white,
+                            fontWeightDelta: 1
+                        ),
+                      ),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                              Radius.circular(6)
+                          )
+                      ),
+                    ),
+                  );
+                },
               ),
             ],
           ),

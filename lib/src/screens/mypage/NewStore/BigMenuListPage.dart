@@ -138,18 +138,22 @@ class _BigMenuListPage extends State<BigMenuListPage> {
                               null
                               :
                           () {
-                        sap.deleteBigMenu().then((value) {
-                          if(value) {
-                            showToast("선택하신 대메뉴가 삭제되었습니다.");
+                        if(sap.isDeleting) {
+                          showToast("삭제가 진행 중 입니다.");
+                        } else {
+                          sap.deleteBigMenu().then((value) {
+                            if(value) {
+                              showToast("선택하신 대메뉴가 삭제되었습니다.");
 
-                            sap.fetchBigMenu(widget.store_id);
-                            setState(() {
-                              isDelete = false;
-                            });
-                          } else {
-                            showToast("대메뉴 삭제에 실패 하였습니다.");
-                          }
-                        });
+                              sap.fetchBigMenu(widget.store_id);
+                              setState(() {
+                                isDelete = false;
+                              });
+                            } else {
+                              showToast("대메뉴 삭제에 실패 하였습니다.");
+                            }
+                          });
+                        }
                       }
                           :
                           () async {
@@ -164,8 +168,20 @@ class _BigMenuListPage extends State<BigMenuListPage> {
                         await Provider.of<StoreApplyProvider>(context, listen: false).fetchBigMenu(widget.store_id);
                       },
                       disabledColor: deActivatedGrey,
-                      color: primary,
-                      child: Text(isDelete ? "삭제하기" : "대메뉴 추가",
+                      color: (sap.isDeleting) ? deActivatedGrey : primary,
+                      child:
+                      (sap.isDeleting) ?
+                      Center(
+                        child: Container(
+                            width: 12,
+                            height: 12,
+                            child: CircularProgressIndicator(
+                                valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
+                            )
+                        ),
+                      )
+                      :
+                      Text(isDelete ? "삭제하기" : "대메뉴 추가",
                         style: Subtitle2.apply(
                             color: white,
                             fontWeightDelta: 1
@@ -218,8 +234,8 @@ class _BigMenuListPage extends State<BigMenuListPage> {
                       child:
                       Checkbox(
                         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        activeColor: mainColor,
-                        checkColor: white,
+                        activeColor: isDelete ? mainColor : Colors.transparent,
+                        checkColor: isDelete ? white : Colors.transparent,
                         value: bmm.isCheck,
                         onChanged: (value) {
                           sap.changeBigMenuCheck(value, idx);

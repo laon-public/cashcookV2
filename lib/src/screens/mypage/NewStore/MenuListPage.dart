@@ -143,18 +143,22 @@ class _MenuListPage extends State<MenuListPage> {
                         null
                             :
                             () {
-                          sap.deleteMenu().then((value) {
-                            if(value) {
-                              showToast("선택하신 메뉴가 삭제되었습니다.");
+                          if(sap.isDeleting){
+                            showToast("삭제가 진행 중 입니다.");
+                          } else {
+                            sap.deleteMenu().then((value) {
+                              if(value) {
+                                showToast("선택하신 메뉴가 삭제되었습니다.");
 
-                              sap.fetchMenu(widget.bigMenu.id);
-                              setState(() {
-                                isDelete = false;
-                              });
-                            } else {
-                              showToast("메뉴 삭제에 실패 하였습니다.");
-                            }
-                          });
+                                sap.fetchMenu(widget.bigMenu.id);
+                                setState(() {
+                                  isDelete = false;
+                                });
+                              } else {
+                                showToast("메뉴 삭제에 실패 하였습니다.");
+                              }
+                            });
+                          }
                         }
                             :
                             () async {
@@ -168,9 +172,21 @@ class _MenuListPage extends State<MenuListPage> {
 
                           await Provider.of<StoreApplyProvider>(context, listen: false).fetchMenu(widget.bigMenu.id);
                         },
-                        color: primary,
+                        color: (sap.isDeleting) ? deActivatedGrey : primary,
                         disabledColor: deActivatedGrey,
-                        child: Text(isDelete ? "삭제하기" : "메뉴 추가",
+                        child:
+                        (sap.isDeleting) ?
+                        Center(
+                          child: Container(
+                              width: 12,
+                              height: 12,
+                              child: CircularProgressIndicator(
+                                  valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
+                              )
+                          ),
+                        )
+                            :
+                        Text(isDelete ? "삭제하기" : "메뉴 추가",
                           style: Subtitle2.apply(
                               color: white,
                               fontWeightDelta: 1
@@ -226,8 +242,8 @@ class _MenuListPage extends State<MenuListPage> {
                       child:
                       Checkbox(
                         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        activeColor: mainColor,
-                        checkColor: white,
+                        activeColor: isDelete ? primary : Colors.transparent,
+                        checkColor: isDelete ? white : Colors.transparent,
                         value: menu.isCheck,
                         onChanged: (value) {
                           sap.changeMenuCheck(value, idx);

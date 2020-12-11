@@ -18,6 +18,10 @@ class StoreApplyProvider extends ChangeNotifier {
   List<MenuModel> menuList = [];
   int chkQuantity = 0;
 
+  bool isPatching = false;
+  bool isPosting = false;
+  bool isDeleting = false;
+
   // Content
   List<ContentModel> contentsList = [];
 
@@ -47,6 +51,9 @@ class StoreApplyProvider extends ChangeNotifier {
   }
 
   Future<bool> deleteMenu() async {
+    isDeleting = true;
+    notifyListeners();
+
     String menuIds = "";
     int _tmpChkQuantity = 0;
 
@@ -62,14 +69,21 @@ class StoreApplyProvider extends ChangeNotifier {
       }
     });
 
-    String res = await service.deleteMenu(menuIds);
-    Map<String, dynamic> json = jsonDecode(res);
+    try {
+      String res = await service.deleteMenu(menuIds);
+      Map<String, dynamic> json = jsonDecode(res);
 
-    if(isResponse(json)){
-      return true;
+      if(isResponse(json)){
+        return true;
+      }
+
+      return false;
+    } catch(e) {
+      return false;
+    } finally {
+      isDeleting = false;
+      notifyListeners();
     }
-
-    return false;
   }
 
   Future<bool> deleteBigMenu() async {
@@ -88,14 +102,24 @@ class StoreApplyProvider extends ChangeNotifier {
       }
     });
 
-    String res = await service.deleteBigMenu(bigMenuIds);
-    Map<String, dynamic> json = jsonDecode(res);
+    isDeleting = true;
+    notifyListeners();
 
-    if(isResponse(json)){
-      return true;
+    try{
+      String res = await service.deleteBigMenu(bigMenuIds);
+      Map<String, dynamic> json = jsonDecode(res);
+
+      if(isResponse(json)){
+        return true;
+      }
+
+      return false;
+    } catch(e) {
+      return false;
+    } finally {
+      isDeleting = false;
+      notifyListeners();
     }
-
-    return false;
   }
 
   Future allChange(bool value,String type) async {
@@ -183,51 +207,90 @@ class StoreApplyProvider extends ChangeNotifier {
   }
 
   Future<bool> postMenu(int bigId, String menuName, String menuPrice, PickedFile menuImg) async {
-    String res = await service.postMenu(bigId, menuName, menuPrice, menuImg);
+    isPosting = true;
+    notifyListeners();
+    try {
+      String res = await service.postMenu(bigId, menuName, menuPrice, menuImg);
+      Map<String, dynamic> json = jsonDecode(res);
 
-    Map<String, dynamic> json = jsonDecode(res);
-
-    if(isResponse(json)){
-      return true;
+      if(isResponse(json)){
+        return true;
+      }
+      return false;
+    } catch(e) {
+      print(e);
+      return false;
+    } finally {
+      isPosting = false;
+      notifyListeners();
     }
-
-    return false;
   }
 
   Future<bool> patchBigMenu(int id, String menuName) async {
-    String res = await service.patchBigMenu(id, menuName);
+    isPatching = true;
+    notifyListeners();
 
-    Map<String, dynamic> json = jsonDecode(res);
+    try{
+      String res = await service.patchBigMenu(id, menuName);
 
-    if(isResponse(json)){
-      return true;
+      Map<String, dynamic> json = jsonDecode(res);
+
+      if(isResponse(json)){
+        return true;
+      }
+
+      return false;
+    } catch(e) {
+      return false;
+    } finally {
+      isPatching = false;
+      notifyListeners();
     }
-
-    return false;
   }
 
   Future<bool> patchMenu(int id, String menuName, String menuPrice, PickedFile menuImg) async {
-    String res = await service.patchMenu(id, menuName, menuPrice, menuImg);
+    isPatching = true;
+    notifyListeners();
 
-    Map<String, dynamic> json = jsonDecode(res);
+    try{
+      String res = await service.patchMenu(id, menuName, menuPrice, menuImg);
 
-    if(isResponse(json)){
-      return true;
+      Map<String, dynamic> json = jsonDecode(res);
+
+      if(isResponse(json)){
+        return true;
+      }
+
+      return false;
+    } catch(e) {
+      return false;
+    } finally {
+      isPatching = false;
+      notifyListeners();
     }
-
-    return false;
   }
 
   Future<bool> postBigMenu(int storeId, String name) async {
-    String res = await service.postBigMenu(storeId, name);
+    isPosting = true;
+    notifyListeners();
 
-    Map<String, dynamic> json = jsonDecode(res);
+    try{
+      String res = await service.postBigMenu(storeId, name);
 
-    if(isResponse(json)){
-      return true;
+      Map<String, dynamic> json = jsonDecode(res);
+
+      if(isResponse(json)){
+        return true;
+      }
+
+      return false;
+    } catch(e) {
+      return false;
+    } finally {
+      isPosting = false;
+      notifyListeners();
     }
 
-    return false;
   }
 
   Future patchContent(int storeId, List<PickedFile> imgList) async {
