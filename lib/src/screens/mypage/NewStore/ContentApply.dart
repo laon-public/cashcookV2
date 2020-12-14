@@ -31,9 +31,7 @@ class _ContentApply extends State<ContentApply> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<StoreApplyProvider>(context, listen: false).fetchContent(widget.storeId);
     });
-    setState(() {
       contentCtrl.text = widget.comment;
-    });
   }
 
   @override
@@ -53,124 +51,127 @@ class _ContentApply extends State<ContentApply> {
       ),
     );
 
-    return Scaffold(
-      appBar: appBar,
-      backgroundColor: white,
-      body: SingleChildScrollView(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
+    return Consumer<StoreApplyProvider>(
+      builder: (context, sap, _){
+        return Scaffold(
+            appBar: appBar,
+            backgroundColor: white,
+            body: SingleChildScrollView(
+              child: Container(
                 width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.only(left: 16, top: 12),
+                height: MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("매장사진 ${contentsImgList.length}/10",
-                      style: Body2,
-                    ),
-                    whiteSpaceH(4),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Consumer<StoreApplyProvider>(
-                        builder: (context, sap, _){
-                          return Row(
-                            children: [
-                              (sap.contentsList.length == 0) ? 
-                                  Container()
-                              :
-                                  Row(
-                                    children: sap.contentsList.map((e) =>
-                                        contentImageItem(e)
-                                    ).toList(),
-                                  ),
-                              Row(
-                                children: contentsImgList.map((e) =>
-                                    imageItem(e)
-                                ).toList(),
-                              ),
-                              imagePlusItem(),
-                            ],
-                          );
-                        },
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      margin: EdgeInsets.only(left: 16, top: 12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("매장사진 ${contentsImgList.length + sap.contentsList.length}/10",
+                            style: Body2,
+                          ),
+                          whiteSpaceH(4),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                (sap.contentsList.length == 0) ?
+                                Container()
+                                    :
+                                Row(
+                                  children: sap.contentsList.map((e) =>
+                                      contentImageItem(e)
+                                  ).toList(),
+                                ),
+                                Row(
+                                  children: contentsImgList.map((e) =>
+                                      imageItem(e)
+                                  ).toList(),
+                                ),
+                                (contentsImgList.length + sap.contentsList.length < 10) ?
+                                imagePlusItem()
+                                :
+                                Container(),
+                              ],
+                            )
+                          ),
+                          whiteSpaceH(20),
+                          Text("매장 설명",
+                            style: Body2,
+                          ),
+                        ],
                       ),
                     ),
-                    whiteSpaceH(20),
-                    Text("매장 설명",
-                      style: Body2,
+                    whiteSpaceH(4),
+                    Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 1,
+                        color: deActivatedGrey
                     ),
+                    Expanded(
+                        child: Container(
+                            padding: EdgeInsets.only(right: 8),
+                            child: Theme(
+                              data: ThemeData(
+                                highlightColor: deActivatedGrey,
+                              ),
+                              child: Scrollbar(
+                                child: TextFormField(
+                                  maxLength: 100,
+                                  maxLines: 50,
+                                  controller: contentCtrl,
+                                  style: Subtitle1.apply(
+                                      fontWeightDelta: 1
+                                  ),
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.only(left: 28,),
+                                    border: UnderlineInputBorder(
+                                      borderSide:
+                                      BorderSide(color: Colors.transparent),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide:
+                                      BorderSide(color: Colors.transparent),
+                                    ),
+                                    counterStyle: TabsTagsStyle,
+                                  ),
+                                ),
+                              ),
+                            )
+                        )
+                    ),
+
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 60,
+                      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                      child: RaisedButton(
+                        color: primary,
+                        elevation: 0.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                              Radius.circular(6.0)
+                          ),
+                        ),
+                        onPressed: () {
+                          Provider.of<StoreApplyProvider>(context, listen: false).patchContent(widget.storeId, contentsImgList);
+                        },
+                        child: Text("수정하기",
+                            style: Subtitle2.apply(
+                                color: white,
+                                fontWeightDelta: 1
+                            )
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
-              whiteSpaceH(4),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 1,
-                color: deActivatedGrey
-              ),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.only(right: 8),
-                  child: Theme(
-                    data: ThemeData(
-                      highlightColor: deActivatedGrey,
-                    ),
-                    child: Scrollbar(
-                      child: TextFormField(
-                        maxLength: 100,
-                        maxLines: 50,
-                        controller: contentCtrl,
-                        style: Subtitle1.apply(
-                          fontWeightDelta: 1
-                        ),
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(left: 28,),
-                          border: UnderlineInputBorder(
-                            borderSide:
-                            BorderSide(color: Colors.transparent),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide:
-                            BorderSide(color: Colors.transparent),
-                          ),
-                          counterStyle: TabsTagsStyle,
-                        ),
-                      ),
-                    ),
-                  )
-                )
-              ),
-
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 60,
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                child: RaisedButton(
-                  color: primary,
-                  elevation: 0.0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(6.0)
-                    ),
-                  ),
-                  onPressed: () {
-                      Provider.of<StoreApplyProvider>(context, listen: false).patchContent(widget.storeId, contentsImgList);
-                  },
-                  child: Text("수정하기",
-                      style: Subtitle2.apply(
-                          color: white,
-                          fontWeightDelta: 1
-                      )
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-      )
+            )
+        );
+      },
     );
   }
 

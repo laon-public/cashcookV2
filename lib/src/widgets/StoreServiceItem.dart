@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/model/store/menu.dart';
 import 'package:cashcook/src/model/store/reviewWrite.dart';
+import 'package:cashcook/src/provider/StoreApplyProvider.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
@@ -455,63 +456,141 @@ Widget starImage(avg,idx) {
 Widget otherForm(BuildContext context, StoreModel store) {
   StoreProvider sp = Provider.of<StoreProvider>(context, listen: false);
   store == null ? store = sp.selStore : store = store;
+  WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    Provider.of<StoreApplyProvider>(context, listen: false).fetchContent(store.id);
+  });
+
   return Consumer<StoreServiceProvider>(
       builder: (context, ss, __){
         return Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
+          color: white,
             width: MediaQuery.of(context).size.width,
             child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 10.0),
+                  padding: EdgeInsets.symmetric(horizontal: 16.0,vertical: 10.0),
                   width: MediaQuery.of(context).size.width,
                   child: Text("매장 정보",
-                      style: Subtitle2
+                      style: Subtitle2.apply(
+                        fontWeightDelta: 3
+                      )
                   ),
                 ),
                 Container(
-                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                    padding: EdgeInsets.symmetric(horizontal: 16.0,vertical: 16.0),
                     width: MediaQuery.of(context).size.width,
-                    height: 192,
                     child:
-                    Stack(
-                      children: [
-                        Text(
-                            store.store.comment == null ? "매장 정보가 없습니다" : store.store.comment,
-                            style: Body1.apply(
-                                color: secondary,
-                              fontWeightDelta: -1
-                            )
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          child: ShaderMask(
-                            shaderCallback: (Rect bounds) {
-                              return LinearGradient(
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.topCenter,
-                                colors: [
-                                  Colors.white,
-                                  Colors.white,
-                                  Colors.transparent,
-                                ],
-                              ).createShader(bounds);
-                            },
-                            blendMode: BlendMode.dstIn,
-                            child: Container(
-                              color: white,
-                              width: MediaQuery.of(context).size.width,
-                              height: 40,
-                            ),
-                          ),
+                    Text(
+                        store.store.comment == null ? "매장 정보가 없습니다" : store.store.comment,
+                        style: Body1.apply(
+                            color: secondary,
+                            fontWeightDelta: -1
                         )
-                      ],
-                    )
-
+                    ),
                 ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 12),
+                  width: MediaQuery.of(context).size.width,
+                  height: 8,
+                  color: Color(0xFFF2F2F2)
+                ),
+                Consumer<StoreApplyProvider>(
+                  builder: (context, sap, _){
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.symmetric(vertical: 11, horizontal: 16),
+                      margin: EdgeInsets.only(bottom:5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text("매장사진 " ,
+                              style: Subtitle2.apply(
+                                  fontWeightDelta: 1
+                              )
+                          ),
+                          Text("${sap.contentsList.length}개",
+                            style: Subtitle2.apply(
+                              color: primary,
+                              fontWeightDelta: 1
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                ),
+                Consumer<StoreApplyProvider>(
+                  builder: (context, sap, _){
+                    return GridView.count(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                        crossAxisCount: 3,
+                      children: List.generate(sap.contentsList.length, (index)
+                      {
+                        return InkWell(
+                          onTap: (){
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => BigImage(
+                                  imageUrl: sap.contentsList[index].imgUrl,
+                                  index: index
+                                )
+                              )
+                            );
+                          },
+                          child: Hero(
+                            tag: "Big Image$index",
+                            child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: white,
+                                      width: 2
+                                  ),
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
+                                        sap.contentsList[index].imgUrl
+                                    ),
+                                  ),
+                                )
+                            ),
+                          )
+                        );
+                      }
+                      ),
+                    );
+                  },
+                )
               ],
             )
         );
       }
   );
+}
+
+class BigImage extends StatelessWidget {
+  final String imageUrl;
+  final int index;
+
+  BigImage({this.imageUrl, this.index});
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+      body: InkWell(
+        onTap: () {
+          Navigator.of(context).pop();
+        },
+        child: Center(
+            child: Hero(
+                tag: "Big Image${this.index}",
+                child: Image.network(
+                    this.imageUrl
+                )
+            )
+        ),
+      ),
+    );
+  }
 }
