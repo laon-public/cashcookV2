@@ -182,53 +182,53 @@ class _BargainGame2 extends State<BargainGame2> {
                       );
                     },
                   ),
-                  Consumer<CenterProvider>(
-                    builder: (context, cp, _){
-                      return Positioned(
-                        top: 50,
-                        child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 22),
-                            width: MediaQuery.of(context).size.width,
-                            child: Center(
-                              child: Container(
-                                padding: EdgeInsets.all(5),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                        "금일 이용자 수 : ${numberFormat.format(int.parse(cp.gameUserQuantity == "" ? "0" : cp.gameUserQuantity))}명",
-                                        style: Body2.apply(
-                                            color: white,
-                                            shadows: [
-                                              Shadow(
-                                                  offset: Offset(1, 1),
-                                                  blurRadius: 1.0,
-                                                  color: black
-                                              ),
-                                            ]
-                                        )
-                                    ),
-                                    Text("")
-                                  ],
-                                ),
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                      begin: Alignment.topRight,
-                                      end: Alignment.topLeft,
-                                      colors: [
-                                        Colors.transparent,
-                                        black.withOpacity(0.3),
-                                        black.withOpacity(0.3),
-                                        Colors.transparent,
-                                      ]
-                                  ),
-                                ),
-                              ),
-                            )
-                        ),
-                      );
-                    },
-                  ),
+                  // Consumer<CenterProvider>(
+                  //   builder: (context, cp, _){
+                  //     return Positioned(
+                  //       top: 50,
+                  //       child: Container(
+                  //           padding: EdgeInsets.symmetric(horizontal: 22),
+                  //           width: MediaQuery.of(context).size.width,
+                  //           child: Center(
+                  //             child: Container(
+                  //               padding: EdgeInsets.all(5),
+                  //               child: Row(
+                  //                 mainAxisAlignment: MainAxisAlignment.center,
+                  //                 children: [
+                  //                   Text(
+                  //                       "금일 이용자 수 : ${numberFormat.format(int.parse(cp.gameUserQuantity == "" ? "0" : cp.gameUserQuantity))}명",
+                  //                       style: Body2.apply(
+                  //                           color: white,
+                  //                           shadows: [
+                  //                             Shadow(
+                  //                                 offset: Offset(1, 1),
+                  //                                 blurRadius: 1.0,
+                  //                                 color: black
+                  //                             ),
+                  //                           ]
+                  //                       )
+                  //                   ),
+                  //                   Text("")
+                  //                 ],
+                  //               ),
+                  //               decoration: BoxDecoration(
+                  //                 gradient: LinearGradient(
+                  //                     begin: Alignment.topRight,
+                  //                     end: Alignment.topLeft,
+                  //                     colors: [
+                  //                       Colors.transparent,
+                  //                       black.withOpacity(0.3),
+                  //                       black.withOpacity(0.3),
+                  //                       Colors.transparent,
+                  //                     ]
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //           )
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
                   // (!gameLoad) ? Positioned.fill(
                   //     child: Opacity(
                   //       opacity: 0.7,

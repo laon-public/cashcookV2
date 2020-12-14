@@ -290,8 +290,8 @@ class _ChargePoint2State extends State<ChargePoint2> {
                             height: 1,
                             color: Color(0xFFDDDDDD),
                           ),
-                          value: "우리은행 / (주)트라이아트 / 00-000000-000",
-                          items: ["우리은행 / (주)트라이아트 / 00-000000-000"].map((value) {
+                          value: "우리은행 / (주)캐시쿡 / 00-000000-000",
+                          items: ["우리은행 / (주)캐시쿡 / 00-000000-000"].map((value) {
                             return DropdownMenuItem(
                               value: value,
                               child: Text(value),

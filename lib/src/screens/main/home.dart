@@ -132,6 +132,7 @@ class _Home extends State<Home> {
             appBar: viewType == 0 ? AppBar(
               elevation: 0.5,
               centerTitle: false,
+              leading: null,
               title: Container(
                 padding: EdgeInsets.only(right: 16.0, top: 8.0, bottom: 8.0),
                 child: Image.asset(

@@ -57,39 +57,7 @@ class _MyPageState extends State<MyPage> {
 
   @override
   Widget build(BuildContext context) {
-    return
-      WillPopScope(
-          child: body(),
-          onWillPop: ExitPressed
-      );
-  }
-
-  Future<bool> ExitPressed() {
-    return showDialog( context: context,
-      builder: (context) => AlertDialog( content: Container(
-          child: Text("앱을 종료하시겠습니까?",
-            style: Body1.apply(
-              fontWeightDelta: 1
-            ),
-            textAlign: TextAlign.center,
-          )
-      ),
-        actions: <Widget>[
-          FlatButton(
-            child: Text("예",
-              style: Body1.apply(
-                  color: primary
-              ),
-            ),
-            onPressed: () => Navigator.pop(context, true), ),
-          FlatButton(
-            child: Text("아니요",
-              style: Body1.apply(
-                  color: primary
-              ),
-            ),
-            onPressed: () => Navigator.pop(context, false), ), ], ), ) ?? false;
-
+    return body();
   }
 
   Widget body(){
@@ -100,7 +68,7 @@ class _MyPageState extends State<MyPage> {
           appBar: AppBar(
             backgroundColor: white,
             elevation: 0.0,
-            leading: widget.isHome ? null : IconButton(
+            leading: IconButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },

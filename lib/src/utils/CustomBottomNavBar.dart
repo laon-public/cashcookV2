@@ -31,7 +31,7 @@ Widget CustomBottomNavBar(BuildContext context, String pageName) {
               child: InkWell(
                 onTap: () {
                   if(pageName != "scrap") {
-                    replaceSlideMove(Scrap(
+                    pushSlideMove(Scrap(
                       isHome: true,
                     ), context, 1);
                   }
@@ -96,7 +96,7 @@ Widget CustomBottomNavBar(BuildContext context, String pageName) {
                 child: InkWell(
                   onTap: () {
                     if(pageName != "home") {
-                      replaceSlideMove(Home(), context, 1);
+                      removeSlideMove(Home(), context, 1);
                     }
                   },
                   child: Stack(
@@ -125,7 +125,7 @@ Widget CustomBottomNavBar(BuildContext context, String pageName) {
               child: InkWell(
                 onTap: () {
                   if(pageName != "pointmgmt") {
-                    replaceSlideMove(ServiceList(
+                    pushSlideMove(ServiceList(
                       isHome: true,
                     ), context, 1);
                   }
@@ -152,7 +152,7 @@ Widget CustomBottomNavBar(BuildContext context, String pageName) {
               child: InkWell(
                 onTap: () {
                   if(pageName != "mypage") {
-                    replaceSlideMove(MyPage(
+                    pushSlideMove(MyPage(
                       isHome: true,
                     ), context, 1);
                   }

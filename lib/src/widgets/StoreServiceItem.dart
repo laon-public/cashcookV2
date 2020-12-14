@@ -86,6 +86,7 @@ Widget MenuItem(int bigIdx,int idx,MenuModel mm, BuildContext context) {
   StoreServiceProvider ssp = Provider.of<StoreServiceProvider>(context, listen: false);
   return InkWell(
       onTap: () {
+          print("눌림");
           ssp.setCheck(bigIdx,idx, !mm.isCheck);
           },
       child:Container(

@@ -45,8 +45,7 @@ class _ServiceList extends State<ServiceList> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return WillPopScope(
-        child: Scaffold(
+    return Scaffold(
           backgroundColor: white,
             appBar: AppBar(
               elevation: 0.5,
@@ -55,7 +54,7 @@ class _ServiceList extends State<ServiceList> {
                 "이용내역",
                 style: appBarDefaultText,
               ),
-              leading: widget.afterGame ? IconButton(
+              leading: IconButton(
                 onPressed: () {
                   Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(builder: (context) => MyPage(
@@ -69,8 +68,6 @@ class _ServiceList extends State<ServiceList> {
                   height: 24,
                 ),
               )
-                  :
-              null,
             ),
             body: Stack(
               children: [
@@ -147,8 +144,7 @@ class _ServiceList extends State<ServiceList> {
                 widget.isHome ? CustomBottomNavBar(context, "pointmgmt") : Container(),
               ],
             )
-        ),
-        onWillPop: ExitPressed);
+        );
   }
 
   Widget ServiceItem(ServiceLogListItem sll) {
@@ -279,35 +275,5 @@ class _ServiceList extends State<ServiceList> {
           )
       ),
     );
-  }
-
-  Future<bool> ExitPressed() {
-    return showDialog( context: context,
-      builder: (context) => AlertDialog( content: Container(
-          child: Text("앱을 종료하시겠습니까?",
-            style: Body1.apply(
-              fontWeightDelta: 1
-            ),
-            textAlign: TextAlign.center,
-          )
-      ),
-        actions: <Widget>[
-          FlatButton(
-            child: Text("예",
-              style: Body1.apply(
-                  fontWeightDelta: 1,
-                color: primary
-              ),
-            ),
-            onPressed: () => Navigator.pop(context, true), ),
-          FlatButton(
-            child: Text("아니요",
-              style: Body1.apply(
-                  fontWeightDelta: 1,
-                  color: etcYellow
-              )
-            ),
-            onPressed: () => Navigator.pop(context, false), ), ], ), ) ?? false;
-
   }
 }

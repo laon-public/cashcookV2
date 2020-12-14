@@ -105,11 +105,19 @@ class _MainMap extends State<MainMap> {
           elevation: 0.5,
           centerTitle: true,
           automaticallyImplyLeading: true,
-          title:
-          Image.asset(
-          "assets/icon/cashcook_logo.png",
-          width: 116,
-          height: 30,
+          title: InkWell(
+            onTap: () {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => Home()
+                )
+              , (route) => false);
+            },
+            child: Image.asset(
+              "assets/icon/cashcook_logo.png",
+              width: 116,
+              height: 30,
+            ),
           ),
       ) : Container(),
             body: Container(

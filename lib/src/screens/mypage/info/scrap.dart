@@ -28,7 +28,7 @@ class _Scrap extends State<Scrap> {
       appBar: AppBar(
         title: Text("찜 매장",
             style: appBarDefaultText),
-        leading: widget.isHome ? null : IconButton(
+        leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
           },

@@ -400,7 +400,8 @@ class _ModifyBusiness extends State<ModifyBusiness> {
               color: Color(0xFFDDDDDD),
             ),
             value: bank ,
-            items: ["은행명","우리은행", "SC제일은행", "하나은행", "신한은행", "국민은행"].map((value) {
+            items: ["은행명","광주은행", "국민은행", "기업은행", "NH농협", "대구은행", "부산은행", "MG새마을금고", "SH수협",
+              "SC제일은행", "신한은행", "외환은행", "우체국", "우리은행", "전북은행", "제주은행", "하나은행"].map((value) {
               return DropdownMenuItem(
                 value: value,
                 child: Text(value),

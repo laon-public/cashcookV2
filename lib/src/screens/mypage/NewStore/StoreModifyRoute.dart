@@ -1,6 +1,6 @@
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/mypage/NewStore/BigMenuListPage.dart';
-import 'package:cashcook/src/screens/mypage/NewStore/CommentPatch.dart';
+import 'package:cashcook/src/screens/mypage/NewStore/ContentApply.dart';
 import 'package:cashcook/src/screens/mypage/NewStore/StorePatch.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
@@ -78,7 +78,10 @@ class _StoreModifyRoute extends State<StoreModifyRoute> {
               onTap: () {
                 Navigator.of(context).push(
                     MaterialPageRoute(
-                        builder: (context) => CommentPatch()
+                        builder: (context) => ContentApply(
+                          storeId: Provider.of<UserProvider>(context, listen: false).storeModel.id,
+                          comment: Provider.of<UserProvider>(context, listen: false).storeModel.store.comment,
+                        )
                     )
                 );
               },
