@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/model/store/content.dart';
 import 'package:cashcook/src/provider/StoreApplyProvider.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
+import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -81,9 +83,9 @@ class _ContentApply extends State<ContentApply> {
                                 Container()
                                     :
                                 Row(
-                                  children: sap.contentsList.map((e) =>
-                                      contentImageItem(e)
-                                  ).toList(),
+                                  children: List.generate(sap.contentsList.length, (index) =>
+                                    contentImageItem(sap.contentsList[index], index)
+                                  )
                                 ),
                                 Row(
                                   children: contentsImgList.map((e) =>
@@ -148,7 +150,7 @@ class _ContentApply extends State<ContentApply> {
                       height: 60,
                       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                       child: RaisedButton(
-                        color: primary,
+                        color: (sap.isContenting) ? deActivatedGrey : primary,
                         elevation: 0.0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(
@@ -156,9 +158,39 @@ class _ContentApply extends State<ContentApply> {
                           ),
                         ),
                         onPressed: () {
-                          Provider.of<StoreApplyProvider>(context, listen: false).patchContent(widget.storeId, contentsImgList);
+                          if(sap.isContenting) {
+                            showToast("정보 수정이 진행 중 입니다.");
+                            return;
+                          } else {
+                            String updateContent = "";
+                            if(contentCtrl.text != widget.comment) {
+                              updateContent = contentCtrl.text;
+                            }
+                            sap.patchContent(widget.storeId, updateContent, contentsImgList).then((value) async {
+                              if(value) {
+                                showToast("기타 정보가 수정되었습니다.");
+
+                                PaintingBinding.instance.imageCache.clear();
+                                await sap.fetchContent(widget.storeId);
+                              } else {
+                                showToast("기타 정보 수정이 실패했습니다.");
+
+                              }
+                            });
+                          }
                         },
-                        child: Text("수정하기",
+                        child: sap.isContenting ?
+                        Center(
+                          child: Container(
+                              width: 12,
+                              height: 12,
+                              child: CircularProgressIndicator(
+                                  valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
+                              )
+                          ),
+                        )
+                        :
+                        Text("수정하기",
                             style: Subtitle2.apply(
                                 color: white,
                                 fontWeightDelta: 1
@@ -175,9 +207,14 @@ class _ContentApply extends State<ContentApply> {
     );
   }
 
-  Widget contentImageItem(ContentModel content) {
+  Widget contentImageItem(ContentModel content, int index) {
     return InkWell(
-      onTap: () {
+      onTap: () async {
+          await Provider.of<StoreApplyProvider>(context, listen: false).updateImg(index,
+              await ImagePicker().getImage(source: ImageSource.gallery)
+          );
+
+
       },
       child: Container(
         margin: EdgeInsets.only(right: 8.0),
@@ -194,9 +231,14 @@ class _ContentApply extends State<ContentApply> {
             ),
             image: DecorationImage(
               fit: BoxFit.cover,
-              image: NetworkImage(
+              image: (content.updateFile == null) ? NetworkImage(
                 content.imgUrl
-              ),
+              )
+              :
+                  FileImage(
+                    File(content.updateFile.path)
+                  )
+              ,
             )
         ),
       ),

@@ -24,6 +24,7 @@ class StoreApplyProvider extends ChangeNotifier {
 
   // Content
   List<ContentModel> contentsList = [];
+  bool isContenting = false;
 
   Future insertImg() async {
     PickedFile pickedImg = await ImagePicker().getImage(source: ImageSource.gallery);
@@ -293,8 +294,39 @@ class StoreApplyProvider extends ChangeNotifier {
 
   }
 
-  Future patchContent(int storeId, List<PickedFile> imgList) async {
-    await service.patchContent(storeId, imgList);
+  Future updateImg(int index, PickedFile img) async {
+    contentsList[index].updateFile = img;
+
+    notifyListeners();
+  }
+
+  Future<bool> patchContent(int storeId, String content, List<PickedFile> imgList) async {
+    isContenting = true;
+    notifyListeners();
+
+    List<int> updateImgSeqs = [];
+    List<PickedFile> updateImgs = [];
+
+    contentsList.where((element) => element.updateFile != null).forEach((element) {
+      updateImgSeqs.add(element.id);
+      updateImgs.add(element.updateFile);
+    });
+
+    try {
+      String res = await service.patchContent(
+          storeId, content, updateImgSeqs, updateImgs, imgList);
+      Map<String, dynamic> json = jsonDecode(res);
+
+      if(isResponse(json)) {
+        return true;
+      }
+      return false;
+    } catch(e) {
+      return false;
+    } finally {
+      isContenting = false;
+      notifyListeners();
+    }
   }
 
   Future fetchContent(int storeId) async {

@@ -140,23 +140,38 @@ class StoreApplyService {
     return utf8.decode(res.data);
   }
 
-  Future<String> patchContent(int storeId, List<PickedFile> imgList) async {
+  Future<String> patchContent(int storeId, String content,List<int> updateImgSeqs, List<PickedFile> updateImgs, List<PickedFile> contentImgs) async {
     Map<String, dynamic> data = {
-      "storeId" : storeId
+      "content": content,
+      "storeId" : storeId,
     };
     FormData form = FormData.fromMap(data);
-    imgList.forEach((element) {
+
+    // new Imgs
+    contentImgs.forEach((element) {
       form.files.add(MapEntry("contentImgs", MultipartFile.fromFileSync(File(element.path).absolute.path)));
     });
 
-    Response res = await dio.patch(cookURL + "/franchises/v2/content",
+    // update Imgs
+    updateImgSeqs.forEach((element) {
+      form.fields.add(MapEntry("updateImgSeqs", element.toString()));
+    });
+    updateImgs.forEach((element) {
+      form.files.add(MapEntry("updateImgs", MultipartFile.fromFileSync(File(element.path).absolute.path)));
+    });
+
+
+    print(form.files);
+    print(form.fields);
+    Response<List<int>> res = await dio.patch(cookURL + "/franchises/v2/content",
         data: form,
         options: Options(
           headers: {"Authorization": "BEARER ${dataStorage.token}"},
+            responseType: ResponseType.bytes
         )
     );
 
-    print(res.data);
+    return utf8.decode(res.data);
   }
 
   Future<String> fetchContent(int storeId) async {

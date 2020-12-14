@@ -207,23 +207,26 @@ Widget storeItem(StoreModel store, BuildContext context) {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 68,
-            height: 68,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                    Radius.circular(6)
-                ),
-                border: Border.all(
-                    color: Color(0xFFDDDDDD),
-                    width: 0.5
-                ),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                    store.store.shop_img1,
+          Hero(
+            tag: "Open Detail${store.id}",
+            child: Container(
+              width: 68,
+              height: 68,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(6)
                   ),
-                )
+                  border: Border.all(
+                      color: Color(0xFFDDDDDD),
+                      width: 0.5
+                  ),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(
+                      store.store.shop_img1,
+                    ),
+                  )
+              ),
             ),
           ),
           whiteSpaceW(12),

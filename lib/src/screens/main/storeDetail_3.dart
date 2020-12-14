@@ -159,126 +159,128 @@ class _StoreDetail3 extends State<StoreDetail3> {
                             },
                             content: Column(
                               children: [
+
                                 Container(
                                   width:MediaQuery.of(context).size.width,
                                   height: 210,
                                   child:
                                   Stack(
                                     children: [
-                                      CarouselSlider(
-                                        options: CarouselOptions(
-                                          initialPage: 0,
-                                          height: 210,
-                                          autoPlayInterval: Duration(seconds: 3),
-                                          autoPlayAnimationDuration: Duration(milliseconds:1000),
-                                          autoPlayCurve: Curves.fastOutSlowIn,
-                                          viewportFraction: 1.0,
-                                          onPageChanged: (index, reason) {
-                                            Provider.of<CarouselProvider>(context, listen:false).changePage(index+1);
-                                          },
+                                      Hero(
+                                        tag: "Open Detail${widget.store.id}",
+                                        child: CarouselSlider(
+                                          options: CarouselOptions(
+                                            initialPage: 0,
+                                            height: 210,
+                                            autoPlayInterval: Duration(seconds: 3),
+                                            autoPlayAnimationDuration: Duration(milliseconds:1000),
+                                            autoPlayCurve: Curves.fastOutSlowIn,
+                                            viewportFraction: 1.0,
+                                            onPageChanged: (index, reason) {
+                                              Provider.of<CarouselProvider>(context, listen:false).changePage(index+1);
+                                            },
+                                          ),
+                                          items: [
+                                            Stack(
+                                              children: [
+                                                Image.network(
+                                                  widget.store.store.shop_img1,
+                                                  fit: BoxFit.cover,
+                                                  width: MediaQuery.of(context).size.width,
+                                                  height: MediaQuery.of(context).size.height,
+
+                                                ),
+                                                Opacity(
+                                                  opacity: 0.2,
+                                                  child: ShaderMask(
+                                                    shaderCallback: (Rect bounds) {
+                                                      return LinearGradient(
+                                                        begin: Alignment.topCenter,
+                                                        end: Alignment.bottomCenter,
+                                                        colors: [
+                                                          Colors.black,
+                                                          Colors.black,
+                                                          Colors.transparent,
+                                                        ],
+                                                      ).createShader(bounds);
+                                                    },
+                                                    blendMode: BlendMode.dstIn,
+                                                    child: Container(
+                                                        color: black,
+                                                        width: MediaQuery.of(context).size.width,
+                                                        height: MediaQuery.of(context).size.height
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Stack(
+                                              children: [
+                                                Image.network(
+                                                  widget.store.store.shop_img2,
+                                                  fit: BoxFit.cover,
+                                                  width: MediaQuery.of(context).size.width,
+                                                  height: MediaQuery.of(context).size.height,
+                                                ),
+                                                Opacity(
+                                                  opacity: 0.2,
+                                                  child: ShaderMask(
+                                                    shaderCallback: (Rect bounds) {
+                                                      return LinearGradient(
+                                                        begin: Alignment.topCenter,
+                                                        end: Alignment.bottomCenter,
+                                                        colors: [
+                                                          Colors.black,
+                                                          Colors.black,
+                                                          Colors.transparent,
+                                                        ],
+                                                      ).createShader(bounds);
+                                                    },
+                                                    blendMode: BlendMode.dstIn,
+                                                    child: Container(
+                                                        color: black,
+                                                        width: MediaQuery.of(context).size.width,
+                                                        height: MediaQuery.of(context).size.height
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Stack(
+                                              children: [
+                                                Image.network(
+                                                  widget.store.store.shop_img3,
+                                                  fit: BoxFit.cover,
+                                                  width: MediaQuery.of(context).size.width,
+                                                  height: MediaQuery.of(context).size.height,
+                                                ),
+                                                Opacity(
+                                                  opacity: 0.2,
+                                                  child: ShaderMask(
+                                                    shaderCallback: (Rect bounds) {
+                                                      return LinearGradient(
+                                                        begin: Alignment.topCenter,
+                                                        end: Alignment.bottomCenter,
+                                                        colors: [
+                                                          Colors.black,
+                                                          Colors.black,
+                                                          Colors.transparent,
+                                                        ],
+                                                      ).createShader(bounds);
+                                                    },
+                                                    blendMode: BlendMode.dstIn,
+                                                    child: Container(
+                                                        color: black,
+                                                        width: MediaQuery.of(context).size.width,
+                                                        height: MediaQuery.of(context).size.height
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
                                         ),
-                                        items: [
-                                          Stack(
-                                            children: [
-                                              Image.network(
-                                                widget.store.store.shop_img1,
-                                                fit: BoxFit.cover,
-                                                width: MediaQuery.of(context).size.width,
-                                                height: MediaQuery.of(context).size.height,
-
-                                              ),
-                                              Opacity(
-                                                opacity: 0.2,
-                                                child: ShaderMask(
-                                                  shaderCallback: (Rect bounds) {
-                                                    return LinearGradient(
-                                                      begin: Alignment.topCenter,
-                                                      end: Alignment.bottomCenter,
-                                                      colors: [
-                                                        Colors.black,
-                                                        Colors.black,
-                                                        Colors.transparent,
-                                                      ],
-                                                    ).createShader(bounds);
-                                                  },
-                                                  blendMode: BlendMode.dstIn,
-                                                  child: Container(
-                                                      color: black,
-                                                      width: MediaQuery.of(context).size.width,
-                                                      height: MediaQuery.of(context).size.height
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Stack(
-                                            children: [
-                                              Image.network(
-                                                widget.store.store.shop_img2,
-                                                fit: BoxFit.cover,
-                                                width: MediaQuery.of(context).size.width,
-                                                height: MediaQuery.of(context).size.height,
-                                              ),
-                                              Opacity(
-                                                opacity: 0.2,
-                                                child: ShaderMask(
-                                                  shaderCallback: (Rect bounds) {
-                                                    return LinearGradient(
-                                                      begin: Alignment.topCenter,
-                                                      end: Alignment.bottomCenter,
-                                                      colors: [
-                                                        Colors.black,
-                                                        Colors.black,
-                                                        Colors.transparent,
-                                                      ],
-                                                    ).createShader(bounds);
-                                                  },
-                                                  blendMode: BlendMode.dstIn,
-                                                  child: Container(
-                                                      color: black,
-                                                      width: MediaQuery.of(context).size.width,
-                                                      height: MediaQuery.of(context).size.height
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Stack(
-                                            children: [
-                                              Image.network(
-                                                widget.store.store.shop_img3,
-                                                fit: BoxFit.cover,
-                                                width: MediaQuery.of(context).size.width,
-                                                height: MediaQuery.of(context).size.height,
-                                              ),
-                                              Opacity(
-                                                opacity: 0.2,
-                                                child: ShaderMask(
-                                                  shaderCallback: (Rect bounds) {
-                                                    return LinearGradient(
-                                                      begin: Alignment.topCenter,
-                                                      end: Alignment.bottomCenter,
-                                                      colors: [
-                                                        Colors.black,
-                                                        Colors.black,
-                                                        Colors.transparent,
-                                                      ],
-                                                    ).createShader(bounds);
-                                                  },
-                                                  blendMode: BlendMode.dstIn,
-                                                  child: Container(
-                                                      color: black,
-                                                      width: MediaQuery.of(context).size.width,
-                                                      height: MediaQuery.of(context).size.height
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
                                       ),
-                                      // CustomAppBar
-
                                       Positioned(
                                           bottom: 45,
                                           left: 28,
