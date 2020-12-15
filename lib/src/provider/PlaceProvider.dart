@@ -50,14 +50,16 @@ class PlaceProvider with ChangeNotifier {
 
     final response = await service.getGoogleSearch(query);
 
-
     Map<String, dynamic> json = jsonDecode(response);
 
-    (json['predictions'] as List).forEach((element) {
-      googlePlaces.add(
-        Place.fromGoogleJson(element)
-      );
-    });
+    if(json['predictions'] != null && json['predictions'].length != 0) {
+      (json['predictions'] as List).forEach((element) {
+        if (element['place_id'] != null)
+          googlePlaces.add(
+              Place.fromGoogleJson(element)
+          );
+      });
+    }
 
     stopLoading();
   }

@@ -177,105 +177,102 @@ class _ServiceList extends State<ServiceList> {
           )
         );
       },
-      child: Hero(
-        tag: "Open Order Detail ${ol.id}",
-        child: Container(
-            decoration: BoxDecoration(
-                border: Border(
-                    bottom: BorderSide(
-                        color: Color(0xFFF7F7F7),
-                        width: 1
+      child:  Container(
+          decoration: BoxDecoration(
+              border: Border(
+                  bottom: BorderSide(
+                      color: Color(0xFFF7F7F7),
+                      width: 1
+                  )
+              )
+          ),
+          padding: EdgeInsets.all(16.0),
+          width: MediaQuery.of(context).size.width,
+          height: 85,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(6)
+                    ),
+                    border: Border.all(
+                        color: Color(0xFFDDDDDD),
+                        width: 0.5
+                    ),
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(
+                        ol.storeImg,
+                      ),
                     )
-                )
-            ),
-            padding: EdgeInsets.all(16.0),
-            width: MediaQuery.of(context).size.width,
-            height: 85,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(6)
-                      ),
-                      border: Border.all(
-                          color: Color(0xFFDDDDDD),
-                          width: 0.5
-                      ),
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(
-                          ol.storeImg,
+                ),
+              ),
+              whiteSpaceW(13.0),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(ol.storeName,
+                          style: Body1.apply(
+                              fontWeightDelta: 1
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      )
-                  ),
+                        whiteSpaceW(12),
+                        Text(DateFormat('kk:mm').format(ol.createdAt),
+                            style: Body2
+                        ),
+                      ],
+                    ),
+                    whiteSpaceH(3),
+                    Text(ol.content,
+                      style:Body2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
                 ),
-                whiteSpaceW(13.0),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(ol.storeName,
+              ),
+              whiteSpaceW(13.0),
+              Container(
+                child: Row(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text("${numberFormat.format(ol.pay)}원",
                             style: Body1.apply(
+                                color: secondary,
                                 fontWeightDelta: 1
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          whiteSpaceW(12),
-                          Text(DateFormat('kk:mm').format(ol.createdAt),
-                              style: Body2
-                          ),
-                        ],
-                      ),
-                      whiteSpaceH(3),
-                      Text(ol.content,
-                        style:Body2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
+                            )
+                        ),
+                        (ol.dl == 0) ?
+                        Container()
+                            :
+                        Text("${numberFormat.format(ol.dl)} DL",
+                            style: Body1.apply(
+                                color: primary,
+                                fontWeightDelta: 1
+                            )
+                        ),
+                      ],
+                    ),
+                    whiteSpaceW(12.0),
+                    Icon(Icons.arrow_forward_ios, size: 16, color: black,)
+                  ],
                 ),
-                whiteSpaceW(13.0),
-                Container(
-                  child: Row(
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text("${numberFormat.format(ol.pay)}원",
-                              style: Body1.apply(
-                                  color: secondary,
-                                  fontWeightDelta: 1
-                              )
-                          ),
-                          (ol.dl == 0) ?
-                          Container()
-                              :
-                          Text("${numberFormat.format(ol.dl)} DL",
-                              style: Body1.apply(
-                                  color: primary,
-                                  fontWeightDelta: 1
-                              )
-                          ),
-                        ],
-                      ),
-                      whiteSpaceW(12.0),
-                      Icon(Icons.arrow_forward_ios, size: 16, color: black,)
-                    ],
-                  ),
-                )
-              ],
-            )
-        ),
+              )
+            ],
+          )
       ),
     );
   }

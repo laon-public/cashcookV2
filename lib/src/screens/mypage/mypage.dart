@@ -7,6 +7,7 @@ import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/mypage/NewStore/BigMenuListPage.dart';
 import 'package:cashcook/src/screens/mypage/NewStore/ContentApply.dart';
 import 'package:cashcook/src/screens/mypage/NewStore/franApply.dart';
+import 'package:cashcook/src/screens/main/home.dart';
 import 'package:cashcook/src/screens/mypage/points/integratedPoint.dart';
 import 'package:cashcook/src/screens/mypage/points/pointMgmt.dart';
 import 'package:cashcook/src/screens/mypage/points/pointMgmtUser.dart';
@@ -70,7 +71,15 @@ class _MyPageState extends State<MyPage> {
             elevation: 0.0,
             leading: IconButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                if(widget.isHome){
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) => Home()
+                    )
+                  , (route) => false);
+                } else {
+                  Navigator.of(context).pop();
+                }
               },
               icon: Image.asset(
                 "assets/resource/public/close.png",

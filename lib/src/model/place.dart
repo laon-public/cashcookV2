@@ -12,7 +12,7 @@ class Place {
         this.type = "store";
 
   Place.fromGoogleJson(Map<String, dynamic> json)
-      : this.description = json['description'].toString().split("대한민국")[1],
+      : this.description = json['description'].toString().contains("대한민국") ? json['description'].toString().split("대한민국")[1] :  json['description'].toString() ,
         this.placeId = json['place_id'],
         this.type = "google";
 
