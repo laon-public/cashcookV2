@@ -157,12 +157,10 @@ class StoreApplyService {
       form.fields.add(MapEntry("updateImgSeqs", element.toString()));
     });
     updateImgs.forEach((element) {
+      print(element.path);
       form.files.add(MapEntry("updateImgs", MultipartFile.fromFileSync(File(element.path).absolute.path)));
     });
 
-
-    print(form.files);
-    print(form.fields);
     Response<List<int>> res = await dio.patch(cookURL + "/franchises/v2/content",
         data: form,
         options: Options(
@@ -179,6 +177,17 @@ class StoreApplyService {
         options: Options(
           headers: {"Authorization": "BEARER ${dataStorage.token}"},
           responseType: ResponseType.bytes
+        )
+    );
+
+    return utf8.decode(res.data);
+  }
+
+  Future<String> deleteContentImg(int contentId) async {
+    Response<List<int>> res = await dio.delete(cookURL + "/franchises/v2/content?contentId=$contentId",
+        options: Options(
+            headers: {"Authorization": "BEARER ${dataStorage.token}"},
+            responseType: ResponseType.bytes
         )
     );
 

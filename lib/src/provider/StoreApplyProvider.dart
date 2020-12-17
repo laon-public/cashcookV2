@@ -25,6 +25,7 @@ class StoreApplyProvider extends ChangeNotifier {
   // Content
   List<ContentModel> contentsList = [];
   bool isContenting = false;
+  bool isContentDeleting = false;
 
   Future insertImg() async {
     PickedFile pickedImg = await ImagePicker().getImage(source: ImageSource.gallery);
@@ -348,5 +349,25 @@ class StoreApplyProvider extends ChangeNotifier {
     });
 
     notifyListeners();
+  }
+
+  Future<bool> deleteContent(int contentId) async {
+    isContentDeleting = true;
+    notifyListeners();
+    try {
+      final res = await service.deleteContentImg(contentId);
+
+      Map<String, dynamic> json = jsonDecode(res);
+      if(isResponse(json)) {
+        return true;
+      }
+
+      return false;
+    } catch(e) {
+      return false;
+    } finally {
+      isContentDeleting = false;
+      notifyListeners();
+    }
   }
 }
