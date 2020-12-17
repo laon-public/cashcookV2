@@ -117,7 +117,62 @@ class _StorePatch extends State<StorePatch> {
               ),
               Consumer<StoreServiceProvider>(
                   builder: (context, ssp, _) {
-                    return Container(
+                    return ssp.isCategoryFetching ?
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      child:Row(
+                          children:[
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                  height: 40,
+                                  child: Center(
+                                      child: Container(
+                                        height: 24,
+                                        width: 24,
+                                        child: CircularProgressIndicator(
+                                            valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
+                                        ),
+                                      )
+                                  ),
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide(
+                                          color: deActivatedGrey,
+                                          width: 1,
+                                        )
+                                      )
+                                  ),
+                                )
+                            ),
+                            whiteSpaceW(5),
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                  height: 40,
+                                  child: Center(
+                                      child: Container(
+                                        height: 24,
+                                        width: 24,
+                                        child: CircularProgressIndicator(
+                                            valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
+                                        ),
+                                      )
+                                  ),
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                          bottom: BorderSide(
+                                            color: deActivatedGrey,
+                                            width: 1,
+                                          )
+                                      )
+                                  ),
+                                )
+                            )
+                          ]
+                      ),
+                    )
+                        : Container(
                       width: MediaQuery.of(context).size.width,
                       child:Row(
                           children:[

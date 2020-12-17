@@ -77,12 +77,12 @@ class _BigMenuListPage extends State<BigMenuListPage> {
       backgroundColor: white,
       appBar: appBar,
       body: Container(
-        padding: EdgeInsets.only(top: 12),
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top,
         child: Stack(
           children: [
             Container(
+              padding: EdgeInsets.only(top: 12),
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top - 60,
               child: Consumer<StoreApplyProvider>(
@@ -110,6 +110,13 @@ class _BigMenuListPage extends State<BigMenuListPage> {
                               ),
                             )
                          : Container(),
+                        (ssp.isFetching) ?
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: List.generate((MediaQuery.of(context).size.height / 40).round(), (index) =>
+                            loadingItem(index)
+                          ),
+                        ) : Container(),
                         Column(
                           children: ssp.bigMenuList.map((e) {
                             int idx = ssp.bigMenuList.indexOf(e);
@@ -199,6 +206,18 @@ class _BigMenuListPage extends State<BigMenuListPage> {
             )
           ],
         )
+      ),
+    );
+  }
+
+  Widget loadingItem(int idx) {
+    return Container(
+      width: MediaQuery.of(context).size.width - (10 * idx),
+      margin: EdgeInsets.only(bottom: 12.0),
+      height: 40,
+      child: LinearProgressIndicator(
+        backgroundColor: Colors.transparent,
+        valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFFF7F7F7)),
       ),
     );
   }

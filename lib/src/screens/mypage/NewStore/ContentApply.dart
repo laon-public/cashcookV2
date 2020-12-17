@@ -84,6 +84,8 @@ class _ContentApply extends State<ContentApply> {
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
                                   children: [
+                                    (sap.isContentFetch) ?
+                                    customLinearLoading() : Container(),
                                     (sap.contentsList.length == 0) ?
                                     Container()
                                         :
@@ -244,6 +246,31 @@ class _ContentApply extends State<ContentApply> {
           ],
         );
       },
+    );
+  }
+
+  Widget customLinearLoading() {
+    return Row(
+      children: List.generate(((MediaQuery.of(context).size.width + 104) / 104).round() , (index) =>
+          Container(
+            margin: EdgeInsets.only(right: 8.0),
+            width: 104,
+            height: 104,
+            child: LinearProgressIndicator(
+              backgroundColor: Colors.transparent,
+              valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFFF7F7F7)),
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(
+                  Radius.circular(4)
+              ),
+              border: Border.all(
+                  color: Color(0xFFDDDDDD),
+                  width: 1
+              ),
+            ),
+          )
+      ),
     );
   }
 

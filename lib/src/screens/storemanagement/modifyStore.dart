@@ -267,7 +267,8 @@ class _ModifyStoreState extends State<ModifyStore> {
         ),
         Consumer<StoreServiceProvider>(
             builder: (context, ssp, _) {
-              return Container(
+              return
+                Container(
                 width: MediaQuery.of(context).size.width,
                 child:Row(
                     children:[

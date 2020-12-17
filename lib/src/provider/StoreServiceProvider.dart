@@ -54,6 +54,7 @@ class StoreServiceProvider with ChangeNotifier {
   List<StoreMinify> storeMiniList = [];
   List<StoreModel> searchStore = [];
   int count = 0;
+  bool isCategoryFetching = false;
 
   void setLookIdx(int idx) {
     lookIdx = idx;
@@ -468,27 +469,37 @@ class StoreServiceProvider with ChangeNotifier {
   void fetchEditCategory(String code, String subCode) async {
     catList.clear();
     subCatList.clear();
-
-    var response = await service.fetchCategory();
-
-    dynamic _catList = json.decode(response)['data']['list'];
-
-    for(var _cat in _catList) {
-      catList.add(CatModel.fromJson(_cat));
-    }
-
-
-    selectCat = (catList.where((cat) => cat.code == code).toList())[0].code_name;
-    response = await service.fetchSubCategory(code);
-
-    dynamic _subCatList = json.decode(response)['data']['list'];
-    for(var _subCat in _subCatList) {
-      subCatList.add(SubCatModel.fromJson(_subCat));
-    }
-
-    selectSubCat = (subCatList.where((sCat) => sCat.code == subCode).toList())[0].code_name;
-
+    isCategoryFetching = true;
     notifyListeners();
+
+    try {
+      var response = await service.fetchCategory();
+
+      dynamic _catList = json.decode(response)['data']['list'];
+
+      for (var _cat in _catList) {
+        catList.add(CatModel.fromJson(_cat));
+      }
+
+
+      selectCat =
+          (catList.where((cat) => cat.code == code).toList())[0].code_name;
+      response = await service.fetchSubCategory(code);
+
+      dynamic _subCatList = json.decode(response)['data']['list'];
+      for (var _subCat in _subCatList) {
+        subCatList.add(SubCatModel.fromJson(_subCat));
+      }
+
+      selectSubCat =
+          (subCatList.where((sCat) => sCat.code == subCode).toList())[0]
+              .code_name;
+    } catch(e) {
+     showToast("정보를 불러오는데 실패했습니다.");
+    } finally {
+      isCategoryFetching = false;
+      notifyListeners();
+    }
   }
 
   void patchMenu(List<Map<String, dynamic>> menuData) async {

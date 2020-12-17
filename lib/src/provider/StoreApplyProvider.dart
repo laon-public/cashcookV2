@@ -4,6 +4,7 @@ import 'package:cashcook/src/model/store/menu.dart';
 import 'package:cashcook/src/model/store/content.dart';
 import 'package:cashcook/src/services/StoreApply.dart';
 import 'package:cashcook/src/utils/responseCheck.dart';
+import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -18,12 +19,14 @@ class StoreApplyProvider extends ChangeNotifier {
   List<MenuModel> menuList = [];
   int chkQuantity = 0;
 
+  bool isFetching = false;
   bool isPatching = false;
   bool isPosting = false;
   bool isDeleting = false;
 
   // Content
   List<ContentModel> contentsList = [];
+  bool isContentFetch = false;
   bool isContenting = false;
   bool isContentDeleting = false;
 
@@ -178,16 +181,23 @@ class StoreApplyProvider extends ChangeNotifier {
   Future fetchBigMenu(int storeId) async {
     chkQuantity = 0;
     bigMenuList.clear();
+    isFetching = true;
     notifyListeners();
 
-    String res = await service.fetchBigMenu(storeId);
-    Map<String, dynamic> json = jsonDecode(res);
-    dynamic _bigMenuList = json['data']['list'];
+    try {
+      String res = await service.fetchBigMenu(storeId);
+      Map<String, dynamic> json = jsonDecode(res);
+      dynamic _bigMenuList = json['data']['list'];
 
-    for(var _bigMenu in _bigMenuList) {
-      bigMenuList.add(BigMenuModel.fromJson(_bigMenu));
+      for (var _bigMenu in _bigMenuList) {
+        bigMenuList.add(BigMenuModel.fromJson(_bigMenu));
+      }
+    } catch(e) {
+      showToast("리스트를 불러오는 데 실패했습니다.");
+    } finally {
+      isFetching = false;
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   Future fetchMenu(int bigId) async {
@@ -331,24 +341,28 @@ class StoreApplyProvider extends ChangeNotifier {
   }
 
   Future fetchContent(int storeId) async {
-    final res = await service.fetchContent(storeId);
-
-    contentsList.clear();
+    isContentFetch = true;
     notifyListeners();
 
-    Map<String, dynamic> json = jsonDecode(res);
+    try {
+      final res = await service.fetchContent(storeId);
 
-    (json['data']['contents'] as List).forEach((e){
-      contentsList.add(
-        ContentModel.fromJson(e)
-      );
-    });
+      contentsList.clear();
+      notifyListeners();
 
-    contentsList.forEach((element) {
-      print(element.imgUrl);
-    });
+      Map<String, dynamic> json = jsonDecode(res);
 
-    notifyListeners();
+      (json['data']['contents'] as List).forEach((e) {
+        contentsList.add(
+            ContentModel.fromJson(e)
+        );
+      });
+    } catch(e) {
+      showToast("사진 리스트를 불러오는데 실패했습니다.");
+    } finally {
+      isContentFetch = false;
+      notifyListeners();
+    }
   }
 
   Future<bool> deleteContent(int contentId) async {

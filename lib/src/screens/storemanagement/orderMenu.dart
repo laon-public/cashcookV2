@@ -889,6 +889,7 @@ class _OrderMenu extends State<OrderMenu> {
         });
       },
       child: Container(
+        padding: EdgeInsets.symmetric(vertical: 10.0),
         decoration: BoxDecoration(
             border: Border.all(
                 color: idx == currentMethod
@@ -899,7 +900,10 @@ class _OrderMenu extends State<OrderMenu> {
             mainAxisAlignment: MainAxisAlignment.center,
 
             children: [
-              Theme(
+          AnimatedContainer(
+              width: idx == currentMethod ? 20 : 0,
+              height: idx == currentMethod ? 16 : 0,
+              child: Theme(
                 data: ThemeData(unselectedWidgetColor: Colors.transparent,
                 ),
                 child:
@@ -911,6 +915,8 @@ class _OrderMenu extends State<OrderMenu> {
                   onChanged: (value) {},
                 ),
               ),
+            duration: Duration(milliseconds: 300),
+          ),
               Text(
                 type,
                 style:

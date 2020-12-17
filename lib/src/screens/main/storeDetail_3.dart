@@ -817,8 +817,9 @@ class _StoreDetail3 extends State<StoreDetail3> {
                         ),
                         child: Text(
                             "주문하기",
-                            style: TextStyle(
-                                color: Colors.white
+                            style: Subtitle2.apply(
+                              fontWeightDelta: 1,
+                              color: white
                             )
                         )
                     )
