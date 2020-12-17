@@ -178,7 +178,40 @@ class _Home extends State<Home> {
                         :
                     categorySearch()
                   ),
-                  CustomBottomNavBar(context, "home")
+                  CustomBottomNavBar(context, "home"),
+                  Positioned(
+                    bottom: 70,
+                    right: 16,
+                    child: InkWell(
+                      onTap: () async {
+                        await P.Provider.of<StoreProvider>(context, listen: false).clearMap();
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => MainMap())
+                        );
+                      },
+                      child: Container(
+                        width: 36,
+                        height: 36,
+                        padding: EdgeInsets.all(10),
+                        child: Image.asset(
+                          "assets/resource/main/go-map.png",
+                          width: 16,
+                          height: 16,
+                        ),
+                        decoration: BoxDecoration(
+                          color: white.withOpacity(0.9),
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              offset: Offset(2,2),
+                              blurRadius: 3,
+                              color: Color(0xff888888).withOpacity(0.15),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
     ),
@@ -437,27 +470,27 @@ class _Home extends State<Home> {
                       children: [
                         Text("우리 동네 맛집",
                           style: Subtitle2,),
-                        InkWell(
-                          onTap: () async {
-                            await P.Provider.of<StoreProvider>(context, listen: false).clearMap();
-                            Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context) => MainMap())
-                            );
-                          },
-                          child: Row(
-                            children: [
-                              Image.asset(
-                                "assets/resource/main/go-map.png",
-                                width: 16,
-                                height: 16,
-                              ),
-                              whiteSpaceW(4.0),
-                              Text("지도로 보기",
-                                style: Body2.apply(color: secondary)
-                              ),
-                            ],
-                          ),
-                        ),
+                        // InkWell(
+                        //   onTap: () async {
+                        //     await P.Provider.of<StoreProvider>(context, listen: false).clearMap();
+                        //     Navigator.of(context).push(
+                        //         MaterialPageRoute(builder: (context) => MainMap())
+                        //     );
+                        //   },
+                        //   child: Row(
+                        //     children: [
+                        //       Image.asset(
+                        //         "assets/resource/main/go-map.png",
+                        //         width: 16,
+                        //         height: 16,
+                        //       ),
+                        //       whiteSpaceW(4.0),
+                        //       Text("지도로 보기",
+                        //         style: Body2.apply(color: secondary)
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                       ],
                     ),
                   ],
