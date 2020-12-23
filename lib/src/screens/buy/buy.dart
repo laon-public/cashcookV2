@@ -19,7 +19,6 @@ import 'package:cashcook/src/screens/mypage/info/serviceList.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 
 class Buy extends StatefulWidget {
-
   final String name;
   final int pay;
   String id;

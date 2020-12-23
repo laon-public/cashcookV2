@@ -190,8 +190,8 @@ class _Home extends State<Home> {
                         );
                       },
                       child: Container(
-                        width: 36,
-                        height: 36,
+                        width: 40,
+                        height: 40,
                         padding: EdgeInsets.all(10),
                         child: Image.asset(
                           "assets/resource/main/go-map.png",

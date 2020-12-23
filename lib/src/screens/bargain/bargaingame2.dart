@@ -383,6 +383,46 @@ class _BargainGame2 extends State<BargainGame2> {
     print("carat : $carat");
     print("total_carat : ${widget.totalCarat}");
 
+    print("======================new Game_Version2=========================");
+    int pay = widget.orderPayment;
+
+    List<String> tenPerList = ["1","2","3","4","5","6","7","8","9","10"];
+    List<int> onePerList = [0,1,2,3,4,5,6,7,8,9];
+    Map<String, int> perMapV2 = {
+      "1" : 1,
+      "2" : 1,
+      "3" : 1,
+      "4" : 2,
+      "5" : 2,
+      "6" : 2,
+      "7" : 3,
+      "8" : 3,
+      "9" : 3,
+      "10" : 4
+    };
+    String randomPick;
+    do {
+      randomPick = tenPerList[random.nextInt(tenPerList.length)];
+
+      perMapV2[randomPick]--;
+    } while(perMapV2[randomPick] != 0);
+    String tenPerInit = randomPick;
+    int onePerInit = onePerList[random.nextInt(onePerList.length)];
+    int resPer;
+
+    if(tenPerInit == "10") {
+      resPer = 100;
+    } else {
+      resPer = (int.parse(tenPerInit) * 10) + onePerInit;
+    }
+
+    int resDl = ((widget.orderPayment * 1 / 100) * resPer / 100).round();
+
+    print("총 결제 ===> ${widget.orderPayment.toString()}");
+    print("할인율 ===> $resPer");
+    print("DL ===> $resDl");
+
+
     String message = widget.orderPayment.toString() + "/" + randomDiscount.toString() + "/" + dl.toString() + "/" + carat.toString() + "/" + widget.totalCarat.toString();
     _unityWidgetController.postMessage(
         'Main',
