@@ -202,8 +202,11 @@ class _MyPageState extends State<MyPage> {
           )
               :
               SingleChildScrollView(
-                child: Column(
+                child:
+
+                Column(
                     children: [
+
                       InkWell(
                         onTap: () async {
                           await Navigator.pushNamed(context, "/userState");
@@ -249,10 +252,103 @@ class _MyPageState extends State<MyPage> {
                           ),
                         ),
                       ),
-                      Container(
+
+
+          // 수평 스크롤로 변경
+          SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+          child:
+
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 12),
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+            child:
+
+            Row(
+                children: [
+                  InkWell(
+                    onTap: (){
+                      Map<String, dynamic> args = {
+                        "point":"RP",
+                        "pointImg":"assets/icon/c_point.png"
+                      };
+                      Navigator.of(context).pushNamed("/point/history", arguments: args);
+                    },
+                    child:
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Image.asset("assets/icon/c_point.png",height: 24, fit: BoxFit.contain,),
+                        whiteSpaceW(5),
+                        Text("${demicalFormat.format(user.pointMap['RP'])} CP",style: Body2.apply(color: black),),
+                        Icon(Icons.arrow_forward_ios, color: black, size: 12,),
+                      ],
+                    ),
+                  ),
+
+                  whiteSpaceW(20),
+                  InkWell(
+                    onTap: (){
+                      Map<String, dynamic> args = {
+                        "point":"DL",
+                        "pointImg":"assets/icon/DL 2.png"
+                      };
+                      Navigator.of(context).pushNamed("/point/history", arguments: args);
+                    },
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Image.asset("assets/icon/DL 2.png",height: 24, fit: BoxFit.contain,),
+                        whiteSpaceW(5),
+                        Text("${demicalFormat.format(user.pointMap['DL'])} DL",style: Body2.apply(color: black),),
+                        Icon(Icons.arrow_forward_ios, color: black, size: 12,),
+                      ],
+                    ),
+                  ),
+
+                  whiteSpaceW(20),
+
+                  // 깨짐
+                  InkWell(
+                    onTap: (){
+                      Map<String, dynamic> args = {
+                        "point":"CARAT",
+                        "pointImg":"assets/icon/carat.jpg"
+                      };
+                      Navigator.of(context).pushNamed("/point/history", arguments: args);
+                    },
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Image.asset("assets/icon/carat.jpg",height: 24, fit: BoxFit.contain,),
+                        whiteSpaceW(5),
+
+                        // Text("${demicalFormat.format(user.pointMap['CARAT'])} CR",style: Body2.apply(color: black),),
+                        Text(
+                          "${demicalFormat.format(user.pointMap['CARAT'])} CR",style: Body2.apply(color: black),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Icon(Icons.arrow_forward_ios, color: black, size: 12,),
+                      ],
+                    ),
+                  ),
+
+                ]
+            ),
+          ),),
+
+
+                      // 가운데 부분, 깨지는 원본
+
+                      /*Container(
                         margin: EdgeInsets.symmetric(vertical: 12),
                         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                        child: Row(
+                        child:
+
+                        Row(
                             children: [
                               InkWell(
                                 onTap: (){
@@ -262,7 +358,8 @@ class _MyPageState extends State<MyPage> {
                                   };
                                   Navigator.of(context).pushNamed("/point/history", arguments: args);
                                 },
-                                child: Row(
+                                child:
+                                Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
@@ -273,6 +370,7 @@ class _MyPageState extends State<MyPage> {
                                   ],
                                 ),
                               ),
+
                               whiteSpaceW(20),
                               InkWell(
                                 onTap: (){
@@ -293,29 +391,42 @@ class _MyPageState extends State<MyPage> {
                                   ],
                                 ),
                               ),
-                              whiteSpaceW(20),
-                              InkWell(
-                                onTap: (){
-                                  Map<String, dynamic> args = {
-                                    "point":"CARAT",
-                                    "pointImg":"assets/icon/carat.jpg"
-                                  };
-                                  Navigator.of(context).pushNamed("/point/history", arguments: args);
-                                },
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Image.asset("assets/icon/carat.jpg",height: 24, fit: BoxFit.contain,),
-                                    whiteSpaceW(5),
-                                    Text("${demicalFormat.format(user.pointMap['CARAT'])} CR",style: Body2.apply(color: black),),
-                                    Icon(Icons.arrow_forward_ios, color: black, size: 12,),
-                                  ],
-                                ),
-                              ),
+
+                               whiteSpaceW(20),
+
+                              // 깨짐
+           InkWell(
+            onTap: (){
+              Map<String, dynamic> args = {
+                "point":"CARAT",
+                "pointImg":"assets/icon/carat.jpg"
+              };
+              Navigator.of(context).pushNamed("/point/history", arguments: args);
+            },
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Image.asset("assets/icon/carat.jpg",height: 24, fit: BoxFit.contain,),
+                whiteSpaceW(5),
+
+                // Text("${demicalFormat.format(user.pointMap['CARAT'])} CR",style: Body2.apply(color: black),),
+                Text(
+                  "${demicalFormat.format(user.pointMap['CARAT'])} CR",style: Body2.apply(color: black),
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Icon(Icons.arrow_forward_ios, color: black, size: 12,),
+              ],
+            ),
+          ),
+
                             ]
                         ),
-                      ),
+                      ),*/
+
+
+
+
                       Container(
                         width: MediaQuery.of(context).size.width,
                         height: 1,
