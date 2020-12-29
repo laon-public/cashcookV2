@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hozo.cashcook.cashcook">
+    package="com.hojo.cashcook.cashcook">
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
          In most cases you can leave this as-is, but you if you want to provide
@@ -18,6 +18,7 @@
         android:allowBackup="false"
         android:icon="@mipmap/launcher_icon"
         android:label="캐시쿡"
+        android:process=":location"
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
         <meta-data
@@ -30,7 +31,7 @@
             android:hardwareAccelerated="true"
             android:launchMode="singleTask"
             android:theme="@style/LaunchTheme"
-            android:process=":Unity"
+            android:process=":location"
             android:windowSoftInputMode="adjustResize">
             <meta-data android:name=".MainActivity" android:value="true" />
             <!-- Specifies an Android theme to apply to this Activity as soon as

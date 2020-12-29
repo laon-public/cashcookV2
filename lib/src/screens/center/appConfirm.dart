@@ -248,7 +248,7 @@ class _AppConfirm extends State<AppConfirm> {
                                   ),
                                   onPressed: () {
                                     launch(
-                                        "https://play.google.com/store/apps/details?id=com.hozo.cashcook.cashcook"
+                                        "https://play.google.com/store/apps/details?id=com.hojo.cashcook.cashcook"
                                     );
                                   },
                                   child: Text("업데이트",

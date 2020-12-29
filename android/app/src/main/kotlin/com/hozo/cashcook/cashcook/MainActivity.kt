@@ -1,4 +1,4 @@
-package com.hozo.cashcook.cashcook
+package com.hojo.cashcook.cashcook
 
 import io.flutter.embedding.android.FlutterActivity
 
