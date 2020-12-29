@@ -439,7 +439,7 @@ class _MyPageState extends State<MyPage> {
                                 padding: const EdgeInsets.symmetric(horizontal: 16),
                                 child: Column(
                                     children: [
-                                      HistoryCard(),
+                                      // HistoryCard(),
                                       RecoCard(),
                                       easyPayCard(),
                                       scrapCard(),

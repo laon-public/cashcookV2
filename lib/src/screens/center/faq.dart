@@ -99,7 +99,7 @@ class _FaqItemState extends State<FaqItem> {
 
   Widget title() {
     return Container(
-      width: double.infinity,
+      width: MediaQuery.of(context).size.width,
       height: 64,
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Align(
@@ -109,12 +109,15 @@ class _FaqItemState extends State<FaqItem> {
           children: [
             Image.asset("assets/icon/q.png",fit: BoxFit.contain, width: 24,),
             whiteSpaceW(12),
-             Text(
-                widget.faqModel.question,
-                style: Body1.apply(
-                  fontWeightDelta: 2
-                ),
-              ),
+             Expanded(
+               child: Text(
+                 widget.faqModel.question,
+                 style: Body1.apply(
+                     fontWeightDelta: 2
+                 ),
+                 overflow: TextOverflow.clip,
+               ),
+             )
           ],
         ),
       ),
@@ -123,7 +126,7 @@ class _FaqItemState extends State<FaqItem> {
 
   Widget detail() {
     return Container(
-      width: double.infinity,
+      width: MediaQuery.of(context).size.width,
       color: Color(0xfff7f7f7),
       child: Padding(
         padding:
@@ -133,12 +136,15 @@ class _FaqItemState extends State<FaqItem> {
           children: [
             Image.asset("assets/icon/a.png",fit: BoxFit.contain, width: 24,),
             whiteSpaceW(12),
-            Text(
-              widget.faqModel.answer,
-              style: Body2.apply(
-                color: black
+            Expanded(
+              child: Text(
+                widget.faqModel.answer,
+                style: Body2.apply(
+                    color: black
+                ),
+                overflow: TextOverflow.clip,
               ),
-            ),
+            )
           ],
         ),
       ),
