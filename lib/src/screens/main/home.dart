@@ -20,6 +20,7 @@ import 'dart:async';
 import 'package:location/location.dart';
 import 'package:cashcook/src/utils/MenuSlidePop.dart' as slideDialog;
 
+
 class Home extends StatefulWidget {
 
   @override
@@ -34,6 +35,7 @@ class _Home extends State<Home> {
   double lat;
   double lon;
   String filterAddress = "현위치 사용";
+
 
   List<dynamic> serviceName = [
     {
@@ -378,7 +380,7 @@ class _Home extends State<Home> {
                                                 height: 36
                                             ),
                                             whiteSpaceH(2),
-                                            Text(serviceName[idx]['code_name'],
+                                             Text(serviceName[idx]['code_name'],
                                               style: Caption.apply(color: secondary),),
                                           ],
                                         )
@@ -460,6 +462,7 @@ class _Home extends State<Home> {
                 color: Color(0xFFF2F2F2)
             ),
             whiteSpaceH(12),
+
             Container(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
               child: Container(
@@ -468,8 +471,8 @@ class _Home extends State<Home> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("우리 동네 맛집",
-                          style: Subtitle2,),
+
+                        Text("우리 동네 맛집", style: Subtitle2,),
                         // InkWell(
                         //   onTap: () async {
                         //     await P.Provider.of<StoreProvider>(context, listen: false).clearMap();
@@ -491,18 +494,43 @@ class _Home extends State<Home> {
                         //     ],
                         //   ),
                         // ),
+
+                        Container(
+                          width: 90,
+                          child:
+                          Row(
+                            children: [
+                            SizedBox(
+                            width: 10.0,
+                              child:
+                                IconButton(
+                                    iconSize: 17.0, icon: Icon(Icons.add_outlined), onPressed: null)),
+
+                              SizedBox(
+                                width: 80.0,
+                                child:
+                                    FlatButton(onPressed: (){
+                                      print('더보기 클릭');
+                                    }, child: Text('더보기')),
+                              )
+                            ],
+                          ),),
+
                       ],
                     ),
                   ],
                 ),
               ),
             ),
+
+
+
             P.Consumer<StoreServiceProvider>(
               builder: (context, ssp, _){
                 return ssp.isLoading ?
                 Container(
                     width: MediaQuery.of(context).size.width,
-                    height: 220,
+                    height: 212,
                     child:
                     Center(
                         child: CircularProgressIndicator(
@@ -512,39 +540,184 @@ class _Home extends State<Home> {
                 )
                     :
                     //Column Version
+                // 원본, 세로리스트
                 Container(
-                  width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.of(context).size.width,
                   child:
-                  Column(
-                    children: ssp.store.map((e) {
-                      return storeItem(e, context);
-                    }).toList(),
-                  ),
+
+                 /*   Column(
+                      children: [
+                        Text('displaySize : ${MediaQuery.of(context).size}'),
+                        Text('displayHeight : ${MediaQuery.of(context).size.height}'),
+                        Text('displayWidth : ${MediaQuery.of(context).size.width}'),
+                        Text('devicePixelRatio : ${MediaQuery.of(context).devicePixelRatio}'),
+                        Text('statusBarHeight : ${MediaQuery.of(context).padding.top}'),
+                        Text('window.physicalSize : ${window.physicalSize}'),
+                        Text('앱 너비 픽셀 >> ' + (MediaQuery.of(context).size * 4).toString())
+                      ],
+                    )*/
+
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: ssp.store.map((e) {
+
+                        return storeItem(e, context);
+
+                      }).toList(),
+                    ),
+                  )
+
                 );
-                   // Row Version 4 Sort
-                // Container(
-                //   width: MediaQuery.of(context).size.width,
-                //   height: 360,
-                //   child:
-                //       ListView.builder(
-                //           shrinkWrap: true,
-                //           scrollDirection: Axis.horizontal,
-                //           itemCount: (ssp.store.length / 4).ceil(),
-                //           itemBuilder:(context, index) {
-                //             return Column(
-                //               children: ssp.store.getRange(4 * index, ssp.store.length < (4 * (index + 1)) ?
-                //                 ssp.store.length
-                //                   :
-                //               (4 * (index + 1))
-                //               ).map((e) =>
-                //                 storeItemRow(e, context)
-                //               ).toList()
-                //             );
-                //           },
-                //       ),
-                // );
+
               },
             ),
+
+
+            // Container(
+            //    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16, ),
+            //   child:
+            //   Container(
+            //     child: Column(
+            //       children: [
+            //         Row(
+            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //           children: [
+            //
+            //             Text("서비스 스토어", style: Subtitle2,),
+            //             Container(
+            //               width: 90,
+            //               child:
+            //               Row(
+            //                 children: [
+            //                   SizedBox(
+            //                       width: 10.0,
+            //                       child:
+            //                         IconButton(
+            //                             iconSize: 17.0, icon: Icon(Icons.add_outlined), onPressed: null),),
+            //                   SizedBox(
+            //                     width: 80.0,
+            //                     child:
+            //                         FlatButton(onPressed: (){
+            //                           print('더보기 클릭');
+            //                         }, child: Text('더보기')),
+            //                   )
+            //                 ],
+            //               ),),
+            //           ],
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            //
+            //
+            // P.Consumer<StoreServiceProvider>(
+            //   builder: (context, ssp, _){
+            //     return ssp.isLoading ?
+            //     Container(
+            //         width: MediaQuery.of(context).size.width,
+            //         height: 220,
+            //         child:
+            //         Center(
+            //             child: CircularProgressIndicator(
+            //                 valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
+            //             )
+            //         )
+            //     )
+            //         :
+            //     //Column Version
+            //     // 원본, 세로리스트
+            //     Container(
+            //         width: MediaQuery.of(context).size.width,
+            //         child:
+            //         SingleChildScrollView(
+            //           scrollDirection: Axis.horizontal,
+            //           child: Row(
+            //             children: ssp.store.map((e) {
+            //
+            //               return storeItem(e, context);
+            //
+            //             }).toList(),
+            //           ),
+            //         )
+            //     );
+            //   },
+            // ),
+            //
+            //
+            //
+            // Container(
+            //   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16, ),
+            //   child:
+            //   Container(
+            //     child: Column(
+            //       children: [
+            //         Row(
+            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //           children: [
+            //
+            //             Text("제품 판매 스토어", style: Subtitle2,),
+            //             Container(
+            //               width: 90,
+            //               child:
+            //               Row(
+            //                 children: [
+            //                   SizedBox(
+            //                     width: 10.0,
+            //                     child:
+            //                     IconButton(
+            //                         iconSize: 17.0, icon: Icon(Icons.add_outlined), onPressed: null),),
+            //                   SizedBox(
+            //                     width: 80.0,
+            //                     child:
+            //                     FlatButton(onPressed: (){
+            //                       print('더보기 클릭');
+            //                     }, child: Text('더보기')),
+            //                   )
+            //                 ],
+            //               ),),
+            //           ],
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            //
+            // P.Consumer<StoreServiceProvider>(
+            //   builder: (context, ssp, _){
+            //     return ssp.isLoading ?
+            //     Container(
+            //         width: MediaQuery.of(context).size.width,
+            //         height: 220,
+            //         child:
+            //         Center(
+            //             child: CircularProgressIndicator(
+            //                 valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
+            //             )
+            //         )
+            //     )
+            //         :
+            //     //Column Version
+            //     // 원본, 세로리스트
+            //     Container(
+            //         width: MediaQuery.of(context).size.width,
+            //         child:
+            //         SingleChildScrollView(
+            //           scrollDirection: Axis.horizontal,
+            //           child: Row(
+            //             children: ssp.store.map((e) {
+            //
+            //               return storeItem(e, context);
+            //
+            //             }).toList(),
+            //           ),
+            //         )
+            //     );
+            //   },
+            // ),
+
+
           ],
         ),
       ),

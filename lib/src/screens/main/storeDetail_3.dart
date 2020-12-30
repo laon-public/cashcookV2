@@ -584,6 +584,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                     );
                                   },
                                 ),
+
                                 Consumer<StoreServiceProvider>(
                                     builder: (context, ss, _){
                                       return StickyHeaderBuilder(
@@ -695,6 +696,8 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                                 )
                                                             ),
                                                           ),
+
+
                                                         ],
                                                       ),
                                                     ],
@@ -746,6 +749,8 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                       );
                                     }
                                 )
+
+
                               ],
                             )
                         );

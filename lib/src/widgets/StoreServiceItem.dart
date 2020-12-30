@@ -15,9 +15,12 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
+
 Widget menuForm(BuildContext context) {
+  print('menuForm >>>');
   int bigIdx = 0;
-  return Consumer<StoreServiceProvider>(
+  return
+    Consumer<StoreServiceProvider>(
       builder: (context, ss, __) {
         return
           Container(
@@ -37,6 +40,8 @@ Widget menuForm(BuildContext context) {
 }
 
 Widget BigMenuItem(int bigIdx,BigMenuModel bmm, BuildContext context){
+  print('BigMenuItem >>>');
+
   int idx = 0;
   return Container(
       width: MediaQuery.of(context).size.width,
@@ -84,11 +89,18 @@ Widget BigMenuItem(int bigIdx,BigMenuModel bmm, BuildContext context){
 }
 
 Widget MenuItem(int bigIdx,int idx,MenuModel mm, BuildContext context) {
+
+  print('MenuItem >>> ');
   StoreServiceProvider ssp = Provider.of<StoreServiceProvider>(context, listen: false);
+
+
   return InkWell(
       onTap: () {
           print("눌림");
-          ssp.setCheck(bigIdx,idx, !mm.isCheck);
+          print("bigIdx >> " + bigIdx.toString()  );
+          print("idx >> " +  idx.toString() );
+
+          ssp.setCheck(bigIdx, idx, !mm.isCheck);
           },
       child:Container(
         decoration: BoxDecoration(
@@ -109,15 +121,21 @@ Widget MenuItem(int bigIdx,int idx,MenuModel mm, BuildContext context) {
                 height: 48,
                 child: Stack(
                   children: [
-                    Positioned(
+
+                    // 기존 체크 박스 원본
+                    /*Positioned(
                       top: 0,
                       right: 0,
-                      child: Container(
+                      child:
+
+                      Container(
                         transform: Matrix4.translationValues(2.0, -2.0, 0.0),
                         width:12,
                         height: 12,
                         child: Transform.scale(scale: 0.6,
-                          child: CircularCheckBox(
+                          child:
+
+                          CircularCheckBox(
                             value: mm.isCheck,
                             activeColor: Color(0xFFFF0000),
                             inactiveColor: Color(0xFFDDDDDD),
@@ -125,6 +143,7 @@ Widget MenuItem(int bigIdx,int idx,MenuModel mm, BuildContext context) {
                               ssp.setCheck(bigIdx,idx, value);
                             },
                           ),
+
                         ),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
@@ -140,63 +159,97 @@ Widget MenuItem(int bigIdx,int idx,MenuModel mm, BuildContext context) {
                         //   },
                         // ),
                       ),
-                    )
+                    )*/
+
                   ],
                 ),
                 decoration: BoxDecoration(
                     color: Color(0xFFF7F7F7),
                     borderRadius: BorderRadius.all(
-Radius.circular(6.0)
-),
-border: Border.all(
-color: Color(0xFFDDDDDD),
-width: 0.5
-),
-image: mm.imgUrl == null ?
-DecorationImage(
-scale: 2,
-image: AssetImage(
-"assets/resource/public/close.png",
-)
-)
-:
-DecorationImage(
-fit: BoxFit.cover,
-image: NetworkImage(
-mm.imgUrl
-)
-)
-)
-),
-whiteSpaceW(16.0),
-Expanded(
-child: Text("${mm.name}",
-maxLines: 1,
-softWrap: false,
-overflow: TextOverflow.ellipsis,
-style: Body1.apply(
-color: black,
-fontWeightDelta: 2
-)
-),
-),
-Text("${numberFormat.format(mm.price)} 원",
-maxLines: 1,
-softWrap: false,
-overflow: TextOverflow.ellipsis,
-style: Body1.apply(
-color: secondary,
-fontWeightDelta: 2
-),
-textAlign: TextAlign.end,
-)
-]
-),
-)
-);
+                        Radius.circular(6.0)
+                    ),
+                    border: Border.all(
+                        color: Color(0xFFDDDDDD),
+                        width: 0.5
+                    ),
+
+                    image: mm.imgUrl == null ?
+                    DecorationImage(
+                        scale: 2,
+                        image: AssetImage(
+                          "assets/resource/public/close.png",
+                        )
+                    )
+                        :
+                    DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(
+                            mm.imgUrl
+                        )
+                    )
+
+                )
+              ),
+              whiteSpaceW(16.0),
+
+              Expanded(
+                      child:
+                          Container(
+                            margin: EdgeInsets.only(top: 15),
+                            child: Column(
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child:
+                                  Text("${mm.name}",
+                                      maxLines: 1,
+                                      softWrap: false,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.left,
+                                      style: Body1.apply(
+                                          color: black,
+                                          fontWeightDelta: 2)),),
+
+                                Align(
+                                    alignment: Alignment.centerLeft,
+                                    child:Text("${numberFormat.format(mm.price)} 원",
+                                      maxLines: 1,
+                                      softWrap: false,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Body1.apply(
+                                          color: secondary,
+                                          fontWeightDelta: 2
+                                      ),
+                                      // textAlign: TextAlign.end,
+                                      textAlign: TextAlign.left,
+                                    )
+                                )
+                              ],
+                            ),
+                          )
+
+              ),
+
+              Checkbox(
+                value: mm.isCheck,
+                activeColor: Color(0xFFFF641E),
+
+                onChanged: (value) {
+                  ssp.setCheck(bigIdx,idx, value);
+
+                },
+              ),
+
+            ]
+        ),
+      )
+  );
 }
 
+
+
 Widget reviewForm(BuildContext context, StoreModel store) {
+  print("reviewForm");
   return Consumer<StoreServiceProvider>(
       builder: (context, ss, __){
         return Container(

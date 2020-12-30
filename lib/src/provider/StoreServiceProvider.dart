@@ -293,6 +293,11 @@ class StoreServiceProvider with ChangeNotifier {
   }
 
   void setCheck(bigIdx, idx, value){
+
+    print("bigIdx 출력 >> " + bigIdx.toString()  );
+    print("idx 출력 >> " +  idx.toString() );
+    print("value 출력 >> " +  value.toString() );
+
     menuList[bigIdx].menuList[idx].isCheck = value;
 
     value ? orderAmount += 1 : orderAmount -= 1;
