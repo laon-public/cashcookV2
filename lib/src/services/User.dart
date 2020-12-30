@@ -158,4 +158,12 @@ class UserService {
     return utf8.decode(response.bodyBytes);
   }
 
+  confirmPurchase(int orderId) async {
+    final response = await client.patch(cookURL + "/payment/$orderId/confirm", headers: {
+      "Authorization": "BEARER ${dataStorage.token}"
+    });
+
+    return utf8.decode(response.bodyBytes);
+  }
+
 }

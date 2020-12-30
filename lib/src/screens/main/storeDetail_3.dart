@@ -410,6 +410,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                       "assets/icon/qr_scan.png",
                                                       width: 20,
                                                       height: 20,
+                                                      color: primary
                                                     ),
                                                     whiteSpaceW(4.0),
                                                     Text("QR 스켄",

@@ -152,7 +152,7 @@ class _SearchPage extends State<SearchPage> {
                                   color: black
                                 )
                               )
-                            ]
+                              ]
                                 :
                             pp.searchStore.map((e) =>
                                 PlaceItem(e)

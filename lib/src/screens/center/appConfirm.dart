@@ -97,8 +97,8 @@ class _AppConfirm extends State<AppConfirm> {
                     textAlign: TextAlign.center,
                   ),
                   whiteSpaceH(40.0),
-                  Text("소유 ADP가 30,000 ADP 이하입니다.\n"
-                      "10,000 ADP 이하일시 결제 후\n"
+                  Text("소유 ADP가 300,000 ADP 이하입니다.\n"
+                      "100,000 ADP 이하일시 결제 후\n"
                       "추가할인 서비스가 제한됩니다.",
                     style: Body2.apply(
                       color: black
@@ -248,7 +248,7 @@ class _AppConfirm extends State<AppConfirm> {
                                   ),
                                   onPressed: () {
                                     launch(
-                                        "https://play.google.com/store/apps/details?id=com.hozo.cashcook.cashcook"
+                                        "https://play.google.com/store/apps/details?id=com.hojo.cashcook.cashcook"
                                     );
                                   },
                                   child: Text("업데이트",

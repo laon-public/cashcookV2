@@ -8,7 +8,7 @@
 PRODUCT_NAME = cashcook
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.hozo.cashcook.cashcook
+PRODUCT_BUNDLE_IDENTIFIER = com.hojo.cashcook.cashcook
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2020 com.hozo.cashcook. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2020 com.hojo.cashcook. All rights reserved.

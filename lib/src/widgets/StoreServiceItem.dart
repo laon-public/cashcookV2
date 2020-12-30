@@ -146,54 +146,54 @@ Widget MenuItem(int bigIdx,int idx,MenuModel mm, BuildContext context) {
                 decoration: BoxDecoration(
                     color: Color(0xFFF7F7F7),
                     borderRadius: BorderRadius.all(
-                        Radius.circular(6.0)
-                    ),
-                    border: Border.all(
-                        color: Color(0xFFDDDDDD),
-                        width: 0.5
-                    ),
-                    image: mm.imgUrl == null ?
-                    DecorationImage(
-                        scale: 2,
-                        image: AssetImage(
-                          "assets/resource/public/close.png",
-                        )
-                    )
-                        :
-                    DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(
-                            mm.imgUrl
-                        )
-                    )
-                )
-              ),
-              whiteSpaceW(16.0),
-              Expanded(
-                child: Text("${mm.name}",
-                    maxLines: 1,
-                    softWrap: false,
-                    overflow: TextOverflow.ellipsis,
-                    style: Body1.apply(
-                        color: black,
-                        fontWeightDelta: 2
-                    )
-                ),
-              ),
-              Text("${numberFormat.format(mm.price)} 원",
-                maxLines: 1,
-                softWrap: false,
-                overflow: TextOverflow.ellipsis,
-                style: Body1.apply(
-                    color: secondary,
-                    fontWeightDelta: 2
-                ),
-                textAlign: TextAlign.end,
-              )
-            ]
-        ),
-      )
-  );
+Radius.circular(6.0)
+),
+border: Border.all(
+color: Color(0xFFDDDDDD),
+width: 0.5
+),
+image: mm.imgUrl == null ?
+DecorationImage(
+scale: 2,
+image: AssetImage(
+"assets/resource/public/close.png",
+)
+)
+:
+DecorationImage(
+fit: BoxFit.cover,
+image: NetworkImage(
+mm.imgUrl
+)
+)
+)
+),
+whiteSpaceW(16.0),
+Expanded(
+child: Text("${mm.name}",
+maxLines: 1,
+softWrap: false,
+overflow: TextOverflow.ellipsis,
+style: Body1.apply(
+color: black,
+fontWeightDelta: 2
+)
+),
+),
+Text("${numberFormat.format(mm.price)} 원",
+maxLines: 1,
+softWrap: false,
+overflow: TextOverflow.ellipsis,
+style: Body1.apply(
+color: secondary,
+fontWeightDelta: 2
+),
+textAlign: TextAlign.end,
+)
+]
+),
+)
+);
 }
 
 Widget reviewForm(BuildContext context, StoreModel store) {

@@ -1,4 +1,5 @@
 
+import 'dart:async';
 import 'dart:math';
 import 'package:cashcook/src/provider/CenterProvider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
@@ -6,6 +7,7 @@ import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
+import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
@@ -37,9 +39,13 @@ class _BargainGame2 extends State<BargainGame2> {
   bool isReplay = false;
   bool isShow = true;
 
+  Timer _timer;
+  var _time = 0;
+  var _isLoading = true;
+
   @override
   void dispose() {
-    print("dispose");
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -133,148 +139,27 @@ class _BargainGame2 extends State<BargainGame2> {
                     ),
                   ),
                   ),
-                  Consumer<CenterProvider>(
-                    builder: (context, cp, _){
-                      return Positioned(
-                        top: 20,
-                        child: Container(
-
-                          padding: EdgeInsets.symmetric(horizontal: 22),
-                          width: MediaQuery.of(context).size.width,
-                          child: Center(
-                            child: Container(
-                              padding: EdgeInsets.all(5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "금일 재원 : ${numberFormat.format(int.parse(cp.hojoFunds == "" ? "0" : cp.hojoFunds))}원 ㆍ "
-                                        "당첨 한도 : ${cp.limitGamePercentage}%",
-                                    style: Body2.apply(
-                                      color: white,
-                                      shadows: [
-                                        Shadow(
-                                          offset: Offset(1, 1),
-                                          blurRadius: 1.0,
-                                          color: black
-                                        ),
-                                      ]
-                                    )
-                                  ),
-                                  Text("")
-                                ],
-                              ),
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.topRight,
-                                  end: Alignment.topLeft,
-                                  colors: [
-                                    Colors.transparent,
-                                    black.withOpacity(0.3),
-                                    black.withOpacity(0.3),
-                                    Colors.transparent,
-                                  ]
-                                ),
-                              ),
+                  _isLoading ? Positioned.fill(
+                      child: Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset("assets/icon/game-loading.png",
+                                width: 208,
+                                height: 193,
                             ),
-                          )
+                            whiteSpaceH(40),
+                            CircularProgressIndicator(
+                                valueColor: new AlwaysStoppedAnimation<Color>(white)
+                            )
+                          ],
                         ),
-                      );
-                    },
-                  ),
-                  // Consumer<CenterProvider>(
-                  //   builder: (context, cp, _){
-                  //     return Positioned(
-                  //       top: 50,
-                  //       child: Container(
-                  //           padding: EdgeInsets.symmetric(horizontal: 22),
-                  //           width: MediaQuery.of(context).size.width,
-                  //           child: Center(
-                  //             child: Container(
-                  //               padding: EdgeInsets.all(5),
-                  //               child: Row(
-                  //                 mainAxisAlignment: MainAxisAlignment.center,
-                  //                 children: [
-                  //                   Text(
-                  //                       "금일 이용자 수 : ${numberFormat.format(int.parse(cp.gameUserQuantity == "" ? "0" : cp.gameUserQuantity))}명",
-                  //                       style: Body2.apply(
-                  //                           color: white,
-                  //                           shadows: [
-                  //                             Shadow(
-                  //                                 offset: Offset(1, 1),
-                  //                                 blurRadius: 1.0,
-                  //                                 color: black
-                  //                             ),
-                  //                           ]
-                  //                       )
-                  //                   ),
-                  //                   Text("")
-                  //                 ],
-                  //               ),
-                  //               decoration: BoxDecoration(
-                  //                 gradient: LinearGradient(
-                  //                     begin: Alignment.topRight,
-                  //                     end: Alignment.topLeft,
-                  //                     colors: [
-                  //                       Colors.transparent,
-                  //                       black.withOpacity(0.3),
-                  //                       black.withOpacity(0.3),
-                  //                       Colors.transparent,
-                  //                     ]
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //           )
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
-                  // (!gameLoad) ? Positioned.fill(
-                  //     child: Opacity(
-                  //       opacity: 0.7,
-                  //       child: Container(
-                  //           width: MediaQuery.of(context).size.width,
-                  //           height: MediaQuery.of(context).size.height,
-                  //           color: black
-                  //       ),
-                  //     )
-                  // ) : Container(),
-                  // (!gameLoad) ? Center(
-                  //   child: Container(
-                  //       width: MediaQuery.of(context).size.width * 3/4,
-                  //       height: MediaQuery.of(context).size.height * 2/4,
-                  //       decoration: BoxDecoration(
-                  //         borderRadius: BorderRadius.all(
-                  //           Radius.circular(20.0)
-                  //         ),
-                  //         color: white,
-                  //       ),
-                  //       child: Center(
-                  //         child: Column(
-                  //           mainAxisAlignment: MainAxisAlignment.center,
-                  //           crossAxisAlignment: CrossAxisAlignment.center,
-                  //           children: [
-                  //             Image.asset(
-                  //               "assets/icon/study_payment.png",
-                  //               width: 100,
-                  //               height: 100,
-                  //               fit: BoxFit.fill,
-                  //             ),
-                  //             whiteSpaceH(16.0),
-                  //             Text("게임이 켜지는 중 입니다.\n"
-                  //                 "잠시만 기다려주세요.",
-                  //                 style: TextStyle(
-                  //                   fontSize: 14,
-                  //                   fontFamily: 'noto',
-                  //                   color: Color(0xFF333333),
-                  //                 ),
-                  //               textAlign: TextAlign.center,
-                  //             )
-                  //           ],
-                  //         )
-                  //       ),
-                  //   ),
-                  // ) : Container()
+                        decoration: BoxDecoration(
+                          color: primary
+                        ),
+                      )
+                  ) : Container()
                 ],
               )
             )
@@ -304,87 +189,30 @@ class _BargainGame2 extends State<BargainGame2> {
     List<String> list = [];
     int limitPercentage = Provider.of<CenterProvider>(context, listen: false).limitGamePercentage;
     String _userQuantity = Provider.of<CenterProvider>(context, listen: false).gameUserQuantity;
+    String funds = Provider.of<CenterProvider>(context, listen: false).hojoFunds;
     print("limitPercentage : $limitPercentage");
-    Map<String, int> percentageMap = {};
 
     String userQuantity = (int.parse(_userQuantity) % 500).toString();
-    Map<String, int> userQuantityPercentageMap = {
-      "100" : 50,
-      "200" : 60,
-      "300" : 70,
-      "400" : 80,
-      "0" : 90,
-    };
-    int initPer = 10;
-    if(userQuantityPercentageMap[userQuantity] != null && (userQuantityPercentageMap[userQuantity] + 10) <= limitPercentage) {
-      initPer = userQuantityPercentageMap[userQuantity];
-    }
 
-    if(initPer == 10) {
-      for (int per = initPer; per <= 100; per += 10) {
-        if (per <= limitPercentage) {
-          percentageMap.addAll({
-            "$per": (((per - 1) / 30).floor()) + 1
-          });
-          list.add("$per");
-        } else {
-          break;
-        }
-      }
-    } else {
-      if(initPer == 90) {
-        for (int per = initPer; per <= initPer + 10; per+= 10) {
-          if (per <= limitPercentage) {
-            percentageMap.addAll({
-              "$per": 1
-            });
-            list.add("$per");
-          } else {
-            break;
-          }
-        }
-      } else {
-        for (int per = initPer; per < initPer + 10; per+= 10) {
-          if (per <= limitPercentage) {
-            percentageMap.addAll({
-              "$per": 1
-            });
-            list.add("$per");
-          } else {
-            break;
-          }
-        }
-      }
 
-    }
-
-    print("percentageMap.toString");
-    print(percentageMap.toString());
-
-    String selRandom;
-    do {
-      selRandom = list[random.nextInt(list.length)];
-
-      print("계산 값 : $selRandom");
-      percentageMap[selRandom]--;
-    } while(percentageMap[selRandom] != 0);
-    String randomDiscount = selRandom;
-    print("randomDiscount : $randomDiscount");
-    double randomPercentage = int.parse(randomDiscount).toDouble() * 0.01;
-    print("randomPercentage : $randomPercentage");
-
-    dl = double.parse((widget.orderPayment * randomPercentage / 100).toString()).round();
-    // rp = (widget.orderPayment / 100000).ceil() * 1000;
-    // discount = demicalFormat.format(randomPercentage * 100);
-
-    print("orderPayment : ${widget.orderPayment}");
-    print("discount : $randomDiscount");
-    print("dl : $dl");
-    print("carat : $carat");
-    print("total_carat : ${widget.totalCarat}");
-
+    // 추가해야 하는 부분
+    // 재원 안에서 터지기
+    // 100 단위로 고정 percentage
     print("======================new Game_Version2=========================");
-    int pay = widget.orderPayment;
+
+    userQuantity = (int.parse(_userQuantity) % 500).toString();
+    Map<String, String> userQuantityPercentageMapV2 = {
+      "100" : "5",
+      "200" : "6",
+      "300" : "7",
+      "400" : "8",
+      "0" : "9",
+    };
+
+    String initPerV2 = "1";
+    if(userQuantityPercentageMapV2[userQuantity] != null && (int.parse(userQuantityPercentageMapV2[userQuantity]) + 10) <= limitPercentage) {
+      initPerV2 = userQuantityPercentageMapV2[userQuantity];
+    }
 
     List<String> tenPerList = ["1","2","3","4","5","6","7","8","9","10"];
     List<int> onePerList = [0,1,2,3,4,5,6,7,8,9];
@@ -400,13 +228,33 @@ class _BargainGame2 extends State<BargainGame2> {
       "9" : 3,
       "10" : 4
     };
-    String randomPick;
-    do {
-      randomPick = tenPerList[random.nextInt(tenPerList.length)];
 
-      perMapV2[randomPick]--;
-    } while(perMapV2[randomPick] != 0);
-    String tenPerInit = randomPick;
+    String tenPerInit;
+    if(initPerV2 != "1"){
+      // 고정 퍼센트가 정해진거 (Case 2)
+      tenPerInit = initPerV2;
+
+      if(tenPerInit == "9") {
+        onePerList = [0,1,2,3,4,5,6,7,8,9,10];
+      } else {
+        onePerList = [0,1,2,3,4,5,6,7,8,9];
+      }
+    } else {
+      // 재원 안에서 터지도록 list 구성 (아직 안됨)
+      tenPerList.clear();
+      for(int i=10;i< limitPercentage; i++){
+        tenPerList.add((i/10).ceil().toString());
+      }
+
+      String randomPick;
+      do {
+        randomPick = tenPerList[random.nextInt(tenPerList.length)];
+
+        perMapV2[randomPick]--;
+      } while(perMapV2[randomPick] != 0);
+      tenPerInit = randomPick;
+    }
+
     int onePerInit = onePerList[random.nextInt(onePerList.length)];
     int resPer;
 
@@ -416,37 +264,37 @@ class _BargainGame2 extends State<BargainGame2> {
       resPer = (int.parse(tenPerInit) * 10) + onePerInit;
     }
 
-    int resDl = ((widget.orderPayment * 1 / 100) * resPer / 100).round();
+    dl = ((widget.orderPayment * 1 / 100) * resPer / 100).round();
 
     print("총 결제 ===> ${widget.orderPayment.toString()}");
     print("할인율 ===> $resPer");
-    print("DL ===> $resDl");
+    print("DL ===> $dl");
 
 
-    String message = widget.orderPayment.toString() + "/" + randomDiscount.toString() + "/" + dl.toString() + "/" + carat.toString() + "/" + widget.totalCarat.toString();
+    String message = widget.orderPayment.toString() + "/" + resPer.toString() + "/" + dl.toString() + "/" + carat.toString() + "/" + widget.totalCarat.toString() + "/" + funds + "/" + limitPercentage.toString();
     _unityWidgetController.postMessage(
         'Main',
         'SetUserInfo_Pay',
         message
     );
-    print("sendEnd");
+    _start();
   }
 
   void onUnityMessage(controller, message) async {
     if(message.toString() == "quit"){ //나가기
       print("나가기");
-      setState(() {
-        isReplay = false;
-        isQuit = true;
-      });
+          setState(() {
+            isReplay = false;
+            isQuit = true;
+          });
+
     } else if(message.toString() == "Recharge") { // 캐럿 부족
       print("캐럿 부족");
     } else { // 한번더하기
       print("한번더");
-      setState(() {
-        isReplay = true;
-      });
-
+        setState(() {
+          isReplay = true;
+        });
     }
   }
 
@@ -468,4 +316,19 @@ class _BargainGame2 extends State<BargainGame2> {
     return carat;
   }
 
+  void _start() {
+    setState(() {
+      _isLoading = true;
+      isReplay = false;
+      gameLoad = false;
+    });
+    _timer = Timer.periodic(Duration(milliseconds: 1000), (timer) {
+      if(timer.tick == 5) {
+        setState(() {
+          _isLoading = false;
+          _timer.cancel();
+        });
+      }
+    });
+  }
 }
