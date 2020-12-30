@@ -323,7 +323,7 @@ class _BargainGame2 extends State<BargainGame2> {
       gameLoad = false;
     });
     _timer = Timer.periodic(Duration(milliseconds: 1000), (timer) {
-      if(timer.tick == 2) {
+      if(timer.tick == 5) {
         setState(() {
           _isLoading = false;
           _timer.cancel();

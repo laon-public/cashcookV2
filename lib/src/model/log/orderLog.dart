@@ -27,6 +27,7 @@ class OrderLog {
   String logType;
   int reviewId;
   int gameQuantity;
+  bool confirm;
 
   DateTime createdAt;
   DateTime updatedAt;
@@ -35,7 +36,7 @@ class OrderLog {
   List<OrderMainCat> mainCatList;
 
   OrderLog({this.id, this.storeName, this.storeImg,this.storeId, this.content,
-      this.pay, this.dl, this.logType, this.reviewId, this.gameQuantity, this.bankInfo ,this.createdAt, this.updatedAt});
+      this.pay, this.dl, this.logType, this.reviewId, this.gameQuantity, this.confirm, this.bankInfo ,this.createdAt, this.updatedAt});
 
   OrderLog.fromJson(Map<String, dynamic> json)
     :
@@ -49,6 +50,7 @@ class OrderLog {
       this.logType = json['logType'],
       this.reviewId = json['reviewId'],
       this.playGame = json['playGame'],
+      this.confirm = json['confirm'],
       this.gameQuantity = json['gameQuantity'],
       this.createdAt = DateTime.parse(json['created_at'].toString()),
       this.updatedAt = DateTime.parse(json['updated_at'].toString()),

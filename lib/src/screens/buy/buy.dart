@@ -102,11 +102,13 @@ class _Buy extends State<Buy> {
       ),
       userCode: 'imp05615202',
       data: PaymentData.fromJson({
-        'pg': 'inicis',
+        'pg': 'danal_tpay',
         'payMethod': 'card',
         'name': (widget.paymentType.contains("ORDER")) ? '캐시쿡 결제' : '${widget.point} 카드 충전',
         'merchantUid': 'mid_${DateTime.now().millisecondsSinceEpoch}',
         'amount': widget.pay,
+
+
         'buyerName': buyerName,
         'buyerTel': buyerTel,
         'buyerEmail': "",
@@ -115,6 +117,8 @@ class _Buy extends State<Buy> {
         'appScheme': "cashcook"
       }),
       callback: (Map<String, String> result) async {
+        print("콜백");
+        print(result);
         if (result['imp_success'] == "true") {
           setState(() {
             ispOn = true;

@@ -532,4 +532,18 @@ class UserProvider with ChangeNotifier {
     return json['resultMsg']['cnt'];
   }
 
+  void confirmPurchase(int orderId) async {
+    String response = await service.confirmPurchase(orderId);
+    if(isResponse(jsonDecode(response))) {
+      showToast("구매가 확정되었습니다.");
+
+      selLog.confirm = true;
+      notifyListeners();
+
+      return;
+    }
+    showToast("구매 확정에 실패했습니다.");
+    return;
+  }
+
 }

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cashcook/src/model/log/orderLog.dart';
 import 'package:cashcook/src/model/store/reviewWrite.dart';
+import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/screens/bargain/bargaingame2.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
@@ -66,7 +67,6 @@ class _ServiceDetail extends State<ServiceDetail> {
                         Container(
                           padding: EdgeInsets.symmetric(vertical: 16.0),
                           width: MediaQuery.of(context).size.width,
-                          height: 132,
                           child: Column(
                             children: [
                               Container(
@@ -216,6 +216,34 @@ class _ServiceDetail extends State<ServiceDetail> {
                                       ),
                                     ),
                                   )
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  up.selLog.confirm ? Container() : Expanded(
+                                    child: InkWell(
+                                      onTap: () {
+                                        Provider.of<UserProvider>(context, listen: false).confirmPurchase(up.selLog.id);
+                                      },
+                                      child: Container(
+                                        margin: EdgeInsets.only(top: 12),
+                                        height: 40,
+                                        child: Center(
+                                          child: Text("구매확정",
+                                            style: Body1.apply(
+                                              color: secondary,
+                                            ),
+                                          ),
+                                        ),
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Color(0xFFDDDDDD),
+                                                width: 1
+                                            )
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
                             ],

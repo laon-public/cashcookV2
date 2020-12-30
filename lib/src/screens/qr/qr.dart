@@ -101,8 +101,8 @@ class _Qr extends State<Qr> {
               left: 40,
               right: 40,
               child: Image.asset(
-                "assets/resource/qr/qrdomain.png",
-                fit: BoxFit.fill,
+                "assets/resource/qr/qrdomain_2.png",
+                fit: BoxFit.contain,
                 width: 280,
                 height: 280,
               ),
