@@ -504,7 +504,7 @@ class _Home extends State<Home> {
                             width: 10.0,
                               child:
                                 IconButton(
-                                    iconSize: 17.0, icon: Icon(Icons.add_outlined), onPressed: null)),
+                                    iconSize: 17.0, icon: Icon(Icons.add_circle_outline), onPressed: null)),
 
                               SizedBox(
                                 width: 80.0,
