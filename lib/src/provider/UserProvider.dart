@@ -538,6 +538,7 @@ class UserProvider with ChangeNotifier {
       showToast("구매가 확정되었습니다.");
 
       selLog.confirm = true;
+      selLog.status = "CONFIRM";
       notifyListeners();
 
       return;
