@@ -175,4 +175,12 @@ class UserService {
     return utf8.decode(response.bodyBytes);
   }
 
+  Future<String> fetchRefundRequest(int storeId) async {
+    final response = await client.get(cookURL+"/payment/refund/$storeId",
+        headers: {
+          "Authorization": "BEARER ${dataStorage.token}"
+        });
+    return utf8.decode(response.bodyBytes);
+  }
+
 }

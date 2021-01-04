@@ -11,6 +11,7 @@ import 'package:cashcook/src/screens/main/home.dart';
 import 'package:cashcook/src/screens/mypage/points/integratedPoint.dart';
 import 'package:cashcook/src/screens/mypage/points/pointMgmt.dart';
 import 'package:cashcook/src/screens/mypage/points/pointMgmtUser.dart';
+import 'package:cashcook/src/screens/mypage/store/RefundRequest.dart';
 import 'package:cashcook/src/screens/qr/qrcreate.dart';
 import 'package:cashcook/src/screens/referrermanagement/referrermanagement.dart';
 import 'package:cashcook/src/utils/CustomBottomNavBar.dart';
@@ -1118,6 +1119,7 @@ class _MyPageState extends State<MyPage> {
                                 children: [
                                   agencyCheck == 1 ? BizInfo() : BizSelect(),
                                   QrCard(),
+                                  RefundCard(),
                                   FranHistoryCard(),
                                   // ContentApplyCard(),
                                   // MenuApplyCard(),
@@ -1348,6 +1350,35 @@ class _MyPageState extends State<MyPage> {
               Image.asset("assets/icon/s_master.png", width: 24, height: 24, fit: BoxFit.fill,),
               SizedBox(width: 12,),
               Text("총판 정보",style: Subtitle2),
+              Spacer(),
+              Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 16,),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget RefundCard(){
+    return InkWell(
+      onTap: (){
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => RefundRequest()
+        ));
+      },
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: white,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset("assets/icon/friends.png", width: 24,height: 24, fit: BoxFit.fill,),
+              SizedBox(width: 12,),
+              Text("환불요청",style: Subtitle2),
               Spacer(),
               Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 16,),
             ],

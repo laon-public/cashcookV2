@@ -1,5 +1,6 @@
 import 'package:cashcook/src/model/account.dart';
 import 'package:cashcook/src/model/log/orderLog.dart';
+import 'package:cashcook/src/model/log/refundLog.dart';
 import 'package:cashcook/src/model/page.dart';
 import 'package:cashcook/src/model/reco.dart';
 import 'package:cashcook/src/model/recomemberlist.dart';
@@ -47,6 +48,9 @@ class UserProvider with ChangeNotifier {
   List<ServiceLogListItem> serviceLogList = [];
   OrderLog selLog;
   bool isLastList = false;
+
+  // Refund List
+  List<RefundLogModel> refundList = [];
 
   // Authentication Variable
   String jsession;
@@ -564,6 +568,21 @@ class UserProvider with ChangeNotifier {
     }
 
     return false;
+  }
+
+  Future fetchRefundRequest() async {
+    refundList.clear();
+    notifyListeners();
+    String response = await service.fetchRefundRequest(storeModel.id);
+
+    Map<String, dynamic> json = jsonDecode(response);
+
+    print(json);
+    for(var refund in json['data']['refundList']){
+      refundList.add(RefundLogModel.fromJson(refund));
+    }
+
+    notifyListeners();
   }
 
 }
