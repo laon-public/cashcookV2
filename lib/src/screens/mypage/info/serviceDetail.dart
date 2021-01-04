@@ -3,6 +3,7 @@ import 'package:cashcook/src/model/log/orderLog.dart';
 import 'package:cashcook/src/model/store/reviewWrite.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/screens/bargain/bargaingame2.dart';
+import 'package:cashcook/src/screens/buy/refund.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
@@ -261,7 +262,11 @@ class _ServiceDetail extends State<ServiceDetail> {
                                         up.selLog.status == "BEFORE_CONFIRM" || up.selLog.status == "REFUND_REJECT" ? Expanded(
                                     child: InkWell(
                                       onTap: () {
-                                        Provider.of<UserProvider>(context, listen: false).confirmPurchase(up.selLog.id);
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) => Refund()
+                                          )
+                                        );
                                       },
                                       child: Container(
                                         margin: EdgeInsets.only(top: 12),
