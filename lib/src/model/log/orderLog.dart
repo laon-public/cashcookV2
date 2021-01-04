@@ -28,6 +28,8 @@ class OrderLog {
   int reviewId;
   int gameQuantity;
   bool confirm;
+  String status;
+  String impUid;
 
   DateTime createdAt;
   DateTime updatedAt;
@@ -51,6 +53,8 @@ class OrderLog {
       this.reviewId = json['reviewId'],
       this.playGame = json['playGame'],
       this.confirm = json['confirm'],
+      this.status = json['status'],
+      this.impUid = json['impUid'],
       this.gameQuantity = json['gameQuantity'],
       this.createdAt = DateTime.parse(json['created_at'].toString()),
       this.updatedAt = DateTime.parse(json['updated_at'].toString()),

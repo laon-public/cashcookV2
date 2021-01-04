@@ -119,7 +119,7 @@ class _Buy extends State<Buy> {
       callback: (Map<String, String> result) async {
         print("콜백");
         print(result);
-        if (result['imp_success'] == "true") {
+        if (result['success'] == "true") {
           setState(() {
             ispOn = true;
           });
@@ -143,7 +143,7 @@ class _Buy extends State<Buy> {
           P.Provider.of<StoreServiceProvider>(context, listen: false).setBankInfo(cardName, cardNumber);
 
           if(widget.paymentType.contains("ORDER")) {
-            await Provider.of<StoreServiceProvider>(context, listen: false).setOrderMap(widget.id, "ORDER").then((value) {
+            await Provider.of<StoreServiceProvider>(context, listen: false).setOrderMap(widget.id, "ORDER", result['imp_uid']).then((value) {
               if (value) {
                 Provider.of<StoreServiceProvider>(context, listen: false).orderComplete();
                 Fluttertoast.showToast(msg: "결제가 완료되었습니다.");

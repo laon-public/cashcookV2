@@ -416,7 +416,7 @@ class _OrderMenu extends State<OrderMenu> {
                                     if(isAgreeCheck){
 
                                       if((int.parse(ss.dlCtrl.text == "" ? "0" : ss.dlCtrl.text) * 100) == ss.orderPay){
-                                        await ss.setOrderMap(widget.store_id, "ORDER");
+                                        await ss.setOrderMap(widget.store_id, "ORDER", "");
                                         await ss.orderComplete();
                                         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
                                           isHome: true, afterGame: true,
@@ -533,7 +533,7 @@ class _OrderMenu extends State<OrderMenu> {
                                   onTap: () async {
                                     if(!ssp.orderLoading) {
                                       if(currentMethod == 1){ // 무통장입금 결제
-                                        await ssp.setOrderMap(widget.store_id, "ORDER");
+                                        await ssp.setOrderMap(widget.store_id, "ORDER", "");
                                         ssp.orderComplete();
 
                                         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
@@ -582,7 +582,7 @@ class _OrderMenu extends State<OrderMenu> {
                                   onTap: () async {
                                     if(!ssp.orderLoading) {
                                       if(currentMethod == 1){ // 무통장입금 결제
-                                        await ssp.setOrderMap(widget.store_id, "ORDER");
+                                        await ssp.setOrderMap(widget.store_id, "ORDER", "");
                                         ssp.orderComplete();
 
                                         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => BargainGame2(
