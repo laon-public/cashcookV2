@@ -158,11 +158,20 @@ class UserService {
     return utf8.decode(response.bodyBytes);
   }
 
-  confirmPurchase(int orderId) async {
+  Future<String> confirmPurchase(int orderId) async {
     final response = await client.patch(cookURL + "/payment/$orderId/confirm", headers: {
       "Authorization": "BEARER ${dataStorage.token}"
     });
 
+    return utf8.decode(response.bodyBytes);
+  }
+
+  Future<String> requestRefund(Map<String, dynamic> data) async {
+    final response = await client.post(cookURL+"/payment/refund", body: json.encode(data),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "BEARER ${dataStorage.token}"
+        });
     return utf8.decode(response.bodyBytes);
   }
 

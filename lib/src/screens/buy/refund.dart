@@ -192,8 +192,14 @@ class _Refund extends State<Refund> {
                       child:RaisedButton(
                         color: mainColor,
                         onPressed: () async {
-
-                          Navigator.of(context).pop();
+                          up.requestRefund(reasonCtrl.text).then((value) {
+                            if(value) {
+                              showToast("환불 요청 되었습니다.");
+                              Navigator.of(context).pop();
+                            } else {
+                              showToast("환불 요청에 실패했습니다.");
+                            }
+                          });
                         },
                         elevation: 0.0,
                         child: Text("환불 요청",

@@ -547,4 +547,23 @@ class UserProvider with ChangeNotifier {
     return;
   }
 
+  Future<bool> requestRefund(String reason) async {
+    Map<String, dynamic> data = {
+      "orderId" : selLog.id,
+      "storeId" : selLog.storeId,
+      "impUid" : selLog.impUid,
+      "pay" : selLog.pay,
+      "reason" : reason,
+    };
+
+    String response = await service.requestRefund(data);
+
+    if(isResponse(jsonDecode(response))){
+      selLog.status = "REFUND_REQUEST";
+      return true;
+    }
+
+    return false;
+  }
+
 }

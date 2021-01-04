@@ -247,7 +247,7 @@ class _ServiceDetail extends State<ServiceDetail> {
                                   ),
                                 ],
                               ),
-                              up.selLog.confirm ? Container() :
+                              up.selLog.status == "CONFIRM" || up.selLog.status == "REFUND_REQUEST" || up.selLog.status == "REFUND_CONFIRM" ? Container() :
                               Text("* 구매확정을 하셔야 DL적립을 받으실 수 있습니다.",
                                 style: Caption.apply(
 
