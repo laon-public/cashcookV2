@@ -585,4 +585,20 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<bool> patchRefundRequest(int refundId, int orderId, String status) async {
+    Map<String, dynamic> data = {
+      "refundId" : refundId,
+      "orderId" : orderId,
+      "status" : status
+    };
+
+    String response = await service.patchRefundRequest(data);
+
+    if(isResponse(jsonDecode(response))) {
+      return true;
+    }
+
+    return false;
+  }
+
 }

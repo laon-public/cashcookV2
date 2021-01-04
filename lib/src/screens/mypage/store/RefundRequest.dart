@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:cashcook/src/model/log/refundLog.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
+import 'package:cashcook/src/services/IMPort.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
+import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -96,6 +100,38 @@ class _RefundRequest extends State<RefundRequest> {
                   children: [
                     InkWell(
                       onTap: () async {
+                        IMPortService importService = IMPortService();
+
+                        try{
+                          // 토큰 얻기
+                          String response = await importService.getIMPORTToken();
+                          Map<String, dynamic> json = jsonDecode(response);
+                          String token = json['response']['access_token'];
+
+                          response = await importService.refundIMPort(refund.impUid, refund.reason, token);
+
+                          json = jsonDecode(response);
+                          if(json['response'] == null) {
+                            throw Exception(json['message']);
+                          }
+
+                          if(json['response']['status'].toString() == "cancelled"){
+                            Provider.of<UserProvider>(context,listen: false).patchRefundRequest(refund.id, refund.orderId, "REFUND_CONFIRM").then((value) {
+                              if (value) {
+                                showToast("환불 했습니다.");
+
+                                Provider.of<UserProvider>(context, listen: false).fetchRefundRequest();
+                              } else {
+                                showToast("환불에 실패했습니다.");
+                              }
+                            });
+                          } else {
+                            throw Exception("IMPORT 환불 실패");
+                          }
+                        } catch(e) {
+                            showToast("환불 요청에 실패했습니다.");
+                            print(e);
+                        }
                       },
                       child: Container(
                         width: 48,
@@ -121,6 +157,15 @@ class _RefundRequest extends State<RefundRequest> {
                     whiteSpaceW(8),
                     InkWell(
                       onTap: () async {
+                        Provider.of<UserProvider>(context,listen: false).patchRefundRequest(refund.id, refund.orderId, "REFUND_REJECT").then((value) {
+                          if (value) {
+                            showToast("환불을 거절했습니다.");
+
+                            Provider.of<UserProvider>(context, listen: false).fetchRefundRequest();
+                          } else {
+                            showToast("환불거절에 실패했습니다.");
+                          }
+                        });
                       },
                       child: Container(
                         width: 48,

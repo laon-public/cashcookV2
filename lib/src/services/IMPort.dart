@@ -30,4 +30,25 @@ class IMPortService {
     print(utf8.decode(response.bodyBytes));
     return utf8.decode(response.bodyBytes);
   }
+
+  Future<String> refundIMPort(String uid, String reason, String token) async {
+    Map<String,String> data = {
+      "reason" : "$reason",
+      "imp_uid" : "$uid"
+    };
+
+    print(json.encode(data));
+    
+    final response = await client.post("https://api.iamport.kr/payments/cancel",
+        body: json.encode(data),
+        headers: {
+          "Authorization": token,
+          "Content-Type": "application/json"
+        }
+    );
+
+    print(utf8.decode(response.bodyBytes));
+
+    return utf8.decode(response.bodyBytes);
+  }
 }

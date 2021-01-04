@@ -183,4 +183,13 @@ class UserService {
     return utf8.decode(response.bodyBytes);
   }
 
+  Future<String> patchRefundRequest(Map<String, dynamic> data) async {
+    final response = await client.patch(cookURL+"/payment/refund", body: json.encode(data),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "BEARER ${dataStorage.token}"
+        });
+    return utf8.decode(response.bodyBytes);
+  }
+
 }
