@@ -20,10 +20,18 @@ class RefundRequest extends StatefulWidget {
 
 class _RefundRequest extends State<RefundRequest> {
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<UserProvider>(context, listen: false).fetchRefundRequest();
     });
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
     // TODO: implement build
     AppBar appBar = AppBar(
       elevation: 0.5,
@@ -42,6 +50,7 @@ class _RefundRequest extends State<RefundRequest> {
     );
 
     return Scaffold(
+      backgroundColor: white,
       appBar: appBar,
       body: Container(
           width: MediaQuery.of(context).size.width,
@@ -65,8 +74,15 @@ class _RefundRequest extends State<RefundRequest> {
   Widget RefundRequestItem(RefundLogModel refund) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.symmetric(vertical: 12),
-      margin: EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: deActivatedGrey,
+            width: 1
+          )
+        )
+      ),
       child: Column(
         children: [
           Row(
@@ -87,13 +103,35 @@ class _RefundRequest extends State<RefundRequest> {
           Row(
             children: [
               Expanded(
-                child: Text("${numberFormat.format(refund.pay)} 원",
-                  style: Headline.apply(
-                    color: primary,
-                    fontWeightDelta: 2
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("${numberFormat.format(refund.pay)} 원",
+                        style: Headline.apply(
+                            color: primary,
+                            fontWeightDelta: 2
+                        )
+                      ),
+                    whiteSpaceH(6),
+                    Text("사유 : ${refund.reason}",
+                        style: Body2.apply(
+                          color: black
+                        ),
+                        overflow: TextOverflow.clip,
+                    ),
+                    ],
                   )
-                ),
               ),
+              (refund.status == "REFUND_CONFIRM") ?
+                  Text("환불완료",
+                      style: Body1
+                  )
+              :
+              (refund.status == "REFUND_REJECT") ?
+                  Text("환불거절",
+                      style: Body1
+                  )
+              :
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

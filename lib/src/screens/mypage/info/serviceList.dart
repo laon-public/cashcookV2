@@ -245,6 +245,14 @@ class _ServiceList extends State<ServiceList> {
               Container(
                 child: Row(
                   children: [
+                    ol.status == "REFUND_CONFIRM" ?
+                      Text("결제 취소",
+                        style: Body1.apply(
+                            color: secondary,
+                            fontWeightDelta: 1
+                        )
+                      )
+                        :
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,

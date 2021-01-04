@@ -184,6 +184,15 @@ class _ServiceDetail extends State<ServiceDetail> {
                                   Expanded(
                                     child: InkWell(
                                       onTap: () {
+                                        if(up.selLog.status == "REFUND_REQUEST") {
+                                          showToast("환불 요청 중에는\n게임을 진행할 수 없습니다.");
+                                          return;
+                                        }
+
+                                        if(up.selLog.status == "REFUND_CONFIRM") {
+                                          showToast("환불된 주문에는\n게임을 진행할 수 없습니다.");
+                                          return;
+                                        }
                                         if(up.selLog.playGame){
                                           showToast("게임을 이미 진행하였습니다.");
                                         } else {
