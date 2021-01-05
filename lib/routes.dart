@@ -24,6 +24,7 @@ import 'package:cashcook/src/screens/mypage/info/userState.dart';
 import 'package:cashcook/src/screens/mypage/myUpdate.dart';
 import 'package:cashcook/src/screens/mypage/logout.dart';
 import 'package:cashcook/src/screens/bargain/bargaingame.dart';
+import 'package:cashcook/src/screens/mypage/WithDraw.dart';
 
 final routes = {
   '/Splash': (context) => Splash(),
@@ -50,4 +51,5 @@ final routes = {
   "/home" : (context) => Home(),
   "/mainmap" : (context) => MainMap(),
   "/bargaingame" : (context) => BargainGame(),
+  "/withdraw" : (context) => Withdraw(),
 };

@@ -8,9 +8,11 @@ class UserService {
   http.Client client = http.Client();
 
   Future<String> fetchServiceList(int page) async {
-    print("cookURL : " + cookURL);
+    print("cookURL >>> " + cookURL);
     final response = await client.get(cookURL + "/users/me/service/list?page=$page",
         headers: {"Authorization": "BEARER ${dataStorage.token}"});
+
+    print('리스폰스 테스트 >>> ' + response.toString());
     return utf8.decode(response.bodyBytes);
   }
 
@@ -203,5 +205,13 @@ class UserService {
 
     return utf8.decode(response.bodyBytes);
   }
+
+  Future<String> deleteUser() async {
+    final response = await client.post(cookURL+"/users/me/deleteUser", headers: {
+      "Authorization": "BEARER ${dataStorage.token}"
+    });
+    return utf8.decode(response.bodyBytes);
+  }
+
 
 }
