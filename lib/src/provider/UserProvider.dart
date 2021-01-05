@@ -225,7 +225,8 @@ class UserProvider with ChangeNotifier {
           gender: sex,
           isFirstLogin: authCheck['isFirstLogin'],
           userGrade: authCheck['userGrade'],
-          isFran: authCheck['isFran'],);
+          isFran: authCheck['isFran'],
+          fcmToken: authCheck['fcm_token']);
     } else {
       userCheck = UserCheck(
           id: authCheck['id'],
@@ -237,12 +238,14 @@ class UserProvider with ChangeNotifier {
           gender: sex,
           isFirstLogin: authCheck['isFirstLogin'],
           userGrade: authCheck['userGrade'],
-          isFran: authCheck['isFran'],);
+          isFran: authCheck['isFran'],
+          fcmToken: authCheck['fcm_token']);
     }
 
     print(authCheck['token']);
 
     print(userCheck.username);
+    print("FCM TOKEN!!! ---> ${userCheck.fcmToken}");
 
     if (userCheck.username != "") {
       dynamic franchise = json.decode(response)['data']['franchise'];
@@ -599,6 +602,12 @@ class UserProvider with ChangeNotifier {
     }
 
     return false;
+  }
+
+  patchFcmToken(String fcmToken) async {
+    String response = await service.patchFcmToken(fcmToken);
+
+    print(response);
   }
 
 }

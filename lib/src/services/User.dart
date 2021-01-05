@@ -192,4 +192,16 @@ class UserService {
     return utf8.decode(response.bodyBytes);
   }
 
+  Future<String> patchFcmToken(String fcmToken) async {
+    final response = await client.patch(cookURL + "/users/me/token",
+      body: fcmToken,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "BEARER ${dataStorage.token}"
+        }
+    );
+
+    return utf8.decode(response.bodyBytes);
+  }
+
 }

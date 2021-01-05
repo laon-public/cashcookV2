@@ -9,6 +9,7 @@ import 'package:cashcook/src/screens/referrermanagement/firstbiz.dart';
 import 'package:cashcook/src/services/API.dart';
 import 'package:cashcook/src/utils/datastorage.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
@@ -57,6 +58,12 @@ class _Login3 extends State<Login3> {
             UserCheck user = Provider
                 .of<UserProvider>(context, listen: false)
                 .loginUser;
+
+            FirebaseMessaging fcm = FirebaseMessaging();
+            String fcmToken = await fcm.getToken();
+            if(user.fcmToken == "" || user.fcmToken != fcmToken) {
+              await Provider.of<UserProvider>(context, listen: false).patchFcmToken(fcmToken);
+            }
 
             if (user.isFirstLogin != true) {
               Provider.of<CenterProvider>(context, listen: false)

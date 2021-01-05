@@ -106,6 +106,7 @@ class _CashCook extends State<CashCook> {
     _firebaseMessaging.configure(
       // 앱이 포그라운드 상태, 앱이 전면에 켜져있기 때문에 푸시 알림 UI가 표시되지 않음.
       onMessage: (Map<String, dynamic> message) async {
+        print('on message $message');
       },
       // 앱이 백그라운드 상태, 푸시 알림 UI를 누른 경우에 호출된다. 앱이 포그라운드로 전환됨.
       onResume: (Map<String, dynamic> message) async {
