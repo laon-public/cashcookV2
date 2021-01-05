@@ -1,4 +1,5 @@
 import 'package:cashcook/src/provider/UserProvider.dart';
+import 'package:cashcook/src/utils/FcmController.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
@@ -193,7 +194,8 @@ class _Refund extends State<Refund> {
                         color: mainColor,
                         onPressed: () async {
                           up.requestRefund(reasonCtrl.text).then((value) {
-                            if(value) {
+                            if(value != "") {
+                              sendMessage("환불요청", "환불요청이 들어왔습니다.", value);
                               showToast("환불 요청 되었습니다.");
                               Navigator.of(context).pop();
                             } else {

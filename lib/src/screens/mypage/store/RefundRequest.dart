@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cashcook/src/model/log/refundLog.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/services/IMPort.dart';
+import 'package:cashcook/src/utils/FcmController.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
@@ -155,7 +156,8 @@ class _RefundRequest extends State<RefundRequest> {
 
                           if(json['response']['status'].toString() == "cancelled"){
                             Provider.of<UserProvider>(context,listen: false).patchRefundRequest(refund.id, refund.orderId, "REFUND_CONFIRM").then((value) {
-                              if (value) {
+                              if (value != "") {
+                                sendMessage("환불완료", "환불이 완료 되었습니다.", value);
                                 showToast("환불 했습니다.");
 
                                 Provider.of<UserProvider>(context, listen: false).fetchRefundRequest();
@@ -196,7 +198,8 @@ class _RefundRequest extends State<RefundRequest> {
                     InkWell(
                       onTap: () async {
                         Provider.of<UserProvider>(context,listen: false).patchRefundRequest(refund.id, refund.orderId, "REFUND_REJECT").then((value) {
-                          if (value) {
+                          if (value != "") {
+                            sendMessage("환불거절", "환불이 거절 되었습니다.", value);
                             showToast("환불을 거절했습니다.");
 
                             Provider.of<UserProvider>(context, listen: false).fetchRefundRequest();

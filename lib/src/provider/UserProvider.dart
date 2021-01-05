@@ -554,7 +554,7 @@ class UserProvider with ChangeNotifier {
     return;
   }
 
-  Future<bool> requestRefund(String reason) async {
+  Future<String> requestRefund(String reason) async {
     Map<String, dynamic> data = {
       "orderId" : selLog.id,
       "storeId" : selLog.storeId,
@@ -565,12 +565,13 @@ class UserProvider with ChangeNotifier {
 
     String response = await service.requestRefund(data);
 
-    if(isResponse(jsonDecode(response))){
+    Map<String, dynamic> json = jsonDecode(response);
+    if(isResponse(json)){
       selLog.status = "REFUND_REQUEST";
-      return true;
+      return json['data']['fcmToken'];
     }
 
-    return false;
+    return "";
   }
 
   Future fetchRefundRequest() async {
@@ -588,7 +589,7 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> patchRefundRequest(int refundId, int orderId, String status) async {
+  Future<String> patchRefundRequest(int refundId, int orderId, String status) async {
     Map<String, dynamic> data = {
       "refundId" : refundId,
       "orderId" : orderId,
@@ -597,11 +598,12 @@ class UserProvider with ChangeNotifier {
 
     String response = await service.patchRefundRequest(data);
 
-    if(isResponse(jsonDecode(response))) {
-      return true;
+    Map<String,dynamic> json = jsonDecode(response);
+    if(isResponse(json)) {
+      return json['data']['fcmToken'];
     }
 
-    return false;
+    return "";
   }
 
   patchFcmToken(String fcmToken) async {
