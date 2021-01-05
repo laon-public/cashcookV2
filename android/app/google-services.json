@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "723593822319",
+    "firebase_url": "https://cashcook-279208.firebaseio.com",
+    "project_id": "cashcook-279208",
+    "storage_bucket": "cashcook-279208.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:723593822319:android:16613c9f1b684201bc4d9a",
+        "android_client_info": {
+          "package_name": "com.hojo.cashcook.cashcook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "723593822319-o6rcrtrggltt7ucqmeahg806amcm92e5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBa-CW0eN-98LP8UgqIMIfLmJeksNGJ3Pg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "723593822319-o6rcrtrggltt7ucqmeahg806amcm92e5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "723593822319-sd0jtpc3ta8ms5cacj0js37gi0tfufet.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hozo.cashcook.cashcook"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

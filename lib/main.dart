@@ -13,13 +13,30 @@ import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/splash.dart';
 import 'package:cashcook/routes.dart';
 import 'package:cashcook/src/screens/mypage/mypage.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
 void main() {
   runApp(CashCook());
 }
-class CashCook extends StatelessWidget {
+
+class CashCook extends StatefulWidget {
+  @override
+  _CashCook createState() => _CashCook();
+}
+
+class _CashCook extends State<CashCook> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    firebaseCloudMessaging_Listeners();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -74,6 +91,30 @@ class CashCook extends StatelessWidget {
         home: Splash(),
         routes: routes,
       ),
+    );
+  }
+
+  void firebaseCloudMessaging_Listeners() async {
+    await _firebaseMessaging.requestNotificationPermissions(
+      const IosNotificationSettings(sound: true, badge: true, alert: true),
+    );
+
+    _firebaseMessaging.getToken().then((token){
+      print('token:'+token);
+    });
+
+    _firebaseMessaging.configure(
+      // 앱이 포그라운드 상태, 앱이 전면에 켜져있기 때문에 푸시 알림 UI가 표시되지 않음.
+      onMessage: (Map<String, dynamic> message) async {
+      },
+      // 앱이 백그라운드 상태, 푸시 알림 UI를 누른 경우에 호출된다. 앱이 포그라운드로 전환됨.
+      onResume: (Map<String, dynamic> message) async {
+        print('on resume $message');
+      },
+      // 앱이 꺼진 상태일 때, 푸시 알림 UI를 눌러 앱을 시작하는 경우에 호출된다.
+      onLaunch: (Map<String, dynamic> message) async {
+        print('on launch $message');
+      },
     );
   }
 }
