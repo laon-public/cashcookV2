@@ -108,7 +108,7 @@ class StoreServiceProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> setOrderMap(String store_id, String logType, String imp_uid) async {
+  Future<bool> setOrderMap(String store_id, String logType, String imp_uid, String email) async {
     orderLoading = true;
     notifyListeners();
 
@@ -122,6 +122,7 @@ class StoreServiceProvider with ChangeNotifier {
     orderMap['logType'] = logType;
     orderMap['mainCatList'] = [];
     orderMap['impUid'] = imp_uid;
+    orderMap['email'] = email;
 
     if(bankInfo != null){
       orderMap['bankInfo'] = {

@@ -29,6 +29,7 @@ class OrderMenu extends StatefulWidget {
 class _OrderMenu extends State<OrderMenu> {
   int currentMethod = 0;
   bool isAgreeCheck = false;
+  TextEditingController emailCtrl = TextEditingController();
 
 
   Map<int, String> paymentType = {
@@ -354,6 +355,33 @@ class _OrderMenu extends State<OrderMenu> {
                                 whiteSpaceH(12)
                               ],
                             ) : Container(),
+                            Container(
+                              margin: EdgeInsets.only(bottom: 20),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("영수증을 받을 이메일을 입력해주세요. (선택)",
+                                      style: Body2
+                                  ),
+                                  TextField(
+                                    style: Subtitle2.apply(
+                                        fontWeightDelta: 1
+                                    ),
+                                    controller: emailCtrl,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                                      border: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: Color(0xffdddddd), width: 1.0),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: black, width: 2.0),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
                             InkWell(
                               onTap: () {
                                 setState(() {
@@ -416,7 +444,8 @@ class _OrderMenu extends State<OrderMenu> {
                                     if(isAgreeCheck){
 
                                       if((int.parse(ss.dlCtrl.text == "" ? "0" : ss.dlCtrl.text) * 100) == ss.orderPay){
-                                        await ss.setOrderMap(widget.store_id, "ORDER", "");
+                                        await ss.setOrderMap(widget.store_id, "ORDER", "",
+                                          emailCtrl.text,);
                                         await ss.orderComplete();
                                         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
                                           isHome: true, afterGame: true,
@@ -533,7 +562,8 @@ class _OrderMenu extends State<OrderMenu> {
                                   onTap: () async {
                                     if(!ssp.orderLoading) {
                                       if(currentMethod == 1){ // 무통장입금 결제
-                                        await ssp.setOrderMap(widget.store_id, "ORDER", "");
+                                        await ssp.setOrderMap(widget.store_id, "ORDER", "",
+                                          emailCtrl.text,);
                                         ssp.orderComplete();
 
                                         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
@@ -549,6 +579,7 @@ class _OrderMenu extends State<OrderMenu> {
                                                   paymentType: paymentType[currentMethod],
                                                   dl: (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text)),
                                                   isPlayGame: false,
+                                                  email: emailCtrl.text,
                                                 )));
                                       }
                                     } else {
@@ -582,7 +613,8 @@ class _OrderMenu extends State<OrderMenu> {
                                   onTap: () async {
                                     if(!ssp.orderLoading) {
                                       if(currentMethod == 1){ // 무통장입금 결제
-                                        await ssp.setOrderMap(widget.store_id, "ORDER", "");
+                                        await ssp.setOrderMap(widget.store_id, "ORDER", "",
+                                          emailCtrl.text);
                                         ssp.orderComplete();
 
                                         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => BargainGame2(
@@ -598,6 +630,7 @@ class _OrderMenu extends State<OrderMenu> {
                                                   paymentType: paymentType[currentMethod],
                                                   dl: (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text)),
                                                   isPlayGame: true,
+                                                  email: emailCtrl.text,
                                                 )));
                                       }
                                     } else {

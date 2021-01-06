@@ -15,6 +15,8 @@ import 'package:cashcook/routes.dart';
 import 'package:cashcook/src/screens/mypage/mypage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
@@ -29,6 +31,7 @@ class CashCook extends StatefulWidget {
 }
 
 class _CashCook extends State<CashCook> {
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey(debugLabel: "Main Navigator");
 
   @override
   void initState() {
@@ -39,6 +42,8 @@ class _CashCook extends State<CashCook> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(

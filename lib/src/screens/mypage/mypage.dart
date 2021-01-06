@@ -4,6 +4,7 @@ import 'package:cashcook/src/model/usercheck.dart';
 import 'package:cashcook/src/provider/PointMgmtProvider.dart';
 import 'package:cashcook/src/provider/RecoProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
+import 'package:cashcook/src/screens/center/recruitment.dart';
 import 'package:cashcook/src/screens/mypage/NewStore/BigMenuListPage.dart';
 import 'package:cashcook/src/screens/mypage/NewStore/ContentApply.dart';
 import 'package:cashcook/src/screens/mypage/NewStore/franApply.dart';
@@ -339,92 +340,8 @@ class _MyPageState extends State<MyPage> {
 
                 ]
             ),
-          ),),
-
-
-                      // 가운데 부분, 깨지는 원본
-
-                      /*Container(
-                        margin: EdgeInsets.symmetric(vertical: 12),
-                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                        child:
-
-                        Row(
-                            children: [
-                              InkWell(
-                                onTap: (){
-                                  Map<String, dynamic> args = {
-                                    "point":"RP",
-                                    "pointImg":"assets/icon/c_point.png"
-                                  };
-                                  Navigator.of(context).pushNamed("/point/history", arguments: args);
-                                },
-                                child:
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Image.asset("assets/icon/c_point.png",height: 24, fit: BoxFit.contain,),
-                                    whiteSpaceW(5),
-                                    Text("${demicalFormat.format(user.pointMap['RP'])} CP",style: Body2.apply(color: black),),
-                                    Icon(Icons.arrow_forward_ios, color: black, size: 12,),
-                                  ],
-                                ),
-                              ),
-
-                              whiteSpaceW(20),
-                              InkWell(
-                                onTap: (){
-                                  Map<String, dynamic> args = {
-                                    "point":"DL",
-                                    "pointImg":"assets/icon/DL 2.png"
-                                  };
-                                  Navigator.of(context).pushNamed("/point/history", arguments: args);
-                                },
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Image.asset("assets/icon/DL 2.png",height: 24, fit: BoxFit.contain,),
-                                    whiteSpaceW(5),
-                                    Text("${demicalFormat.format(user.pointMap['DL'])} DL",style: Body2.apply(color: black),),
-                                    Icon(Icons.arrow_forward_ios, color: black, size: 12,),
-                                  ],
-                                ),
-                              ),
-
-                               whiteSpaceW(20),
-
-                              // 깨짐
-           InkWell(
-            onTap: (){
-              Map<String, dynamic> args = {
-                "point":"CARAT",
-                "pointImg":"assets/icon/carat.jpg"
-              };
-              Navigator.of(context).pushNamed("/point/history", arguments: args);
-            },
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Image.asset("assets/icon/carat.jpg",height: 24, fit: BoxFit.contain,),
-                whiteSpaceW(5),
-
-                // Text("${demicalFormat.format(user.pointMap['CARAT'])} CR",style: Body2.apply(color: black),),
-                Text(
-                  "${demicalFormat.format(user.pointMap['CARAT'])} CR",style: Body2.apply(color: black),
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Icon(Icons.arrow_forward_ios, color: black, size: 12,),
-              ],
-            ),
           ),
-
-                            ]
-                        ),
-                      ),*/
-
+          ),
 
 
 
@@ -437,23 +354,32 @@ class _MyPageState extends State<MyPage> {
                           children:[
                             SizedBox(height: 24,),
                             Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16),
-                                child: Column(
-                                    children: [
-                                      // HistoryCard(),
-                                      RecoCard(),
-                                      easyPayCard(),
-                                      scrapCard(),
-                                      SizedBox(height: 24,),
-                                      Tabs(name: "공지사항", routesName: "/notice",),
-                                      // CustomerCenter(),
-                                      Tabs(name: "FAQ", routesName: "/faq",),
-                                      Tabs(name: "서비스 문의", routesName: "/inquiry",),
-                                      Tabs(name: "앱정보", routesName: "/appinfomation",),
-                                      Tabs(name: "약관 및 정책", routesName: "",),
-                                      SizedBox(height: 24,),
-                                    ]
-                                )
+                              padding: EdgeInsets.symmetric(horizontal: 16),
+                              child: Column(
+                                children: [
+                                  RecoCard(),
+                                  easyPayCard(),
+                                  scrapCard(),
+
+                                ]
+                              )
+                            ),
+                            SizedBox(height: 24),
+                            RecruitCard(),
+                            SizedBox(height: 24,),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16),
+                              child: Column(
+                                children: [
+                                  Tabs(name: "공지사항", routesName: "/notice",),
+                                  // CustomerCenter(),
+                                  Tabs(name: "FAQ", routesName: "/faq",),
+                                  Tabs(name: "서비스 문의", routesName: "/inquiry",),
+                                  Tabs(name: "앱정보", routesName: "/appinfomation",),
+                                  Tabs(name: "약관 및 정책", routesName: "",),
+                                  SizedBox(height: 24,),
+                                ],
+                              ),
                             ),
                             (!user.loginUser.isFran) ? Tabs2(name: "제휴매장 등록하기", routesName: "/store/apply1",img: "assets/icon/shop.png",): SizedBox(),
                             SizedBox(height: 12,),
@@ -1426,6 +1352,58 @@ class _MyPageState extends State<MyPage> {
             content: Text("서비스 준비중입니다."),
           );
         });
+  }
+
+  Widget RecruitCard() {
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => Recruitment()
+        ));
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: 80,
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        decoration: BoxDecoration(
+          color: Color(0xFFFFEdE5)
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text.rich(
+                  TextSpan(
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: primary
+                      ),
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: "캐시쿡 그룹 ",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w300
+                            )
+                        ),
+                        TextSpan(
+                            text: "사업 설명회",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700
+                            )
+                        )
+                      ]
+                  )
+              ),
+            ),
+            Image.asset(
+              "assets/resource/main/recruit_logo.png",
+              width: 75.2,
+              height: 80,
+              alignment: Alignment.bottomRight,
+            )
+          ],
+        )
+      )
+    );
   }
 
   Widget sellDlCard(){
