@@ -612,4 +612,27 @@ class UserProvider with ChangeNotifier {
     print(response);
   }
 
+  //회원 탈퇴
+  Future<String> DeleteUser() async {
+    print("UserProvider DeleteUser 실행");
+    final response = await service.deleteUser();
+
+    if(response!=null) {
+      showToast("탈퇴가 완료되었습니다.");
+      Map<String, dynamic> json = jsonDecode(response);
+      print("DeleteUser 실행");
+      print('respontse json >>> ' + json.toString());
+      print(isResponse(json));
+
+      String result = json['resultMsg'].toString();
+
+      // return json['resultMsg']['cnt'];
+      return result;
+    } else {
+      showToast("탈퇴에 오류가 발생하였습니다.");
+    }
+
+  }
+
+
 }
