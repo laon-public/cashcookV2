@@ -1,4 +1,6 @@
+import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
+import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 
 Widget textField(title, msg, ctrl, TextInputType textType) {
@@ -8,26 +10,27 @@ Widget textField(title, msg, ctrl, TextInputType textType) {
       children: [
         Padding(
           padding: const EdgeInsets.only(top:5.0),
-          child: Align(child: Text(title,style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerLeft,),
+          child: Align(child: Text(title,style: Body2),alignment: Alignment.centerLeft,),
         ),
         TextFormField(
           cursorColor: Color(0xff000000),
           controller: ctrl,
           keyboardType: textType,
+          style: Subtitle2.apply(
+            fontWeightDelta: 1
+          ),
           decoration: InputDecoration(
             floatingLabelBehavior: FloatingLabelBehavior.always,
-            border: UnderlineInputBorder(
-              borderSide: BorderSide(color: Color(0xffdddddd), width: 2.0),
-            ),
+            contentPadding: EdgeInsets.symmetric(horizontal: 4),
             focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: primary, width: 2.0),
+              borderSide: BorderSide(color: black, width: 2.0),
+            ),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: deActivatedGrey, width: 1.0),
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(top:5.0),
-          child: Align(child: Text(msg,style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerRight,),
-        ),
+        whiteSpaceH(20)
       ],
     ),
   );

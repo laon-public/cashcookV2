@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cashcook/src/model/store/menuedit.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
@@ -62,18 +63,6 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
   String category = "음식점";
   String sub_category = "한식";
 
-   setShop1Uri(String uri){
-     shop1_uri = uri;
-   }
-
-  setShop2Uri(String uri){
-    shop2_uri = uri;
-  }
-
-  setShop3Uri(String uri){
-    shop3_uri = uri;
-  }
-
   setIsDl(bool dl){
      isDl = dl;
   }
@@ -95,12 +84,36 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("매장 정보 1/3", style:appBarDefaultText),
+        title: Text("매장정보 입력", style:appBarDefaultText),
         centerTitle: true,
         elevation: 0.5,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24,),
+        ),
       ),
       body: SafeArea(top:false ,child: body(context)),
     );
+  }
+
+  setShop1Uri(String uri){
+    setState(() {
+      shop1_uri = uri;
+    });
+  }
+
+  setShop2Uri(String uri){
+    setState(() {
+      shop2_uri = uri;
+    });
+  }
+
+  setShop3Uri(String uri){
+    setState(() {
+      shop3_uri = uri;
+    });
   }
 
   Widget body(context) {
@@ -112,7 +125,7 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top:5.0),
+              padding: const EdgeInsets.only(top:12, bottom: 4),
               child: Align(child: Text("업종",style: Body2,),alignment: Alignment.centerLeft,),
             ),
             Consumer<StoreServiceProvider>(
@@ -123,67 +136,92 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
                       children:[
                         Expanded(
                             flex: 1,
-                            child:DropdownButton(
+                            child:
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 12),
+                              decoration: BoxDecoration(
+                                color: Color(0xFFF7F7F7),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(6.0)
+                                )
+                              ),
+                              child: DropdownButton(
+                                isExpanded: true,
+                                icon: Icon(Icons.arrow_drop_down, color: black,),
+                                iconSize: 24,
+                                elevation: 16,
+                                underline: Container(
+                                  color: Colors.transparent,
+                                ),
+                                value: ssp.selectCat ,
+                                items: ssp.catList.map((value) {
+                                  return DropdownMenuItem(
+                                    value: value.code_name,
+                                    child: Text(value.code_name,
+                                        style: Subtitle2.apply(
+                                            fontWeightDelta: 1,
+                                            color: secondary
+                                        )
+                                    ),
+                                  );
+                                }
+                                ).toList(),
+                                onChanged: (value){
+                                  ssp.fetchNewCategory(value);
+                                },
+                              ),
+                            )
+                        ),
+                        whiteSpaceW(8),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            decoration: BoxDecoration(
+                                color: Color(0xFFF7F7F7),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(6.0)
+                                )
+                            ),
+                            child: DropdownButton(
                               isExpanded: true,
-                              icon: Icon(Icons.arrow_drop_down, color: primary,),
+                              icon: Icon(Icons.arrow_drop_down, color: black,),
                               iconSize: 24,
                               elevation: 16,
                               underline: Container(
-                                height: 2,
-                                color: Color(0xFFDDDDDD),
+                                color: Colors.transparent,
                               ),
-                              value: ssp.selectCat ,
-                              items: ssp.catList.map((value) {
+                              value: ssp.selectSubCat,
+                              items: ssp.subCatList.map((value) {
                                 return DropdownMenuItem(
                                   value: value.code_name,
-                                  child: Text(value.code_name),
+                                  child: Text(value.code_name,
+                                      style: Subtitle2.apply(
+                                          fontWeightDelta: 1,
+                                          color: secondary
+                                      )
+                                  ),
                                 );
                               }
                               ).toList(),
                               onChanged: (value){
-                                ssp.fetchNewCategory(value);
+                                ssp.setSubCat(value);
                               },
-                            )
-                        ),
-                        whiteSpaceW(5),
-                        Expanded(
-                          flex: 1,
-                          child: DropdownButton(
-                            isExpanded: true,
-                            icon: Icon(Icons.arrow_drop_down, color: primary,),
-                            iconSize: 24,
-                            elevation: 16,
-                            underline: Container(
-                              height: 2,
-                              color: Color(0xFFDDDDDD),
                             ),
-                            value: ssp.selectSubCat,
-                            items: ssp.subCatList.map((value) {
-                              return DropdownMenuItem(
-                                value: value.code_name,
-                                child: Text(value.code_name),
-                              );
-                            }
-                            ).toList(),
-                            onChanged: (value){
-                              ssp.setSubCat(value);
-                            },
-                          ),
+                          )
                         )
                       ]
                   ),
                 );
               }
             ),
-            Padding(
-              padding: const EdgeInsets.only(top:5.0),
-              child: Align(child: Text("고객에게 보여질 업종을 선택해주세요.",style: Body2,),alignment: Alignment.centerRight,),
-            ),
+            whiteSpaceH(20),
             textField("매장명", "사업자등록증의 상호명을 입력해주세요.", nameCtrl,TextInputType.text),
-            textField("매장요약", "20자 내외로 입력해주세요.", descSrtCtrl,TextInputType.text),
+
+            textField("매장 요약글", "20자 내외로 입력해주세요.", descSrtCtrl,TextInputType.text),
             Padding(
               padding: const EdgeInsets.only(top:5.0),
-              child: Align(child: Text("매장설명",style: Body2,),alignment: Alignment.centerLeft,),
+              child: Align(child: Text("매장 설명",style: Body2,),alignment: Alignment.centerLeft,),
             ),
             whiteSpaceH(5),
             TextFormField(
@@ -196,12 +234,13 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
               decoration: InputDecoration(
                   border: OutlineInputBorder(
                       borderSide: BorderSide(
-                          color: Color(0xff888888)
+                          color: deActivatedGrey
                       )
                   ),
                   focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                          color:primary
+                          color: black,
+                        width: 2
                       )
                   )
               ),
@@ -240,26 +279,47 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
             textField("매장 영업시간", "매장 영업시간을 입력해주세요.", storeTimeCtrl,TextInputType.text),
             addressInfo(context),
             Padding(
-              padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
+              padding: const EdgeInsets.only(top: 40.0, bottom: 5.0),
               child: Align(
                 child: Text(
-                  "매장사진",
+                  "매장사진 ${[0,1,2,3].reduce((value, element) {
+                    if(element == 1) {
+                      if(shop1_uri == null || shop1_uri == ""){
+                        return value;
+                      } else {
+                        return value + 1;
+                      }
+                    }
+                    else if(element == 2) {
+                      if(shop2_uri == null || shop2_uri == ""){
+                        return value;
+                      } else {
+                        return value + 1;
+                      }
+                    }
+                    else {
+                      if(shop3_uri == null || shop3_uri == ""){
+                        return value;
+                      } else {
+                        return value + 1;
+                      }
+                    }
+                  })
+                  }/3",
                   style: Body2,
                 ),
                 alignment: Alignment.centerLeft,
               ),
             ),
-            Pictures(setShop1Uri),
-            Pictures(setShop2Uri),
-            Pictures(setShop3Uri),
-            Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15),
+            Row(
+              children: [
+                Pictures(setShop1Uri, shop1_uri),
+                Pictures(setShop2Uri, shop2_uri),
+                Pictures(setShop3Uri, shop3_uri),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom:40),
-              child: nextBtn(context),
-            ),
-//            whiteSpaceH(MediaQuery.of(context).padding.bottom)
+            whiteSpaceH(52),
+            nextBtn(context)
           ],
         ),
       ),
@@ -282,42 +342,58 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
 
   Widget addressInfo(context) {
     return Container(
-      width: double.infinity,
+      width: MediaQuery.of(context).size.width,
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 40.0),
+            padding: const EdgeInsets.only(bottom:4 ),
             child: Align(
               child: Text(
-                "매장주소",
+                "매장 주소",
                 style: Body2,
               ),
               alignment: Alignment.centerLeft,
             ),
           ),
-          TextFormField(
-            enabled: false,
-            controller: addressCtrl,
-            cursorColor: Color(0xff000000),
-            decoration: InputDecoration(
-              hintText: "주소입력",
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-              border: UnderlineInputBorder(
-                borderSide: BorderSide(color: Color(0xffdddddd), width: 2.0),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: deActivatedGrey,
+                width: 1
               ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: primary, width: 2.0),
+              borderRadius: BorderRadius.all(
+                Radius.circular(4.0)
               ),
+              color: Color(0xFFF7F7F7)
             ),
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          Stack(
-            alignment: Alignment.centerRight,
-            children: [
-              Builder(builder: (context) {
-                return InkWell(
+            width: MediaQuery.of(context).size.width,
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    enabled: false,
+                    controller: addressCtrl,
+                    cursorColor: Color(0xff000000),
+                    style: Subtitle2.apply(
+                        color: secondary,
+                        fontWeightDelta: 1
+                    ),
+                    decoration: InputDecoration(
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      border: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.transparent, width: 2.0),
+                      ),
+                      disabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.transparent, width: 2.0),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.transparent, width: 2.0),
+                      ),
+                    ),
+                  ),
+                ),
+                InkWell(
                     onTap: (){
                       Map<String, dynamic> args = {
                         "getData": getData,
@@ -326,48 +402,40 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
                     },
                     child: Text(
                       "지도찾기",
-                      style: _decorationStyleOf(context),
-                    ));
-              }),
-              TextFormField(
-                controller: detailCtrl,
-                cursorColor: Color(0xff000000),
-                decoration: InputDecoration(
-                  suffix: InkWell(
-                      onTap: () {
-                        Map<String, dynamic> args = {
-                          "getData": getData,
-                        };
-                        Navigator.of(context).pushNamed("/store/findAddress",arguments: args);
-                      },
-                      child: Text("지도찾기")),
-                  suffixStyle:
-                      Body1.apply(
-                        color: primary
+                      style: Body1.apply(
+                          color: primary,
+                          fontWeightDelta: 1
                       ),
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
-                  border: UnderlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xffdddddd), width: 2.0),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide:
-                        BorderSide(color: primary, width: 2.0),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 5.0),
-            child: Align(
-              child: Text(
-                "지도에서 매장의 위치를 지정해주세요.",
-                style: Body2,
-              ),
-              alignment: Alignment.centerRight,
+                    )
+                )
+              ],
             ),
-          )
+          ),
+          SizedBox(
+            height: 12,
+          ),
+          TextFormField(
+            controller: detailCtrl,
+            cursorColor: Color(0xff000000),
+            style: Subtitle2.apply(
+                color: black,
+                fontWeightDelta: 1
+            ),
+            decoration: InputDecoration(
+              hintText: "상세 주소를 입력해주세요.",
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              hintStyle: Subtitle2.apply(
+                  color: third,
+                  fontWeightDelta: -2
+              ),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: deActivatedGrey, width: 1.0),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: black, width: 2.0),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -378,8 +446,9 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
       Consumer<StoreServiceProvider>(
         builder: (context, sp, _) {
           return Container(
-            width: double.infinity,
-            height: 40,
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.symmetric(vertical: 8),
+            height: 60,
             child: RaisedButton(
               onPressed: () async {
                 Map<String, String> data = {
@@ -432,7 +501,18 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
                   Navigator.of(context).pushNamed("/store/apply3");
                 }
               },
-              child: Text("다음"),
+              child: Text("등록하기",
+                  style: Subtitle2.apply(
+                      color: white,
+                      fontWeightDelta: 1
+                  )
+              ),
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(6),
+                )
+              ),
               textColor: Colors.white,
               color: primary,
             ),
@@ -445,8 +525,9 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
 class Pictures extends StatefulWidget {
 
   final Function(String str) onSetUri;
+  final String uri;
 
-  Pictures(this.onSetUri);
+  Pictures(this.onSetUri, this.uri);
 
   @override
   _PicturesState createState() => _PicturesState();
@@ -468,46 +549,60 @@ class _PicturesState extends State<Pictures> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 5),
-      child: Column(
-        children: [
-          Container(
-            height: 40,
-            decoration:
-                BoxDecoration(border: Border.all(color: Color(0xffdddddd))),
-            child: Row(
-              children: [
-                Flexible(
-                  child: Container(
-                    height: 40,
-                    color: Color(0xffDDDDDD),
-                    child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          filePath,
-                          overflow: TextOverflow.ellipsis,
-                        )),
-                  ),
-                ),
-                InkWell(
-                  child: Container(
-                    width: 90,
-                    color: primary,
-                    child: Center(child: Text("파일첨부",
-                        style: Body2.apply(
-                          color: white
-                        )),),
-                  ),
-                  onTap: () {
-                    getImage();
-                  },
-                ),
-              ],
+    return (widget.uri != null && widget.uri != "") ? InkWell(
+      onTap: () {
+        setState(() {
+          widget.onSetUri("");
+        });
+      },
+      child: Container(
+        margin: EdgeInsets.only(right: 8.0),
+        width: 104,
+        height: 104,
+        decoration: BoxDecoration(
+            color: Color(0xFFF7F7F7),
+            borderRadius: BorderRadius.all(
+                Radius.circular(4)
             ),
-          ),
-        ],
+            border: Border.all(
+                color: Color(0xFFDDDDDD),
+                width: 1
+            ),
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: FileImage(
+                  File(widget.uri)
+              ),
+            )
+        ),
+      ),
+    )
+    :
+    InkWell(
+      onTap: () {
+          getImage();
+      },
+      child: Container(
+        margin: EdgeInsets.only(right: 8.0),
+        width: 104,
+        height: 104,
+        child: Center(
+            child: Image.asset(
+              "assets/icon/plus.png",
+              width: 36,
+              height: 36,
+            )
+        ),
+        decoration: BoxDecoration(
+            color: Color(0xFFF7F7F7),
+            borderRadius: BorderRadius.all(
+                Radius.circular(4)
+            ),
+            border: Border.all(
+                color: Color(0xFFDDDDDD),
+                width: 1
+            )
+        ),
       ),
     );
   }

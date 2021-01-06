@@ -79,6 +79,7 @@ class _InvitationList extends State<InvitationList> {
                     )
                 )
                   :
+
                   Stack(
                     children: [
                       SingleChildScrollView(
@@ -90,110 +91,6 @@ class _InvitationList extends State<InvitationList> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                // Padding(
-                                //   padding: EdgeInsets.symmetric(horizontal: 16),
-                                //   child: Column(
-                                //     crossAxisAlignment: CrossAxisAlignment.start,
-                                //     children: [
-                                //       whiteSpaceH(12),
-                                //       Text("성명",
-                                //           style: Body2.apply(
-                                //               color: third
-                                //           )
-                                //       ),
-                                //       Container(
-                                //           width: MediaQuery.of(context).size.width,
-                                //           height: 44,
-                                //           child: Row(
-                                //             children: [
-                                //               Expanded(
-                                //                 child: TextField(
-                                //                   autofocus: false,
-                                //                   cursorColor: Color(0xff000000),
-                                //                   style: Subtitle2,
-                                //                   decoration: InputDecoration(
-                                //                     contentPadding: EdgeInsets.all(12.0),
-                                //                     border: UnderlineInputBorder(
-                                //                       borderSide: BorderSide(color: Color(0xffdddddd), width: 1.0),
-                                //                     ),
-                                //                     focusedBorder: UnderlineInputBorder(
-                                //                       borderSide: BorderSide(color: black, width: 2.0),
-                                //                     ),
-                                //                   ),
-                                //                 ),
-                                //               ),
-                                //             ],
-                                //           )
-                                //       ),
-                                //     ],
-                                //   ),
-                                // ),
-                                // whiteSpaceH(12),
-                                // Padding(
-                                //   padding: EdgeInsets.symmetric(horizontal: 16),
-                                //   child: Column(
-                                //     crossAxisAlignment: CrossAxisAlignment.start,
-                                //     children: [
-                                //       whiteSpaceH(12),
-                                //       Text("연락처",
-                                //           style: Body2.apply(
-                                //               color: third
-                                //           )
-                                //       ),
-                                //       Container(
-                                //           width: MediaQuery.of(context).size.width,
-                                //           height: 44,
-                                //           child: Row(
-                                //             children: [
-                                //               Expanded(
-                                //                 child: TextField(
-                                //                   autofocus: false,
-                                //                   cursorColor: Color(0xff000000),
-                                //                   style: Subtitle2,
-                                //                   decoration: InputDecoration(
-                                //                     contentPadding: EdgeInsets.all(12.0),
-                                //                     border: UnderlineInputBorder(
-                                //                       borderSide: BorderSide(color: Color(0xffdddddd), width: 1.0),
-                                //                     ),
-                                //                     focusedBorder: UnderlineInputBorder(
-                                //                       borderSide: BorderSide(color: black, width: 2.0),
-                                //                     ),
-                                //                   ),
-                                //                 ),
-                                //               ),
-                                //             ],
-                                //           )
-                                //       ),
-                                //     ],
-                                //   ),
-                                // ),
-                                // Container(
-                                //   margin: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                                //   width: MediaQuery.of(context).size.width,
-                                //   height: 40,
-                                //   child: RaisedButton(
-                                //     elevation: 0.0,
-                                //
-                                //     color: white,
-                                //     onPressed: () {},
-                                //     child: Text("확인",
-                                //         style: Body1.apply(
-                                //             color: primary
-                                //         )
-                                //     ),
-                                //   ),
-                                //   decoration: BoxDecoration(
-                                //       border: Border.all(
-                                //           color: Color(0xFFDDDDDD),
-                                //           width: 1
-                                //       )
-                                //   ),
-                                // ),
-                                // Container(
-                                //     width: MediaQuery.of(context).size.width,
-                                //     height: 8,
-                                //     color: Color(0xFFF2F2F2)
-                                // ),
                                 Padding(
                                   padding: EdgeInsets.only(right: 16, top:14, bottom: 14),
                                   child: Row(

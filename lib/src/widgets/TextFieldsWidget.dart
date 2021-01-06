@@ -1,4 +1,5 @@
 import 'package:cashcook/src/utils/colors.dart';
+import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 
 Widget textFields(ctrl, TextInputType textType) {
@@ -19,18 +20,14 @@ Widget textFields(ctrl, TextInputType textType) {
           decoration: InputDecoration(
             floatingLabelBehavior: FloatingLabelBehavior.always,
             counterText:'', //
-            border: UnderlineInputBorder(
-              borderSide: BorderSide(color: Color(0xffdddddd), width: 2.0),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: deActivatedGrey, width: 1.0),
             ),
             focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: mainColor, width: 2.0),
+              borderSide: BorderSide(color: black, width: 2.0),
             ),
           ),
         ),
-        // Padding(
-        //   padding: const EdgeInsets.only(top:5.0),
-        //   child: Align(child: Text(msg,style: TextStyle(fontSize: 12, color: Color(0xff888888)),),alignment: Alignment.centerRight,),
-        // ),
       ],
     ),
   );

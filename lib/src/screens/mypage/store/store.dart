@@ -6,6 +6,7 @@ import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/TextFieldWidget.dart';
 import 'package:cashcook/src/widgets/TextFieldsWidget.dart';
 import 'package:cashcook/src/widgets/TextFieldssWidget.dart';
+import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
@@ -26,7 +27,7 @@ class _StoreApplyFirstStep extends State<StoreApplyFirstStep> {
   TextEditingController telCtrl3 = TextEditingController(); //연락처3
 
   TextEditingController emailCtrl = TextEditingController(); //이메일주소
-  String bank = "은행명"; //은행명
+  String bank = null; //은행명
   TextEditingController accountCtrl = TextEditingController(); //계좌번호
   String blUri;
 
@@ -41,8 +42,14 @@ class _StoreApplyFirstStep extends State<StoreApplyFirstStep> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("사업자 정보",
+        title: Text("제휴매장 신청",
           style: appBarDefaultText),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24,),
+        ),
         centerTitle: true,
         elevation: 0.0,
       ),
@@ -59,17 +66,41 @@ class _StoreApplyFirstStep extends State<StoreApplyFirstStep> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("사업자 정보",
+                    style: Subtitle2.apply(
+                      fontWeightDelta: 1
+                    )
+                  ),
+                  whiteSpaceH(4),
+                  Text("사업자등록증의 정보와 동일하게 입력해주세요.",
+                    style: Body2
+                  )
+                ],
+              ),
+            ),
             textField(
                 "상호명", "사업자등록증의 상호명을 입력해주세요.", nameCtrl, TextInputType.text),
             BusinessNumber(onSetUri: setBlUri,),
             textField(
                 "사업자번호", "사업자등록증의 내용으로 입력해주세요.", bnCtrl, TextInputType.text),
             textField(
-                "대표자명", "사업자등록증의 내용으로 입력해주세요.", ownerCtrl, TextInputType.text),
+                "대표자 명", "사업자등록증의 내용으로 입력해주세요.", ownerCtrl, TextInputType.text),
+            whiteSpaceH(38),
+            Text("대표자 정보",
+              style: Subtitle2.apply(
+                fontWeightDelta: 1
+              )
+            ),
+            whiteSpaceH(30),
             Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Align(child: Text("연락처",
+                  Align(child: Text("담당자 연락처",
                     style: Body2,),
                     alignment: Alignment.centerLeft,),
                   Row(
@@ -85,23 +116,38 @@ class _StoreApplyFirstStep extends State<StoreApplyFirstStep> {
                             child: textFields(telCtrl3, TextInputType.phone)),
                       ]
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5.0),
-                    child: Align(child: Text("연락가능한 연락처를 입력하여주세요",
-                      style: Body2
-                    ),
-                      alignment: Alignment.centerRight,),
-                  ),
-
+                  whiteSpaceH(20)
                 ]
             ),
             textField("이메일 주소", "사업자등록증의 상호명을 입력해주세요.", emailCtrl,
                 TextInputType.emailAddress),
             BackInfo(),
+            whiteSpaceH(40),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: Checkbox(
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    activeColor: mainColor,
+                    value: false,
+                    onChanged: (value){
+                      setState(() {
+                      });
+                    },
+                  ),
+                ),
+                whiteSpaceW(12),
+                Text("개인정보 제 3자 제공 및 위탁동의",style: TextStyle(fontSize: 14, color: third),)
+              ],
+            ),
+            whiteSpaceH(52),
             Padding(
-              padding: const EdgeInsets.only(top: 40.0, bottom: 40),
+              padding: const EdgeInsets.only(top: 12, bottom: 5),
               child: nextBtn(context),
-            )
+            ),
           ],
         ),
       ),
@@ -115,56 +161,81 @@ class _StoreApplyFirstStep extends State<StoreApplyFirstStep> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 5.0),
+            padding: const EdgeInsets.only(bottom: 4.0),
             child: Align(child: Text("계좌정보",
               style: Body2,),
               alignment: Alignment.centerLeft,),
           ),
-          DropdownButton(
+          Container(
+            padding: EdgeInsets.only(left: 12),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: deActivatedGrey,
+                width: 1
+              ),
+              borderRadius: BorderRadius.all(
+                Radius.circular(4)
+              ),
+              color: Color(0xFFF7F7F7)
+            ),
+            child: DropdownButton(
               isExpanded: true,
-              icon: Icon(Icons.arrow_drop_down, color: primary,),
+              style: Subtitle2.apply(
+                  fontWeightDelta: -2,
+                  color: black
+              ),
+              icon: Icon(Icons.arrow_drop_down, color: black,),
               iconSize: 24,
               elevation: 16,
               underline: Container(
-              height: 2,
-              color: Color(0xFFDDDDDD),
+                color: Colors.transparent,
               ),
               value: bank ,
-              items: ["은행명","광주은행", "국민은행", "기업은행", "NH농협", "대구은행", "부산은행", "MG새마을금고", "SH수협",
+              hint: Text("은행을 선택해주세요.",
+                style: Subtitle2.apply(
+                  fontWeightDelta: -2,
+                  color: third
+                ),
+              ),
+              items: ["광주은행", "국민은행", "기업은행", "NH농협", "대구은행", "부산은행", "MG새마을금고", "SH수협",
                 "SC은행", "신한은행", "외환은행", "우체국", "우리은행", "전북은행", "제주은행", "하나은행",].map((value) {
-                  return DropdownMenuItem(
+                return DropdownMenuItem(
                   value: value,
                   child: Text(value),
                 );
-                }
+              }
               ).toList(),
               onChanged: (value){
                 setState(() {
                   bank = value;
                 });
               },
+            ),
           ),
           SizedBox(height: 24,),
           TextFormField(
             controller: accountCtrl,
             cursorColor: Color(0xff000000),
+            style: Subtitle2.apply(
+                color: black,
+              fontWeightDelta: 1
+            ),
             decoration: InputDecoration(
-              hintText: "계좌번호",
+              hintText: "계좌번호를 입력해주세요.",
+              hintStyle: Subtitle2.apply(
+                  color: third,
+                  fontWeightDelta: -2
+              ),
+              contentPadding: EdgeInsets.symmetric(horizontal: 4),
               floatingLabelBehavior: FloatingLabelBehavior.always,
-              border: UnderlineInputBorder(
-                borderSide: BorderSide(color: Color(0xffdddddd), width: 2.0),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: deActivatedGrey, width: 1.0),
               ),
               focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: primary, width: 2.0),
+                borderSide: BorderSide(color: black, width: 2.0),
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 5.0),
-            child: Align(child: Text("본인 명의의 계좌를 입력해주세요.",
-              style: Body2,),
-              alignment: Alignment.centerRight,),
-          )
         ],
       ),
     );
@@ -173,7 +244,7 @@ class _StoreApplyFirstStep extends State<StoreApplyFirstStep> {
   Widget nextBtn(context) {
     return Container(
       width: double.infinity,
-      height: 40,
+      height: 44,
       child: RaisedButton(
         onPressed: () async {
           Map<String, dynamic> args = {
@@ -202,7 +273,7 @@ class _StoreApplyFirstStep extends State<StoreApplyFirstStep> {
             Fluttertoast.showToast(msg: "전화 번호의 자릿수가 부족 합니다.");
           } else if (emailCtrl.text == '' || emailCtrl.text == null) {
             Fluttertoast.showToast(msg: "이메일주소를 입력해 주세요");
-          } else if (bank == '은행명') {
+          } else if (bank == null) {
             Fluttertoast.showToast(msg: "은행명을 선택해 주세요");
           } else if (accountCtrl.text == '' || accountCtrl.text == null) {
             Fluttertoast.showToast(msg: "계좌번호를 입력해 주세요");
@@ -211,9 +282,20 @@ class _StoreApplyFirstStep extends State<StoreApplyFirstStep> {
             Navigator.of(context).pushNamed("/store/apply2", arguments: args);
           }
         },
-        child: Text("다음"),
+        child: Text("신청하기",
+          style: Subtitle2.apply(
+            color: white,
+            fontWeightDelta: 1
+          )
+        ),
+        elevation: 0,
         textColor: Colors.white,
         color: primary,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+                Radius.circular(6.0)
+            )
+        ),
       ),
     );
   }
@@ -258,29 +340,41 @@ class _BusinessNumberState extends State<BusinessNumber> {
             child: Align(child: Text("사업자등록증",style: Body2,),alignment: Alignment.centerLeft,),
           ),
           Container(
-            height: 40,
+            height: 44,
             decoration: BoxDecoration(
-                border: Border.all(color: Color(0xffdddddd))
+                border: Border.all(color: Color(0xffdddddd)),
+              borderRadius: BorderRadius.all(
+                Radius.circular(6.0),
+              )
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Flexible(
                   child: Container(
-                    height: 40,
-                    color: Color(0xffeeeeee),
-                    child: Align(alignment: Alignment.centerLeft,child: Text(filePath,overflow: TextOverflow.ellipsis,)),
+                    height: 44,
+                    color: Color(0xFFF7F7F7),
+                    child: Align(alignment: Alignment.centerLeft,child: Text(filePath,style: Subtitle2.apply(color:secondary, fontWeightDelta: 1),overflow: TextOverflow.ellipsis,)),
+                    padding: EdgeInsets.only(left: 16),
                   ),
                 ),
                 InkWell(
                   child: Container(
-                    width: 90,
-                    color: primary,
+                    width: 96,
+                    height: 46,
                     child: Center(child: Text("파일첨부", style:
-                      Body2.apply(
-                        color: white
+                      Body1.apply(
+                        color: white,
+                        fontWeightDelta: 1
                       )
                     ),
+                    ),
+                    decoration: BoxDecoration(
+                      color: primary,
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(6.0),
+                        bottomRight: Radius.circular(6.0)
+                      )
                     ),
                   ),
                   onTap: (){
