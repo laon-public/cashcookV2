@@ -61,6 +61,7 @@ class _Login3 extends State<Login3> {
 
             FirebaseMessaging fcm = FirebaseMessaging();
             String fcmToken = await fcm.getToken();
+            print(fcmToken);
             if(user.fcmToken == "" || user.fcmToken != fcmToken) {
               await Provider.of<UserProvider>(context, listen: false).patchFcmToken(fcmToken);
             }

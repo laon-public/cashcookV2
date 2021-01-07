@@ -108,7 +108,7 @@ class StoreServiceProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> setOrderMap(String store_id, String logType, String imp_uid, String email) async {
+  Future<String> setOrderMap(String store_id, String logType, String imp_uid, String email) async {
     orderLoading = true;
     notifyListeners();
 
@@ -155,10 +155,12 @@ class StoreServiceProvider with ChangeNotifier {
     final response = await service.orderPayment(orderMap);
 
     Map<String, dynamic> json = jsonDecode(response);
-    if(!isResponse(json)){
-      return Future.value(false);
+    print(response);
+    if(isResponse(json)){
+      String fcmToken = json['data']['fcmToken'];
+      return Future.value(fcmToken);
     }
-    return Future.value(true);
+    return Future.value(null);
   }
 
   Future<bool> confirmGame({int orderId = 0, int gameQuantity}) async {

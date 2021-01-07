@@ -6,6 +6,8 @@ import 'package:http/http.dart';
 void sendMessage(String title, String message, String fcmToken) async{
   Client client = Client();
 
+  print("sendMessage : $fcmToken");
+
   Map<String, dynamic> data = {
       "notification" : {
         "title" : title,

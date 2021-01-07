@@ -5,6 +5,7 @@ import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/services/IMPort.dart';
+import 'package:cashcook/src/utils/FcmController.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:provider/provider.dart' as P;
 import 'package:cashcook/src/widgets/showToast.dart';
@@ -145,9 +146,10 @@ class _Buy extends State<Buy> {
 
           if(widget.paymentType.contains("ORDER")) {
             await Provider.of<StoreServiceProvider>(context, listen: false).setOrderMap(widget.id, "ORDER", result['imp_uid'], widget.email).then((value) {
-              if (value) {
+              if (value != null) {
+                sendMessage("주문접수", "주문이 들어왔습니다", value);
                 Provider.of<StoreServiceProvider>(context, listen: false).orderComplete();
-                Fluttertoast.showToast(msg: "결제가 완료되었습니다.");
+                Fluttertoast.showToast(msg: "주문이 접수 되었습니다.");
               } else {
                 Fluttertoast.showToast(msg: "에러");
               }
