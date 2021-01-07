@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
@@ -278,6 +279,7 @@ class _StoreApplyFirstStep extends State<StoreApplyFirstStep> {
           } else if (accountCtrl.text == '' || accountCtrl.text == null) {
             Fluttertoast.showToast(msg: "계좌번호를 입력해 주세요");
           } else {
+            await Provider.of<StoreProvider>(context, listen: false).clearSuccess();
             await Provider.of<StoreServiceProvider>(context, listen: false).fetchCategory("01");
             Navigator.of(context).pushNamed("/store/apply2", arguments: args);
           }

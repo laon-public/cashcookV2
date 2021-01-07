@@ -72,9 +72,9 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
                     child:RaisedButton(
                         color: primary,
                         onPressed: () async {
-                          await Provider.of<StoreProvider>(context, listen: false).bak_comment(commentController.text);
+                          // await Provider.of<StoreProvider>(context, listen: false).bak_comment(commentController.text);
 
-                          await Provider.of<StoreProvider>(context, listen: false).clearSuccess();
+                          // await Provider.of<StoreProvider>(context, listen: false).clearSuccess();
 
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(builder: (context) => StoreApplyState()), (route) => false);

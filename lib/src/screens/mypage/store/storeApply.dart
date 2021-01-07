@@ -19,39 +19,111 @@ class _StoreApplyState extends State<StoreApplyState>{
   void initState() {
     // TODO: implement initState
     super.initState();
-    Provider.of<StoreProvider>(context, listen:false).postStoreService();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: white,
-      resizeToAvoidBottomInset: false,
-      body:
-      WillPopScope(
-        onWillPop: () async {
-          showToast("결과를 확인 후 버튼을 통해 이동해주세요!");
-
-          return Future.value(false);
-        },
-        child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            padding: EdgeInsets.only(top: 50.0, bottom: 20.0, left: 20.0, right: 20.0),
-            child:
-            Consumer<StoreProvider>(
-                builder: (context, sp, _){
-                  return (!sp.isStoreSuccess)?
-                  storeLoading()
-                      :
-                  (!sp.isMenuSuccess) ?
-                  menuLoading()
-                      :
-                  successBtn();
-                }
-            )
+        appBar: AppBar(
+          elevation: 0.5,
+          backgroundColor: white,
+          title: Text(
+            "매장신청 결과",
+            style: appBarDefaultText,
+          ),
+          centerTitle: true,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24, color: black,),
+          ),
         ),
-      )
+        backgroundColor: white,
+        resizeToAvoidBottomInset: false,
+        body: Consumer<StoreProvider>(
+          builder: (context, sp, _) {
+            return
+                sp.isStoreLoading ?
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      child: Center(
+                          child: CircularProgressIndicator(
+                              valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
+                          )
+                      ),
+                    )
+              :
+              Container(
+              width: MediaQuery.of(context).size. width,
+              height: MediaQuery.of(context).size.height,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            "assets/resource/character/excellent_12 1.png",
+                            width: 120,
+                            height: 120,
+                            fit: BoxFit.fill,
+                          ),
+                          Text("축하합니다.\n"
+                              "매장신청이 완료되었습니다.",
+                            style: Subtitle1.apply(
+                              fontWeightDelta: 1,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          whiteSpaceH(12),
+                          Text("매장적용은 사업자 정보 확인 후 완료되며,\n"
+                              "완료까지 약 일주일 정도 소요됩니다.",
+                            style: Body2.apply(
+                              color: secondary,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 60,
+                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      child: RaisedButton(
+                          onPressed: () async {
+                            await Provider.of<StoreProvider>(context, listen: false).clearMap();
+                            await Provider.of<StoreProvider>(context, listen: false).hideDetailView();
+                            await Provider.of<UserProvider>(context, listen: false).fetchMyInfo();
+
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(builder: (context) => MainMap()),
+                                    (route) => false);
+                          },
+                          color: primary,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(6)
+                              )
+                          ),
+                          child: Text(
+                              "완료",
+                              style: Subtitle2.apply(
+                                  color: white,
+                                  fontWeightDelta: 1
+                              )
+                          )
+                      ),
+                    )
+                  ]
+              ),
+            );
+          },
+        )
     );
   }
 

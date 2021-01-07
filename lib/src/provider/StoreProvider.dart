@@ -25,7 +25,7 @@ class StoreProvider with ChangeNotifier{
   Set<Marker> markers = {};
 
   // storeService View controll;
-  bool isStoreSuccess = false;
+  bool isStoreLoading = false;
   bool isMenuSuccess = false;
   int isCurrentPage = 0; // 0: 지도, 1: 배달서비스, 2: 마이페이지
   bool detailView = false;
@@ -111,11 +111,9 @@ class StoreProvider with ChangeNotifier{
       MapEntry("shop_images", MultipartFile.fromFileSync(shop3_path)),
     ]);
 
-    formData.fields.addAll(data.entries);
-  }
+    formData.fields.addAll({"comment" : ""}.entries);
 
-  void bak_comment(String comment) {
-    formData.fields.addAll({"comment" : comment}.entries);
+    formData.fields.addAll(data.entries);
   }
 
   bool bak_menu() {
@@ -279,9 +277,14 @@ class StoreProvider with ChangeNotifier{
     return 12742 * asin(sqrt(a));
   }
 
-  Future<bool> postStore() async {
-    bool isReturn = await service.postStore(formData);
-    return isReturn;
+  void postStore() async {
+    isStoreLoading = true;
+    notifyListeners();
+
+    await service.postStore(formData);
+
+    isStoreLoading = false;
+    notifyListeners();
   }
 
   Future<bool> patchStore(Map<String, String> data, String bn_uri) async {
@@ -320,16 +323,16 @@ class StoreProvider with ChangeNotifier{
 
   void postStoreService() async {
     await postStore();
-    isStoreSuccess = true;
+    isStoreLoading = true;
     notifyListeners();
-
-    await ssp.postMenu(menuData);
-    isMenuSuccess = true;
-    notifyListeners();
+    //
+    // await ssp.postMenu(menuData);
+    // isMenuSuccess = true;
+    // notifyListeners();
   }
 
   void clearSuccess() {
-    isStoreSuccess = false;
+    isStoreLoading = false;
     isMenuSuccess = false;
   }
 
