@@ -180,55 +180,6 @@ class OrderDetailState extends State<OrderDetail> {
                                   ),
                                 ],
                               ),
-                              Row(
-                                children: [
-                                  sp.selLog.logType != "QR"  // QR 결제 거르기
-                                      &&
-                                      !(sp.selLog.logType == "ORDER" && sp.selLog.bankInfo.cardName == "") && // 무통장 입금 거르기
-                                      sp.selLog.status == "BEFORE_CONFIRM" || sp.selLog.status == "REFUND_REJECT" ? Expanded(
-                                    child: InkWell(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) => Refund()
-                                            )
-                                        );
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.only(top: 12),
-                                        height: 40,
-                                        child: Center(
-                                          child: Text("환불 요청",
-                                            style: Body1.apply(
-                                              color: secondary,
-                                            ),
-                                          ),
-                                        ),
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Color(0xFFDDDDDD),
-                                                width: 1
-                                            )
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                      :
-                                  Container(),
-                                ],
-                              ),
-                              sp.selLog.logType != "QR"  // QR 결제 거르기
-                                  &&
-                                  !(sp.selLog.logType == "ORDER" && sp.selLog.bankInfo.cardName == "") && // 무통장 입금 거르기
-                                  sp.selLog.status == "BEFORE_CONFIRM" || sp.selLog.status == "REFUND_REJECT" ?
-                              Text("* 구매확정 전에는 환불요청을 하실 수 있습니다.",
-                                style: Caption.apply(
-
-                                ),
-                                textAlign: TextAlign.end,
-                              )
-                                  :
-                              Container()
                             ],
                           ),
                         ),

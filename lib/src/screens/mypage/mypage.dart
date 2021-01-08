@@ -1046,7 +1046,7 @@ class _MyPageState extends State<MyPage> {
                                 children: [
                                   agencyCheck == 1 ? BizInfo() : BizSelect(),
                                   QrCard(),
-                                  RefundCard(),
+                                  // RefundCard(),
                                   FranHistoryCard(),
                                   // ContentApplyCard(),
                                   // MenuApplyCard(),

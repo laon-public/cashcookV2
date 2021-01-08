@@ -218,6 +218,9 @@ class _ServiceDetail extends State<ServiceDetail> {
                                   ],
                                 )
                               :
+                              (up.selLog.status == "REFUND_CONFIRM") ?
+                                  Container()
+                              :
                               Row(
                                 children: [
                                   Expanded(
@@ -304,7 +307,7 @@ class _ServiceDetail extends State<ServiceDetail> {
                                 children: [
                                   up.selLog.logType != "QR"  // QR 결제 거르기
                                       &&
-                                  up.selLog.status == "BEFORE_CONFIRM" ? Container() : Expanded(
+                              up.selLog.status == "BEFORE_CONFIRM" || up.selLog.status == "REFUND_CONFIRM" || up.selLog.status == "CONFIRM"  ? Container() : Expanded(
                                     child: InkWell(
                                       onTap: () {
                                         Provider.of<UserProvider>(context, listen: false).confirmPurchase(up.selLog.id);
@@ -332,7 +335,7 @@ class _ServiceDetail extends State<ServiceDetail> {
                               ),
                               up.selLog.logType != "QR"  // QR 결제 거르기
                                   &&
-                              up.selLog.status == "BEFORE_CONFIRM" ? Container() :
+                                  up.selLog.status == "BEFORE_CONFIRM" || up.selLog.status == "REFUND_CONFIRM" || up.selLog.status == "CONFIRM"  ? Container() :
                               Text("* 구매확정을 하셔야 DL적립을 받으실 수 있습니다.",
                                 style: Caption.apply(
 

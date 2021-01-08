@@ -46,19 +46,30 @@ class _UserState extends State<UserState> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                Title(),
-                  Tabs(name: "계정정보 수정", routesName: "/myUpdate",),
-                  Tabs(name: "회원 탈퇴", routesName: "/withdraw",),
-
-                ]
-              )
+            Title(),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 8,
+              color: Color(0xFFF2F2F2)
+            ),
+            Tabs(name: "계정정보 수정", routesName: "/myUpdate",),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 44,
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: RaisedButton(
+                color: Color(0xFFF2F2F2),
+                child: Text("회원탈퇴",
+                  style: Subtitle2.apply(
+                    color: Color(0xFF555555),
+                    fontWeightDelta: -2
+                  )
+                ),
+                onPressed: () {
+                  Navigator.of(context).pushNamed("/withdraw",);
+                },
+                elevation: 0.0,
+              ),
             )
           ]
       )
@@ -70,31 +81,39 @@ class _UserState extends State<UserState> {
     print("title");
     UserCheck userCheck = Provider.of<UserProvider>(context,listen: false).loginUser;
         return Container(
-          margin: const EdgeInsets.only(top: 16.0, bottom: 24.0),
+          margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
             child: Row(
               children: [
-                RichText(
-                  text: TextSpan(
-                      style: Subtitle2,
-                      children: [
-                        TextSpan(text:"${userCheck.name}", style: Subtitle1),
-                        TextSpan(text:"님\n"),
-                        TextSpan(text:"반갑습니다.")
-                      ]
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("${userCheck.username}", style: Subtitle1.apply(
+                        color: primary,
+                        fontWeightDelta: 2
+                    )),
+                    Text("${userCheck.phone}", style: Subtitle2.apply(
+                      color: black,
+                      fontWeightDelta: -1
+                    ),)
+                  ],
                 ),
                 Spacer(),
                 RaisedButton(
-                  color: primary,
+                  color: white,
                   elevation: 0.0,
                   child: Text("로그아웃",
                     style: Body2.apply(
-                      color: white
+                      color: Color(0xFF555555)
                     )
                   ),
+
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(
-                        Radius.circular(6.0)
+                        Radius.circular(3)
+                      ),
+                      side: BorderSide(
+                        color: Color(0xFFCCCCCC),
+                        width: 1
                       )
                     ),
                     onPressed:(){
@@ -125,7 +144,7 @@ class Tabs extends StatelessWidget {
       },
       enableFeedback:false,
       child: Container(
-        height: 48,
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 13),
         child: Row(
           children: [
             Text(name,style: Body1,),
