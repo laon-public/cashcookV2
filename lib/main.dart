@@ -15,6 +15,7 @@ import 'package:cashcook/routes.dart';
 import 'package:cashcook/src/screens/mypage/mypage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -112,6 +113,8 @@ class _CashCook extends State<CashCook> {
       // 앱이 포그라운드 상태, 앱이 전면에 켜져있기 때문에 푸시 알림 UI가 표시되지 않음.
       onMessage: (Map<String, dynamic> message) async {
         print('on message $message');
+        FlutterRingtonePlayer.playNotification(looping: false);
+        Fluttertoast.showToast(msg: message['notification']['body']);
       },
       // 앱이 백그라운드 상태, 푸시 알림 UI를 누른 경우에 호출된다. 앱이 포그라운드로 전환됨.
       onResume: (Map<String, dynamic> message) async {

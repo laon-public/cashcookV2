@@ -93,4 +93,22 @@ class StoreService {
     return utf8.decode(response.bodyBytes);
   }
 
+  Future<String> fetchOrderList(int storeId, int page) async {
+    final response = await client.get(cookURL + "/franchises/orderlist/$storeId",
+        headers: {"Authorization": "BEARER ${dataStorage.token}"});
+    return utf8.decode(response.bodyBytes);
+  }
+
+  Future<String> patchOrder(Map<String, dynamic> data) async {
+    final response = await client.patch(cookURL + "/franchises/order",
+      body: json.encode(data),
+        headers: {
+            "Content-Type" : "application/json",
+            "Authorization": "BEARER ${dataStorage.token}"
+        }
+    );
+
+    return utf8.decode(response.bodyBytes);
+  }
+
 }

@@ -146,7 +146,7 @@ class _Buy extends State<Buy> {
 
           if(widget.paymentType.contains("ORDER")) {
             await Provider.of<StoreServiceProvider>(context, listen: false).setOrderMap(widget.id, "ORDER", result['imp_uid'], widget.email).then((value) {
-              if (value != null) {
+              if (value != null && value != "") {
                 sendMessage("주문접수", "주문이 들어왔습니다", value);
                 Provider.of<StoreServiceProvider>(context, listen: false).orderComplete();
                 Fluttertoast.showToast(msg: "주문이 접수 되었습니다.");

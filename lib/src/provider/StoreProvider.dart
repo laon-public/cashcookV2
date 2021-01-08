@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:cashcook/src/model/log/orderLog.dart';
 import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/model/store/menu.dart';
 import 'package:cashcook/src/model/store/menuedit.dart';
@@ -14,6 +15,7 @@ import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 
 class StoreProvider with ChangeNotifier{
@@ -42,6 +44,22 @@ class StoreProvider with ChangeNotifier{
   FormData formData;
   List<Map<String, dynamic>> menuData = [];
   List<ReviewModel> reviewList = [];
+
+  // Order List
+  List<ServiceLogListItem> orderList = [];
+  OrderLog selLog;
+  bool isLastList = false;
+  bool isLoading = false;
+
+  void startLoading() {
+    isLoading = true;
+    notifyListeners();
+  }
+
+  void stopLoading() {
+    isLoading = false;
+    notifyListeners();
+  }
 
   void setAppbar(bool value) {
     if(this.lookAppbar.toString() != value.toString()){
@@ -98,6 +116,64 @@ class StoreProvider with ChangeNotifier{
     detailView = false;
 
     notifyListeners();
+  }
+
+  void setSelOrderLog(OrderLog orderLog) {
+    selLog = orderLog;
+
+    notifyListeners();
+  }
+
+  Future<String> patchOrder(int orderId,String status) async {
+    Map<String, dynamic> data = {
+      "orderId": orderId,
+      "status": status
+    };
+
+    final response = await service.patchOrder(data);
+    Map<String, dynamic> json = jsonDecode(response);
+
+    if(isResponse(json)) {
+      if(selLog != null && selLog.id == orderId) {
+        selLog.status = status;
+      }
+
+      notifyListeners();
+
+      return json['data']['fcmToken'];
+    }
+
+    return null;
+  }
+
+  void fetchOrderList(int storeId,int page) async {
+    if(page == 1){
+      orderList.clear();
+    }
+    startLoading();
+
+    final response = await service.fetchOrderList(storeId, page);
+    print(response);
+
+    Map<String, dynamic> data = jsonDecode(response)['data'];
+
+    String date = "";
+    int idx = -1;
+    isLastList = ((data['serviceList'] as List).length == 0);
+    for(var json in data['serviceList']) {
+      String dateChk = DateFormat("yyyy.MM.dd").format(
+          DateTime.parse(json['created_at'].toString()));
+      int existIdx = orderList.indexWhere((log) => log.date == dateChk);
+      if(existIdx != -1) {
+        orderList[existIdx].addfromJson(json);
+      } else {
+        orderList.add(
+            ServiceLogListItem.initFromJson(json)
+        );
+      }
+    }
+
+    stopLoading();
   }
 
   void bak_store2(Map<String, String> data,String bn_path,

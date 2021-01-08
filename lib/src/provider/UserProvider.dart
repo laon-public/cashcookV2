@@ -144,6 +144,12 @@ class UserProvider with ChangeNotifier {
     this.storeModel = storeModel;
   }
 
+  setSellogStatus(String status) {
+    this.selLog.status = status;
+
+    notifyListeners();
+  }
+
   setLoginUser(UserCheck userCheck) {
     this.loginUser = userCheck;
   }

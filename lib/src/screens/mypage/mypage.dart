@@ -13,6 +13,7 @@ import 'package:cashcook/src/screens/mypage/points/integratedPoint.dart';
 import 'package:cashcook/src/screens/mypage/points/pointMgmt.dart';
 import 'package:cashcook/src/screens/mypage/points/pointMgmtUser.dart';
 import 'package:cashcook/src/screens/mypage/store/RefundRequest.dart';
+import 'package:cashcook/src/screens/mypage/store/orderList.dart';
 import 'package:cashcook/src/screens/qr/qrcreate.dart';
 import 'package:cashcook/src/screens/referrermanagement/referrermanagement.dart';
 import 'package:cashcook/src/utils/CustomBottomNavBar.dart';
@@ -1174,7 +1175,8 @@ class _MyPageState extends State<MyPage> {
     return InkWell(
       onTap: (){
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => pointMgmt()
+            // builder: (context) => pointMgmt()
+          builder: (context) => OrderList()
         ));
       },
       child: Container(

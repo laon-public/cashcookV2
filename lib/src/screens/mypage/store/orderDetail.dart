@@ -1,45 +1,38 @@
-import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cashcook/src/model/log/orderLog.dart';
 import 'package:cashcook/src/model/store/reviewWrite.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
-import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/screens/bargain/bargaingame2.dart';
 import 'package:cashcook/src/screens/buy/refund.dart';
-import 'package:cashcook/src/services/IMPort.dart';
 import 'package:cashcook/src/utils/FcmController.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 
-class ServiceDetail extends StatefulWidget {
-  ServiceDetail();
-
-  @override
-  _ServiceDetail createState() => _ServiceDetail();
+class OrderDetail extends StatefulWidget {
+    @override
+  OrderDetailState createState() => OrderDetailState();
 }
 
-class _ServiceDetail extends State<ServiceDetail> {
+class OrderDetailState extends State<OrderDetail> {
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> pointMap =  Provider.of<UserProvider>(context, listen: false).pointMap;
     // TODO: implement build
-    return Consumer<UserProvider>(
-      builder: (context,up,_){
+    return Consumer<StoreProvider>(
+      builder: (context,sp,_){
         return Scaffold(
           backgroundColor: white,
           appBar: AppBar(
             elevation: 0.5,
             title: Text(
-              "상세 이용내역",
+              "상세내역",
               style: appBarDefaultText,
             ),
             centerTitle: true,
@@ -64,7 +57,7 @@ class _ServiceDetail extends State<ServiceDetail> {
                           padding: EdgeInsets.only(top: 24.0, bottom: 4.0),
                           width: MediaQuery.of(context).size.width,
                           child: Text(
-                              DateFormat("yyyy.MM.dd").format(up.selLog.createdAt),
+                              DateFormat("yyyy.MM.dd").format(sp.selLog.createdAt),
                               style: Body2.apply(
                                   color: secondary
                               )
@@ -96,7 +89,7 @@ class _ServiceDetail extends State<ServiceDetail> {
                                           image: DecorationImage(
                                             fit: BoxFit.cover,
                                             image: NetworkImage(
-                                              up.selLog.storeImg,
+                                              sp.selLog.storeImg,
                                             ),
                                           )
                                       ),
@@ -111,7 +104,7 @@ class _ServiceDetail extends State<ServiceDetail> {
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             crossAxisAlignment: CrossAxisAlignment.end,
                                             children: [
-                                              Text(up.selLog.storeName,
+                                              Text(sp.selLog.storeName,
                                                 style: Body1.apply(
                                                     color: black,
                                                     fontWeightDelta: 3
@@ -119,13 +112,13 @@ class _ServiceDetail extends State<ServiceDetail> {
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                               whiteSpaceW(12),
-                                              Text(DateFormat('kk:mm').format(up.selLog.createdAt),
+                                              Text(DateFormat('kk:mm').format(sp.selLog.createdAt),
                                                   style: Body2
                                               ),
                                             ],
                                           ),
                                           whiteSpaceH(3),
-                                          Text(up.selLog.content,
+                                          Text(sp.selLog.content,
                                             style:Body2,
                                             overflow: TextOverflow.ellipsis,
                                           ),
@@ -138,7 +131,7 @@ class _ServiceDetail extends State<ServiceDetail> {
                                         mainAxisAlignment: MainAxisAlignment.end,
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
-                                          Text("${numberFormat.format(up.selLog.pay)} 원",
+                                          Text("${numberFormat.format(sp.selLog.pay)} 원",
                                               style: Body1.apply(
                                                   color: secondary,
                                                   fontWeightDelta: 1
@@ -151,93 +144,26 @@ class _ServiceDetail extends State<ServiceDetail> {
                                 ),
                               ),
                               whiteSpaceH(12),
-                              up.selLog.logType != "QR"  // QR 결제 거르기
-                                  &&
-                              up.selLog.status == "BEFORE_CONFIRM" ?
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: InkWell(
-                                        onTap: () async {
-                                          IMPortService importService = IMPortService();
 
-                                          try{
-                                            // 토큰 얻기
-                                            if(up.selLog.bankInfo.cardName != ""){
-                                              String response = await importService.getIMPORTToken();
-                                              Map<String, dynamic> json = jsonDecode(response);
-                                              String token = json['response']['access_token'];
-
-                                              response = await importService.refundIMPort(up.selLog.impUid, "주문취소", token);
-
-                                              json = jsonDecode(response);
-                                              if(json['response'] == null) {
-                                                throw Exception(json['message']);
-                                              }
-
-                                              if(json['response']['status'].toString() != "cancelled"){
-                                                showToast("IMPORT 환불실패");
-                                                return;
-                                              }
-                                            }
-
-                                            Provider.of<StoreProvider>(context,listen: false).patchOrder(up.selLog.id,"REFUND_CONFIRM").then((value) {
-                                              if (value != "") {
-                                                sendMessage("주문취소", "고객이 주문을 취소했습니다.", value);
-                                                showToast("환불 했습니다.");
-
-                                                Provider.of<UserProvider>(context, listen: false).setSellogStatus("REFUND_CONFIRM");
-                                              } else {
-                                                showToast("환불에 실패했습니다.");
-                                              }
-                                            });
-                                          } catch(e) {
-                                            showToast("환불 요청에 실패했습니다.");
-                                            print(e);
-                                          }
-                                        },
-                                        child: Container(
-                                          margin: EdgeInsets.only(top: 12),
-                                          height: 40,
-                                          child: Center(
-                                            child: Text("주문취소",
-                                              style: Body1.apply(
-                                                color: secondary,
-                                              ),
-                                            ),
-                                          ),
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: Color(0xFFDDDDDD),
-                                                  width: 1
-                                              )
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              :
                               Row(
                                 children: [
-                                  Expanded(
+                                  sp.selLog.status != "BEFORE_CONFIRM" ?  Container() : Expanded(
                                     child: InkWell(
-                                      onTap: (up.selLog.reviewId == 0 ) ? () async {
-                                        await Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) => ReviewWrite(
-                                                  store_id: up.selLog.storeId,
-                                                  order_id: up.selLog.id,
-                                                )));
-                                      }
-                                          :
-                                          () {
-                                        showToast("이미 리뷰를 작성 했습니다.");
+                                      onTap: () async {
+                                        await sp.patchOrder(sp.selLog.id,"ORDER_CONFIRM").then((value) {
+                                          if(value != null && value != "") {
+                                            sendMessage("주문접수", "매장에서 주문이 접수되었습니다", value);
+                                            showToast("주문을 접수 하셨습니다.");
+                                          } else {
+                                            showToast("주문접수에 실패 했습니다.");
+                                          }
+                                        });
                                       },
                                       child: Container(
+                                        margin: EdgeInsets.only(top: 12),
                                         height: 40,
                                         child: Center(
-                                          child: Text("리뷰작성",
+                                          child: Text("접수완료",
                                             style: Body1.apply(
                                               color: secondary,
                                             ),
@@ -252,38 +178,27 @@ class _ServiceDetail extends State<ServiceDetail> {
                                       ),
                                     ),
                                   ),
-                                  whiteSpaceW(8.0),
-                                  Expanded(
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  sp.selLog.logType != "QR"  // QR 결제 거르기
+                                      &&
+                                      !(sp.selLog.logType == "ORDER" && sp.selLog.bankInfo.cardName == "") && // 무통장 입금 거르기
+                                      sp.selLog.status == "BEFORE_CONFIRM" || sp.selLog.status == "REFUND_REJECT" ? Expanded(
                                     child: InkWell(
                                       onTap: () {
-                                        if(up.selLog.status == "REFUND_REQUEST") {
-                                          showToast("환불 요청 중에는\n게임을 진행할 수 없습니다.");
-                                          return;
-                                        }
-
-                                        if(up.selLog.status == "REFUND_CONFIRM") {
-                                          showToast("환불된 주문에는\n게임을 진행할 수 없습니다.");
-                                          return;
-                                        }
-                                        if(up.selLog.playGame){
-                                          showToast("게임을 이미 진행하였습니다.");
-                                        } else {
-                                          print("CARAT : ${pointMap['CARAT']}");
-                                          Navigator.of(context).pushAndRemoveUntil(
-                                              MaterialPageRoute(
-                                                  builder: (context) => BargainGame2(
-                                                      orderId: up.selLog.id,
-                                                      orderPayment: up.selLog.pay - (up.selLog.dl * 100),
-                                                      totalCarat: pointMap['CARAT']
-                                                  ))
-                                              , (route) => false);
-                                        }
-
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) => Refund()
+                                            )
+                                        );
                                       },
                                       child: Container(
+                                        margin: EdgeInsets.only(top: 12),
                                         height: 40,
                                         child: Center(
-                                          child: Text("실시간 흥정",
+                                          child: Text("환불 요청",
                                             style: Body1.apply(
                                               color: secondary,
                                             ),
@@ -298,47 +213,22 @@ class _ServiceDetail extends State<ServiceDetail> {
                                       ),
                                     ),
                                   )
+                                      :
+                                  Container(),
                                 ],
                               ),
-                              Row(
-                                children: [
-                                  up.selLog.logType != "QR"  // QR 결제 거르기
-                                      &&
-                                  up.selLog.status == "BEFORE_CONFIRM" ? Container() : Expanded(
-                                    child: InkWell(
-                                      onTap: () {
-                                        Provider.of<UserProvider>(context, listen: false).confirmPurchase(up.selLog.id);
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.only(top: 12),
-                                        height: 40,
-                                        child: Center(
-                                          child: Text("구매확정",
-                                            style: Body1.apply(
-                                              color: secondary,
-                                            ),
-                                          ),
-                                        ),
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Color(0xFFDDDDDD),
-                                                width: 1
-                                            )
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              up.selLog.logType != "QR"  // QR 결제 거르기
+                              sp.selLog.logType != "QR"  // QR 결제 거르기
                                   &&
-                              up.selLog.status == "BEFORE_CONFIRM" ? Container() :
-                              Text("* 구매확정을 하셔야 DL적립을 받으실 수 있습니다.",
+                                  !(sp.selLog.logType == "ORDER" && sp.selLog.bankInfo.cardName == "") && // 무통장 입금 거르기
+                                  sp.selLog.status == "BEFORE_CONFIRM" || sp.selLog.status == "REFUND_REJECT" ?
+                              Text("* 구매확정 전에는 환불요청을 하실 수 있습니다.",
                                 style: Caption.apply(
 
                                 ),
                                 textAlign: TextAlign.end,
-                              ),
+                              )
+                                  :
+                              Container()
                             ],
                           ),
                         ),
@@ -353,7 +243,7 @@ class _ServiceDetail extends State<ServiceDetail> {
                           ),
                         ),
                         Column(
-                            children: up.selLog.mainCatList.map((e) =>
+                            children: sp.selLog.mainCatList.map((e) =>
                                 mainCatItem(e)
                             ).toList()
                         ),
@@ -369,7 +259,7 @@ class _ServiceDetail extends State<ServiceDetail> {
                                   )
                               ),
                               Spacer(),
-                              Text("${numberFormat.format(up.selLog.pay)}원",
+                              Text("${numberFormat.format(sp.selLog.pay)}원",
                                   style: Body1.apply(
                                       color: primary,
                                       fontWeightDelta: 1
@@ -396,14 +286,14 @@ class _ServiceDetail extends State<ServiceDetail> {
                                   )
                               ),
                               whiteSpaceW(16),
-                              Text("${numberFormat.format(up.selLog.dl)} DL",
+                              Text("${numberFormat.format(sp.selLog.dl)} DL",
                                   style: Body1.apply(
                                       color: primary,
                                       fontWeightDelta: 1
                                   )
                               ),
                               Spacer(),
-                              Text("- ${numberFormat.format(up.selLog.dl * 100)}원",
+                              Text("- ${numberFormat.format(sp.selLog.dl * 100)}원",
                                   style: Body1.apply(
                                       color: secondary,
                                       fontWeightDelta: 1
@@ -423,35 +313,8 @@ class _ServiceDetail extends State<ServiceDetail> {
                                   )
                               ),
                               Spacer(),
-                              Text("${numberFormat.format(up.selLog.pay - (up.selLog.dl * 100))}원",
+                              Text("${numberFormat.format(sp.selLog.pay - (sp.selLog.dl * 100))}원",
                                   style: Subtitle2.apply(
-                                      color: primary,
-                                      fontWeightDelta: 1
-                                  )
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(vertical: 12.0),
-                          width: MediaQuery.of(context).size.width,
-                          child: Row(
-                            children: [
-                              Text("* 실시간 흥정",
-                                  style: Body1.apply(
-                                      color: black,
-                                      fontWeightDelta: 1
-                                  )
-                              ),
-                              Spacer(),
-                              Text(up.selLog.playGame ?
-                              up.selLog.pay == up.selLog.dl * 100 ?
-                              "DL 결제는 실시간 흥정이 제공되지 않습니다."
-                                  :
-                              "${numberFormat.format(up.selLog.gameQuantity)}DL 적립"
-                                  :
-                              "아직 게임을 진행하지 않았습니다.",
-                                  style: Body1.apply(
                                       color: primary,
                                       fontWeightDelta: 1
                                   )
@@ -485,11 +348,11 @@ class _ServiceDetail extends State<ServiceDetail> {
                           whiteSpaceH(22),
                           Container(
                               width:MediaQuery.of(context).size.width,
-                              child: Text(up.selLog.logType == "ORDER" ?
-                              up.selLog.bankInfo.cardName == "" ?
+                              child: Text(sp.selLog.logType == "ORDER" ?
+                              sp.selLog.bankInfo.cardName == "" ?
                               "무통장 입금"
                                   :
-                              "신용카드 / ${up.selLog.bankInfo.cardName} / ${up.selLog.bankInfo.cardNumber}"
+                              "신용카드 / ${sp.selLog.bankInfo.cardName} / ${sp.selLog.bankInfo.cardNumber}"
                                   :
                               "현장 QR결제 진행",
                                 style: Body1.apply(
@@ -513,29 +376,29 @@ class _ServiceDetail extends State<ServiceDetail> {
   Widget mainCatItem(OrderMainCat omc) {
     int idx = 0;
     return Container(
-      width: MediaQuery.of(context).size.width,
-      child:Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children:
-          [
-            Padding(
-                padding: EdgeInsets.only(top: 26),
-                child:Text(omc.menuName,
-                  style: Body2.apply(
-                    fontWeightDelta: 1
-                  ),
-                  textAlign: TextAlign.start,
-                )
-            ),
-            Column(
+        width: MediaQuery.of(context).size.width,
+        child:Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children:
+            [
+              Padding(
+                  padding: EdgeInsets.only(top: 26),
+                  child:Text(omc.menuName,
+                    style: Body2.apply(
+                        fontWeightDelta: 1
+                    ),
+                    textAlign: TextAlign.start,
+                  )
+              ),
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children:
-                  omc.subCatList.map((e) =>
+                omc.subCatList.map((e) =>
                     subCatItem(e)
-                  ).toList(),
-            )
-          ]
-      )
+                ).toList(),
+              )
+            ]
+        )
     );
   }
 
@@ -554,7 +417,7 @@ class _ServiceDetail extends State<ServiceDetail> {
                             child:Text(
                                 "${osc.menuName}",
                                 style: Body1.apply(
-                                  color: black
+                                    color: black
                                 )
                             ),
                           ),
@@ -562,7 +425,7 @@ class _ServiceDetail extends State<ServiceDetail> {
                             child:Text(
                                 "${numberFormat.format(osc.price)}원",
                                 style: Body2.apply(
-                                    color: third,
+                                  color: third,
                                   fontWeightDelta: 1,
                                 )
                             ),
@@ -601,7 +464,7 @@ class _ServiceDetail extends State<ServiceDetail> {
                             textAlign: TextAlign.end,
                             style: Body1.apply(
                                 color: secondary,
-                              fontWeightDelta: 1
+                                fontWeightDelta: 1
                             )
                         )
                     )

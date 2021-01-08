@@ -67,6 +67,7 @@ dependencies:
   circular_check_box: ^1.0.4
   firebase_messaging: 5.1.5
   get: ^3.4.2
+  flutter_ringtone_player: ^2.0.0
 
 #  qr_code_scanner: ^0.0.13
 

@@ -6,6 +6,7 @@ import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/bargain/bargaingame2.dart';
 import 'package:cashcook/src/screens/buy/buy.dart';
 import 'package:cashcook/src/screens/mypage/info/serviceList.dart';
+import 'package:cashcook/src/utils/FcmController.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
@@ -562,8 +563,11 @@ class _OrderMenu extends State<OrderMenu> {
                                   onTap: () async {
                                     if(!ssp.orderLoading) {
                                       if(currentMethod == 1){ // 무통장입금 결제
-                                        await ssp.setOrderMap(widget.store_id, "ORDER", "",
+                                        String fcmToken = await ssp.setOrderMap(widget.store_id, "ORDER", "",
                                           emailCtrl.text,);
+                                        if(fcmToken != null && fcmToken != "") {
+                                          sendMessage("주문접수", "주문이 들어왔습니다", fcmToken);
+                                        }
                                         ssp.orderComplete();
 
                                         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
