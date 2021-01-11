@@ -13,6 +13,7 @@ import 'package:cashcook/src/screens/mypage/points/RP/rpExchange.dart';
 import 'package:cashcook/src/screens/mypage/points/chargePoint.dart';
 import 'package:cashcook/src/screens/mypage/points/pointHistory.dart';
 import 'package:cashcook/src/screens/mypage/store/address.dart';
+import 'package:cashcook/src/screens/mypage/store/detailAddress.dart';
 import 'package:cashcook/src/screens/mypage/store/store_3.dart';
 import 'package:cashcook/src/screens/mypage/store/store_4.dart';
 import 'package:cashcook/src/screens/splash.dart';
@@ -37,6 +38,7 @@ final routes = {
   "/point/dl":(context) => DLSend(),
   "/point/rp":(context) => RPExchange(),
   "/store/findAddress":(context) => FindAddress(),
+  "/store/findAddress/detail":(context) => DetailAddress(),
   "/notice" : (context) => Notice(),
   "/faq": (context) => Faq(),
   "/inquiry": (context) => Inquiry(),

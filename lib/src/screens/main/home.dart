@@ -4,6 +4,7 @@ import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/CustomBottomNavBar.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
+import 'package:cashcook/src/utils/geocoder.dart';
 import 'package:cashcook/src/widgets/StoreItem.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
@@ -35,6 +36,7 @@ class _Home extends State<Home> {
   double lat;
   double lon;
   String filterAddress = "현위치 사용";
+  String addressDetail = "";
 
 
   List<dynamic> serviceName = [
@@ -87,8 +89,10 @@ class _Home extends State<Home> {
     setState(() {
       this.lat = lat;
       this.lon = lon;
-      this.filterAddress = address.toString().split(" ")[3];
+      this.filterAddress = address;
     });
+
+    P.Provider.of<StoreServiceProvider>(context, listen: false).setAddress(address);
   }
 
   @override
@@ -104,6 +108,7 @@ class _Home extends State<Home> {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       if(this.lat == null && this.lon == null){
+        // 초반
         var currentLocation =  await location.getLocation();
 
         String start = (currentLocation.latitude + 0.04).toString() +
@@ -149,7 +154,7 @@ class _Home extends State<Home> {
                     Map<String, dynamic> args = {
                       "getData": getData,
                     };
-                    await Navigator.of(context).pushNamed("/store/findAddress",arguments: args);
+                    await Navigator.of(context).pushNamed("/store/findAddress/detail",arguments: args);
                   },
                   child: Container(
                       padding: EdgeInsets.all(15.0),
@@ -161,7 +166,10 @@ class _Home extends State<Home> {
                             height: 16
                           ),
                           whiteSpaceW(4),
-                          Text(this.filterAddress,
+                          Text("${(this.filterAddress == "현위치 사용") ?
+                            this.filterAddress
+                                :
+                            this.filterAddress.split(" ")[3]}",
                             style: Body2.apply(color: secondary),
                             textAlign: TextAlign.end,
                           ),
@@ -809,7 +817,7 @@ class _Home extends State<Home> {
                             Map<String, dynamic> args = {
                               "getData": getData,
                             };
-                            await Navigator.of(context).pushNamed("/store/findAddress",arguments: args);
+                            await Navigator.of(context).pushNamed("/store/findAddress/detail",arguments: args);
                           },
                           child: Container(
                               child: Row(
@@ -820,7 +828,10 @@ class _Home extends State<Home> {
                                       height: 16,
                                     ),
                                     whiteSpaceW(4.0),
-                                    Text(this.filterAddress,
+                                    Text("${(this.filterAddress == "현위치 사용") ?
+                                    this.filterAddress
+                                        :
+                                    this.filterAddress.split(" ")[3]}",
                                       style: TextStyle(
                                           fontSize: 13,
                                           fontFamily: 'noto',

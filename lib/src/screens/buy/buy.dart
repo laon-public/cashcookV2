@@ -29,9 +29,11 @@ class Buy extends StatefulWidget {
   int dl;
   bool isPlayGame;
   String email;
+  String comment;
+  bool isDelivery;
 
   Buy({this.name, this.pay, this.id, this.point, this.quantity,
-      this.paymentType, this.dl, this.isPlayGame = false, this.email = ""}); //  Buy({this.name, this.pay});
+      this.paymentType, this.dl, this.isPlayGame = false, this.email = "", this.comment ,this.isDelivery}); //  Buy({this.name, this.pay});
 
 
   @override
@@ -145,9 +147,14 @@ class _Buy extends State<Buy> {
           P.Provider.of<StoreServiceProvider>(context, listen: false).setBankInfo(cardName, cardNumber);
 
           if(widget.paymentType.contains("ORDER")) {
-            await Provider.of<StoreServiceProvider>(context, listen: false).setOrderMap(widget.id, "ORDER", result['imp_uid'], widget.email).then((value) {
+            await Provider.of<StoreServiceProvider>(context, listen: false).setOrderMap(widget.id, "ORDER", result['imp_uid'], widget.email, widget.comment,widget.isDelivery).then((value) {
               if (value != null && value != "") {
-                sendMessage("주문접수", "주문이 들어왔습니다", value);
+                if(widget.isDelivery) {
+                  sendMessage("배달", "배달요청이 들어왔습니다", value);
+                } else {
+                  sendMessage("주문접수", "주문이 들어왔습니다", value);
+                }
+
                 Provider.of<StoreServiceProvider>(context, listen: false).orderComplete();
                 Fluttertoast.showToast(msg: "주문이 접수 되었습니다.");
               } else {

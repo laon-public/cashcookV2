@@ -1,5 +1,6 @@
 import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/model/store/menu.dart';
+import 'package:cashcook/src/model/usercheck.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
@@ -30,7 +31,9 @@ class OrderMenu extends StatefulWidget {
 class _OrderMenu extends State<OrderMenu> {
   int currentMethod = 0;
   bool isAgreeCheck = false;
+  bool isDelivery = false;
   TextEditingController emailCtrl = TextEditingController();
+  TextEditingController commentCtrl = TextEditingController();
 
 
   Map<int, String> paymentType = {
@@ -46,8 +49,10 @@ class _OrderMenu extends State<OrderMenu> {
   }
   @override
   Widget build(BuildContext context) {
+    UserCheck my = Provider.of<UserProvider>(context, listen: false).loginUser;
     Map<String, dynamic> pointMap =  Provider.of<UserProvider>(context, listen: false).pointMap;
     StoreModel store = widget.store == null ? Provider.of<StoreProvider>(context, listen: false).selStore : widget.store;
+    String address = Provider.of<StoreServiceProvider>(context, listen: false).address;
     // TODO: implement build
     return Stack(
       children: [
@@ -72,6 +77,86 @@ class _OrderMenu extends State<OrderMenu> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      store.store.deliveryStatus == "1" ?
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16,vertical: 12),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 11),
+                              child: Row(
+                                children: [
+                                  Text("배달여부",
+                                      style: Subtitle2.apply(
+                                          fontWeightDelta: 3
+                                      )
+                                  ),
+                                  Spacer(),
+                                  Switch(
+                                    activeColor: primary,
+                                    value: isDelivery,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        isDelivery = val;
+                                      });
+                                    },
+                                  )
+                                ],
+                              ),
+                            ),
+                            whiteSpaceH(12),
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 11),
+                              child: Row(
+                                children: [
+                                  Text("주문자 정보",
+                                      style: Subtitle2.apply(
+                                          fontWeightDelta: 3
+                                      )
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 17),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("${address.split("대한민국 ")[1].split("/")[0]}",
+                                    style: Body1.apply(
+                                      color: black
+                                    )
+                                  ),
+                                  Text("${address.split("대한민국 ")[1].split("/")[1]}",
+                                      style: Body2.apply(
+                                        color: third,
+                                      )
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 13),
+                              child: Text("연락처 : ${my.phone}",
+                                  style: Body1.apply(
+                                      color: black
+                                  )
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                      :
+                      Container(),
+                      store.store.deliveryStatus == "1" ?
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 8,
+                        color: Color(0xFFF2F2F2)
+                      )
+                      :
+                      Container(),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16),
                         child: Column(
@@ -356,33 +441,6 @@ class _OrderMenu extends State<OrderMenu> {
                                 whiteSpaceH(12)
                               ],
                             ) : Container(),
-                            Container(
-                              margin: EdgeInsets.only(bottom: 20),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("영수증을 받을 이메일을 입력해주세요. (선택)",
-                                      style: Body2
-                                  ),
-                                  TextField(
-                                    style: Subtitle2.apply(
-                                        fontWeightDelta: 1
-                                    ),
-                                    controller: emailCtrl,
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
-                                      border: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Color(0xffdddddd), width: 1.0),
-                                      ),
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: black, width: 2.0),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
                             InkWell(
                               onTap: () {
                                 setState(() {
@@ -426,7 +484,95 @@ class _OrderMenu extends State<OrderMenu> {
                                   )
                               ),
                             ),
-                            whiteSpaceH(53),
+                            whiteSpaceH(24),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 8,
+                        color: Color(0xFFF2F2F2)
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            whiteSpaceH(12),
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 11),
+                              child: Text("기타",
+                                  style: Subtitle2.apply(
+                                      fontWeightDelta: 3
+                                  )
+                              ),
+                            ),
+                            whiteSpaceH(12),
+                            Container(
+                              margin: EdgeInsets.only(bottom: 20),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("영수증 요청 (선택)",
+                                      style: Body2
+                                  ),
+                                  TextField(
+                                    style: Subtitle2.apply(
+                                        fontWeightDelta: 1
+                                    ),
+                                    controller: emailCtrl,
+                                    decoration: InputDecoration(
+                                      hintText: "받으실 이메일을 입력해주세요.",
+                                      hintStyle: Subtitle2.apply(
+                                          color: deActivatedGrey,
+                                          fontWeightDelta: 1
+                                      ),
+                                      contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                                      border: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: Color(0xffdddddd), width: 1.0),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: black, width: 2.0),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(bottom: 20),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("기사님께 한마디",
+                                      style: Body2
+                                  ),
+                                  TextField(
+                                    style: Subtitle2.apply(
+                                        fontWeightDelta: 1
+                                    ),
+                                    controller: commentCtrl,
+                                    decoration: InputDecoration(
+                                      hintText: "요청사항을 입력해주세요.",
+                                      hintStyle: Subtitle2.apply(
+                                          color: deActivatedGrey,
+                                          fontWeightDelta: 1
+                                      ),
+                                      contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                                      border: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: Color(0xffdddddd), width: 1.0),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: black, width: 2.0),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            whiteSpaceH(52)
                           ],
                         ),
                       ),
@@ -446,7 +592,7 @@ class _OrderMenu extends State<OrderMenu> {
 
                                       if((int.parse(ss.dlCtrl.text == "" ? "0" : ss.dlCtrl.text) * 100) == ss.orderPay){
                                         await ss.setOrderMap(widget.store_id, "ORDER", "",
-                                          emailCtrl.text,);
+                                          emailCtrl.text,commentCtrl.text,isDelivery);
                                         await ss.orderComplete();
                                         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
                                           isHome: true, afterGame: true,
@@ -564,9 +710,13 @@ class _OrderMenu extends State<OrderMenu> {
                                     if(!ssp.orderLoading) {
                                       if(currentMethod == 1){ // 무통장입금 결제
                                         String fcmToken = await ssp.setOrderMap(widget.store_id, "ORDER", "",
-                                          emailCtrl.text,);
+                                          emailCtrl.text,commentCtrl.text,isDelivery);
                                         if(fcmToken != null && fcmToken != "") {
-                                          sendMessage("주문접수", "주문이 들어왔습니다", fcmToken);
+                                          if(isDelivery) {
+                                            sendMessage("배달요청", "배달 요청이 들어왔습니다", fcmToken);
+                                          } else {
+                                            sendMessage("주문접수", "주문이 들어왔습니다", fcmToken);
+                                          }
                                         }
                                         ssp.orderComplete();
 
@@ -584,6 +734,8 @@ class _OrderMenu extends State<OrderMenu> {
                                                   dl: (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text)),
                                                   isPlayGame: false,
                                                   email: emailCtrl.text,
+                                                  comment: commentCtrl.text,
+                                                  isDelivery: isDelivery
                                                 )));
                                       }
                                     } else {
@@ -618,7 +770,7 @@ class _OrderMenu extends State<OrderMenu> {
                                     if(!ssp.orderLoading) {
                                       if(currentMethod == 1){ // 무통장입금 결제
                                         await ssp.setOrderMap(widget.store_id, "ORDER", "",
-                                          emailCtrl.text);
+                                          emailCtrl.text,commentCtrl.text,isDelivery);
                                         ssp.orderComplete();
 
                                         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => BargainGame2(
@@ -635,6 +787,8 @@ class _OrderMenu extends State<OrderMenu> {
                                                   dl: (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text)),
                                                   isPlayGame: true,
                                                   email: emailCtrl.text,
+                                                  isDelivery: isDelivery,
+                                                  comment: commentCtrl.text,
                                                 )));
                                       }
                                     } else {

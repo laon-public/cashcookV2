@@ -35,10 +35,11 @@ class OrderLog {
   DateTime updatedAt;
 
   BankInfo bankInfo;
+  DeliveryAddress deliveryAddress;
   List<OrderMainCat> mainCatList;
 
   OrderLog({this.id, this.storeName, this.storeImg,this.storeId, this.content,
-      this.pay, this.dl, this.logType, this.reviewId, this.gameQuantity, this.confirm, this.bankInfo ,this.createdAt, this.updatedAt});
+      this.pay, this.dl, this.logType, this.reviewId, this.gameQuantity, this.confirm, this.bankInfo , this.deliveryAddress,this.createdAt, this.updatedAt});
 
   OrderLog.fromJson(Map<String, dynamic> json)
     :
@@ -59,6 +60,7 @@ class OrderLog {
       this.createdAt = DateTime.parse(json['created_at'].toString()),
       this.updatedAt = DateTime.parse(json['updated_at'].toString()),
       this.bankInfo = BankInfo.fromJson(json['bankInfo']),
+      this.deliveryAddress = DeliveryAddress.fromJson(json['deliveryAddress']),
       this.mainCatList = (json['mainCatList'] as List).map((e) => OrderMainCat.fromJson(e)).toList();
 }
 
@@ -77,6 +79,27 @@ class BankInfo {
     :
         this.cardName = json['cardName'],
         this.cardNumber = json['cardNumber'];
+}
+
+class DeliveryAddress {
+  int orderId;
+
+  String address;
+  String detail;
+  String userPhone;
+
+  DeliveryAddress({
+    this.orderId,
+    this.address,
+    this.detail,
+    this.userPhone
+  });
+
+  DeliveryAddress.fromJson(Map<String, dynamic> json)
+    :
+      this.address = json['address'],
+      this.detail = json['detail'],
+      this.userPhone = json['userPhone'];
 }
 
 class OrderMainCat {

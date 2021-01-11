@@ -58,6 +58,12 @@ class StoreServiceProvider with ChangeNotifier {
 
   bool isDeliveryLoading = false;
 
+  String address = "";
+
+  void setAddress(String address) {
+    this.address = address;
+  }
+
   void setLookIdx(int idx) {
     lookIdx = idx;
 
@@ -110,7 +116,7 @@ class StoreServiceProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String> setOrderMap(String store_id, String logType, String imp_uid, String email) async {
+  Future<String> setOrderMap(String store_id, String logType, String imp_uid, String email, String comment,bool isDelivery) async {
     orderLoading = true;
     notifyListeners();
 
@@ -125,11 +131,20 @@ class StoreServiceProvider with ChangeNotifier {
     orderMap['mainCatList'] = [];
     orderMap['impUid'] = imp_uid;
     orderMap['email'] = email;
+    orderMap['comment'] = comment;
 
     if(bankInfo != null){
       orderMap['bankInfo'] = {
         "cardName" : bankInfo.cardName,
         "cardNumber" : bankInfo.cardNumber,
+      };
+    }
+
+    if(isDelivery) {
+      orderMap['status'] = "DELIVERY_REQUEST";
+      orderMap['deliveryAddress'] = {
+        "address" : address.split("대한민국 ")[1].split("/")[0],
+        "detail" : address.split("/")[1]
       };
     }
 
