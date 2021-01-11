@@ -49,7 +49,7 @@ class _limitDLState extends State<limitDL> {
     AppBar appBarWidget = AppBar(
       centerTitle: true,
       elevation: 0.5,
-      title: Text("DL 결제 한도 설정",
+      title: Text("DL 결제한도 설정",
           style: appBarDefaultText
       ),
       leading: IconButton(
@@ -286,9 +286,15 @@ class _limitDLState extends State<limitDL> {
               ),
               Spacer(),
               Container(
+                  padding: EdgeInsets.only(top: 8),
                   width: MediaQuery.of(context).size.width,
-                  height: 40,
+                  height: 52,
                   child:RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(6.0)
+                      )
+                    ),
                       color: primary,
                       elevation: 0.0,
                       onPressed: () async {
@@ -328,9 +334,11 @@ class _limitDLState extends State<limitDL> {
                         Navigator.of(context).pop();
                       },
                       child: Text("완료",
-                          style: Body1.apply(
-                            color: white
-                          ))
+                          style: Subtitle2.apply(
+                            color: white,
+                            fontWeightDelta: 1
+                          )
+                      )
                   )
               )
             ],

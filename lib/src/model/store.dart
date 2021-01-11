@@ -61,6 +61,7 @@ class StoreModel {
             comment: json['store']['comment'],
             deliveryStatus: json['store']['deliveryStatus'],
             deliveryTime: json['store']['deliveryTime'],
+            deliveryAmount: json['store']['deliveryAmount'].toString(),
             minOrderAmount: json['store']['minOrderAmount'],
             scope: json['store']['scope']
         ),
@@ -95,6 +96,7 @@ class Store {
   final String deliveryStatus;
   final String deliveryTime;
   final String minOrderAmount;
+  final String deliveryAmount;
   final double scope;
 
   Store(
@@ -117,6 +119,7 @@ class Store {
       this.comment,
       this.deliveryStatus,
       this.deliveryTime,
+        this.deliveryAmount,
       this.minOrderAmount,
         this.scope
       });

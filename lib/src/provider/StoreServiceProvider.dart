@@ -56,6 +56,8 @@ class StoreServiceProvider with ChangeNotifier {
   int count = 0;
   bool isCategoryFetching = false;
 
+  bool isDeliveryLoading = false;
+
   void setLookIdx(int idx) {
     lookIdx = idx;
 
@@ -641,6 +643,31 @@ class StoreServiceProvider with ChangeNotifier {
     }
 
     stopLoading();
+  }
+
+  void patchDelivery(int storeId, String deliveryTime, String deliveryAmount, bool deliveryStatus, String minOrderAmount) async {
+    isDeliveryLoading = true;
+    notifyListeners();
+    
+    Map<String, dynamic> data = {
+      "deliveryTime" : deliveryTime,
+      "deliveryAmount": deliveryAmount,
+      "deliveryStatus": deliveryStatus,
+      "minOrderAmount": minOrderAmount
+    };
+    
+    try {
+      final response = await service.patchDelivery(storeId, data);
+
+      print(response);
+
+      showToast("배달 설정을 완료했습니다.");
+    } catch(e) {
+      showToast("배달 설정에 실패했습니다.");
+    } finally {
+      isDeliveryLoading = false;
+      notifyListeners();
+    }
   }
 
 }

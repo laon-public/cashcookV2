@@ -1,7 +1,9 @@
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/mypage/NewStore/BigMenuListPage.dart';
 import 'package:cashcook/src/screens/mypage/NewStore/ContentApply.dart';
+import 'package:cashcook/src/screens/mypage/NewStore/DeliveryModify.dart';
 import 'package:cashcook/src/screens/mypage/NewStore/StorePatch.dart';
+import 'package:cashcook/src/screens/mypage/points/LimitDL.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
@@ -141,6 +143,65 @@ class _StoreModifyRoute extends State<StoreModifyRoute> {
                               color: secondary,
                             )
                         )
+                      ],
+                    ),
+                    Spacer(),
+                    Icon(Icons.arrow_forward_ios, size: 16, color: black,)
+                  ],
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => DeliveryModify()
+                    )
+                );
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("배달 설정",
+                            style: Subtitle2.apply(
+                                fontWeightDelta: -1
+                            )
+                        ),
+                      ],
+                    ),
+                    Spacer(),
+                    Icon(Icons.arrow_forward_ios, size: 16, color: black,)
+                  ],
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => limitDL()
+                    )
+                );
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("DL한도 설정",
+                            style: Subtitle2.apply(
+                                fontWeightDelta: -1
+                            )
+                        ),
+                        whiteSpaceH(4),
                       ],
                     ),
                     Spacer(),

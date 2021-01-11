@@ -164,4 +164,16 @@ class StoreService{
     return utf8.decode(response.bodyBytes);
   }
 
+  patchDelivery(int store_id, Map<String, dynamic> data) async {
+    final response = await client.patch(cookURL+"/franchises/delivery/$store_id",
+        body: json.encode(data),
+        headers: {
+          "Content-Type" : "application/json",
+          "Authorization": "BEARER ${dataStorage.token}"
+        }
+    );
+
+    return utf8.decode(response.bodyBytes);
+  }
+
 }
