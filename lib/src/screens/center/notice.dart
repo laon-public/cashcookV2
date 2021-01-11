@@ -36,6 +36,12 @@ class Notice extends StatelessWidget {
         style: appBarDefaultText,),
         centerTitle: true,
         elevation: 1.0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24,),
+        ),
       ),
       body: body(),
     );

@@ -2,6 +2,7 @@ import 'package:cashcook/src/provider/CenterProvider.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:cashcook/src/utils/Share.dart';
@@ -48,107 +49,241 @@ class AppInfomation extends StatelessWidget {
       backgroundColor: white,
       appBar: appBar,
         body: Container(
-          padding: EdgeInsets.all(16.0),
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top,
           child: SingleChildScrollView(
-            child: Text.rich(
-              TextSpan(
-                style: Body2.apply(
-                  color: secondary
+            child: Column(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    children: [
+                      whiteSpaceH(40),
+                      Image.asset(
+                        "assets/icon/app-icon.png",
+                        width: 80,
+                        height: 80
+                      ),
+                      whiteSpaceH(24),
+                      Text("현재버전 : V.1.1.1",
+                        style: Body1.apply(
+                          fontWeightDelta: 3,
+                          color: black
+                        ),
+                      ),
+                      Text("현재버전 : V.1.1.1",
+                        style: Body1.apply(
+                            fontWeightDelta: 3,
+                            color: black
+                        ),
+                      ),
+                      whiteSpaceH(14),
+                      Text("업데이트",
+                        style: Body1.apply(
+                          color: primary,
+                          decoration: TextDecoration.underline
+                        ),
+                      ),
+                      whiteSpaceH(44),
+                    ],
+                  ),
                 ),
-                children: <TextSpan>[
-                  TextSpan(
-                      text: "실시간 스토어 할인 앱, 캐시쿡\n\n",
-                      style: Body2.apply(
-                          color: secondary,
-                      fontWeightDelta: 1
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  width: MediaQuery.of(context).size.width,
+                  child: Text(
+                    "캐시쿡 그룹",
+                    style: Subtitle2.apply(
+                      fontWeightDelta: 3,
                     )
                   ),
-                  TextSpan(
-                      text: "▶ 캐시쿡은 소비가 소득이 되도록 지원하는 모바일 쇼핑 어플리케이션입니다.\n",
-                      style: Body2.apply(
-                          color: secondary,
-                          fontWeightDelta: 1
+                  decoration: BoxDecoration(
+                    color: Color(0xFFF7F7F7),
+                    border: Border(
+                      top: BorderSide(
+                        color: Color(0xFFEEEEEE),
+                        width: 1
                       )
+                    )
                   ),
-                  TextSpan(
-                      text: "온·오프라인  쇼핑 시 캐시쿡 앱을 활용하여 결제 후 캐시백 할인을 요청하면, 최소 10%~최대 100%까지 할인받을 수 있습니다.\n"
-                          "할인율만큼 가상화폐 디엘(DL)을 지급받습니다.\n"
-                          "- 1디엘(DL)은 100원의 가치가 있습니다.\n"
-                          "- 디엘(DL)은 캐시쿡에 등록된 온라인 제휴업체 결제, 오프라인 제휴업체 직접 결제, 배달결제 시 현금처럼 사용할수있습니다.\n\n"
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Text("상호명",
+                              style: Body1.apply(
+                                color: third,
+                              )
+                            ),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Text("주식회사 캐시쿡그룹",
+                              style: Body1.apply(
+                                color: Color(0xFF555555)
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      whiteSpaceH(12),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Text("대표자",
+                                style: Body1.apply(
+                                  color: third,
+                                )
+                            ),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Text("장수진",
+                              style: Body1.apply(
+                                  color: Color(0xFF555555)
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      whiteSpaceH(12),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Text("사업자",
+                                style: Body1.apply(
+                                  color: third,
+                                )
+                            ),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Text("838-86-01766",
+                              style: Body1.apply(
+                                  color: Color(0xFF555555)
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      whiteSpaceH(12),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Text("통신판매업",
+                                style: Body1.apply(
+                                  color: third,
+                                )
+                            ),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Text("제 2020-서울금천-0470호",
+                              style: Body1.apply(
+                                  color: Color(0xFF555555)
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      whiteSpaceH(12),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Text("연락처",
+                                style: Body1.apply(
+                                  color: third,
+                                )
+                            ),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Text("070-4350-0318",
+                              style: Body1.apply(
+                                  color: Color(0xFF555555)
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      whiteSpaceH(12),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Text("팩스번호",
+                                style: Body1.apply(
+                                  color: third,
+                                )
+                            ),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Text("0303-3441-0003",
+                              style: Body1.apply(
+                                  color: Color(0xFF555555)
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      whiteSpaceH(12),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Text("이메일",
+                                style: Body1.apply(
+                                  color: third,
+                                )
+                            ),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Text("pehnice@nate.com",
+                              style: Body1.apply(
+                                  color: Color(0xFF555555)
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      whiteSpaceH(12),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Text("주소",
+                                style: Body1.apply(
+                                  color: third,
+                                )
+                            ),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Text("서울시 금천구 가산디지털1로 145\n"
+                              "(가산동, 에이스하이엔드3차, 207호)",
+                              style: Body1.apply(
+                                  color: Color(0xFF555555)
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
                   ),
-                  TextSpan(
-                      text: "▶ 캐시쿡 실시간 할인은 캐시쿡 앱으로 결제하면 곧바로 이용할 수 있습니다.\n",
-                      style: Body2.apply(
-                          color: secondary,
-                          fontWeightDelta: 1
-                      )
-                  ),
-                  TextSpan(
-                      text: "매장에서 직접 결제할 시에는 QR 코드를 발급받아야 실시간 할인을 이용할 수 있습니다.\n"
-                          "캐시쿡 실시간 할인은 결제 후 7일 이내까지 가능합니다.\n\n"
-                  ),
-                  TextSpan(
-                    text: "▶ 최초 회원 가입 시 100캐럿을 적립해드립니다.(오픈 이벤트)\n",
-                      style: Body2.apply(
-                          color: secondary,
-                          fontWeightDelta: 1
-                      )
-                  ),
-                  TextSpan(
-                    text : "캐시쿡을 지인에게 홍보하면 10캐럿을 적립해드립니다.(오픈 이벤트)\n"
-                      "캐럿은 실시간 캐시백 할인 요청시 사용할 수 있습니다.\n"
-                      "1캐럿은 100원의 가치로 사용할 수 있습니다.\n\n"
-                  ),
-                  TextSpan(
-                    text: "▶ 캐시쿡 회원은 소비가 소득이 됩니다.\n",
-                      style: Body2.apply(
-                          color: secondary,
-                          fontWeightDelta: 1
-                      )
-                  ),
-                  TextSpan(
-                    text: "내가 결제한 금액의 최대 100%까지 디엘(DL) 적립\n"
-                        "공유 회원의 결제금액에 따라 캐시쿡 포인트(CP) 적립\n"
-                        "- 적립된 캐시쿡 포인트(CP)로 디엘(DL) 구매\n"
-                        "가상화폐 디엘(DL)은 현금처럼 결제수단으로 사용\n\n",
-                  ),
-                  TextSpan(
-                    text: "▶ 스마트 월렛 & 디엘(DL) 중개소 캐시링크에서 디엘(DL)을 거래할 수 있습니다.\n",
-                      style: Body2.apply(
-                          color: secondary,
-                          fontWeightDelta: 1
-                      )
-                  ),
-                  TextSpan(
-                    text: "캐시쿡 회원은 디엘(DL) 거래로 수익을 창출할 수 있습니다.\n\n\n\n"
-                  ),
-                  TextSpan(
-                    text: "결제하고 할인받고, 공유하고 캐럿 받고,\n"
-                        "공유회원이 결제할 때마다 또 캐시쿡 포인트 받는다!\n"
-                        "소비가 소득이 되는 실시간 스토어 할인 앱, 캐시쿡\n\n\n",
-                      style: Body2.apply(
-                          color: secondary,
-                          fontWeightDelta: 1
-                      )
-                  ),
-                  TextSpan(
-                    text: "캐시쿡 CashCook\n",
-                      style: Body2.apply(
-                          color: secondary,
-                          fontWeightDelta: 1
-                      )
-                  ),
-                  TextSpan(
-                    text: "상호명 : 주식회사 캐시쿡그룹\n"
-                        "사업자 등록번호 : 838-86-01766\n"
-                        "대표자 : 장수진\n"
-                        "주소 : 서울시 금천구 가산디지털 1로 145, 207호\n"
-                        "연락처 : T) 070-4350-0318\n"
-                  )
-                ]
-              )
+                )
+              ],
             )
           ),
         )

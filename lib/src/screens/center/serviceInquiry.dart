@@ -45,62 +45,95 @@ class _Inquiry extends State<Inquiry> {
       if(_scrollController.offset == _scrollController.position.maxScrollExtent)
       loadMore(context);
     });
-    return Scaffold(
-      backgroundColor: white,
-      appBar: AppBar(
-        title: Text("서비스 문의",
-        style: appBarDefaultText
-        ),
-        centerTitle: true,
-        elevation: 1.0,
-        actions: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 16.0),
-              child: InkWell(
-                onTap: (){
-                  Navigator.of(context).pushNamed("/inquiry/write").then((value){
-                    isOpen = false;
-                    inquiryInit();
-                  });
-                },
-                child: Text("작성하기",style: TextStyle(fontSize: 14, color: primary,decoration: TextDecoration.underline),),
-              ),
+    AppBar appBar = AppBar(
+      title: Text("서비스 문의",
+        style: appBarDefaultText,
+      ),
+      leading: IconButton(
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24,),
+      ),
+      centerTitle: true,
+      elevation: 1.0,
+      actions: [
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: InkWell(
+              onTap: (){
+                Navigator.of(context).pushNamed("/inquiry/write").then((value){
+                  isOpen = false;
+                  inquiryInit();
+                });
+              },
+              child: Text("작성하기",style: TextStyle(fontSize: 14, color: primary,decoration: TextDecoration.underline),),
             ),
           ),
-        ],
-      ),
-      body: body(),
+        ),
+      ],
     );
-  }
 
-  Widget body() {
-    return InquiryList();
-  }
+    return Scaffold(
+      backgroundColor: white,
+      appBar: appBar,
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              whiteSpaceH(12),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 13),
+                child:
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("고객센터",
+                      style: Body1.apply(
+                        color: third,
+                      )
+                    ),
+                    whiteSpaceH(8),
+                    Text("070-4350-0318",
+                      style: Subtitle2.apply(
+                        color: black,
+                        fontWeightDelta: 1
+                      )
+                    ),
+                    whiteSpaceH(4),
+                    Text("pehnice@nate.com",
+                      style: Body2.apply(
+                        color: third
+                      )
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: 8,
+                color: Color(0xFFF7F7F7)
+              ),
+              Consumer<CenterProvider>(
+                builder: (context, cp, _){
 
-  Widget InquiryList() {
-
-    return Consumer<CenterProvider>(
-      builder: (context, center, _){
-        return ListView.builder(
-          itemBuilder: (context, idx) {
-            if(idx < center.inquiry.length){
-//              return InquiryItem(center.inquiry[idx]);
-              return InquiryItem(idx, center.inquiry[idx]);
-            }
-            // return Center(
-            //     child: CircularProgressIndicator(
-            //         backgroundColor: mainColor,
-            //         valueColor: new AlwaysStoppedAnimation<Color>(subBlue)
-            //     )
-            // );
-          },
-          physics: AlwaysScrollableScrollPhysics(),
-          controller: _scrollController,
-          // itemCount: center.inquiry.length + 1,
-          itemCount: center.inquiry.length,
-        );
-      },
+                  return Column(
+                    children:
+                      cp.inquiry.map((e){
+                        int idx = cp.inquiry.indexOf(e);
+                        return InquiryItem(idx, e);
+                      }).toList(),
+                  ) ;
+                },
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -141,9 +174,8 @@ class _Inquiry extends State<Inquiry> {
 
   Widget title(inquiryModel) {
     return Container(
-      width: double.infinity,
-      height: 64,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      width: MediaQuery.of(context).size.width,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Align(
         alignment: Alignment.centerLeft,
         child: Row(
@@ -186,6 +218,14 @@ class _Inquiry extends State<Inquiry> {
             ),
           ],
         ),
+      ),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Color(0xFFF7F7F7),
+            width: 1
+          )
+        )
       ),
     );
   }

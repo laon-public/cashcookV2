@@ -35,6 +35,12 @@ class Faq extends StatelessWidget {
         title: Text("FAQ",
           style: appBarDefaultText,
         ),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24,),
+        ),
         centerTitle: true,
         elevation: 1.0,
       ),

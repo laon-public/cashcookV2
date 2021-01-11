@@ -6,6 +6,7 @@ import 'package:cashcook/src/screens/mypage/info/serviceDetail.dart';
 import 'package:cashcook/src/screens/mypage/mypage.dart';
 import 'package:cashcook/src/screens/mypage/store/orderDetail.dart';
 import 'package:cashcook/src/utils/CustomBottomNavBar.dart';
+import 'package:cashcook/src/utils/StatusMap.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
@@ -209,25 +210,18 @@ class OrderListState extends State<OrderList> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(6)
-                    ),
-                    border: Border.all(
-                        color: Color(0xFFDDDDDD),
-                        width: 0.5
-                    ),
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                        ol.storeImg,
-                      ),
-                    )
-                ),
-              ),
+              ol.status.contains("DELIVERY") ?
+                  Image.asset(
+                    "assets/icon/delivery.png",
+                    width: 48,
+                    height: 48
+                  )
+              :
+                  Image.asset(
+                      "assets/icon/packing.png",
+                      width: 48,
+                      height: 48
+                  ),
               whiteSpaceW(13.0),
               Expanded(
                 child: Column(
@@ -261,34 +255,11 @@ class OrderListState extends State<OrderList> {
               Container(
                 child: Row(
                   children: [
-                    ol.status == "REFUND_CONFIRM" ?
-                    Text("결제 취소",
+                    Text("${OrderStatusByProvider[ol.status]}",
                         style: Body1.apply(
                             color: secondary,
                             fontWeightDelta: 1
                         )
-                    )
-                        :
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text("${numberFormat.format(ol.pay)}원",
-                            style: Body1.apply(
-                                color: secondary,
-                                fontWeightDelta: 1
-                            )
-                        ),
-                        (ol.dl == 0) ?
-                        Container()
-                            :
-                        Text("${numberFormat.format(ol.dl)} DL",
-                            style: Body1.apply(
-                                color: primary,
-                                fontWeightDelta: 1
-                            )
-                        ),
-                      ],
                     ),
                     whiteSpaceW(12.0),
                     Icon(Icons.arrow_forward_ios, size: 16, color: black,)

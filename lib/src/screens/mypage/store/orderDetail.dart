@@ -5,6 +5,7 @@ import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/screens/bargain/bargaingame2.dart';
 import 'package:cashcook/src/screens/buy/refund.dart';
 import 'package:cashcook/src/utils/FcmController.dart';
+import 'package:cashcook/src/utils/StatusMap.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
@@ -75,24 +76,17 @@ class OrderDetailState extends State<OrderDetail> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Container(
-                                      width: 48,
-                                      height: 48,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(6)
-                                          ),
-                                          border: Border.all(
-                                              color: Color(0xFFDDDDDD),
-                                              width: 0.5
-                                          ),
-                                          image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: NetworkImage(
-                                              sp.selLog.storeImg,
-                                            ),
-                                          )
-                                      ),
+                                    sp.selLog.status.contains("DELIVERY") ?
+                                    Image.asset(
+                                        "assets/icon/delivery.png",
+                                        width: 48,
+                                        height: 48
+                                    )
+                                        :
+                                    Image.asset(
+                                        "assets/icon/packing.png",
+                                        width: 48,
+                                        height: 48
                                     ),
                                     whiteSpaceW(13.0),
                                     Expanded(
@@ -147,29 +141,68 @@ class OrderDetailState extends State<OrderDetail> {
 
                               Row(
                                 children: [
-                                  sp.selLog.status != "BEFORE_CONFIRM" ?  Container() : Expanded(
+                                  Expanded(
                                     child: InkWell(
                                       onTap: () async {
-                                        await sp.patchOrder(sp.selLog.id,"ORDER_CONFIRM").then((value) {
-                                          if(value != null && value != "") {
-                                            sendMessage("주문접수", "매장에서 주문이 접수되었습니다", value);
-                                            showToast("주문을 접수 하셨습니다.");
-                                          } else {
-                                            showToast("주문접수에 실패 했습니다.");
-                                          }
-                                        });
+                                        if(sp.selLog.status == "BEFORE_CONFIRM") {
+                                          await sp.patchOrder(sp.selLog.id,"ORDER_CONFIRM").then((value) {
+                                            if(value != null && value != "") {
+                                              sendMessage("주문접수", "매장에서 주문이 접수되었습니다", value);
+                                              showToast("주문을 접수 하셨습니다.");
+                                            } else {
+                                              showToast("주문접수에 실패 했습니다.");
+                                            }
+                                          });
+                                        } else if(sp.selLog.status == "DELIVERY_REQUEST") {
+                                          await sp.patchOrder(sp.selLog.id,"DELIVERY_READY").then((value) {
+                                            if(value != null && value != "") {
+                                              sendMessage("배달접수", "매장에서 배달이 접수되었습니다", value);
+                                              showToast("배달을 접수 하셨습니다.");
+                                            } else {
+                                              showToast("배달접수에 실패 했습니다.");
+                                            }
+                                          });
+                                        } else if(sp.selLog.status == "DELIVERY_READY"){
+                                          await sp.patchOrder(sp.selLog.id,"DELIVERY_START").then((value) {
+                                            if(value != null && value != "") {
+                                              sendMessage("배달출발", "배달이 시작되었습니다", value);
+                                              showToast("배달을 시작합니다.");
+                                            } else {
+                                              showToast("배달 시작 알림에 실패 하셨습니다.");
+                                            }
+                                          });
+                                        } else {
+                                          showToast("구매가 종료된 상품 입니다.");
+                                        }
+
                                       },
                                       child: Container(
                                         margin: EdgeInsets.only(top: 12),
                                         height: 40,
                                         child: Center(
-                                          child: Text("접수완료",
+                                          child: Text(
+                                            sp.selLog.status == "BEFORE_CONFIRM" ?
+                                            "주문접수"
+                                            :
+                                            sp.selLog.status == "DELIVERY_REQUEST" ?
+                                            "배달접수"
+                                            :
+                                            sp.selLog.status == "DELIVERY_READY" ?
+                                            "배달출발"
+                                            :
+                                            OrderStatusByProvider[sp.selLog.status],
                                             style: Body1.apply(
                                               color: secondary,
                                             ),
                                           ),
                                         ),
                                         decoration: BoxDecoration(
+                                          color: sp.selLog.status == "BEFORE_CONFIRM" ||
+                                              sp.selLog.status == "DELIVERY_REQUEST" ||
+                                              sp.selLog.status == "DELIVERY_READY" ?
+                                              white
+                                              :
+                                              deActivatedGrey,
                                             border: Border.all(
                                                 color: Color(0xFFDDDDDD),
                                                 width: 1
@@ -183,6 +216,83 @@ class OrderDetailState extends State<OrderDetail> {
                             ],
                           ),
                         ),
+                      ],
+                    ),
+                  ),
+                  sp.selLog.status.contains("DELIVERY") ?
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 1,
+                        color: Color(0xFFF7F7F7)
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            whiteSpaceH(12),
+                            Padding(
+                                padding: EdgeInsets.symmetric(vertical: 11),
+                                child: Text("주문자 정보",
+                                  style: Subtitle2.apply(
+                                      fontWeightDelta: 3
+                                  ),
+                                )
+                            ),
+                            Padding(
+                                padding: EdgeInsets.symmetric(vertical: 13),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("이름",
+                                      style: Body1.apply(
+                                          fontWeightDelta: 5
+                                      ),
+                                    ),
+                                    whiteSpaceH(4),
+                                    Text("${sp.selLog.deliveryAddress.address}",
+                                      style: Body1.apply(
+                                        fontWeightDelta: -1,
+                                        color: secondary
+                                      ),
+                                    ),
+                                    whiteSpaceH(4),
+                                    Text("${sp.selLog.deliveryAddress.detail}",
+                                      style: Body2.apply(
+                                          color: third
+                                      ),
+                                    ),
+                                  ],
+                                )
+                            ),
+                            Padding(
+                                padding: EdgeInsets.symmetric(vertical: 13),
+                                child: Text("연락처 : ${sp.selLog.deliveryAddress.userPhone}",
+                                  style: Body1.apply(
+                                      color: black
+                                  ),
+                                ),
+                            ),
+                            whiteSpaceH(12)
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 8,
+                        color: Color(0xFFF2F2F2)
+                      )
+                    ],
+                  )
+                  :
+                  Container(),
+                  Padding(
+                    padding:EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      children: [
                         Container(
                           margin: EdgeInsets.only(top: 19),
                           width: MediaQuery.of(context).size.width,
