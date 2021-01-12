@@ -210,6 +210,8 @@ class UserProvider with ChangeNotifier {
     dynamic authCheck = json.decode(response)['data']['user'];
     int sex = 0;
 
+    print(authCheck);
+
     if ("MAN" == authCheck['sex']) {
       sex = 0;
     } else {
@@ -232,7 +234,9 @@ class UserProvider with ChangeNotifier {
           isFirstLogin: authCheck['isFirstLogin'],
           userGrade: authCheck['userGrade'],
           isFran: authCheck['isFran'],
-          fcmToken: authCheck['fcm_token']);
+          fcmToken: authCheck['fcm_token'],
+          isDelete: authCheck['isDelete'],
+      );
     } else {
       userCheck = UserCheck(
           id: authCheck['id'],
@@ -245,7 +249,9 @@ class UserProvider with ChangeNotifier {
           isFirstLogin: authCheck['isFirstLogin'],
           userGrade: authCheck['userGrade'],
           isFran: authCheck['isFran'],
-          fcmToken: authCheck['fcm_token']);
+          fcmToken: authCheck['fcm_token'],
+          isDelete: authCheck['isDelete'],
+      );
     }
 
     print(authCheck['token']);

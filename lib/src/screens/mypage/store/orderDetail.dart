@@ -10,11 +10,16 @@ import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
+
+final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
 class OrderDetail extends StatefulWidget {
     @override
@@ -22,6 +27,14 @@ class OrderDetail extends StatefulWidget {
 }
 
 class OrderDetailState extends State<OrderDetail> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    firebaseCloudMessaging_Listeners();
+  }
+
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> pointMap =  Provider.of<UserProvider>(context, listen: false).pointMap;
@@ -39,6 +52,7 @@ class OrderDetailState extends State<OrderDetail> {
             centerTitle: true,
             leading: IconButton(
               onPressed: () {
+                initFCM();
                 Navigator.of(context).pop();
               },
               icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24, color: black,),
@@ -147,7 +161,7 @@ class OrderDetailState extends State<OrderDetail> {
                                         if(sp.selLog.status == "BEFORE_CONFIRM") {
                                           await sp.patchOrder(sp.selLog.id,"ORDER_CONFIRM").then((value) {
                                             if(value != null && value != "") {
-                                              sendMessage("주문접수", "PROVIDER:ORDER_CONFIRM:매장에서 주문이 접수되었습니다", value);
+                                              sendMessage("주문접수", "매장에서 주문이 접수되었습니다", value, "PROVIDER", "ORDER_CONFIRM");
                                               showToast("주문을 접수 하셨습니다.");
                                             } else {
                                               showToast("주문접수에 실패 했습니다.");
@@ -156,7 +170,7 @@ class OrderDetailState extends State<OrderDetail> {
                                         } else if(sp.selLog.status == "DELIVERY_REQUEST") {
                                           await sp.patchOrder(sp.selLog.id,"DELIVERY_READY").then((value) {
                                             if(value != null && value != "") {
-                                              sendMessage("배달접수", "PROVIDER:DELIVERY_READY:매장에서 배달이 접수되었습니다", value);
+                                              sendMessage("배달접수", "매장에서 배달이 접수되었습니다", value, "PROVIDER", "DELIVERY_READY");
                                               showToast("배달을 접수 하셨습니다.");
                                             } else {
                                               showToast("배달접수에 실패 했습니다.");
@@ -165,7 +179,7 @@ class OrderDetailState extends State<OrderDetail> {
                                         } else if(sp.selLog.status == "DELIVERY_READY"){
                                           await sp.patchOrder(sp.selLog.id,"DELIVERY_START").then((value) {
                                             if(value != null && value != "") {
-                                              sendMessage("배달출발", "PROVIDER:DELIVERY_START:배달이 시작되었습니다", value);
+                                              sendMessage("배달출발", "배달이 시작되었습니다", value, "PROVIDER", "DELIVERY_START");
                                               showToast("배달을 시작합니다.");
                                             } else {
                                               showToast("배달 시작 알림에 실패 하셨습니다.");
@@ -533,5 +547,66 @@ class OrderDetailState extends State<OrderDetail> {
               ]
           )
       );
+  }
+
+  void initFCM() async {
+    await _firebaseMessaging.requestNotificationPermissions(
+      const IosNotificationSettings(sound: true, badge: true, alert: true),
+    );
+
+    _firebaseMessaging.getToken().then((token){
+      print('token:'+token);
+    });
+
+    _firebaseMessaging.configure(
+      // 앱이 포그라운드 상태, 앱이 전면에 켜져있기 때문에 푸시 알림 UI가 표시되지 않음.
+      onMessage: (Map<String, dynamic> message) async {
+        print('on message $message');
+        FlutterRingtonePlayer.playNotification(looping: false);
+
+        Fluttertoast.showToast(msg: message['notification']['body']);
+      },
+      // 앱이 백그라운드 상태, 푸시 알림 UI를 누른 경우에 호출된다. 앱이 포그라운드로 전환됨.
+      onResume: (Map<String, dynamic> message) async {
+        print('on resume $message');
+      },
+      // 앱이 꺼진 상태일 때, 푸시 알림 UI를 눌러 앱을 시작하는 경우에 호출된다.
+      onLaunch: (Map<String, dynamic> message) async {
+        print('on launch $message');
+      },
+    );
+  }
+  void firebaseCloudMessaging_Listeners() async {
+    await _firebaseMessaging.requestNotificationPermissions(
+      const IosNotificationSettings(sound: true, badge: true, alert: true),
+    );
+
+    _firebaseMessaging.getToken().then((token){
+      print('token:'+token);
+    });
+
+    _firebaseMessaging.configure(
+      // 앱이 포그라운드 상태, 앱이 전면에 켜져있기 때문에 푸시 알림 UI가 표시되지 않음.
+      onMessage: (Map<String, dynamic> message) async {
+        print('on message $message');
+        FlutterRingtonePlayer.playNotification(looping: false);
+
+        Fluttertoast.showToast(msg: message['notification']['body']);
+
+        if(message['data']['userType'] == "CONSUMER") {
+          await Provider.of<StoreProvider>(context, listen: false).setSellogStatus(
+            message['data']['status']
+          );
+        }
+      },
+      // 앱이 백그라운드 상태, 푸시 알림 UI를 누른 경우에 호출된다. 앱이 포그라운드로 전환됨.
+      onResume: (Map<String, dynamic> message) async {
+        print('on resume $message');
+      },
+      // 앱이 꺼진 상태일 때, 푸시 알림 UI를 눌러 앱을 시작하는 경우에 호출된다.
+      onLaunch: (Map<String, dynamic> message) async {
+        print('on launch $message');
+      },
+    );
   }
 }

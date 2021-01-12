@@ -7,11 +7,16 @@ import 'package:cashcook/src/utils/CustomBottomNavBar.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
+
+final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
 class ServiceList extends StatefulWidget {
   bool isHome;
@@ -33,6 +38,7 @@ class _ServiceList extends State<ServiceList> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<UserProvider>(context, listen: false).fetchServiceList(page);
     });
+    firebaseCloudMessaging_Listeners();
   }
 
   void loadMore() async {
@@ -56,6 +62,7 @@ class _ServiceList extends State<ServiceList> {
               ),
               leading: IconButton(
                 onPressed: () {
+                  initFCM();
                   Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(builder: (context) => MyPage(
                         isHome: true,
@@ -282,6 +289,68 @@ class _ServiceList extends State<ServiceList> {
             ],
           )
       ),
+    );
+  }
+
+  void initFCM() async {
+    await _firebaseMessaging.requestNotificationPermissions(
+      const IosNotificationSettings(sound: true, badge: true, alert: true),
+    );
+
+    _firebaseMessaging.getToken().then((token){
+      print('token:'+token);
+    });
+
+    _firebaseMessaging.configure(
+      // 앱이 포그라운드 상태, 앱이 전면에 켜져있기 때문에 푸시 알림 UI가 표시되지 않음.
+      onMessage: (Map<String, dynamic> message) async {
+        print('on message $message');
+        FlutterRingtonePlayer.playNotification(looping: false);
+
+        Fluttertoast.showToast(msg: message['notification']['body']);
+      },
+      // 앱이 백그라운드 상태, 푸시 알림 UI를 누른 경우에 호출된다. 앱이 포그라운드로 전환됨.
+      onResume: (Map<String, dynamic> message) async {
+        print('on resume $message');
+      },
+      // 앱이 꺼진 상태일 때, 푸시 알림 UI를 눌러 앱을 시작하는 경우에 호출된다.
+      onLaunch: (Map<String, dynamic> message) async {
+        print('on launch $message');
+      },
+    );
+  }
+  void firebaseCloudMessaging_Listeners() async {
+    await _firebaseMessaging.requestNotificationPermissions(
+      const IosNotificationSettings(sound: true, badge: true, alert: true),
+    );
+
+    _firebaseMessaging.getToken().then((token){
+      print('token:'+token);
+    });
+
+    _firebaseMessaging.configure(
+      // 앱이 포그라운드 상태, 앱이 전면에 켜져있기 때문에 푸시 알림 UI가 표시되지 않음.
+      onMessage: (Map<String, dynamic> message) async {
+        print('on message $message');
+        FlutterRingtonePlayer.playNotification(looping: false);
+
+        Fluttertoast.showToast(msg: message['notification']['body']);
+
+        if(message['data']['userType'] == "PROVIDER") {
+          setState(() {
+            page = 1;
+          });
+          await Provider.of<UserProvider>(context, listen: false).fetchServiceList(page);
+        }
+      },
+      // 앱이 백그라운드 상태, 푸시 알림 UI를 누른 경우에 호출된다. 앱이 포그라운드로 전환됨.
+      onResume: (Map<String, dynamic> message) async {
+        print('on resume $message');
+      },
+      // 앱이 꺼진 상태일 때, 푸시 알림 UI를 눌러 앱을 시작하는 경우에 호출된다.
+      onLaunch: (Map<String, dynamic> message) async {
+        print('on launch $message');
+      },
     );
   }
 }

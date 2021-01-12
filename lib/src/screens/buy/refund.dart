@@ -195,7 +195,7 @@ class _Refund extends State<Refund> {
                         onPressed: () async {
                           up.requestRefund(reasonCtrl.text).then((value) {
                             if(value != "") {
-                              sendMessage("환불요청", "환불요청이 들어왔습니다.", value);
+                              // sendMessage("환불요청", "환불요청이 들어왔습니다.", value);
                               showToast("환불 요청 되었습니다.");
                               Navigator.of(context).pop();
                             } else {

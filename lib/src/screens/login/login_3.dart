@@ -5,6 +5,7 @@ import 'package:cashcook/src/provider/AuthProvider.dart';
 import 'package:cashcook/src/provider/CenterProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/center/appConfirm.dart';
+import 'package:cashcook/src/screens/login/DeleteAlert.dart';
 import 'package:cashcook/src/screens/referrermanagement/firstbiz.dart';
 import 'package:cashcook/src/services/API.dart';
 import 'package:cashcook/src/utils/datastorage.dart';
@@ -58,6 +59,17 @@ class _Login3 extends State<Login3> {
             UserCheck user = Provider
                 .of<UserProvider>(context, listen: false)
                 .loginUser;
+
+
+
+            if(user.isDelete) {
+              print("들어옴");
+              await Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => DeleteAlert()
+                )
+              , (route) => false);
+            }
 
             FirebaseMessaging fcm = FirebaseMessaging();
             String fcmToken = await fcm.getToken();

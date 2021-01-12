@@ -157,7 +157,7 @@ class _RefundRequest extends State<RefundRequest> {
                           if(json['response']['status'].toString() == "cancelled"){
                             Provider.of<UserProvider>(context,listen: false).patchRefundRequest(refund.id, refund.orderId, "REFUND_CONFIRM").then((value) {
                               if (value != "") {
-                                sendMessage("환불완료", "환불이 완료 되었습니다.", value);
+                                // sendMessage("환불완료", "환불이 완료 되었습니다.", value);
                                 showToast("환불 했습니다.");
 
                                 Provider.of<UserProvider>(context, listen: false).fetchRefundRequest();
@@ -199,7 +199,7 @@ class _RefundRequest extends State<RefundRequest> {
                       onTap: () async {
                         Provider.of<UserProvider>(context,listen: false).patchRefundRequest(refund.id, refund.orderId, "REFUND_REJECT").then((value) {
                           if (value != "") {
-                            sendMessage("환불거절", "환불이 거절 되었습니다.", value);
+                            // sendMessage("환불거절", "환불이 거절 되었습니다.", value);
                             showToast("환불을 거절했습니다.");
 
                             Provider.of<UserProvider>(context, listen: false).fetchRefundRequest();

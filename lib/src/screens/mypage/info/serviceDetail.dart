@@ -14,12 +14,17 @@ import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
+
+final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
 class ServiceDetail extends StatefulWidget {
   ServiceDetail();
@@ -29,6 +34,14 @@ class ServiceDetail extends StatefulWidget {
 }
 
 class _ServiceDetail extends State<ServiceDetail> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    firebaseCloudMessaging_Listeners();
+  }
+
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> pointMap =  Provider.of<UserProvider>(context, listen: false).pointMap;
@@ -46,6 +59,7 @@ class _ServiceDetail extends State<ServiceDetail> {
             centerTitle: true,
             leading: IconButton(
               onPressed: () {
+                initFCM();
                 Navigator.of(context).pop();
               },
               icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24, color: black,),
@@ -239,7 +253,7 @@ class _ServiceDetail extends State<ServiceDetail> {
                               up.selLog.logType == "QR"  // QR 결제 거르기
                                   ? Container() :
                                   whiteSpaceH(12),
-                              up.selLog.logType == "QR"  // QR 결제 거르기
+                              up.selLog.logType == "QR" || up.selLog.status == "CONFIRM"  // QR 결제 거르기
                                   ? Container() :
                               Row(
                                 children: [
@@ -271,7 +285,7 @@ class _ServiceDetail extends State<ServiceDetail> {
 
                                             Provider.of<StoreProvider>(context,listen: false).patchOrder(up.selLog.id,"REFUND_CONFIRM").then((value) {
                                               if (value != "") {
-                                                sendMessage("주문취소", "CONSUMER:REFUND_CONFIRM:고객이 주문을 취소했습니다.", value);
+                                                sendMessage("주문취소", "고객이 주문을 취소했습니다.", value, "CONSUMER","REFUND_CONFIRM");
                                                 showToast("환불 했습니다.");
 
                                                 Provider.of<UserProvider>(context, listen: false).setSellogStatus("REFUND_CONFIRM");
@@ -620,5 +634,66 @@ class _ServiceDetail extends State<ServiceDetail> {
               ]
           )
       );
+  }
+
+  void initFCM() async {
+    await _firebaseMessaging.requestNotificationPermissions(
+      const IosNotificationSettings(sound: true, badge: true, alert: true),
+    );
+
+    _firebaseMessaging.getToken().then((token){
+      print('token:'+token);
+    });
+
+    _firebaseMessaging.configure(
+      // 앱이 포그라운드 상태, 앱이 전면에 켜져있기 때문에 푸시 알림 UI가 표시되지 않음.
+      onMessage: (Map<String, dynamic> message) async {
+        print('on message $message');
+        FlutterRingtonePlayer.playNotification(looping: false);
+
+        Fluttertoast.showToast(msg: message['notification']['body']);
+      },
+      // 앱이 백그라운드 상태, 푸시 알림 UI를 누른 경우에 호출된다. 앱이 포그라운드로 전환됨.
+      onResume: (Map<String, dynamic> message) async {
+        print('on resume $message');
+      },
+      // 앱이 꺼진 상태일 때, 푸시 알림 UI를 눌러 앱을 시작하는 경우에 호출된다.
+      onLaunch: (Map<String, dynamic> message) async {
+        print('on launch $message');
+      },
+    );
+  }
+  void firebaseCloudMessaging_Listeners() async {
+    await _firebaseMessaging.requestNotificationPermissions(
+      const IosNotificationSettings(sound: true, badge: true, alert: true),
+    );
+
+    _firebaseMessaging.getToken().then((token){
+      print('token:'+token);
+    });
+
+    _firebaseMessaging.configure(
+      // 앱이 포그라운드 상태, 앱이 전면에 켜져있기 때문에 푸시 알림 UI가 표시되지 않음.
+      onMessage: (Map<String, dynamic> message) async {
+        print('on message $message');
+        FlutterRingtonePlayer.playNotification(looping: false);
+
+        Fluttertoast.showToast(msg: message['notification']['body']);
+
+        if(message['data']['userType'] == "PROVIDER") {
+          await Provider.of<UserProvider>(context, listen: false).setSellogStatus(
+              message['data']['status']
+          );
+        }
+      },
+      // 앱이 백그라운드 상태, 푸시 알림 UI를 누른 경우에 호출된다. 앱이 포그라운드로 전환됨.
+      onResume: (Map<String, dynamic> message) async {
+        print('on resume $message');
+      },
+      // 앱이 꺼진 상태일 때, 푸시 알림 UI를 눌러 앱을 시작하는 경우에 호출된다.
+      onLaunch: (Map<String, dynamic> message) async {
+        print('on launch $message');
+      },
+    );
   }
 }

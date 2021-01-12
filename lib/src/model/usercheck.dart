@@ -10,6 +10,7 @@ class UserCheck {
   bool isFran;
   String userGrade;
   String fcmToken;
+  bool isDelete;
 
-  UserCheck({this.id, this.username, this.name, this.phone, this.birth, this.gender, this.token, this.isFirstLogin, this.isFran, this.userGrade, this.fcmToken});
+  UserCheck({this.id, this.username, this.name, this.phone, this.birth, this.gender, this.token, this.isFirstLogin, this.isFran, this.userGrade, this.fcmToken, this.isDelete});
 }
