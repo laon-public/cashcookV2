@@ -16,6 +16,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
+import 'package:cashcook/src/widgets/showToast.dart';
 
 class OrderMenu extends StatefulWidget {
   final String name;
@@ -97,6 +98,11 @@ class _OrderMenu extends State<OrderMenu> {
                                     activeColor: primary,
                                     value: isDelivery,
                                     onChanged: (val) {
+                                      if(address == "") {
+                                        showToast("배송지 설정 후 가능합니다.\n"
+                                            "메인페이지 오른쪽 상단에서 설정해주세요.");
+                                        return;
+                                      }
                                       setState(() {
                                         isDelivery = val;
                                       });
@@ -106,6 +112,13 @@ class _OrderMenu extends State<OrderMenu> {
                               ),
                             ),
                             whiteSpaceH(12),
+                            address == "" ?
+                            Text("배달주소가 설정 되어 있지 않습니다.",
+                                style: Subtitle1.apply(
+                                    fontWeightDelta: 3
+                                )
+                            ) : Container(),
+                            address != "" ?
                             Padding(
                               padding: EdgeInsets.symmetric(vertical: 11),
                               child: Row(
@@ -117,10 +130,10 @@ class _OrderMenu extends State<OrderMenu> {
                                   ),
                                 ],
                               ),
-                            ),
+                            ) : Container(),
                             Padding(
                               padding: EdgeInsets.symmetric(vertical: 17),
-                              child: Column(
+                              child: address != "" ? Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text("${address.split("대한민국 ")[1].split("/")[0]}",
@@ -134,8 +147,9 @@ class _OrderMenu extends State<OrderMenu> {
                                       )
                                   ),
                                 ],
-                              ),
+                              ) : Container(),
                             ),
+                            address != "" ?
                             Padding(
                               padding: EdgeInsets.symmetric(vertical: 13),
                               child: Text("연락처 : ${my.phone}",
@@ -143,7 +157,7 @@ class _OrderMenu extends State<OrderMenu> {
                                       color: black
                                   )
                               ),
-                            ),
+                            ) : Container(),
                           ],
                         ),
                       )
@@ -713,9 +727,9 @@ class _OrderMenu extends State<OrderMenu> {
                                           emailCtrl.text,commentCtrl.text,isDelivery);
                                         if(fcmToken != null && fcmToken != "") {
                                           if(isDelivery) {
-                                            sendMessage("배달요청", "배달 요청이 들어왔습니다", fcmToken);
+                                            sendMessage("배달요청", "CONSUMER:DELIVERY_REQUEST:배달 요청이 들어왔습니다", fcmToken);
                                           } else {
-                                            sendMessage("주문접수", "주문이 들어왔습니다", fcmToken);
+                                            sendMessage("주문접수", "CONSUMER:BEFORE_CONFIRM:주문이 들어왔습니다", fcmToken);
                                           }
                                         }
                                         ssp.orderComplete();

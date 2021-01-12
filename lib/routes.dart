@@ -4,6 +4,7 @@ import 'package:cashcook/src/screens/center/faq.dart';
 import 'package:cashcook/src/screens/center/notice.dart';
 import 'package:cashcook/src/screens/center/serviceInquiry.dart';
 import 'package:cashcook/src/screens/center/serviceInquiryWrite.dart';
+import 'package:cashcook/src/screens/center/terms.dart';
 import 'package:cashcook/src/screens/main/home.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/screens/mypage/NewStore/StoreModifyRoute.dart';
@@ -48,6 +49,7 @@ final routes = {
   "/store/modify/limitDL": (context) => limitDL(),
   "/userState" : (context) => UserState(),
   "/myUpdate" : (context) => MyUpdate(),
+  "/terms" : (context) => Terms(),
   "/logout" : (context) => Logout(),
   "/appinfomation" : (context) => AppInfomation(),
   "/home" : (context) => Home(),

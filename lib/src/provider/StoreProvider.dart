@@ -124,6 +124,12 @@ class StoreProvider with ChangeNotifier{
     notifyListeners();
   }
 
+  void setSellogStatus(String status) {
+    this.selLog.status = status;
+
+    notifyListeners();
+  }
+
   Future<String> patchOrder(int orderId,String status) async {
     Map<String, dynamic> data = {
       "orderId": orderId,

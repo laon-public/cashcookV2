@@ -56,36 +56,43 @@ class AppInfomation extends StatelessWidget {
               children: [
                 Container(
                   width: MediaQuery.of(context).size.width,
-                  child: Column(
-                    children: [
-                      whiteSpaceH(40),
-                      Image.asset(
-                        "assets/icon/app-icon.png",
-                        width: 80,
-                        height: 80
-                      ),
-                      whiteSpaceH(24),
-                      Text("현재버전 : V.1.1.1",
-                        style: Body1.apply(
-                          fontWeightDelta: 3,
-                          color: black
-                        ),
-                      ),
-                      Text("현재버전 : V.1.1.1",
-                        style: Body1.apply(
-                            fontWeightDelta: 3,
-                            color: black
-                        ),
-                      ),
-                      whiteSpaceH(14),
-                      Text("업데이트",
-                        style: Body1.apply(
-                          color: primary,
-                          decoration: TextDecoration.underline
-                        ),
-                      ),
-                      whiteSpaceH(44),
-                    ],
+                  child: Consumer<CenterProvider>(
+                    builder: (context, cp, _){
+                      return Column(
+                        children: [
+                          whiteSpaceH(40),
+                          Image.asset(
+                              "assets/icon/app-icon.png",
+                              width: 80,
+                              height: 80
+                          ),
+                          whiteSpaceH(24),
+                          Text("현재버전 : V.${cp.phoneVersion}",
+                            style: Body1.apply(
+                                fontWeightDelta: 3,
+                                color: black
+                            ),
+                          ),
+                          Text("현재버전 : V.${cp.appVersion}",
+                            style: Body1.apply(
+                                fontWeightDelta: 3,
+                                color: black
+                            ),
+                          ),
+                          whiteSpaceH(14),
+                          cp.phoneVersion == cp.appVersion ?
+                              Container()
+                          :
+                            Text("업데이트",
+                              style: Body1.apply(
+                                  color: primary,
+                                  decoration: TextDecoration.underline
+                              ),
+                            ),
+                          whiteSpaceH(44),
+                        ],
+                      );
+                    },
                   ),
                 ),
                 Container(

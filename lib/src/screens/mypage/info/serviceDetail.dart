@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cashcook/src/utils/StatusMap.dart';
 import 'package:cashcook/src/model/log/orderLog.dart';
 import 'package:cashcook/src/model/store/reviewWrite.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
@@ -150,77 +151,9 @@ class _ServiceDetail extends State<ServiceDetail> {
                                   ],
                                 ),
                               ),
-                              whiteSpaceH(12),
-                              up.selLog.logType != "QR"  // QR 결제 거르기
-                                  &&
-                              up.selLog.status == "BEFORE_CONFIRM" ?
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: InkWell(
-                                        onTap: () async {
-                                          IMPortService importService = IMPortService();
-
-                                          try{
-                                            // 토큰 얻기
-                                            if(up.selLog.bankInfo.cardName != ""){
-                                              String response = await importService.getIMPORTToken();
-                                              Map<String, dynamic> json = jsonDecode(response);
-                                              String token = json['response']['access_token'];
-
-                                              response = await importService.refundIMPort(up.selLog.impUid, "주문취소", token);
-
-                                              json = jsonDecode(response);
-                                              if(json['response'] == null) {
-                                                throw Exception(json['message']);
-                                              }
-
-                                              if(json['response']['status'].toString() != "cancelled"){
-                                                showToast("IMPORT 환불실패");
-                                                return;
-                                              }
-                                            }
-
-                                            Provider.of<StoreProvider>(context,listen: false).patchOrder(up.selLog.id,"REFUND_CONFIRM").then((value) {
-                                              if (value != "") {
-                                                sendMessage("주문취소", "고객이 주문을 취소했습니다.", value);
-                                                showToast("환불 했습니다.");
-
-                                                Provider.of<UserProvider>(context, listen: false).setSellogStatus("REFUND_CONFIRM");
-                                              } else {
-                                                showToast("환불에 실패했습니다.");
-                                              }
-                                            });
-                                          } catch(e) {
-                                            showToast("환불 요청에 실패했습니다.");
-                                            print(e);
-                                          }
-                                        },
-                                        child: Container(
-                                          margin: EdgeInsets.only(top: 12),
-                                          height: 40,
-                                          child: Center(
-                                            child: Text("주문취소",
-                                              style: Body1.apply(
-                                                color: secondary,
-                                              ),
-                                            ),
-                                          ),
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: Color(0xFFDDDDDD),
-                                                  width: 1
-                                              )
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              :
-                              (up.selLog.status == "REFUND_CONFIRM") ?
-                                  Container()
-                              :
+                              up.selLog.status == "CONFIRM" ?
+                                whiteSpaceH(12) : Container(),
+                              up.selLog.status == "CONFIRM" ?
                               Row(
                                 children: [
                                   Expanded(
@@ -302,21 +235,96 @@ class _ServiceDetail extends State<ServiceDetail> {
                                     ),
                                   )
                                 ],
-                              ),
+                              ) : Container(),
+                              up.selLog.logType == "QR"  // QR 결제 거르기
+                                  ? Container() :
+                                  whiteSpaceH(12),
+                              up.selLog.logType == "QR"  // QR 결제 거르기
+                                  ? Container() :
                               Row(
                                 children: [
-                                  up.selLog.logType != "QR"  // QR 결제 거르기
-                                      &&
-                              up.selLog.status == "BEFORE_CONFIRM" || up.selLog.status == "REFUND_CONFIRM" || up.selLog.status == "CONFIRM"  ? Container() : Expanded(
+                                  Expanded(
                                     child: InkWell(
-                                      onTap: () {
-                                        Provider.of<UserProvider>(context, listen: false).confirmPurchase(up.selLog.id);
+                                      onTap: () async {
+                                        if(up.selLog.status == "BEFORE_CONFIRM" || up.selLog.status == "DELIVERY_REQUEST") {
+                                          IMPortService importService = IMPortService();
+
+                                          try{
+                                            // 토큰 얻기
+                                            if(up.selLog.bankInfo.cardName != ""){
+                                              String response = await importService.getIMPORTToken();
+                                              Map<String, dynamic> json = jsonDecode(response);
+                                              String token = json['response']['access_token'];
+
+                                              response = await importService.refundIMPort(up.selLog.impUid, "주문취소", token);
+
+                                              json = jsonDecode(response);
+                                              if(json['response'] == null) {
+                                                throw Exception(json['message']);
+                                              }
+
+                                              if(json['response']['status'].toString() != "cancelled"){
+                                                showToast("IMPORT 환불실패");
+                                                return;
+                                              }
+                                            }
+
+                                            Provider.of<StoreProvider>(context,listen: false).patchOrder(up.selLog.id,"REFUND_CONFIRM").then((value) {
+                                              if (value != "") {
+                                                sendMessage("주문취소", "CONSUMER:REFUND_CONFIRM:고객이 주문을 취소했습니다.", value);
+                                                showToast("환불 했습니다.");
+
+                                                Provider.of<UserProvider>(context, listen: false).setSellogStatus("REFUND_CONFIRM");
+                                              } else {
+                                                showToast("환불에 실패했습니다.");
+                                              }
+                                            });
+                                          } catch(e) {
+                                            showToast("환불 요청에 실패했습니다.");
+                                            print(e);
+                                          }
+                                        } else {
+                                          showToast("접수된 주문은 환불이 불가합니다\n"
+                                              "매장에 문의 해주세요.");
+                                        }
                                       },
                                       child: Container(
-                                        margin: EdgeInsets.only(top: 12),
                                         height: 40,
                                         child: Center(
-                                          child: Text("구매확정",
+                                          child: Text((up.selLog.status == "ORDER_CONFIRM" || up.selLog.status == "DELIVERY_READY" || up.selLog.status == "DELIVERY_START" || up.selLog.status == "DELIVERY_END") ?
+                                              "${OrderStatusByConsumer[up.selLog.status]}"
+                                              :
+                                          "주문 취소",
+                                            style: Body1.apply(
+                                              color: secondary,
+                                            ),
+                                          ),
+                                        ),
+                                        decoration: BoxDecoration(
+                                            color: white,
+                                            border: Border.all(
+                                                color: Color(0xFFDDDDDD),
+                                                width: 1
+                                            )
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  whiteSpaceW(8.0),
+                                  Expanded(
+                                    child: InkWell(
+                                      onTap: () {
+                                        if(up.selLog.status == "ORDER_CONFIRM" || up.selLog.status == "DELIVERY_READY" || up.selLog.status == "DELIVERY_START" || up.selLog.status == "DELIVERY_END"){
+                                          Provider.of<UserProvider>(context, listen: false).confirmPurchase(up.selLog.id);
+                                        } else {
+
+                                        }
+                                      },
+                                      child: Container(
+                                        height: 40,
+                                        child: Center(
+                                          child: Text("${(up.selLog.status == "ORDER_CONFIRM" || up.selLog.status == "DELIVERY_READY" || up.selLog.status == "DELIVERY_START" || up.selLog.status == "DELIVERY_END")
+                                              ? "구매확정" : OrderStatusByConsumer[up.selLog.status]}",
                                             style: Body1.apply(
                                               color: secondary,
                                             ),
@@ -335,13 +343,13 @@ class _ServiceDetail extends State<ServiceDetail> {
                               ),
                               up.selLog.logType != "QR"  // QR 결제 거르기
                                   &&
-                                  up.selLog.status == "BEFORE_CONFIRM" || up.selLog.status == "REFUND_CONFIRM" || up.selLog.status == "CONFIRM"  ? Container() :
+                                  (up.selLog.status == "ORDER_CONFIRM" || up.selLog.status == "DELIVERY_READY" || up.selLog.status == "DELIVERY_START" || up.selLog.status == "DELIVERY_END")  ?
                               Text("* 구매확정을 하셔야 DL적립을 받으실 수 있습니다.",
-                                style: Caption.apply(
-
-                                ),
+                                style: Caption,
                                 textAlign: TextAlign.end,
-                              ),
+                              )
+                              :
+                              Container(),
                             ],
                           ),
                         ),

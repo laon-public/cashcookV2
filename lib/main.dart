@@ -114,7 +114,26 @@ class _CashCook extends State<CashCook> {
       onMessage: (Map<String, dynamic> message) async {
         print('on message $message');
         FlutterRingtonePlayer.playNotification(looping: false);
-        Fluttertoast.showToast(msg: message['notification']['body']);
+
+        String long_message = message['notification']['body'];
+        List<String> msgs = long_message.split(":");
+        String user = msgs[0];
+        String status = msgs[1];
+        String msg = msgs[2];
+
+        Fluttertoast.showToast(msg: msg);
+        print(msgs.toString());
+        if(user == "PROVIDER") {
+          if(Provider.of<UserProvider>(context, listen: false).selLog != null) {
+            await Provider.of<UserProvider>(context, listen: false).setSellogStatus(status);
+          }
+        } else if(user == "CONSUMER") {
+          if(Provider.of<StoreProvider>(context, listen: false).selLog != null) {
+            await Provider.of<StoreProvider>(context, listen: false).setSellogStatus(status);
+          }
+        }
+
+
       },
       // 앱이 백그라운드 상태, 푸시 알림 UI를 누른 경우에 호출된다. 앱이 포그라운드로 전환됨.
       onResume: (Map<String, dynamic> message) async {
