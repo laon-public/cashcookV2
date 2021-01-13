@@ -183,8 +183,14 @@ class _QrPayment extends State<QrPayment> {
                 Spacer(),
                 Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 40,
+                  height: 52,
+                  padding: EdgeInsets.only(top: 8),
                   child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(6.0)
+                      )
+                    ),
                       elevation: 0.0,
                       onPressed: (qp.paymentModel.price < (int.parse(qp.paymentEditModel.dlCtrl.text == "" ? "0" : qp.paymentEditModel.dlCtrl.text) * 100))
                             || (qp.store.store.limitDL != "NONE" &&
@@ -199,8 +205,9 @@ class _QrPayment extends State<QrPayment> {
                           },
                       color: mainColor,
                       child: Text("결제하기",
-                          style: Body1.apply(
-                            color: white
+                          style: Subtitle2.apply(
+                              color: white,
+                              fontWeightDelta: 1
                           )
                       )
                   ),
@@ -233,7 +240,7 @@ class _QrPayment extends State<QrPayment> {
               builder: (context, qp, _){
                 return Container(
                     width: 240,
-                    height: 230,
+                    height: 210,
                     child: Column(
                       children: [
                         Text("${qp.store.store.name}에서 ${numberFormat.format(qp.paymentModel.price)}원을\n"
@@ -242,10 +249,10 @@ class _QrPayment extends State<QrPayment> {
                           style: Body1,
                           textAlign: TextAlign.center,
                         ),
-                        whiteSpaceH(22),
-                        Text("실시간 흥정 게임으로 이동하시겠습니까?",
-                            style: Body2
-                        ),
+                        // whiteSpaceH(22),
+                        // Text("실시간 흥정 게임으로 이동하시겠습니까?",
+                        //     style: Body2
+                        // ),
                         whiteSpaceH(22),
                         Container(
                           width: 240,
@@ -293,7 +300,7 @@ class _QrPayment extends State<QrPayment> {
                                     width: 64,
                                     height: 64,
                                     child: Center(
-                                      child: Text("나중에",
+                                      child: Text("확인",
                                           style: Body1.apply(
                                               color: primary,
                                               fontWeightDelta: 3
@@ -311,41 +318,41 @@ class _QrPayment extends State<QrPayment> {
                                   ),
                                 ),
                               ),
-                              Expanded(
-                                child: InkWell(
-                                  onTap: () async {
-                                    await qp.confirmPayment(true, qp.paymentModel.uuid);
-
-                                    Map<String, dynamic> pointMap =  Provider.of<UserProvider>(context, listen: false).pointMap;
-                                    print("CARAT : ${pointMap['CARAT']}");
-
-                                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => BargainGame2(
-                                      orderPayment: int.parse(qp.paymentEditModel.priceCtrl.text),
-                                      totalCarat: pointMap['CARAT']
-                                    )), (route) => false);
-                                  },
-                                  child: Container(
-                                    width: 64,
-                                    height: 64,
-                                    child: Center(
-                                      child: Text("예",
-                                          style: Body1.apply(
-                                              color: white,
-                                              fontWeightDelta: 3
-                                          )
-                                      ),
-                                    ),
-                                    decoration: BoxDecoration(
-                                        color: primary,
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                            color: primary,
-                                            width: 1
-                                        )
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              // Expanded(
+                              //   child: InkWell(
+                              //     onTap: () async {
+                              //       await qp.confirmPayment(true, qp.paymentModel.uuid);
+                              //
+                              //       Map<String, dynamic> pointMap =  Provider.of<UserProvider>(context, listen: false).pointMap;
+                              //       print("CARAT : ${pointMap['CARAT']}");
+                              //
+                              //       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => BargainGame2(
+                              //         orderPayment: int.parse(qp.paymentEditModel.priceCtrl.text),
+                              //         totalCarat: pointMap['CARAT']
+                              //       )), (route) => false);
+                              //     },
+                              //     child: Container(
+                              //       width: 64,
+                              //       height: 64,
+                              //       child: Center(
+                              //         child: Text("예",
+                              //             style: Body1.apply(
+                              //                 color: white,
+                              //                 fontWeightDelta: 3
+                              //             )
+                              //         ),
+                              //       ),
+                              //       decoration: BoxDecoration(
+                              //           color: primary,
+                              //           shape: BoxShape.circle,
+                              //           border: Border.all(
+                              //               color: primary,
+                              //               width: 1
+                              //           )
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                         )

@@ -293,17 +293,19 @@ class _BargainGame2 extends State<BargainGame2> {
     } else if(message.toString() == "LoadingComplete"){
       _timer = Timer.periodic(Duration(milliseconds: 1000), (timer) {
         if(timer.tick == 1) {
-          setState(() {
-            _isLoading = false;
-            _timer.cancel();
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+            setState(() {
+              _isLoading = false;
+              _timer.cancel();
+            });
           });
         }
       });
     } else { // 한번더하기
       print("한번더");
-        setState(() {
-          isReplay = true;
-        });
+      setState(() {
+        isReplay = true;
+      });
     }
   }
 
