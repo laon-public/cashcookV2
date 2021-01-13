@@ -48,12 +48,25 @@ class UserProvider with ChangeNotifier {
   List<ServiceLogListItem> serviceLogList = [];
   OrderLog selLog;
   bool isLastList = false;
+  bool isRefunding = false;
 
   // Refund List
   List<RefundLogModel> refundList = [];
 
   // Authentication Variable
   String jsession;
+
+  void startRefunding() {
+    isRefunding = true;
+
+    notifyListeners();
+  }
+
+  void stopRefunding() {
+    isRefunding = false;
+
+    notifyListeners();
+  }
 
   void setSelOrderLog(OrderLog orderLog) {
       selLog = orderLog;
