@@ -150,9 +150,9 @@ class _Buy extends State<Buy> {
             await Provider.of<StoreServiceProvider>(context, listen: false).setOrderMap(widget.id, "ORDER", result['imp_uid'], widget.email, widget.comment,widget.isDelivery).then((value) {
               if (value != null && value != "") {
                 if(widget.isDelivery) {
-                  sendMessage("배달", "배달요청이 들어왔습니다", value, "CONSUMER" , "DELIVERY_REQUEST");
+                  sendMessage("배달", "배달요청이 들어왔습니다", value, "CONSUMER" , "DELIVERY_REQUEST", null);
                 } else {
-                  sendMessage("주문접수", "주문이 들어왔습니다", value, "CONSUMER" , "BEFORE_CONFIRM" );
+                  sendMessage("주문접수", "주문이 들어왔습니다", value, "CONSUMER" , "BEFORE_CONFIRM" , null);
                 }
 
                 Provider.of<StoreServiceProvider>(context, listen: false).orderComplete();

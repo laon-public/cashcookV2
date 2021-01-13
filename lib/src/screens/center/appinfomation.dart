@@ -73,7 +73,7 @@ class AppInfomation extends StatelessWidget {
                                 color: black
                             ),
                           ),
-                          Text("현재버전 : V.${cp.appVersion}",
+                          Text("최신버전 : V.${cp.appVersion}",
                             style: Body1.apply(
                                 fontWeightDelta: 3,
                                 color: black
@@ -278,8 +278,8 @@ class AppInfomation extends StatelessWidget {
                           ),
                           Expanded(
                             flex: 3,
-                            child: Text("서울시 금천구 가산디지털1로 145\n"
-                              "(가산동, 에이스하이엔드3차, 207호)",
+                            child: Text("서울 금천구 가산디지털1로 149\n"
+                              "1104호(가산동, 신한이노플렉스)",
                               style: Body1.apply(
                                   color: Color(0xFF555555)
                               ),

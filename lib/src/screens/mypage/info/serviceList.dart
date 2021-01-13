@@ -178,11 +178,13 @@ class _ServiceList extends State<ServiceList> {
     return InkWell(
       onTap: () async {
         await Provider.of<UserProvider>(context, listen: false).setSelOrderLog(ol);
-        Navigator.of(context).push(
+        await Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => ServiceDetail()
           )
         );
+
+        firebaseCloudMessaging_Listeners();
       },
       child:  Container(
           decoration: BoxDecoration(
@@ -334,14 +336,14 @@ class _ServiceList extends State<ServiceList> {
         print('on message $message');
         FlutterRingtonePlayer.playNotification(looping: false);
 
-        Fluttertoast.showToast(msg: message['notification']['body']);
-
-        if(message['data']['userType'] == "PROVIDER") {
+        if(message['data']['userType'].toString() == "PROVIDER") {
           setState(() {
             page = 1;
           });
           await Provider.of<UserProvider>(context, listen: false).fetchServiceList(page);
         }
+
+        Fluttertoast.showToast(msg: message['notification']['body']);
       },
       // 앱이 백그라운드 상태, 푸시 알림 UI를 누른 경우에 호출된다. 앱이 포그라운드로 전환됨.
       onResume: (Map<String, dynamic> message) async {

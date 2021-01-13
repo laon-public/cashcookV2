@@ -195,11 +195,22 @@ class OrderListState extends State<OrderList> {
     return InkWell(
       onTap: () async {
         await Provider.of<StoreProvider>(context, listen: false).setSelOrderLog(ol);
-        Navigator.of(context).push(
+        bool isUpdate = await Navigator.of(context).push(
             MaterialPageRoute(
                 builder: (context) => OrderDetail()
             )
         );
+
+        if(isUpdate) {
+          setState(() {
+            page = 1;
+          });
+          await Provider.of<StoreProvider>(context, listen: false).fetchOrderList(
+              Provider.of<UserProvider>(context, listen: false).storeModel.id
+              ,page);
+        }
+
+        firebaseCloudMessaging_Listeners();
       },
       child:  Container(
           decoration: BoxDecoration(
@@ -321,9 +332,7 @@ class OrderListState extends State<OrderList> {
         print('on message $message');
         FlutterRingtonePlayer.playNotification(looping: false);
 
-        Fluttertoast.showToast(msg: message['notification']['body']);
-
-        if(message['data']['userType'] == "CONSUMER") {
+        if(message['data']['userType'].toString() == "CONSUMER") {
           setState(() {
             page = 1;
           });
@@ -331,6 +340,10 @@ class OrderListState extends State<OrderList> {
               Provider.of<UserProvider>(context, listen: false).storeModel.id
               ,page);
         }
+
+        Fluttertoast.showToast(msg: message['notification']['body']);
+
+
       },
       // 앱이 백그라운드 상태, 푸시 알림 UI를 누른 경우에 호출된다. 앱이 포그라운드로 전환됨.
       onResume: (Map<String, dynamic> message) async {

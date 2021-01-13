@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:http/http.dart';
 
-void sendMessage(String title, String message, String fcmToken, String userType,String status) async{
+void sendMessage(String title, String message, String fcmToken, String userType,String status, int orderId) async{
   Client client = Client();
 
   print("sendMessage : $fcmToken");
@@ -19,6 +19,7 @@ void sendMessage(String title, String message, String fcmToken, String userType,
       "data" : {
         "userType" : userType,
         "status" : status,
+        "orderId" : orderId
       }
   };
 

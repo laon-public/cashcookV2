@@ -35,11 +35,13 @@ class ServiceDetail extends StatefulWidget {
 
 class _ServiceDetail extends State<ServiceDetail> {
 
+  bool isUpdate = false;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     firebaseCloudMessaging_Listeners();
+    isUpdate = false;
   }
 
   @override
@@ -60,7 +62,7 @@ class _ServiceDetail extends State<ServiceDetail> {
             leading: IconButton(
               onPressed: () {
                 initFCM();
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(isUpdate);
               },
               icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24, color: black,),
             ),
@@ -165,9 +167,9 @@ class _ServiceDetail extends State<ServiceDetail> {
                                   ],
                                 ),
                               ),
-                              up.selLog.status == "CONFIRM" ?
+                              !(up.selLog.status == "BEFORE_CONFIRM" || up.selLog.status == "DELIVERY_REQUEST") ?
                                 whiteSpaceH(12) : Container(),
-                              up.selLog.status == "CONFIRM" ?
+                              !(up.selLog.status == "BEFORE_CONFIRM" || up.selLog.status == "DELIVERY_REQUEST") ?
                               Row(
                                 children: [
                                   Expanded(
@@ -285,7 +287,7 @@ class _ServiceDetail extends State<ServiceDetail> {
 
                                             Provider.of<StoreProvider>(context,listen: false).patchOrder(up.selLog.id,"REFUND_CONFIRM").then((value) {
                                               if (value != "") {
-                                                sendMessage("주문취소", "고객이 주문을 취소했습니다.", value, "CONSUMER","REFUND_CONFIRM");
+                                                sendMessage("주문취소", "고객이 주문을 취소했습니다.", value, "CONSUMER","REFUND_CONFIRM", up.selLog.id);
                                                 showToast("환불 했습니다.");
 
                                                 Provider.of<UserProvider>(context, listen: false).setSellogStatus("REFUND_CONFIRM");
@@ -305,9 +307,7 @@ class _ServiceDetail extends State<ServiceDetail> {
                                       child: Container(
                                         height: 40,
                                         child: Center(
-                                          child: Text((up.selLog.status == "ORDER_CONFIRM" || up.selLog.status == "DELIVERY_READY" || up.selLog.status == "DELIVERY_START" || up.selLog.status == "DELIVERY_END") ?
-                                              "${OrderStatusByConsumer[up.selLog.status]}"
-                                              :
+                                          child: Text(
                                           "주문 취소",
                                             style: Body1.apply(
                                               color: secondary,
@@ -315,7 +315,7 @@ class _ServiceDetail extends State<ServiceDetail> {
                                           ),
                                         ),
                                         decoration: BoxDecoration(
-                                            color: white,
+                                            color: !(up.selLog.status == "BEFORE_CONFIRM" || up.selLog.status == "DELIVERY_REQUEST") ? deActivatedGrey : white,
                                             border: Border.all(
                                                 color: Color(0xFFDDDDDD),
                                                 width: 1
@@ -328,17 +328,16 @@ class _ServiceDetail extends State<ServiceDetail> {
                                   Expanded(
                                     child: InkWell(
                                       onTap: () {
-                                        if(up.selLog.status == "ORDER_CONFIRM" || up.selLog.status == "DELIVERY_READY" || up.selLog.status == "DELIVERY_START" || up.selLog.status == "DELIVERY_END"){
-                                          Provider.of<UserProvider>(context, listen: false).confirmPurchase(up.selLog.id);
-                                        } else {
-
-                                        }
+                                        // if(up.selLog.status == "ORDER_CONFIRM" || up.selLog.status == "DELIVERY_READY" || up.selLog.status == "DELIVERY_START" || up.selLog.status == "DELIVERY_END"){
+                                        //   Provider.of<UserProvider>(context, listen: false).confirmPurchase(up.selLog.id);
+                                        // } else {
+                                        //
+                                        // }
                                       },
                                       child: Container(
                                         height: 40,
                                         child: Center(
-                                          child: Text("${(up.selLog.status == "ORDER_CONFIRM" || up.selLog.status == "DELIVERY_READY" || up.selLog.status == "DELIVERY_START" || up.selLog.status == "DELIVERY_END")
-                                              ? "구매확정" : OrderStatusByConsumer[up.selLog.status]}",
+                                          child: Text("${OrderStatusByConsumer[up.selLog.status]}",
                                             style: Body1.apply(
                                               color: secondary,
                                             ),
@@ -641,10 +640,6 @@ class _ServiceDetail extends State<ServiceDetail> {
       const IosNotificationSettings(sound: true, badge: true, alert: true),
     );
 
-    _firebaseMessaging.getToken().then((token){
-      print('token:'+token);
-    });
-
     _firebaseMessaging.configure(
       // 앱이 포그라운드 상태, 앱이 전면에 켜져있기 때문에 푸시 알림 UI가 표시되지 않음.
       onMessage: (Map<String, dynamic> message) async {
@@ -668,23 +663,24 @@ class _ServiceDetail extends State<ServiceDetail> {
       const IosNotificationSettings(sound: true, badge: true, alert: true),
     );
 
-    _firebaseMessaging.getToken().then((token){
-      print('token:'+token);
-    });
-
     _firebaseMessaging.configure(
       // 앱이 포그라운드 상태, 앱이 전면에 켜져있기 때문에 푸시 알림 UI가 표시되지 않음.
       onMessage: (Map<String, dynamic> message) async {
         print('on message $message');
         FlutterRingtonePlayer.playNotification(looping: false);
 
-        Fluttertoast.showToast(msg: message['notification']['body']);
-
-        if(message['data']['userType'] == "PROVIDER") {
+        if(message['data']['userType'].toString() == "PROVIDER" &&
+            message['data']['orderId'] == Provider.of<UserProvider>(context, listen: false).selLog.id) {
           await Provider.of<UserProvider>(context, listen: false).setSellogStatus(
               message['data']['status']
           );
+        } else {
+          setState(() {
+            isUpdate = true;
+          });
         }
+
+        Fluttertoast.showToast(msg: message['notification']['body']);
       },
       // 앱이 백그라운드 상태, 푸시 알림 UI를 누른 경우에 호출된다. 앱이 포그라운드로 전환됨.
       onResume: (Map<String, dynamic> message) async {

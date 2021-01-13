@@ -28,11 +28,14 @@ class OrderDetail extends StatefulWidget {
 
 class OrderDetailState extends State<OrderDetail> {
 
+  bool isUpdate = false;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     firebaseCloudMessaging_Listeners();
+    isUpdate = false;
   }
 
   @override
@@ -53,7 +56,7 @@ class OrderDetailState extends State<OrderDetail> {
             leading: IconButton(
               onPressed: () {
                 initFCM();
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(isUpdate);
               },
               icon: Image.asset("assets/resource/public/prev.png", width: 24, height: 24, color: black,),
             ),
@@ -161,7 +164,7 @@ class OrderDetailState extends State<OrderDetail> {
                                         if(sp.selLog.status == "BEFORE_CONFIRM") {
                                           await sp.patchOrder(sp.selLog.id,"ORDER_CONFIRM").then((value) {
                                             if(value != null && value != "") {
-                                              sendMessage("주문접수", "매장에서 주문이 접수되었습니다", value, "PROVIDER", "ORDER_CONFIRM");
+                                              sendMessage("주문접수", "매장에서 주문이 접수되었습니다", value, "PROVIDER", "ORDER_CONFIRM", sp.selLog.id);
                                               showToast("주문을 접수 하셨습니다.");
                                             } else {
                                               showToast("주문접수에 실패 했습니다.");
@@ -170,7 +173,7 @@ class OrderDetailState extends State<OrderDetail> {
                                         } else if(sp.selLog.status == "DELIVERY_REQUEST") {
                                           await sp.patchOrder(sp.selLog.id,"DELIVERY_READY").then((value) {
                                             if(value != null && value != "") {
-                                              sendMessage("배달접수", "매장에서 배달이 접수되었습니다", value, "PROVIDER", "DELIVERY_READY");
+                                              sendMessage("배달접수", "매장에서 배달이 접수되었습니다", value, "PROVIDER", "DELIVERY_READY", sp.selLog.id);
                                               showToast("배달을 접수 하셨습니다.");
                                             } else {
                                               showToast("배달접수에 실패 했습니다.");
@@ -179,7 +182,7 @@ class OrderDetailState extends State<OrderDetail> {
                                         } else if(sp.selLog.status == "DELIVERY_READY"){
                                           await sp.patchOrder(sp.selLog.id,"DELIVERY_START").then((value) {
                                             if(value != null && value != "") {
-                                              sendMessage("배달출발", "배달이 시작되었습니다", value, "PROVIDER", "DELIVERY_START");
+                                              sendMessage("배달출발", "배달이 시작되었습니다", value, "PROVIDER", "DELIVERY_START", sp.selLog.id);
                                               showToast("배달을 시작합니다.");
                                             } else {
                                               showToast("배달 시작 알림에 실패 하셨습니다.");
@@ -591,13 +594,19 @@ class OrderDetailState extends State<OrderDetail> {
         print('on message $message');
         FlutterRingtonePlayer.playNotification(looping: false);
 
-        Fluttertoast.showToast(msg: message['notification']['body']);
-
-        if(message['data']['userType'] == "CONSUMER") {
+        if(message['data']['userType'].toString() == "CONSUMER" &&
+          message['data']['orderId'] == Provider.of<StoreProvider>(context, listen: false).selLog.id
+        ) {
           await Provider.of<StoreProvider>(context, listen: false).setSellogStatus(
-            message['data']['status']
+              message['data']['status']
           );
+        } else {
+          setState(() {
+            isUpdate = true;
+          });
         }
+
+        Fluttertoast.showToast(msg: message['notification']['body']);
       },
       // 앱이 백그라운드 상태, 푸시 알림 UI를 누른 경우에 호출된다. 앱이 포그라운드로 전환됨.
       onResume: (Map<String, dynamic> message) async {

@@ -727,9 +727,9 @@ class _OrderMenu extends State<OrderMenu> {
                                           emailCtrl.text,commentCtrl.text,isDelivery);
                                         if(fcmToken != null && fcmToken != "") {
                                           if(isDelivery) {
-                                            sendMessage("배달요청", "배달 요청이 들어왔습니다", fcmToken, "CONSUMER", "DELIVERY_REQUEST");
+                                            sendMessage("배달요청", "배달 요청이 들어왔습니다", fcmToken, "CONSUMER", "DELIVERY_REQUEST", null);
                                           } else {
-                                            sendMessage("주문접수", "주문이 들어왔습니다", fcmToken, "CONSUMER", "BEFORE_CONFIRM");
+                                            sendMessage("주문접수", "주문이 들어왔습니다", fcmToken, "CONSUMER", "BEFORE_CONFIRM", null);
                                           }
                                         }
                                         ssp.orderComplete();

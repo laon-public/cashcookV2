@@ -145,9 +145,11 @@ class UserProvider with ChangeNotifier {
   }
 
   setSellogStatus(String status) {
-    this.selLog.status = status;
+    if(this.selLog != null){
+      this.selLog.status = status;
 
-    notifyListeners();
+      notifyListeners();
+    }
   }
 
   setLoginUser(UserCheck userCheck) {
