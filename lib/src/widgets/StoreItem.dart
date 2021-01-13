@@ -187,11 +187,8 @@ Widget storeMiniItem(StoreMinify store, BuildContext context) {
 
 
 Widget storeItem(StoreModel store, BuildContext context) {
-
   return
-
     InkWell(
-
       onTap: () async {
         await Provider.of<StoreServiceProvider>(
             context, listen: false).setServiceNum(
@@ -206,22 +203,14 @@ Widget storeItem(StoreModel store, BuildContext context) {
             )
         );
       },
-
       child:
-
       Container(
-         // width: MediaQuery.of(context).size.width,
-          // width: MediaQuery.of(context).size.width * 0.35,
           width: 170,
           height: 250,
-          // padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-           padding: EdgeInsets.only(right: 0, left: 15),
-
-        child:
-
-        Column(
-          children: [
-
+          padding: EdgeInsets.symmetric(horizontal: 7.5),
+          child:
+          Column(
+            children: [
             //이미지
             Hero(
               tag: "Open Detail${store.id}",
@@ -253,27 +242,20 @@ Widget storeItem(StoreModel store, BuildContext context) {
 
             Expanded(
               child:
-
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   Padding(
                       padding: EdgeInsets.fromLTRB(0, 7, 0, 0),
                       child:
                       Text(store.store.name,
                           style: Body1.apply(fontWeightDelta: 1)),),
-
                   // 기존 하트
                   Row(
                     children: [
-
                       whiteSpaceW(5),
-
                       Spacer(),
-
-
                      /* Consumer<StoreServiceProvider>(
                         builder: (context, ssp, _){
 
@@ -344,9 +326,47 @@ Widget storeItem(StoreModel store, BuildContext context) {
                       )
                     ],
                   ),
-
-
-              /* Row(
+                  whiteSpaceH(3),
+                  Expanded(
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("${store.store.category_name} / ${store.store.category_sub_name}",
+                            style: Caption.apply(color: mainColor),),
+                          whiteSpaceW(10.0),
+                          (store.store.deliveryTime == null) ?
+                          Text("배달없음",
+                              style: Caption.apply(color: secondary)
+                          )
+                              :
+                              Expanded(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text("배달 ",
+                                        style: Caption.apply(color: secondary)
+                                    ),
+                                    Image.asset(
+                                        "assets/icon/time-dark.png",
+                                        width: 12,
+                                        height: 12,
+                                        color: secondary
+                                    ),
+                                    Expanded(
+                                      child: Text("  ${store.store.deliveryTime}",
+                                        style: Caption.apply(color: secondary),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                        ]
+                    ),
+                  )
+               /*Row(
                  children: [
                    // 포장 배달 여부,
                    (store.store.deliveryTime != null) ?
@@ -370,9 +390,10 @@ Widget storeItem(StoreModel store, BuildContext context) {
                    )
                        :
                    Text(""),
+
                  ],
-               )
-              */
+               ),*/
+
 
 
                   /*Row(
@@ -460,8 +481,15 @@ Widget storeItemRow(StoreModel store, BuildContext context) {
       );
     },
     child: Container(
-      width: MediaQuery.of(context).size.width * 3 / 4,
+      width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: deActivatedGrey
+          )
+        )
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -498,6 +526,28 @@ Widget storeItemRow(StoreModel store, BuildContext context) {
                             fontWeightDelta: 1
                         )
                     ),
+                    whiteSpaceW(4),
+                    Row(
+                      children: [
+                        (store.store.deliveryTime != null) ?
+                        Image.asset(
+                          "assets/icon/isPacking.png",
+                          width: 27,
+                          height: 14,
+                        )
+                            :
+                        Text(""),
+                        whiteSpaceW(4),
+                        (store.store.deliveryTime != null) ?
+                        Image.asset(
+                          "assets/icon/isDelivery.png",
+                          width: 27,
+                          height: 14,
+                        )
+                            :
+                        Text(""),
+                      ],
+                    )
                   ],
                 ),
                 Row(
@@ -528,6 +578,13 @@ Widget storeItemRow(StoreModel store, BuildContext context) {
                   ],
                 ),
                 Row(
+                    children: [
+                      Text(store.store.short_description,
+                        overflow: TextOverflow.ellipsis,
+                        style: Body2,),
+                    ],
+                ),
+                Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -554,33 +611,23 @@ Widget storeItemRow(StoreModel store, BuildContext context) {
                         ),
                         Text("  ${store.store.deliveryTime}",
                             style: Caption.apply(color: secondary)
+                        ),
+                        Text(" · ",
+                            style: Caption.apply(color: secondary)
+                        ),
+                        (store.store.minOrderAmount == null) ?
+                        Text("최소주문금액 없음",
+                          style: Caption.apply(color: secondary),
+                          overflow: TextOverflow.ellipsis,
+                        )
+                            :
+                        Text("최소주문 ${store.store.minOrderAmount}원",
+                            style: Caption.apply(color: secondary)
                         )
                       ],
                     ),
                   ],
                 ),
-                whiteSpaceH(6),
-                Row(
-                  children: [
-                    (store.store.deliveryTime != null) ?
-                    Image.asset(
-                      "assets/icon/isPacking.png",
-                      width: 27,
-                      height: 14,
-                    )
-                        :
-                    Text(""),
-                    whiteSpaceW(4),
-                    (store.store.deliveryTime != null) ?
-                    Image.asset(
-                      "assets/icon/isDelivery.png",
-                      width: 27,
-                      height: 14,
-                    )
-                        :
-                    Text(""),
-                  ],
-                )
               ],
             ),
           )

@@ -30,77 +30,64 @@ class _SearchDetail extends State<SearchDetail> {
               children: [
                 Container(
                   width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(color: Color(0xFFDDDDDD), width: 1)
-                      )
-                  ),
-                  child: Column(
+                  height: 50,
+                  padding: EdgeInsets.symmetric(horizontal: 6.0),
+                  child: Row(
                     children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 50,
-                        padding: EdgeInsets.symmetric(horizontal: 6.0),
-                        child: Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              icon: Image.asset(
-                                "assets/resource/public/prev.png",
-                                width: 24,
-                                height: 24,
-                              ),
-                            ),
-                            whiteSpaceW(8),
-                            Image.asset(
-                              "assets/resource/main/search_blue.png",
-                              width: 24,
-                              height: 24,
-                              color: mainColor,
-                            ),
-                            whiteSpaceW(8),
-                            Text(
-                              widget.filter,
-                              style: Body1.apply(
-                                fontWeightDelta: 2
-                              ),
-                            )
-                          ],
+                      IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: Image.asset(
+                          "assets/resource/public/prev.png",
+                          width: 24,
+                          height: 24,
                         ),
                       ),
-                      Container(
-                                child: Consumer<StoreServiceProvider>(
-                                  builder: (context, ssp, _){
-                                    return
-                                      Container(
-                                        width: MediaQuery.of(context).size.width,
-                                        child:
-                                        Column(
-                                          children: ssp.searchStore.map((e) =>
-                                          (widget.filterType == "none") ?
-                                          (e.store.name != widget.filter) ?
-                                              Container()
-                                              :
-                                              storeItem(e, context)
-                                              :
-                                          (!e.store.name.contains(widget.filter)) ?
-                                            Container()
-                                                :
-                                            storeItem(e, context)
-                                          ).toList() ,
-                                        ),
-                                      );
-                                  },
-                                ),
-                          )
+                      whiteSpaceW(8),
+                      Image.asset(
+                        "assets/resource/main/search_blue.png",
+                        width: 24,
+                        height: 24,
+                        color: mainColor,
+                      ),
+                      whiteSpaceW(8),
+                      Text(
+                        widget.filter,
+                        style: Body1.apply(
+                            fontWeightDelta: 2
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    child: Consumer<StoreServiceProvider>(
+                      builder: (context, ssp, _){
+                        return SingleChildScrollView(
+                          child: Column(
+                            children: ssp.searchStore.map((e) =>
+                            (widget.filterType == "none") ?
+                            (e.store.name != widget.filter) ?
+                            Container()
+                                :
+                            storeItemRow(e, context)
+                                :
+                            (!e.store.name.contains(widget.filter)) ?
+                            Container()
+                                :
+                            storeItemRow(e, context)
+                            ).toList() ,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                )
               ],
             )
-        )
-            ]
-    ),
-        )
-    );
+          ),
+        );
   }
 }
