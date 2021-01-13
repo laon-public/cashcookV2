@@ -672,7 +672,7 @@ class _OrderMenu extends State<OrderMenu> {
               builder: (context, ssp, _){
                 return Container(
                     width: 240,
-                    height: 230,
+                    height: 210,
                     child: (!ssp.orderLoading) ?
                     Column(
                       children: [
@@ -681,10 +681,10 @@ class _OrderMenu extends State<OrderMenu> {
                           style: Body1,
                           textAlign: TextAlign.center,
                         ),
-                        whiteSpaceH(22),
-                        Text("실시간 흥정 게임으로 이동하시겠습니까?",
-                            style: Body2
-                        ),
+                        // whiteSpaceH(22),
+                        // Text("실시간 흥정 게임으로 이동하시겠습니까?",
+                        //     style: Body2
+                        // ),
                         whiteSpaceH(22),
                         Container(
                           width: 240,
@@ -760,7 +760,9 @@ class _OrderMenu extends State<OrderMenu> {
                                     width: 64,
                                     height: 64,
                                     child: Center(
-                                      child: Text("나중에",
+                                      child: Text(
+                                          "확인",
+                                          // "나중에",
                                           style: Body1.apply(
                                             color: primary,
                                             fontWeightDelta: 3
@@ -778,59 +780,59 @@ class _OrderMenu extends State<OrderMenu> {
                                   ),
                                 ),
                               ),
-                              Expanded(
-                                child: InkWell(
-                                  onTap: () async {
-                                    if(!ssp.orderLoading) {
-                                      if(currentMethod == 1){ // 무통장입금 결제
-                                        await ssp.setOrderMap(widget.store_id, "ORDER", "",
-                                          emailCtrl.text,commentCtrl.text,isDelivery);
-                                        ssp.orderComplete();
-
-                                        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => BargainGame2(
-                                            orderPayment: ssp.orderPay - (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text) * 100),
-                                            totalCarat: pointMap['CARAT'])), (route) => false);
-                                      } else {  // 신용카드 결제
-                                        Navigator.of(context).push(MaterialPageRoute(
-                                            builder: (context) =>
-                                                Buy(
-                                                  name: widget.name,
-                                                  pay: ssp.orderPay - (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text) * 100),
-                                                  id: widget.store_id,
-                                                  paymentType: paymentType[currentMethod],
-                                                  dl: (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text)),
-                                                  isPlayGame: true,
-                                                  email: emailCtrl.text,
-                                                  isDelivery: isDelivery,
-                                                  comment: commentCtrl.text,
-                                                )));
-                                      }
-                                    } else {
-                                      showToast("주문이 처리되는 중 입니다.");
-                                    }
-                                  },
-                                  child: Container(
-                                    width: 64,
-                                    height: 64,
-                                    child: Center(
-                                      child: Text("예",
-                                          style: Body1.apply(
-                                            color: white,
-                                            fontWeightDelta: 3
-                                          )
-                                      ),
-                                    ),
-                                    decoration: BoxDecoration(
-                                        color: primary,
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                            color: primary,
-                                            width: 1
-                                        )
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              // Expanded(
+                              //   child: InkWell(
+                              //     onTap: () async {
+                              //       if(!ssp.orderLoading) {
+                              //         if(currentMethod == 1){ // 무통장입금 결제
+                              //           await ssp.setOrderMap(widget.store_id, "ORDER", "",
+                              //             emailCtrl.text,commentCtrl.text,isDelivery);
+                              //           ssp.orderComplete();
+                              //
+                              //           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => BargainGame2(
+                              //               orderPayment: ssp.orderPay - (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text) * 100),
+                              //               totalCarat: pointMap['CARAT'])), (route) => false);
+                              //         } else {  // 신용카드 결제
+                              //           Navigator.of(context).push(MaterialPageRoute(
+                              //               builder: (context) =>
+                              //                   Buy(
+                              //                     name: widget.name,
+                              //                     pay: ssp.orderPay - (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text) * 100),
+                              //                     id: widget.store_id,
+                              //                     paymentType: paymentType[currentMethod],
+                              //                     dl: (int.parse(ssp.dlCtrl.text == "" ? "0":ssp.dlCtrl.text)),
+                              //                     isPlayGame: true,
+                              //                     email: emailCtrl.text,
+                              //                     isDelivery: isDelivery,
+                              //                     comment: commentCtrl.text,
+                              //                   )));
+                              //         }
+                              //       } else {
+                              //         showToast("주문이 처리되는 중 입니다.");
+                              //       }
+                              //     },
+                              //     child: Container(
+                              //       width: 64,
+                              //       height: 64,
+                              //       child: Center(
+                              //         child: Text("예",
+                              //             style: Body1.apply(
+                              //               color: white,
+                              //               fontWeightDelta: 3
+                              //             )
+                              //         ),
+                              //       ),
+                              //       decoration: BoxDecoration(
+                              //           color: primary,
+                              //           shape: BoxShape.circle,
+                              //           border: Border.all(
+                              //               color: primary,
+                              //               width: 1
+                              //           )
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                         )

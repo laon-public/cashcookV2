@@ -690,6 +690,7 @@ class _ServiceDetail extends State<ServiceDetail> {
         FlutterRingtonePlayer.playNotification(looping: false);
 
         if(message['data']['userType'].toString() == "PROVIDER" &&
+            message['data']['orderId'] != null &&
             message['data']['orderId'] == Provider.of<UserProvider>(context, listen: false).selLog.id) {
           await Provider.of<UserProvider>(context, listen: false).setSellogStatus(
               message['data']['status']

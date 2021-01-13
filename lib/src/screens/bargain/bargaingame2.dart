@@ -290,6 +290,15 @@ class _BargainGame2 extends State<BargainGame2> {
 
     } else if(message.toString() == "Recharge") { // 캐럿 부족
       print("캐럿 부족");
+    } else if(message.toString() == "LoadingComplete"){
+      _timer = Timer.periodic(Duration(milliseconds: 1000), (timer) {
+        if(timer.tick == 1) {
+          setState(() {
+            _isLoading = false;
+            _timer.cancel();
+          });
+        }
+      });
     } else { // 한번더하기
       print("한번더");
         setState(() {
@@ -322,13 +331,13 @@ class _BargainGame2 extends State<BargainGame2> {
       isReplay = false;
       gameLoad = false;
     });
-    _timer = Timer.periodic(Duration(milliseconds: 1000), (timer) {
-      if(timer.tick == 5) {
-        setState(() {
-          _isLoading = false;
-          _timer.cancel();
-        });
-      }
-    });
+    // _timer = Timer.periodic(Duration(milliseconds: 1000), (timer) {
+    //   if(timer.tick == 5) {
+    //     setState(() {
+    //       _isLoading = false;
+    //       _timer.cancel();
+    //     });
+    //   }
+    // });
   }
 }
