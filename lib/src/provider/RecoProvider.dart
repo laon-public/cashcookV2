@@ -154,6 +154,19 @@ class RecoProvider with ChangeNotifier {
     stopLoading();
   }
 
+  Future<bool> postDirectlyReco(String name, String phone) async {
+    List<Map<String, String>> data = [];
+
+    data.add({ "name" : name, "phone" : phone});
+
+    final response = await service.postReco(data);
+    Map<String, dynamic> json = jsonDecode(response);
+    if(isResponse(json)){
+      return true;
+    }
+    return false;
+  }
+
   Future<String> postReco(List<PhoneModel> phoneList) async {
     List<Map<String, String>> data = [];
 

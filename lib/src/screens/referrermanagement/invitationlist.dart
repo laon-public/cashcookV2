@@ -25,6 +25,9 @@ class _InvitationList extends State<InvitationList> {
 
   String filterKeyword;
 
+  TextEditingController nameCtrl = TextEditingController();
+  TextEditingController phoneCtrl = TextEditingController();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -82,123 +85,227 @@ class _InvitationList extends State<InvitationList> {
 
                   Stack(
                     children: [
-                      SingleChildScrollView(
-                        child: Container(
-                          margin: EdgeInsets.only(bottom: 60),
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height,
-                            color: white,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(right: 16, top:14, bottom: 14),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        child: Theme(
-                                            data: ThemeData(unselectedWidgetColor: Color(0xFFDDDDDD),),
-                                            child:
-                                            Checkbox(
-                                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                              activeColor: mainColor,
-                                              checkColor: white,
-                                              value: phoneProvider.allCheck,
-                                              onChanged: (value) {
-                                                phoneProvider.setAllCheck(value);
-                                              },
-                                            )
-                                        ),
-                                      ),
-                                      Text(
-                                          "${phoneProvider.phoneList.length}명 중 ",
-                                          style: Subtitle2.apply(
-                                              fontWeightDelta: 1
-                                          )
-                                      ),
-                                      Text(
-                                          "${phoneProvider.checkCnt}",
-                                          style: Subtitle2.apply(
-                                              color: primary,
-                                              fontWeightDelta: 1
-                                          )
-                                      ),
-                                      Text(
-                                          "명 선택",
-                                          style: Subtitle2.apply(
-                                              fontWeightDelta: 1
-                                          )
-                                      ),
-                                      whiteSpaceH(15),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    height: 44,
-                                    padding: EdgeInsets.symmetric(horizontal: 16),
-                                    child: Row(
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height - 60,
+                        child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Expanded(
-                                          child: TextField(
-                                            controller: searchCtrl,
-                                            autofocus: false,
-                                            cursorColor: Color(0xff000000),
-                                            style: Subtitle2,
-                                            decoration: InputDecoration(
-                                              labelText: "찾으실 친구를 입력해주세요.",
-                                              labelStyle: Subtitle2.apply(
-                                                color: third,
-                                                fontWeightDelta: -1
-                                              ),
-                                              contentPadding: EdgeInsets.all(12.0),
-                                              border: UnderlineInputBorder(
-                                                borderSide: BorderSide(color: Color(0xffdddddd), width: 1.0),
-                                              ),
-                                              focusedBorder: UnderlineInputBorder(
-                                                borderSide: BorderSide(color: black, width: 2.0),
-                                              ),
-                                              prefixIcon: InkWell(
-                                                onTap: () {},
-                                                child: Container(
-                                                  padding: EdgeInsets.all(12.0),
-                                                  child: Image.asset(
-                                                    "assets/resource/main/search_blue.png",
-                                                    width: 24,
-                                                    height: 24,
-                                                    color: primary,
+                                        Text(
+                                          "성명",
+                                          style: Body2,
+                                        ),
+                                        TextFormField(
+                                          style: Subtitle2.apply(
+                                              fontWeightDelta: 1
+                                          ),
+                                          cursorColor: Color(0xff000000),
+                                          controller: nameCtrl,
+                                          decoration: InputDecoration(
+                                            hintText: "홍길동",
+                                            hintStyle: Subtitle2.apply(
+                                                color: deActivatedGrey
+                                            ),
+                                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                                            contentPadding: EdgeInsets.symmetric(horizontal: 4),
+                                            border: UnderlineInputBorder(
+                                              borderSide: BorderSide(color: Color(0xffdddddd), width: 1.0),
+                                            ),
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(color: black, width: 2.0),
+                                            ),
+                                          ),
+                                        ),
+                                        whiteSpaceH(20),
+                                        Text(
+                                          "연락처",
+                                          style: Body2,
+                                        ),
+                                        TextFormField(
+                                          style: Subtitle2.apply(
+                                              fontWeightDelta: 1
+                                          ),
+                                          keyboardType: TextInputType.phone,
+                                          cursorColor: Color(0xff000000),
+                                          controller: phoneCtrl,
+                                          decoration: InputDecoration(
+                                            hintText: "01000000000",
+                                            hintStyle: Subtitle2.apply(
+                                              color: deActivatedGrey
+                                            ),
+                                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                                            contentPadding: EdgeInsets.symmetric(horizontal: 4),
+                                            border: UnderlineInputBorder(
+                                              borderSide: BorderSide(color: Color(0xffdddddd), width: 1.0),
+                                            ),
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(color: black, width: 2.0),
+                                            ),
+                                          ),
+                                        ),
+                                        whiteSpaceH(12),
+                                        InkWell(
+                                          onTap: () {
+                                            if(nameCtrl.text == "") {
+                                              showToast("이름을 입력 해주세요.");
+                                            } else if(phoneCtrl.text == ""){
+                                              showToast("연락처를 입력 해주세요.");
+                                            } else {
+                                              phoneProvider.postDirectlyReco(nameCtrl.text, phoneCtrl.text).then((value) {
+                                                if(value) {
+                                                  showToast("초대하기를 성공하셨습니다.");
+                                                  Navigator.of(context).pop(true);
+                                                } else {
+                                                  showToast("초대하기에 실패했습니다.");
+                                                }
+                                              });
+                                            }
+                                          },
+                                          child: Container(
+                                            width: MediaQuery.of(context).size.width,
+                                            height: 40,
+                                            child:
+                                              Align(
+                                                alignment: Alignment.center,
+                                                child: Text("확인",
+                                                  style: Body1.apply(
+                                                      color: primary
                                                   ),
                                                 ),
                                               ),
-                                              suffixIcon: InkWell(
-                                                onTap: () {
-                                                  setState(() {
-                                                    searchCtrl.text = "";
-                                                    filterKeyword = "";
-                                                  });
+                                            decoration: BoxDecoration(
+                                              color: white,
+                                              border: Border.all(
+                                                color: deActivatedGrey,
+                                                width: 1
+                                              ),
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(2)
+                                              )
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 8,
+                                    color: Color(0xFFF2F2F2)
+                                  ),
+                                  whiteSpaceH(9),
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 16, top:14, bottom: 14),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          child: Theme(
+                                              data: ThemeData(unselectedWidgetColor: Color(0xFFDDDDDD),),
+                                              child:
+                                              Checkbox(
+                                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                                activeColor: mainColor,
+                                                checkColor: white,
+                                                value: phoneProvider.allCheck,
+                                                onChanged: (value) {
+                                                  phoneProvider.setAllCheck(value);
                                                 },
-                                                child: Container(
-                                                  padding: EdgeInsets.all(12.0),
-                                                  child: Image.asset(
-                                                    "assets/icon/cancle.png",
-                                                    width: 24,
-                                                    height: 24,
+                                              )
+                                          ),
+                                        ),
+                                        Text(
+                                            "${phoneProvider.phoneList.length}명 중 ",
+                                            style: Subtitle2.apply(
+                                                fontWeightDelta: 1
+                                            )
+                                        ),
+                                        Text(
+                                            "${phoneProvider.checkCnt}",
+                                            style: Subtitle2.apply(
+                                                color: primary,
+                                                fontWeightDelta: 1
+                                            )
+                                        ),
+                                        Text(
+                                            "명 선택",
+                                            style: Subtitle2.apply(
+                                                fontWeightDelta: 1
+                                            )
+                                        ),
+                                        whiteSpaceH(15),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 44,
+                                      padding: EdgeInsets.symmetric(horizontal: 16),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: TextField(
+                                              controller: searchCtrl,
+                                              autofocus: false,
+                                              cursorColor: Color(0xff000000),
+                                              style: Subtitle2,
+                                              decoration: InputDecoration(
+                                                hintText: "찾으실 친구를 입력해주세요.",
+                                                hintStyle: Subtitle2.apply(
+                                                    color: third,
+                                                    fontWeightDelta: -1
+                                                ),
+                                                contentPadding: EdgeInsets.all(12.0),
+                                                border: UnderlineInputBorder(
+                                                  borderSide: BorderSide(color: Color(0xffdddddd), width: 1.0),
+                                                ),
+                                                focusedBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(color: black, width: 2.0),
+                                                ),
+                                                prefixIcon: InkWell(
+                                                  onTap: () {},
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(12.0),
+                                                    child: Image.asset(
+                                                      "assets/resource/main/search_blue.png",
+                                                      width: 24,
+                                                      height: 24,
+                                                      color: primary,
+                                                    ),
+                                                  ),
+                                                ),
+                                                suffixIcon: InkWell(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      searchCtrl.text = "";
+                                                      filterKeyword = "";
+                                                    });
+                                                  },
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(12.0),
+                                                    child: Image.asset(
+                                                      "assets/icon/cancle.png",
+                                                      width: 24,
+                                                      height: 24,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    )
-                                ),
-                                Expanded(
-                                    child: Container(
-                                      child: InvitationItemList(phoneList: phoneProvider.phoneList, filterKeyword: filterKeyword,),
-                                    )
-                                ),
-                              ],
-                            )
+                                        ],
+                                      )
+                                  ),
+                                  Container(
+                                    child: InvitationItemList(phoneList: phoneProvider.phoneList, filterKeyword: filterKeyword,),
+                                  )
+                                ],
+                              )
                         ),
                       ),
                       Positioned(
@@ -266,67 +373,71 @@ class _InvitationItemListState extends State<InvitationItemList> {
 
   @override
   Widget build(BuildContext context) {
-    return
-      ListView.builder(
-        physics: NeverScrollableScrollPhysics(),
-          itemCount: phoneList.length,
-          itemBuilder: (BuildContext context, int index) {
-            return phoneList[index].name.contains(widget.filterKeyword) ? Container(
-              padding: EdgeInsets.only(right: 16, top: 20, bottom: 20),
-              child: Center(
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex:1,
-                      child:Container(
-                        // 개별선택
-                        child:
-                        Theme(
-                          data: ThemeData(unselectedWidgetColor: Color(0xFFDDDDDD),),
-                          child:
-                          Checkbox(
-                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            activeColor: mainColor,
-                            checkColor: white,
-                            value: phoneList[index].isCheck,
-                            onChanged: (value) {
-                              phoneProvider.setCheck(index, value);
-                            },
-                          ),
-                        ),
-                      ),
+    return Column(
+      children: phoneList.map((e) {
+        return InvitationItem(e, widget.filterKeyword, phoneList.indexOf(e));
+      }).toList(),
+    );
+  }
+
+  Widget InvitationItem(PhoneModel phoneModel, String filterKewword, int index) {
+    return phoneModel.name.contains(filterKewword) ? InkWell(
+      onTap: () {
+        phoneProvider.setCheck(index, !phoneModel.isCheck);
+      },
+      child: Container(
+        padding: EdgeInsets.only(right: 16, top: 20, bottom: 20),
+        child: Center(
+          child: Row(
+            children: [
+              Expanded(
+                flex:1,
+                child:Container(
+                  // 개별선택
+                  child:
+                  Theme(
+                    data: ThemeData(unselectedWidgetColor: Color(0xFFDDDDDD),),
+                    child:
+                    Checkbox(
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      activeColor: mainColor,
+                      checkColor: white,
+                      value: phoneModel.isCheck,
+                      onChanged: (value) {
+                        phoneProvider.setCheck(index, value);
+                      },
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: Text('${NumberFormat("000").format(index + 1)}',
-                        style: Body2
-                      ),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Text('${phoneList[index].name}',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: Body1.apply(
-                          fontWeightDelta: 1
-                        )
-                      ),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Text('${phoneList[index].phone}',
-                        overflow: TextOverflow.ellipsis,
-                        style: Body1,
-                        textAlign: TextAlign.end,
-                      ),
-                    )
-                  ],
+                  ),
                 ),
               ),
-            )
-            :
-            Container();
-          }
-      );
+              Expanded(
+                flex: 1,
+                child: Text('${NumberFormat("000").format(index + 1)}',
+                    style: Body2
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Text('${phoneModel.name}',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Body1.apply(
+                        fontWeightDelta: 1
+                    )
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Text('${phoneModel.phone}',
+                  overflow: TextOverflow.ellipsis,
+                  style: Body1,
+                  textAlign: TextAlign.end,
+                ),
+              )
+            ],
+          ),
+        ),
+      )
+    ): Container();
   }
 }

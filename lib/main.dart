@@ -1,6 +1,7 @@
 import 'package:cashcook/src/provider/AuthProvider.dart';
 import 'package:cashcook/src/provider/CarouselProvider.dart';
 import 'package:cashcook/src/provider/CenterProvider.dart';
+import 'package:cashcook/src/provider/GameProvider.dart';
 import 'package:cashcook/src/provider/PhoneProvider.dart';
 import 'package:cashcook/src/provider/PlaceProvider.dart';
 import 'package:cashcook/src/provider/PointMgmtProvider.dart';
@@ -82,6 +83,9 @@ class _CashCook extends State<CashCook> {
         ),
         ChangeNotifierProvider(
           create: (_) => StoreApplyProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => GameProvider(),
         )
       ],
       child: MaterialApp(

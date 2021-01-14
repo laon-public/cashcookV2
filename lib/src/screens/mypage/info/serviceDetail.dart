@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cashcook/src/provider/GameProvider.dart';
+import 'package:cashcook/src/screens/bargain/NewBargain.dart';
 import 'package:cashcook/src/utils/StatusMap.dart';
 import 'package:cashcook/src/model/log/orderLog.dart';
 import 'package:cashcook/src/model/store/reviewWrite.dart';
@@ -209,7 +211,7 @@ class _ServiceDetail extends State<ServiceDetail> {
                                       whiteSpaceW(8.0),
                                       Expanded(
                                         child: InkWell(
-                                          onTap: () {
+                                          onTap: () async {
                                             if(up.selLog.status == "REFUND_REQUEST") {
                                               showToast("환불 요청 중에는\n게임을 진행할 수 없습니다.");
                                               return;
@@ -223,6 +225,12 @@ class _ServiceDetail extends State<ServiceDetail> {
                                               showToast("게임을 이미 진행하였습니다.");
                                             } else {
                                               print("CARAT : ${pointMap['CARAT']}");
+                                              // await Provider.of<GameProvider>(context, listen: false).init();
+                                              // Navigator.of(context).push(
+                                              //         MaterialPageRoute(
+                                              //             builder: (context) => NewBargain(
+                                              //             )
+                                              //         ));
                                               Navigator.of(context).pushAndRemoveUntil(
                                                   MaterialPageRoute(
                                                       builder: (context) => BargainGame2(
@@ -691,7 +699,7 @@ class _ServiceDetail extends State<ServiceDetail> {
 
         if(message['data']['userType'].toString() == "PROVIDER" &&
             message['data']['orderId'] != null &&
-            message['data']['orderId'] == Provider.of<UserProvider>(context, listen: false).selLog.id) {
+            int.parse(message['data']['orderId'].toString()) == Provider.of<UserProvider>(context, listen: false).selLog.id) {
           await Provider.of<UserProvider>(context, listen: false).setSellogStatus(
               message['data']['status']
           );

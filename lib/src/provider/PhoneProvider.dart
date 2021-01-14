@@ -97,4 +97,8 @@ class PhoneProvider with ChangeNotifier {
   void postReco(){
     RecoProvider().postReco(phoneList);
   }
+
+  Future<bool> postDirectlyReco(String name, String phone) {
+    return RecoProvider().postDirectlyReco(name, phone);
+  }
 }

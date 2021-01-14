@@ -69,10 +69,12 @@ class _BargainGame2 extends State<BargainGame2> {
             gameQuantity: dl
         );
 
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
-          isHome: true,
-          afterGame : true,
-        )), (route) => false);
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
+            isHome: true,
+            afterGame : true,
+          )), (route) => false);
+        });
 
         return;
       }
@@ -114,57 +116,58 @@ class _BargainGame2 extends State<BargainGame2> {
     });
 
 
-    return Scaffold(
+    return
+      Scaffold(
       // body: SafeArea(
       body: SafeArea(
         bottom: false,
         key: _scaffoldKey,
         child:
-        WillPopScope(
-              onWillPop: () async {
-                showToast("게임이 끝나고 나가실수 있습니다.");
-                return Future.value(false);
+          WillPopScope(
+                onWillPop: () async {
+                  showToast("게임이 끝나고 나가실수 있습니다.");
+                  return Future.value(false);
 
-              },
-              child: isQuit ? Container() : Stack(
-                children: [
-                  Positioned.fill(
-                    child: Container(
-                    color: black,
-                    child: UnityWidget(
-                      onUnityViewCreated: onUnityCreated,
-                      onUnityMessage: onUnityMessage,
-                      onUnityUnloaded: onUnityUnloaded,
-                      safeMode: true,
-                    ),
-                  ),
-                  ),
-                  _isLoading ? Positioned.fill(
+                },
+                child: isQuit ? Container() : Stack(
+                  children: [
+                    Positioned.fill(
                       child: Container(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.asset("assets/icon/game-loading.png",
-                                width: 208,
-                                height: 193,
-                            ),
-                            whiteSpaceH(40),
-                            CircularProgressIndicator(
-                                valueColor: new AlwaysStoppedAnimation<Color>(white)
-                            )
-                          ],
-                        ),
-                        decoration: BoxDecoration(
-                          color: primary
-                        ),
-                      )
-                  ) : Container()
-                ],
+                      color: black,
+                      child: UnityWidget(
+                        onUnityViewCreated: onUnityCreated,
+                        onUnityMessage: onUnityMessage,
+                        onUnityUnloaded: onUnityUnloaded,
+                        safeMode: true,
+                      ),
+                    ),
+                    ),
+                    _isLoading ? Positioned.fill(
+                        child: Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.asset("assets/icon/game-loading.png",
+                                  width: 208,
+                                  height: 193,
+                              ),
+                              whiteSpaceH(40),
+                              CircularProgressIndicator(
+                                  valueColor: new AlwaysStoppedAnimation<Color>(white)
+                              )
+                            ],
+                          ),
+                          decoration: BoxDecoration(
+                            color: primary
+                          ),
+                        )
+                    ) : Container()
+                  ],
+                )
               )
-            )
-        ),
-      );
+          ),
+        );
 
   }
 
@@ -283,29 +286,32 @@ class _BargainGame2 extends State<BargainGame2> {
   void onUnityMessage(controller, message) async {
     if(message.toString() == "quit"){ //나가기
       print("나가기");
-          setState(() {
-            isReplay = false;
-            isQuit = true;
-          });
-
+      if(mounted) {
+        setState(() {
+          isReplay = false;
+          isQuit = true;
+        });
+      }
     } else if(message.toString() == "Recharge") { // 캐럿 부족
       print("캐럿 부족");
     } else if(message.toString() == "LoadingComplete"){
       _timer = Timer.periodic(Duration(milliseconds: 1000), (timer) {
-        if(timer.tick == 1) {
-          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        if(timer.tick >= 1) {
+          if(mounted){
             setState(() {
               _isLoading = false;
               _timer.cancel();
             });
-          });
+          }
         }
       });
     } else { // 한번더하기
       print("한번더");
-      setState(() {
-        isReplay = true;
-      });
+      if(mounted){
+        setState(() {
+          isReplay = true;
+        });
+      }
     }
   }
 

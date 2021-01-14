@@ -596,7 +596,7 @@ class OrderDetailState extends State<OrderDetail> {
 
         if(message['data']['userType'].toString() == "CONSUMER" &&
             message['data']['orderId'] != null &&
-          int.parse(message['data']['orderId']) == Provider.of<StoreProvider>(context, listen: false).selLog.id
+          int.parse(message['data']['orderId'].toString()) == Provider.of<StoreProvider>(context, listen: false).selLog.id
         ) {
           await Provider.of<StoreProvider>(context, listen: false).setSellogStatus(
               message['data']['status']

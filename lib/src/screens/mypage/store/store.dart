@@ -7,6 +7,7 @@ import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/TextFieldWidget.dart';
 import 'package:cashcook/src/widgets/TextFieldsWidget.dart';
 import 'package:cashcook/src/widgets/TextFieldssWidget.dart';
+import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -31,6 +32,8 @@ class _StoreApplyFirstStep extends State<StoreApplyFirstStep> {
   String bank = null; //은행명
   TextEditingController accountCtrl = TextEditingController(); //계좌번호
   String blUri;
+
+  bool isAgreeCheck = false;
 
 
   setBlUri(uri) {
@@ -124,25 +127,30 @@ class _StoreApplyFirstStep extends State<StoreApplyFirstStep> {
                 TextInputType.emailAddress),
             BackInfo(),
             whiteSpaceH(40),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: Checkbox(
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    activeColor: mainColor,
-                    value: false,
-                    onChanged: (value){
-                      setState(() {
-                      });
-                    },
+            InkWell(
+              onTap: () {
+                setState(() {
+                  isAgreeCheck = !isAgreeCheck;
+                });
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: Checkbox(
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      activeColor: mainColor,
+                      value: isAgreeCheck,
+                      onChanged: (value){
+                      },
+                    ),
                   ),
-                ),
-                whiteSpaceW(12),
-                Text("개인정보 제 3자 제공 및 위탁동의",style: TextStyle(fontSize: 14, color: third),)
-              ],
+                  whiteSpaceW(12),
+                  Text("개인정보 제 3자 제공 및 위탁동의",style: TextStyle(fontSize: 14, color: third),)
+                ],
+              ),
             ),
             whiteSpaceH(52),
             Padding(
@@ -248,40 +256,44 @@ class _StoreApplyFirstStep extends State<StoreApplyFirstStep> {
       height: 44,
       child: RaisedButton(
         onPressed: () async {
-          Map<String, dynamic> args = {
-            "company_name": nameCtrl.text,
-            "license_number": bnCtrl.text,
-            "representative": ownerCtrl.text,
-            "tel": telCtrl1.text + telCtrl2.text + telCtrl3.text,
-            "email": emailCtrl.text,
-            "bank": bank,
-            "account": accountCtrl.text,
-            "bl": blUri
-          };
-          if (nameCtrl.text == '' || nameCtrl.text == null) {
-            Fluttertoast.showToast(msg: "상호명을 입력해 주세요");
-          } else if (blUri == '' || blUri == null) {
-            Fluttertoast.showToast(msg: "사업자 등록증을 첨부해 주세요");
-          } else if (bnCtrl.text == '' || bnCtrl.text == null) {
-            Fluttertoast.showToast(msg: "사업자번호를 입력해 주세요");
-          } else if (ownerCtrl.text == '' || ownerCtrl.text == null) {
-            Fluttertoast.showToast(msg: "대표자명을 입력해 주세요");
-          } else if (telCtrl1.text == '' || telCtrl1.text == null ||
-              telCtrl2.text == '' || telCtrl2.text == null ||
-              telCtrl3.text == '' || telCtrl3.text == null) {
-            Fluttertoast.showToast(msg: "연락처를 입력해 주세요");
-          } else if(telCtrl1.text.length < 3 || telCtrl2.text.length < 4 || telCtrl3.text.length < 4){
-            Fluttertoast.showToast(msg: "전화 번호의 자릿수가 부족 합니다.");
-          } else if (emailCtrl.text == '' || emailCtrl.text == null) {
-            Fluttertoast.showToast(msg: "이메일주소를 입력해 주세요");
-          } else if (bank == null) {
-            Fluttertoast.showToast(msg: "은행명을 선택해 주세요");
-          } else if (accountCtrl.text == '' || accountCtrl.text == null) {
-            Fluttertoast.showToast(msg: "계좌번호를 입력해 주세요");
+          if(isAgreeCheck){
+            Map<String, dynamic> args = {
+              "company_name": nameCtrl.text,
+              "license_number": bnCtrl.text,
+              "representative": ownerCtrl.text,
+              "tel": telCtrl1.text + telCtrl2.text + telCtrl3.text,
+              "email": emailCtrl.text,
+              "bank": bank,
+              "account": accountCtrl.text,
+              "bl": blUri
+            };
+            if (nameCtrl.text == '' || nameCtrl.text == null) {
+              Fluttertoast.showToast(msg: "상호명을 입력해 주세요");
+            } else if (blUri == '' || blUri == null) {
+              Fluttertoast.showToast(msg: "사업자 등록증을 첨부해 주세요");
+            } else if (bnCtrl.text == '' || bnCtrl.text == null) {
+              Fluttertoast.showToast(msg: "사업자번호를 입력해 주세요");
+            } else if (ownerCtrl.text == '' || ownerCtrl.text == null) {
+              Fluttertoast.showToast(msg: "대표자명을 입력해 주세요");
+            } else if (telCtrl1.text == '' || telCtrl1.text == null ||
+                telCtrl2.text == '' || telCtrl2.text == null ||
+                telCtrl3.text == '' || telCtrl3.text == null) {
+              Fluttertoast.showToast(msg: "연락처를 입력해 주세요");
+            } else if(telCtrl1.text.length < 3 || telCtrl2.text.length < 4 || telCtrl3.text.length < 4){
+              Fluttertoast.showToast(msg: "전화 번호의 자릿수가 부족 합니다.");
+            } else if (emailCtrl.text == '' || emailCtrl.text == null) {
+              Fluttertoast.showToast(msg: "이메일주소를 입력해 주세요");
+            } else if (bank == null) {
+              Fluttertoast.showToast(msg: "은행명을 선택해 주세요");
+            } else if (accountCtrl.text == '' || accountCtrl.text == null) {
+              Fluttertoast.showToast(msg: "계좌번호를 입력해 주세요");
+            } else {
+              await Provider.of<StoreProvider>(context, listen: false).clearSuccess();
+              await Provider.of<StoreServiceProvider>(context, listen: false).fetchCategory("01");
+              Navigator.of(context).pushNamed("/store/apply2", arguments: args);
+            }
           } else {
-            await Provider.of<StoreProvider>(context, listen: false).clearSuccess();
-            await Provider.of<StoreServiceProvider>(context, listen: false).fetchCategory("01");
-            Navigator.of(context).pushNamed("/store/apply2", arguments: args);
+            showToast("개인정보 이용동의를 해주셔야 합니다.");
           }
         },
         child: Text("신청하기",
