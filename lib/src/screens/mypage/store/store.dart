@@ -9,6 +9,7 @@ import 'package:cashcook/src/widgets/TextFieldsWidget.dart';
 import 'package:cashcook/src/widgets/TextFieldssWidget.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
@@ -144,6 +145,9 @@ class _StoreApplyFirstStep extends State<StoreApplyFirstStep> {
                       activeColor: mainColor,
                       value: isAgreeCheck,
                       onChanged: (value){
+                        setState(() {
+                          isAgreeCheck = value;
+                        });
                       },
                     ),
                   ),
@@ -331,14 +335,15 @@ class BusinessNumber extends StatefulWidget {
 class _BusinessNumberState extends State<BusinessNumber> {
 
   final picker = ImagePicker();
-  File _image;
+  // File _image;
   String filePath = "";
   Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    // final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    FilePickerResult result = await FilePicker.platform.pickFiles();
+
     setState(() {
-      _image = File(pickedFile.path);
-      filePath = pickedFile.path.split("/").last;
-      widget.onSetUri(_image.absolute.path);
+      filePath = result.files.single.path.split("/").last;
+      widget.onSetUri(result.files.single.path);
     });
 
   }
@@ -368,7 +373,7 @@ class _BusinessNumberState extends State<BusinessNumber> {
                   child: Container(
                     height: 44,
                     color: Color(0xFFF7F7F7),
-                    child: Align(alignment: Alignment.centerLeft,child: Text(filePath,style: Subtitle2.apply(color:secondary, fontWeightDelta: 1),overflow: TextOverflow.ellipsis,)),
+                    child: Align(alignment: Alignment.centerLeft,child: Text(filePath.split("/").last,style: Subtitle2.apply(color:secondary, fontWeightDelta: 1),overflow: TextOverflow.ellipsis,)),
                     padding: EdgeInsets.only(left: 16),
                   ),
                 ),

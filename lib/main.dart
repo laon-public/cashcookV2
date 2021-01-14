@@ -109,10 +109,6 @@ class _CashCook extends State<CashCook> {
       const IosNotificationSettings(sound: true, badge: true, alert: true),
     );
 
-    _firebaseMessaging.getToken().then((token){
-      print('token:'+token);
-    });
-
     _firebaseMessaging.configure(
       // 앱이 포그라운드 상태, 앱이 전면에 켜져있기 때문에 푸시 알림 UI가 표시되지 않음.
       onMessage: (Map<String, dynamic> message) async {
