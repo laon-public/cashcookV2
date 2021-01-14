@@ -103,6 +103,12 @@ class _OrderMenu extends State<OrderMenu> {
                                             "메인페이지 오른쪽 상단에서 설정해주세요.");
                                         return;
                                       }
+                                      if(val) {
+                                        Provider.of<StoreServiceProvider>(context, listen: false).increaseDelivery(int.parse(store.store.deliveryAmount));
+                                      } else {
+                                        Provider.of<StoreServiceProvider>(context, listen: false).decreaseDelivery(int.parse(store.store.deliveryAmount));
+                                      }
+
                                       setState(() {
                                         isDelivery = val;
                                       });
@@ -602,8 +608,15 @@ class _OrderMenu extends State<OrderMenu> {
                                   color: primary,
                                   elevation: 0.0,
                                   onPressed: (!ss.orderLoading) ? () async {
-                                    if(isAgreeCheck){
+                                    if(store.store.minOrderAmount != null){
+                                      if(int.parse(store.store.minOrderAmount) > ss.orderPay) {
+                                          showToast("해당 매장의 최소주문 금액은\n"
+                                              "${store.store.minOrderAmount}원 입니다.");
 
+                                          return;
+                                      }
+                                    }
+                                    if(isAgreeCheck){
                                       if((int.parse(ss.dlCtrl.text == "" ? "0" : ss.dlCtrl.text) * 100) == ss.orderPay){
                                         await ss.setOrderMap(widget.store_id, "ORDER", "",
                                           emailCtrl.text,commentCtrl.text,isDelivery);
@@ -908,10 +921,17 @@ class _OrderMenu extends State<OrderMenu> {
           ),
           Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children:
-              bmm.menuList.map((e) =>
-                  menuItem(bigIdx,idx++,e)
-              ).toList()
+              children: [
+                  Column(
+                    children: bmm.menuList.map((e) =>
+                        menuItem(bigIdx,idx++,e)
+                    ).toList(),
+                  ),
+                  isDelivery ?
+                  deliveryItem()
+                      :
+                      Container()
+                ]
           ),
           whiteSpaceH(16)
         ]
@@ -1040,6 +1060,38 @@ class _OrderMenu extends State<OrderMenu> {
                               fontWeightDelta: 1
                             )
                         )
+                    )
+                )
+              ]
+          )
+      );
+  }
+
+  Widget deliveryItem() {
+    return
+      Container(
+          padding: EdgeInsets.only(top: 20),
+          child:Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                    "배달비",
+                    style: Body1.apply(
+                      color: black,
+                      fontWeightDelta: 1
+                    )
+                ),
+                Spacer(),
+                Text(
+                    "${numberFormat.format(
+                      int.parse(
+                        widget.store.store.deliveryAmount
+                      )
+                    )}원",
+                    textAlign: TextAlign.end,
+                    style: Body1.apply(
+                        color: secondary,
+                        fontWeightDelta: 3
                     )
                 )
               ]

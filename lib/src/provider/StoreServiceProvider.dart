@@ -342,6 +342,18 @@ class StoreServiceProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void increaseDelivery(int price) {
+    orderPay += price;
+
+    notifyListeners();
+  }
+
+  void decreaseDelivery(int price) {
+    orderPay -= price;
+
+    notifyListeners();
+  }
+
   Future<int> insertReview(int store_id, int scope, String contents, int order_id) async {
     final response = await service.insertReview(store_id, scope, contents, order_id);
     if (isResponse(jsonDecode(response))) {
