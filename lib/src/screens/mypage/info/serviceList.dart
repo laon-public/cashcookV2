@@ -178,11 +178,18 @@ class _ServiceList extends State<ServiceList> {
     return InkWell(
       onTap: () async {
         await Provider.of<UserProvider>(context, listen: false).setSelOrderLog(ol);
-        await Navigator.of(context).push(
+        bool isUpdate = await Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => ServiceDetail()
           )
         );
+
+        if(isUpdate) {
+          setState(() {
+            page = 1;
+          });
+          await Provider.of<UserProvider>(context, listen: false).fetchServiceList(page);
+        }
 
         firebaseCloudMessaging_Listeners();
       },

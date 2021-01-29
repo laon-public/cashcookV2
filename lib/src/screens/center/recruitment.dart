@@ -126,42 +126,42 @@ class _Recruitment extends State<Recruitment> {
                           )
                       ),
                     ),
-                    whiteSpaceH(16),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 70,
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            "assets/icon/iconmonstr-location.png",
-                            width: 24,
-                            height: 24,
-                          ),
-                          whiteSpaceW(8),
-                          Text("서울시 금천구 가산디지털1로 145,207호\n"
-                              "(가산동, 에이스하이엔드3차)",
-                              style: Body1.apply(
-                                  color: Color(0xFF505365)
-                              )
-                          )
-                        ],
-                      ),
-                      margin: EdgeInsets.symmetric(horizontal: 24),
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      decoration: BoxDecoration(
-                          color: white,
-                          boxShadow: [
-                            BoxShadow(
-                              offset: Offset(0,4),
-                              blurRadius: 3,
-                              color: Color(0xff888888).withOpacity(0.15),
-                            ),
-                          ],
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(12.0)
-                        )
-                      ),
-                    ),
+                    // whiteSpaceH(16),
+                    // Container(
+                    //   width: MediaQuery.of(context).size.width,
+                    //   height: 70,
+                    //   child: Row(
+                    //     children: [
+                    //       Image.asset(
+                    //         "assets/icon/iconmonstr-location.png",
+                    //         width: 24,
+                    //         height: 24,
+                    //       ),
+                    //       whiteSpaceW(8),
+                    //       Text("서울시 금천구 가산디지털1로 145,207호\n"
+                    //           "(가산동, 에이스하이엔드3차)",
+                    //           style: Body1.apply(
+                    //               color: Color(0xFF505365)
+                    //           )
+                    //       )
+                    //     ],
+                    //   ),
+                    //   margin: EdgeInsets.symmetric(horizontal: 24),
+                    //   padding: EdgeInsets.symmetric(horizontal: 16),
+                    //   decoration: BoxDecoration(
+                    //       color: white,
+                    //       boxShadow: [
+                    //         BoxShadow(
+                    //           offset: Offset(0,4),
+                    //           blurRadius: 3,
+                    //           color: Color(0xff888888).withOpacity(0.15),
+                    //         ),
+                    //       ],
+                    //     borderRadius: BorderRadius.all(
+                    //       Radius.circular(12.0)
+                    //     )
+                    //   ),
+                    // ),
                     whiteSpaceH(16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,

@@ -991,7 +991,7 @@ class _Home extends State<Home> {
                                 child:
                                 Column(
                                   children: ssp.searchStore.map((e) {
-                                    return storeItem(e, context);
+                                    return storeItemRow(e, context);
                                   }).toList() ,
                                 ),
                               )

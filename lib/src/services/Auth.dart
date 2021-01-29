@@ -26,7 +26,7 @@ class AuthService{
 
   Future<String> authCheck(accessToken) async {
     final response = await client
-        .get(userCheckUrl, headers: {"Authorization": "BEARER $accessToken"});
+        .get("$cookURL$userCheckUrl", headers: {"Authorization": "BEARER $accessToken"});
 
     return utf8.decode(response.bodyBytes);
   }

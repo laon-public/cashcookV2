@@ -171,9 +171,9 @@ class _ServiceDetail extends State<ServiceDetail> {
                                       ],
                                     ),
                                   ),
-                                  !(up.selLog.status == "BEFORE_CONFIRM" || up.selLog.status == "DELIVERY_REQUEST" || up.selLog.status == "REFUND_CONFIRM") ?
+                                  !(up.selLog.status == "BEFORE_CONFIRM" || up.selLog.status == "DELIVERY_REQUEST" || up.selLog.status == "REFUND_CONFIRM" || up.selLog.status == "REFUND_REQUEST") ?
                                   whiteSpaceH(12) : Container(),
-                                  !(up.selLog.status == "BEFORE_CONFIRM" || up.selLog.status == "DELIVERY_REQUEST" || up.selLog.status == "REFUND_CONFIRM") ?
+                                  !(up.selLog.status == "BEFORE_CONFIRM" || up.selLog.status == "DELIVERY_REQUEST" || up.selLog.status == "REFUND_CONFIRM" || up.selLog.status == "REFUND_REQUEST") ?
                                   Row(
                                     children: [
                                       Expanded(
@@ -277,6 +277,18 @@ class _ServiceDetail extends State<ServiceDetail> {
                                               IMPortService importService = IMPortService();
 
                                               try{
+                                                Provider.of<StoreProvider>(context,listen: false).patchOrder(up.selLog.id,"REFUND_REQUEST").then((value) {
+                                                  if (value != "") {
+                                                    Provider.of<UserProvider>(context, listen: false).setSellogStatus("REFUND_REQUEST");
+                                                  }
+                                                }).catchError(() {
+                                                  Provider.of<StoreProvider>(context,listen: false).patchOrder(up.selLog.id,"BEFORE_CONFIRM").then((value) {
+                                                    if (value != "") {
+                                                      Provider.of<UserProvider>(context, listen: false).setSellogStatus("BEFORE_CONFIRM");
+                                                    }
+                                                  });
+                                                });
+
                                                 // 토큰 얻기
                                                 if(up.selLog.bankInfo.cardName != ""){
                                                   String response = await importService.getIMPORTToken();
@@ -291,7 +303,7 @@ class _ServiceDetail extends State<ServiceDetail> {
                                                   }
 
                                                   if(json['response']['status'].toString() != "cancelled"){
-                                                    showToast("IMPORT 환불실패");
+                                                    showToast("환불실패");
                                                     return;
                                                   }
                                                 }
@@ -302,19 +314,35 @@ class _ServiceDetail extends State<ServiceDetail> {
                                                     showToast("환불 했습니다.");
 
                                                     Provider.of<UserProvider>(context, listen: false).setSellogStatus("REFUND_CONFIRM");
-                                                  } else {
-                                                    showToast("환불에 실패했습니다.");
                                                   }
+                                                }).catchError(() {
+                                                  // 여기까지 왔으면 IMPORT 환불은 성공한거.
+                                                  showToast("환불에 실패했습니다.");
                                                 });
                                               } catch(e) {
-                                                showToast("환불 요청에 실패했습니다.");
-                                                print(e);
+                                                // IMPORT 에러만 터지는 곳
+                                                if(e.toString().contains("Exception: ")) {
+                                                  showToast(e.toString().split("Exception: ")[1]);
+                                                  Provider.of<StoreProvider>(context,listen: false).patchOrder(up.selLog.id,"REFUND_CONFIRM").then((value) {
+                                                    if (value != "") {
+                                                      Provider.of<UserProvider>(context, listen: false).setSellogStatus("REFUND_CONFIRM");
+                                                      sendMessage("주문취소", "고객이 주문을 취소했습니다.", value, "CONSUMER","REFUND_CONFIRM", up.selLog.id);
+
+                                                      Provider.of<UserProvider>(context, listen: false).setSellogStatus("REFUND_CONFIRM");
+                                                    }
+                                                  });
+                                                }
+                                                showToast(e.toString().split("Exception: ")[1]);
                                               } finally {
                                                 up.stopRefunding();
                                               }
                                             } else {
-                                              showToast("접수된 주문은 환불이 불가합니다\n"
-                                                  "매장에 문의 해주세요.");
+                                              if(up.selLog.status == "REFUND_CONFIRM"){
+                                                showToast("환불 처리된 주문 입니다.");
+                                              } else {
+                                                showToast("접수된 주문은 환불이 불가합니다\n"
+                                                    "매장에 문의 해주세요.");
+                                              }
                                             }
                                           },
                                           child: Container(
@@ -367,6 +395,50 @@ class _ServiceDetail extends State<ServiceDetail> {
                                       ),
                                     ],
                                   ),
+                                  !(up.selLog.status == "BEFORE_CONFIRM" || up.selLog.status == "DELIVERY_REQUEST" || up.selLog.status == "CONFIRM") ?
+                                  whiteSpaceH(12) : Container(),
+                                  !(up.selLog.status == "BEFORE_CONFIRM" || up.selLog.status == "DELIVERY_REQUEST" || up.selLog.status == "CONFIRM") ?
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: InkWell(
+                                          onTap: () async {
+                                            if(!up.selLog.playGame){
+                                                showToast("게임을 먼저 진행해주세요.");
+
+                                                return;
+                                            }
+                                            Provider.of<StoreProvider>(context,listen: false).patchOrder(up.selLog.id,"CONFIRM").then((value) {
+                                              if (value != "") {
+                                                Provider.of<UserProvider>(context, listen: false).setSellogStatus("CONFIRM");
+                                                sendMessage("구매확정", "구매 확정 건이 있습니다.", value, "CONSUMER","CONFIRM", up.selLog.id);
+                                              }
+                                            });
+                                          },
+                                          child: Container(
+                                            height: 40,
+                                            child: Center(
+                                              child: Text(
+                                                "구매확정",
+                                                style: Body1.apply(
+                                                  color: secondary,
+                                                ),
+                                              ),
+                                            ),
+                                            decoration: BoxDecoration(
+                                                color: (up.selLog.status == "BEFORE_CONFIRM" || up.selLog.status == "DELIVERY_REQUEST") ? deActivatedGrey : white,
+                                                border: Border.all(
+                                                    color: Color(0xFFDDDDDD),
+                                                    width: 1
+                                                )
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                  :
+                                  Container(),
                                   up.selLog.logType != "QR"  // QR 결제 거르기
                                       &&
                                       (up.selLog.status == "ORDER_CONFIRM" || up.selLog.status == "DELIVERY_READY" || up.selLog.status == "DELIVERY_START" || up.selLog.status == "DELIVERY_END")  ?

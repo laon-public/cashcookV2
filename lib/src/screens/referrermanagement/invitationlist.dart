@@ -302,6 +302,7 @@ class _InvitationList extends State<InvitationList> {
                                       )
                                   ),
                                   Container(
+                                    padding: EdgeInsets.only(bottom: 60),
                                     child: InvitationItemList(phoneList: phoneProvider.phoneList, filterKeyword: filterKeyword,),
                                   )
                                 ],

@@ -13,12 +13,10 @@ import 'package:cashcook/src/provider/StoreServiceProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/splash.dart';
 import 'package:cashcook/routes.dart';
-import 'package:cashcook/src/screens/mypage/mypage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();

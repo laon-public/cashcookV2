@@ -9,7 +9,7 @@ import 'package:cashcook/src/widgets/TextFieldsWidget.dart';
 import 'package:cashcook/src/widgets/TextFieldssWidget.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
-import 'package:file_picker/file_picker.dart';
+// import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
@@ -335,15 +335,18 @@ class BusinessNumber extends StatefulWidget {
 class _BusinessNumberState extends State<BusinessNumber> {
 
   final picker = ImagePicker();
-  // File _image;
+  File _image;
   String filePath = "";
   Future getImage() async {
-    // final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    FilePickerResult result = await FilePicker.platform.pickFiles();
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    // FilePickerResult result = await FilePicker.platform.pickFiles();
 
     setState(() {
-      filePath = result.files.single.path.split("/").last;
-      widget.onSetUri(result.files.single.path);
+      _image = File(pickedFile.path);
+      filePath = pickedFile.path.split("/").last;
+      widget.onSetUri(_image.absolute.path);
+      // filePath = pickedFile.path
+      // widget.onSetUri(result.files.single.path);
     });
 
   }

@@ -1044,7 +1044,7 @@ class _MyPageState extends State<MyPage> {
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Column(
                                 children: [
-                                  agencyCheck == 1 ? BizInfo() : BizSelect(),
+                                  // agencyCheck == 1 ? BizInfo() : BizSelect(),
                                   QrCard(),
                                   // RefundCard(),
                                   FranHistoryCard(),

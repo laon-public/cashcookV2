@@ -6,6 +6,7 @@ const OrderStatusByConsumer = {
   "DELIVERY_START" : "배달 출발", // 구매 확정 가능
   "DELIVERY_END" : "배달 완료", // 구매 확정 가능
   "REFUND_CONFIRM" : "결제 취소",
+  "REFUND_REQUEST" : "취소 요청 중",
   "CONFIRM" : "구매 확정",
 };
 
@@ -17,5 +18,6 @@ const OrderStatusByProvider = {
   "DELIVERY_START" : "배달 출발",
   "DELIVERY_END" : "배달 완료",
   "REFUND_CONFIRM" : "결제 취소",
+  "REFUND_REQUEST" : "취소 요청 중",
   "CONFIRM" : "구매 확정",
 };

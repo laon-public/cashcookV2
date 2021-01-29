@@ -27,9 +27,9 @@ class DeliveryModifyState extends State<DeliveryModify> {
     StoreModel myStore = Provider.of<UserProvider>(context, listen: false).storeModel;
 
     deliveryState = myStore.store.deliveryStatus == "1" ? true : false;
-    deliveryTime = TextEditingController(text: myStore.store.deliveryTime);
-    deliveryAmount = TextEditingController(text: myStore.store.deliveryAmount);
-    minOrderAmount = TextEditingController(text: myStore.store.minOrderAmount);
+    deliveryTime = TextEditingController(text: myStore.store.deliveryTime == null ? "" : myStore.store.deliveryTime);
+    deliveryAmount = TextEditingController(text: myStore.store.deliveryAmount == null || myStore.store.deliveryAmount == "null" ? "" : myStore.store.deliveryAmount);
+    minOrderAmount = TextEditingController(text: myStore.store.minOrderAmount == null ? "" : myStore.store.minOrderAmount);
 
   }
 
