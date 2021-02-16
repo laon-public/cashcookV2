@@ -164,14 +164,14 @@ class OrderDetailState extends State<OrderDetail> {
                                         if(sp.selLog.status == "BEFORE_CONFIRM") {
                                           await sp.patchOrder(sp.selLog.id,"ORDER_CONFIRM").then((value) {
                                             if(value != null && value != "") {
-                                              sendMessage("주문접수", "매장에서 주문이 접수되었습니다", value, "PROVIDER", "ORDER_CONFIRM", sp.selLog.id);
+                                              sendMessage("주문접수", "성공스토어에서 주문이 접수되었습니다", value, "PROVIDER", "ORDER_CONFIRM", sp.selLog.id);
                                               showToast("주문을 접수 하셨습니다.");
                                             }
                                           });
                                         } else if(sp.selLog.status == "DELIVERY_REQUEST") {
                                           await sp.patchOrder(sp.selLog.id,"DELIVERY_READY").then((value) {
                                             if(value != null && value != "") {
-                                              sendMessage("배달접수", "매장에서 배달이 접수되었습니다", value, "PROVIDER", "DELIVERY_READY", sp.selLog.id);
+                                              sendMessage("배달접수", "성공스토어에서 배달이 접수되었습니다", value, "PROVIDER", "DELIVERY_READY", sp.selLog.id);
                                               showToast("배달을 접수 하셨습니다.");
                                             }
                                           });
@@ -185,7 +185,7 @@ class OrderDetailState extends State<OrderDetail> {
                                             }
                                           });
                                         } else {
-                                          showToast("구매가 종료된 상품 입니다.");
+                                          showToast("주문이 완료되었습니다.");
                                         }
 
                                       },

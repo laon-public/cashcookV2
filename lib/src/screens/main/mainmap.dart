@@ -398,7 +398,7 @@ class _MainMap extends State<MainMap> {
                                                 elevation: 0.0,
                                                 child: Center(
                                                   child: Text(
-                                                    "매장정보/수정",
+                                                    "성공스토어 정보/수정",
                                                     style: Body1
                                                   ),
                                                 ),

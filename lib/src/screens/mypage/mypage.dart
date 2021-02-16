@@ -125,9 +125,9 @@ class _MyPageState extends State<MyPage> {
                           }
                         },
                         child: (view == "Store") ?
-                        Text("매장", style: Subtitle2,)
+                        Text("성공스토어", style: Subtitle2,)
                             :
-                        Text("매장", style: Body1,),
+                        Text("성공스토어", style: Body1,),
                       ),
                       whiteSpaceW(20.0),
                       (userCheck.userGrade == "DISTRIBUTOR" || userCheck.userGrade == "AGENCY") ? InkWell(
@@ -139,9 +139,9 @@ class _MyPageState extends State<MyPage> {
                           }
                         },
                         child: (view == "Agecy") ?
-                        Text("대리점", style: Subtitle2,)
+                        Text("성공메이커", style: Subtitle2,)
                             :
-                        Text("대리점", style: Body1,),
+                        Text("성공메이커", style: Body1,),
                       ) : SizedBox()
                     ],
                   )
@@ -361,7 +361,7 @@ class _MyPageState extends State<MyPage> {
                                   RecoCard(),
                                   easyPayCard(),
                                   scrapCard(),
-
+                                  HistoryCard(),
                                 ]
                               )
                             ),
@@ -382,7 +382,7 @@ class _MyPageState extends State<MyPage> {
                                 ],
                               ),
                             ),
-                            (!user.loginUser.isFran) ? Tabs2(name: "제휴매장 등록하기", routesName: "/store/apply1",img: "assets/icon/shop.png",): SizedBox(),
+                            (!user.loginUser.isFran) ? Tabs2(name: "성공스토어 등록하기", routesName: "/store/apply1",img: "assets/icon/shop.png",): SizedBox(),
                             SizedBox(height: 12,),
                             // Tabs2(name: "캐시링크 가기", routesName: "cashlink",img: "assets/icon/cashlink-icon.png",),
                             CashTabs(),
@@ -533,7 +533,7 @@ class _MyPageState extends State<MyPage> {
                               padding: EdgeInsets.symmetric(vertical: 7, horizontal: 12),
                               child: Row(
                                 children: [
-                                  Text("대리점 수",
+                                  Text("성공메이커 수",
                                       style: Body2.apply(
                                           color: secondary
                                       )
@@ -604,14 +604,14 @@ class _MyPageState extends State<MyPage> {
                               });
                             },
                             child: (ageView == "History") ?
-                            Text("대리점/가맹점 내역", style: Body1.apply(
+                            Text("성공메이커/성공스토어 내역", style: Body1.apply(
                                 color: black,
                                 fontWeightDelta: 1
                             ),
                               textAlign: TextAlign.center,
                             )
                                 :
-                            Text("대리점/가맹점 내역", style: Body1.apply(
+                            Text("성공메이커/성공스토어 내역", style: Body1.apply(
                                 color:  third
                             ),
                               textAlign: TextAlign.center,
@@ -719,7 +719,7 @@ class _MyPageState extends State<MyPage> {
                     )
                   ),
                   Text(
-                    (data.type == 1) ? " (가맹점)" : " (대리점)",
+                    (data.type == 1) ? " (성공스토어)" : " (성공메이커)",
                     style: Body1.apply(
                       color: (data.type == 1) ? primary : etcYellow,
                       fontWeightDelta: 1
@@ -926,10 +926,12 @@ class _MyPageState extends State<MyPage> {
   }
 
   Widget storeForm(){
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-    //   Provider.of<UserProvider>(context, listen:false).fetchMyInfo(context);
-    //   agencyCheck = await Provider.of<UserProvider>(context, listen: false).selectMyAgency();
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      Provider.of<UserProvider>(context, listen:false).fetchMyInfo();
+      agencyCheck = await Provider.of<UserProvider>(context, listen: false).selectMyAgency();
+
+      print("에이전시 체크 ===> $agencyCheck");
+    });
     return Consumer<UserProvider>(
         builder: (context, user, _) {
           return (user.isLoading) ?
@@ -988,9 +990,7 @@ class _MyPageState extends State<MyPage> {
                                   fontWeightDelta: 1
                               )
                           ),
-                          Text("${user.storeModel.store.tel.substring(0,3)}-"
-                              "${user.storeModel.store.tel.substring(3,7)}-"
-                              "${user.storeModel.store.tel.substring(7,11)}",
+                          Text("${user.storeModel.store.tel}",
                               style: Subtitle2.apply(
                                   fontWeightDelta: -1
                               )),
@@ -1044,10 +1044,11 @@ class _MyPageState extends State<MyPage> {
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Column(
                                 children: [
-                                  // agencyCheck == 1 ? BizInfo() : BizSelect(),
+                                  agencyCheck == 1 ? BizInfo() : BizSelect(),
                                   QrCard(),
                                   // RefundCard(),
                                   FranHistoryCard(),
+                                  FranOrderCard(),
                                   // ContentApplyCard(),
                                   // MenuApplyCard(),
                                   sellDlCard(),
@@ -1061,7 +1062,7 @@ class _MyPageState extends State<MyPage> {
                                   //   },
                                   //   child: Text("제휴매장 신청 테스트"),
                                   // ),
-                                  Tabs(name: "매장정보 수정", routesName: "/store/modify/routes",),
+                                  Tabs(name: "성공스토어 정보 수정", routesName: "/store/modify/routes",),
                                   Tabs(name: "DL 결제 한도 설정", routesName: "/store/modify/limitDL",),
                                   whiteSpaceH(70.0),
                                 ]
@@ -1171,12 +1172,44 @@ class _MyPageState extends State<MyPage> {
     );
   }
 
+  Widget FranOrderCard() {
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+          // builder: (context) => pointMgmt()
+            builder: (context) => OrderList()
+        ));
+      },
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: white,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset("assets/icon/market.png", width: 24,
+                height: 24,
+                fit: BoxFit.fill,),
+              SizedBox(width: 12,),
+              Text("주문접수내용", style: Subtitle2),
+              Spacer(),
+              Icon(
+                Icons.arrow_forward_ios, color: Color(0xff444444), size: 16,),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget FranHistoryCard(){
     return InkWell(
       onTap: (){
         Navigator.of(context).push(MaterialPageRoute(
-            // builder: (context) => pointMgmt()
-          builder: (context) => OrderList()
+            builder: (context) => pointMgmt()
         ));
       },
       child: Container(
@@ -1191,7 +1224,7 @@ class _MyPageState extends State<MyPage> {
             children: [
               Image.asset("assets/icon/market.png", width: 24,height: 24, fit: BoxFit.fill,),
               SizedBox(width: 12,),
-              Text("매출내역",style: Subtitle2),
+              Text("리워드 내역",style: Subtitle2),
               Spacer(),
               Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 16,),
             ],
@@ -1250,7 +1283,7 @@ class _MyPageState extends State<MyPage> {
             children: [
               Image.asset("assets/icon/s_master.png", width: 24, height: 24, fit: BoxFit.fill,),
               SizedBox(width: 12,),
-              Text("총판 등록",style: Subtitle2),
+              Text("성공마스터 등록",style: Subtitle2),
               Spacer(),
               Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 16,),
             ],
@@ -1277,7 +1310,7 @@ class _MyPageState extends State<MyPage> {
             children: [
               Image.asset("assets/icon/s_master.png", width: 24, height: 24, fit: BoxFit.fill,),
               SizedBox(width: 12,),
-              Text("총판 정보",style: Subtitle2),
+              Text("성공마스터 정보",style: Subtitle2),
               Spacer(),
               Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 16,),
             ],
@@ -1486,7 +1519,7 @@ class _MyPageState extends State<MyPage> {
             children: [
               Image.asset("assets/icon/steam-color2.png", width: 24,height: 24, fit: BoxFit.fill, color: primary),
               SizedBox(width: 12,),
-              Text("찜한 매장",style: Subtitle2),
+              Text("찜한 성공스토어",style: Subtitle2),
               Spacer(),
               Icon(Icons.arrow_forward_ios, color: Colors.black, size: 16,),
             ],
@@ -1552,7 +1585,7 @@ class _MyPageState extends State<MyPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-              title: Text("아직 매장등록을 안하셨군요!\n매장등록을 하시고,\n여러가지 포인트 혜택을 누려보세요!",
+              title: Text("아직 성공스토어 등록을 안하셨군요!\n성공스토어 등록을 하시고,\n여러가지 포인트 혜택을 누려보세요!",
                 style: Subtitle2,),
               actions: <Widget>[
                 FlatButton(

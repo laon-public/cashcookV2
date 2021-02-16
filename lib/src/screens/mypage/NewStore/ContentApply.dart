@@ -76,7 +76,7 @@ class _ContentApply extends State<ContentApply> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("매장사진 ${contentsImgList.length + sap.contentsList.length}/10",
+                            Text("성공스토어 사진 ${contentsImgList.length + sap.contentsList.length}/10",
                               style: Body2,
                             ),
                             whiteSpaceH(4),
@@ -107,7 +107,7 @@ class _ContentApply extends State<ContentApply> {
                                 )
                             ),
                             whiteSpaceH(20),
-                            Text("매장 설명",
+                            Text("성공스토어 설명",
                               style: Body2,
                             ),
                           ],

@@ -23,7 +23,7 @@ class _StoreModifyRoute extends State<StoreModifyRoute> {
     return  Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
-            title: Text("매장정보 수정",
+            title: Text("성공스토어 정보 수정",
             style: appBarDefaultText
           ),
           leading: IconButton(
@@ -57,7 +57,7 @@ class _StoreModifyRoute extends State<StoreModifyRoute> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("매장 기본 정보",
+                        Text("성공스토어 기본 정보",
                             style: Subtitle2.apply(
                                 fontWeightDelta: -1
                             )
@@ -95,13 +95,13 @@ class _StoreModifyRoute extends State<StoreModifyRoute> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("매장 기타 정보",
+                        Text("성공스토어 기타 정보",
                             style: Subtitle2.apply(
                                 fontWeightDelta: -1
                             )
                         ),
                         whiteSpaceH(4),
-                        Text("기타 매장 사진 및 기타 추가 정보 관리",
+                        Text("기타 성공스토어 사진 및 기타 추가 정보 관리",
                             style: Body2.apply(
                               color: secondary,
                             )
@@ -132,13 +132,13 @@ class _StoreModifyRoute extends State<StoreModifyRoute> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("매장 메뉴 수정",
+                        Text("성공스토어 메뉴 수정",
                             style: Subtitle2.apply(
                                 fontWeightDelta: -1
                             )
                         ),
                         whiteSpaceH(4),
-                        Text("매장 메뉴 및 분류 및 메뉴관리",
+                        Text("성공스토어 메뉴 및 분류 및 메뉴관리",
                             style: Body2.apply(
                               color: secondary,
                             )

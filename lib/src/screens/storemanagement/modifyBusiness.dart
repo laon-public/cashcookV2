@@ -57,9 +57,9 @@ class _ModifyBusiness extends State<ModifyBusiness> {
     bnCtrl.text = store.business_number;
     ownerCtrl.text = store.owner;
 
-    telCtrl1.text = store.tel.substring(0,3);
-    telCtrl2.text = store.tel.substring(3,7);
-    telCtrl3.text = store.tel.substring(7,11);
+    telCtrl1.text = store.tel.substring(0,2) == "02" ? store.tel.substring(0,2) : store.tel.substring(0,3);
+    telCtrl2.text = store.tel.substring(0,2) == "02" ? store.tel.substring(2,6) : store.tel.substring(3,7);
+    telCtrl3.text = store.tel.substring(0,2) == "02" ? store.tel.substring(6,10) : store.tel.substring(7,11);
 
 
     emailCtrl.text = store.store.email;
@@ -358,10 +358,6 @@ class _ModifyBusiness extends State<ModifyBusiness> {
             if(store.bank.number != accountCtrl.text) data["account"] = accountCtrl.text;
 
 
-            if( telCtrl1.text.length < 3 || telCtrl2.text.length < 4 ||  telCtrl3.text.length < 4 ){
-              Fluttertoast.showToast(msg: "전화 번호의 자릿수가 부족 합니다.");
-            }else{
-
               bool isReturn = await Provider.of<StoreProvider>(context,listen: false).patchStore(data, blUri);
               if(isReturn){
                 Fluttertoast.showToast(msg: "사업자정보 수정이 성공하였습니다.");
@@ -370,7 +366,6 @@ class _ModifyBusiness extends State<ModifyBusiness> {
               }
               //Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => StoreManagement()), (route) => false);
             Navigator.of(context).pop();
-            }
           },
         child: Text("수정"),
         textColor: Colors.white,

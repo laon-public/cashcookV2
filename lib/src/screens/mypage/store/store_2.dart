@@ -85,7 +85,7 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("매장정보 입력", style:appBarDefaultText),
+        title: Text("성공스토어 정보 입력", style:appBarDefaultText),
         centerTitle: true,
         elevation: 0.5,
         leading: IconButton(
@@ -199,12 +199,12 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
                               }
                           ),
                           whiteSpaceH(20),
-                          textField("매장명", "사업자등록증의 상호명을 입력해주세요.", nameCtrl,TextInputType.text),
+                          textField("성공스토어 명", "사업자등록증의 상호명을 입력해주세요.", nameCtrl,TextInputType.text),
 
-                          textField("매장 요약글", "20자 내외로 입력해주세요.", descSrtCtrl,TextInputType.text),
+                          textField("성공스토어 요약글", "20자 내외로 입력해주세요.", descSrtCtrl,TextInputType.text),
                           Padding(
                             padding: const EdgeInsets.only(top:5.0),
-                            child: Align(child: Text("매장 설명",style: Body2,),alignment: Alignment.centerLeft,),
+                            child: Align(child: Text("성공스토어 설명",style: Body2,),alignment: Alignment.centerLeft,),
                           ),
                           whiteSpaceH(5),
                           TextFormField(
@@ -235,7 +235,7 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
                           Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Align(child: Text("매장 연락처",style: Body2,),alignment: Alignment.centerLeft,),
+                                Align(child: Text("성공스토어 연락처",style: Body2,),alignment: Alignment.centerLeft,),
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -259,13 +259,13 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
 
                               ]
                           ),
-                          textField("매장 영업시간", "매장 영업시간을 입력해주세요.", storeTimeCtrl,TextInputType.text),
+                          textField("성공스토어 영업시간", "성공스토어 영업시간을 입력해주세요.", storeTimeCtrl,TextInputType.text),
                           addressInfo(context),
                           Padding(
                             padding: const EdgeInsets.only(top: 40.0, bottom: 5.0),
                             child: Align(
                               child: Text(
-                                "매장사진 ${[0,1,2,3].reduce((value, element) {
+                                "성공스토어 사진 ${[0,1,2,3].reduce((value, element) {
                                   if(element == 1) {
                                     if(shop1_uri == null || shop1_uri == ""){
                                       return value;
@@ -336,25 +336,23 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
                                     print("----------------");
 
                                     if(nameCtrl.text == '' || nameCtrl.text == null ) {
-                                      Fluttertoast.showToast(msg: "매장명을 입력해 주세요");
+                                      Fluttertoast.showToast(msg: "성공스토어 명을 입력해 주세요");
                                     } else if(descSrtCtrl.text  == '' || descSrtCtrl.text == null){
-                                      Fluttertoast.showToast(msg: "매장설명을 입력해 주세요");
+                                      Fluttertoast.showToast(msg: "성공스토어 설명을 입력해 주세요");
                                     } else if(timeCtrl1.text == '' || timeCtrl1.text == null ||
                                         timeCtrl2.text == '' || timeCtrl2.text == null ||
                                         timeCtrl3.text == '' || timeCtrl3.text == null ){
-                                      Fluttertoast.showToast(msg: "매장 연락처를 입력해 주세요");
-                                    } else if(timeCtrl1.text.length < 3 || timeCtrl2.text.length < 4 || timeCtrl3.text.length < 4){
-                                      Fluttertoast.showToast(msg: "전화 번호의 자릿수가 부족 합니다.");
+                                      Fluttertoast.showToast(msg: "성공스토어 연락처를 입력해 주세요");
                                     } else if(storeTimeCtrl.text == '' || storeTimeCtrl.text == null ){
                                       Fluttertoast.showToast(msg: "영업시간을 입력해 주세요");
                                     } else if(addressCtrl.text == '' || addressCtrl.text == null ){
-                                      Fluttertoast.showToast(msg: "매장 주소를 입력해 주세요");
+                                      Fluttertoast.showToast(msg: "성공스토어 주소를 입력해 주세요");
                                     } else if(detailCtrl.text == '' || detailCtrl.text == null ){
-                                      Fluttertoast.showToast(msg: "매장 상세주소를 입력해 주세요");
+                                      Fluttertoast.showToast(msg: "성공스토어 상세주소를 입력해 주세요");
                                     } else if(shop1_uri == '' || shop1_uri == null ||
                                         shop2_uri == '' || shop2_uri == null ||
                                         shop3_uri == '' || shop3_uri == null ){
-                                      Fluttertoast.showToast(msg: "3개의 매장 사진을 첨부해 주세요");
+                                      Fluttertoast.showToast(msg: "3개의 성공스토어 사진을 첨부해 주세요");
                                     } else {
                                       await Provider.of<StoreProvider>(context, listen: false).bak_store2(data, blUri, shop1_uri, shop2_uri, shop3_uri);
                                       await Provider.of<StoreProvider>(context, listen: false).clearSuccess();
@@ -454,7 +452,7 @@ class _StoreApplySecondStepState extends State<StoreApplySecondStep> {
             padding: const EdgeInsets.only(bottom:4 ),
             child: Align(
               child: Text(
-                "매장 주소",
+                "성공스토어 주소",
                 style: Body2,
               ),
               alignment: Alignment.centerLeft,

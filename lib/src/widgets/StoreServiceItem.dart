@@ -17,15 +17,14 @@ import 'package:sticky_headers/sticky_headers.dart';
 
 
 Widget menuForm(BuildContext context) {
-  print('menuForm >>>');
   int bigIdx = 0;
   return
     Consumer<StoreServiceProvider>(
       builder: (context, ss, __) {
         return
           Container(
-              transform: Matrix4.translationValues(0.0, -95.0, 0.0),
-              margin: EdgeInsets.only(bottom: 10.0),
+              // transform: Matrix4.translationValues(0.0, -95.0, 0.0),
+              margin: EdgeInsets.only(bottom: 60.0),
               width: MediaQuery.of(context).size.width,
               child:
               Column(
@@ -40,8 +39,6 @@ Widget menuForm(BuildContext context) {
 }
 
 Widget BigMenuItem(int bigIdx,BigMenuModel bmm, BuildContext context){
-  print('BigMenuItem >>>');
-
   int idx = 0;
   return Container(
       width: MediaQuery.of(context).size.width,
@@ -52,12 +49,12 @@ Widget BigMenuItem(int bigIdx,BigMenuModel bmm, BuildContext context){
             Consumer<StoreServiceProvider>(
               builder: (context, ssp, _){
                 return Container(
-                  transform: Matrix4.translationValues(0.0, -95.0 * bigIdx, 0.0),
+                  // transform: Matrix4.translationValues(0.0, -95.0 * bigIdx, 0.0);
                   child: StickyHeaderBuilder(
                     builder: (BuildContext context, double stuckAmount) {
                       stuckAmount = 1.0 - stuckAmount.clamp(0.0, 1.0);
                       return Container(
-                        margin: EdgeInsets.only(top: 95),
+                        // margin: EdgeInsets.only(top: 95),
                         padding: EdgeInsets.only(top: 10, bottom: 10, left: 20.0),
                         child:
                         Text(bmm.name,
@@ -89,11 +86,7 @@ Widget BigMenuItem(int bigIdx,BigMenuModel bmm, BuildContext context){
 }
 
 Widget MenuItem(int bigIdx,int idx,MenuModel mm, BuildContext context) {
-
-  print('MenuItem >>> ');
   StoreServiceProvider ssp = Provider.of<StoreServiceProvider>(context, listen: false);
-
-
   return InkWell(
       onTap: () {
           print("눌림");
@@ -523,7 +516,7 @@ Widget otherForm(BuildContext context, StoreModel store) {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 16.0,vertical: 10.0),
                   width: MediaQuery.of(context).size.width,
-                  child: Text("매장 정보",
+                  child: Text("성공스토어 정보",
                       style: Subtitle2.apply(
                         fontWeightDelta: 3
                       )
@@ -534,7 +527,7 @@ Widget otherForm(BuildContext context, StoreModel store) {
                     width: MediaQuery.of(context).size.width,
                     child:
                     Text(
-                        store.store.comment == null ? "매장 정보가 없습니다" : store.store.comment,
+                        store.store.comment == null ? "성공스토어 정보가 없습니다" : store.store.comment,
                         style: Body1.apply(
                             color: secondary,
                             fontWeightDelta: -1
@@ -556,7 +549,7 @@ Widget otherForm(BuildContext context, StoreModel store) {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text("매장사진 " ,
+                          Text("성공스토어사진 " ,
                               style: Subtitle2.apply(
                                   fontWeightDelta: 1
                               )

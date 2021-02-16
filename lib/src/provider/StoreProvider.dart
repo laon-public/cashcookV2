@@ -263,7 +263,7 @@ class StoreProvider with ChangeNotifier{
     notifyListeners();
 
     int cnt = 0;
-    String response = await service.getStore(start, end);
+    String response = await service.getStore(start, end, "", "");
     Map<String, dynamic> mapJson = jsonDecode(response);
     if(isResponse(mapJson)){
       for(var storeList in mapJson['data']["list"]){

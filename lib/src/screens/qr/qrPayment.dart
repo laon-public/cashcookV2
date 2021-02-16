@@ -171,9 +171,9 @@ class _QrPayment extends State<QrPayment> {
                   width: MediaQuery.of(context).size.width,
                   child: Text(
                       qp.store.store.limitType == "NONE" ?
-                      "* 결제한도가 없는 매장 입니다."
+                      "* 결제한도가 없는 성공스토어 입니다."
                           :
-                      "* 해당매장의 결제한도는 ${(qp.store.store.limitType == "PERCENTAGE") ? "${qp.store.store.limitDL}%" : "${numberFormat.format(int.parse(qp.store.store.limitDL))}"} DL 입니다.",
+                      "* 해당 성공스토어의 결제한도는 ${(qp.store.store.limitType == "PERCENTAGE") ? "${qp.store.store.limitDL}%" : "${numberFormat.format(int.parse(qp.store.store.limitDL))}"} DL 입니다.",
                       style: Body2.apply(
                         color: primary
                       ),

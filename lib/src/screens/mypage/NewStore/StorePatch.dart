@@ -56,9 +56,9 @@ class _StorePatch extends State<StorePatch> {
     descCtrl.text = store.store.description;
 
     telCtrl.text = store.store.tel;
-    telCtrl1.text = store.store.tel.substring(0,3);
-    telCtrl2.text = store.store.tel.substring(3,7);
-    telCtrl3.text = store.store.tel.substring(7,11);
+    telCtrl1.text = store.store.tel.substring(0,2) == "02" ? store.store.tel.substring(0,2) : store.store.tel.substring(0,3);
+    telCtrl2.text = store.store.tel.substring(0,2) == "02" ? store.store.tel.substring(2,6) : store.store.tel.substring(3,7);
+    telCtrl3.text = store.store.tel.substring(0,2) == "02" ? store.store.tel.substring(6,10) : store.store.tel.substring(7,11);
 
     storeTimeCtrl.text = store.store.store_time;
     addressCtrl.text = store.address.address;
@@ -230,11 +230,11 @@ class _StorePatch extends State<StorePatch> {
                     );
                   }
               ),
-              textField("매장명", "사업자등록증의 상호명을 입력해주세요.", nameCtrl,TextInputType.text),
-              textField("매장요약", "20자 내외로 입력해주세요.", descSrtCtrl,TextInputType.text),
+              textField("성공스토어명", "사업자등록증의 상호명을 입력해주세요.", nameCtrl,TextInputType.text),
+              textField("성공스토어 요약", "20자 내외로 입력해주세요.", descSrtCtrl,TextInputType.text),
               Padding(
                 padding: const EdgeInsets.only(top:5.0),
-                child: Align(child: Text("매장설명",style: Body2,),alignment: Alignment.centerLeft,),
+                child: Align(child: Text("성공스토어 설명",style: Body2,),alignment: Alignment.centerLeft,),
               ),
               whiteSpaceH(5),
               TextFormField(
@@ -264,7 +264,7 @@ class _StorePatch extends State<StorePatch> {
               Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Align(child: Text("매장 연락처",
+                    Align(child: Text("성공스토어 연락처",
                       style: Body2,),
                       alignment: Alignment.centerLeft,),
                     Row(
@@ -289,13 +289,13 @@ class _StorePatch extends State<StorePatch> {
 
                   ]
               ),
-              textField("매장 영업시간", "매장 영업시간을 입력해주세요.", storeTimeCtrl,TextInputType.text),
+              textField("성공스토어 영업시간", "성공스토어 영업시간을 입력해주세요.", storeTimeCtrl,TextInputType.text),
               addressInfo(context),
               Padding(
                 padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
                 child: Align(
                   child: Text(
-                    "매장사진",
+                    "성공스토어 사진",
                     style: Body2,
                   ),
                   alignment: Alignment.centerLeft,
@@ -357,7 +357,7 @@ class _StorePatch extends State<StorePatch> {
             padding: const EdgeInsets.only(top: 40.0),
             child: Align(
               child: Text(
-                "매장주소",
+                "성공스토어 주소",
                 style: Body2,
               ),
               alignment: Alignment.centerLeft,
@@ -427,7 +427,7 @@ class _StorePatch extends State<StorePatch> {
             padding: const EdgeInsets.only(top: 5.0),
             child: Align(
               child: Text(
-                  "지도에서 매장의 위치를 지정해주세요.",
+                  "지도에서 성공스토어의 위치를 지정해주세요.",
                   style: Body2
               ),
               alignment: Alignment.centerRight,
@@ -457,11 +457,11 @@ class _StorePatch extends State<StorePatch> {
               StoreModel store = Provider.of<UserProvider>(context,listen: false).storeModel;
 
               Map<String, String> data = {};
-              if(nameCtrl.text.length < 1) Fluttertoast.showToast(msg: "매장명을 입력해주세요.");
-              if(descCtrl.text.length < 1) Fluttertoast.showToast(msg: "매장설명을 입력해주세요.");
-              if(storeTimeCtrl.text.length < 1) Fluttertoast.showToast(msg: "매장영업시간을 입력해주세요.");
-              if(addressCtrl.text.length < 1) Fluttertoast.showToast(msg: "매장주소를 입력해주세요.");
-              if(detailCtrl.text.length < 1) Fluttertoast.showToast(msg: "매장상세주소를 입력해주세요.");
+              if(nameCtrl.text.length < 1) Fluttertoast.showToast(msg: "성공스토어명을 입력해주세요.");
+              if(descCtrl.text.length < 1) Fluttertoast.showToast(msg: "성공스토어 설명을 입력해주세요.");
+              if(storeTimeCtrl.text.length < 1) Fluttertoast.showToast(msg: "성공스토어 영업시간을 입력해주세요.");
+              if(addressCtrl.text.length < 1) Fluttertoast.showToast(msg: "성공스토어 주소를 입력해주세요.");
+              if(detailCtrl.text.length < 1) Fluttertoast.showToast(msg: "성공스토어 상세주소를 입력해주세요.");
 
               if(store.store.name != nameCtrl.text) data["shop_name"] = nameCtrl.text;
               if(store.store.short_description != descSrtCtrl.text) data["shop_srt_description"] = descSrtCtrl.text;
@@ -487,10 +487,6 @@ class _StorePatch extends State<StorePatch> {
                       ssp.selectSubCat_code
               )
                 data["category_sub_code"] = ssp.selectSubCat_code;
-
-              if( telCtrl1.text.length < 3 || telCtrl2.text.length < 4 ||  telCtrl3.text.length < 4 ){
-                Fluttertoast.showToast(msg: "전화 번호의 자릿수가 부족 합니다.");
-              }
 
               if( store.store.shop_img1 != shop1_uri) {
                 data['shop_uri1'] = shop1_uri;

@@ -3,9 +3,11 @@ import 'package:cashcook/src/provider/CenterProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
 import 'package:cashcook/src/utils/CustomBottomNavBar.dart';
+import 'package:cashcook/src/utils/MainStoreDivision.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/geocoder.dart';
 import 'package:cashcook/src/widgets/StoreItem.dart';
+import 'package:cashcook/src/widgets/mainStoreList.dart';
 import 'package:cashcook/src/widgets/whitespace.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +39,8 @@ class _Home extends State<Home> {
   double lon;
   String filterAddress = "현위치 사용";
   String addressDetail = "";
+
+  bool isStoreView = false;
 
 
   List<dynamic> serviceName = [
@@ -90,6 +94,7 @@ class _Home extends State<Home> {
       this.lat = lat;
       this.lon = lon;
       this.filterAddress = address;
+      this.isStoreView = false;
     });
 
     P.Provider.of<StoreServiceProvider>(context, listen: false).setAddress(address);
@@ -107,33 +112,34 @@ class _Home extends State<Home> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      if(this.lat == null && this.lon == null){
-        // 초반
-        var currentLocation =  await location.getLocation();
+        if(!isStoreView) {
+          if(this.lat == null && this.lon == null){
+            // 초반
+            var currentLocation =  await location.getLocation();
+            setState(() {
+              isStoreView=true;
+              lat=currentLocation.latitude;
+              lon=currentLocation.longitude;
+            });
+          } else {
+            setState(() {
+              isStoreView=true;
+            });
+          }
+        }
+      });
 
-        String start = (currentLocation.latitude + 0.04).toString() +
-            "," +
-            (currentLocation.longitude + 0.04).toString();
-        String end = (currentLocation.latitude - 0.04).toString() +
-            "," +
-            (currentLocation.longitude - 0.04).toString();
-
-        await P.Provider.of<StoreServiceProvider>(context, listen: false).getStore(start, end);
-      } else {
-        String start = (this.lat + 0.04).toString() +
-            "," +
-            (this.lon + 0.04).toString();
-        String end = (this.lat - 0.04).toString() +
-            "," +
-            (this.lon - 0.04).toString();
-
-        await P.Provider.of<StoreServiceProvider>(context, listen: false)
-            .getStore(start, end);
-      }
-    });
     return
       WillPopScope(
-      onWillPop: _onBackPressed,
+      onWillPop: viewType == 1 ?
+      () {
+        setState(() {
+          viewType = 0;
+        });
+
+        return Future.value(false);
+      }
+      :_onBackPressed,
           child: Scaffold(
             backgroundColor: white,
             appBar: viewType == 0 ? AppBar(
@@ -226,6 +232,13 @@ class _Home extends State<Home> {
               ),
     ),
     );
+  }
+
+  void changeView(idx) {
+    setState(() {
+      viewType = 1;
+      this.idx = idx;
+    });
   }
 
   Widget main() {
@@ -470,116 +483,170 @@ class _Home extends State<Home> {
                 color: Color(0xFFF2F2F2)
             ),
             whiteSpaceH(12),
-
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-              child: Container(
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-
-                        Text("우리 동네 맛집", style: Subtitle2,),
-                        // InkWell(
-                        //   onTap: () async {
-                        //     await P.Provider.of<StoreProvider>(context, listen: false).clearMap();
-                        //     Navigator.of(context).push(
-                        //         MaterialPageRoute(builder: (context) => MainMap())
-                        //     );
-                        //   },
-                        //   child: Row(
-                        //     children: [
-                        //       Image.asset(
-                        //         "assets/resource/main/go-map.png",
-                        //         width: 16,
-                        //         height: 16,
-                        //       ),
-                        //       whiteSpaceW(4.0),
-                        //       Text("지도로 보기",
-                        //         style: Body2.apply(color: secondary)
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-
-                        Container(
-                          width: 90,
-                          child:
-                          Row(
-                            children: [
-                            SizedBox(
-                            width: 10.0,
-                              child:
-                                IconButton(
-                                    iconSize: 17.0, icon: Icon(Icons.add_circle_outline), onPressed: null)),
-
-                              SizedBox(
-                                width: 80.0,
-                                child:
-                                    FlatButton(onPressed: (){
-                                      print('더보기 클릭');
-                                    }, child: Text('더보기')),
-                              )
-                            ],
-                          ),),
-
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-
-
-            P.Consumer<StoreServiceProvider>(
-              builder: (context, ssp, _){
-                return ssp.isLoading ?
-                Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 212,
-                    child:
-                    Center(
-                        child: CircularProgressIndicator(
-                            valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
-                        )
-                    )
+            isStoreView ?
+                Column(
+                  children: MAIN_STORE_DIVISION.map((e) =>
+                        MainStoreList(
+                          changeView: this.changeView,
+                          storeInfo: e,
+                          lat: this.lat,
+                          lon: this.lon,
+                        ),
+                  ).toList()
                 )
-                    :
-                    //Column Version
-                // 원본, 세로리스트
-                Container(
-                    width: MediaQuery.of(context).size.width,
-                  child:
+            // Column(
+            //   children: [
+            //     Container(
+            //       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+            //       child: Container(
+            //         child: Column(
+            //           children: [
+            //             Row(
+            //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //               children: [
+            //                 Text("우리 동네 맛집", style: Subtitle2,),
+            //                 Container(
+            //                   width: 90,
+            //                   child:
+            //                   Row(
+            //                     children: [
+            //                       SizedBox(
+            //                           width: 10.0,
+            //                           child:
+            //                           IconButton(
+            //                               iconSize: 17.0, icon: Icon(Icons.add_circle_outline), onPressed: null)),
+            //
+            //                       SizedBox(
+            //                         width: 80.0,
+            //                         child:
+            //                         FlatButton(onPressed: (){
+            //                           setState(() {
+            //                             viewType = 1;
+            //                             this.idx = 0;
+            //                           });
+            //                         }, child: Text('더보기')),
+            //                       )
+            //                     ],
+            //                   ),),
+            //
+            //               ],
+            //             ),
+            //           ],
+            //         ),
+            //       ),
+            //     ),
+            //     MainStoreList(
+            //       categoryCode: "01",
+            //       lat: this.lat,
+            //       lon: this.lon,
+            //     ),
+            //     Container(
+            //       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+            //       child: Container(
+            //         child: Column(
+            //           children: [
+            //             Row(
+            //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //               children: [
+            //                 Text("내가 바로 패셔니스트", style: Subtitle2,),
+            //                 Container(
+            //                   width: 90,
+            //                   child:
+            //                   Row(
+            //                     children: [
+            //                       SizedBox(
+            //                           width: 10.0,
+            //                           child:
+            //                           IconButton(
+            //                               iconSize: 17.0, icon: Icon(Icons.add_circle_outline), onPressed: null)),
+            //                       SizedBox(
+            //                         width: 80.0,
+            //                         child:
+            //                         FlatButton(onPressed: (){
+            //                           setState(() {
+            //                             viewType = 1;
+            //                             this.idx = 1;
+            //                           });
+            //                         }, child: Text('더보기')),
+            //                       )
+            //                     ],
+            //                   ),),
+            //               ],
+            //             ),
+            //           ],
+            //         ),
+            //       ),
+            //     ),
+            //     MainStoreList(
+            //       categoryCode: "02",
+            //       lat: this.lat,
+            //       lon: this.lon,
+            //     ),
+            //     Container(
+            //       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+            //       child: Container(
+            //         child: Column(
+            //           children: [
+            //             Row(
+            //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //               children: [
+            //                 Text("건강 관리 필수 요소", style: Subtitle2,),
+            //                 Container(
+            //                   width: 90,
+            //                   child:
+            //                   Row(
+            //                     children: [
+            //                       SizedBox(
+            //                           width: 10.0,
+            //                           child:
+            //                           IconButton(
+            //                               iconSize: 17.0, icon: Icon(Icons.add_circle_outline), onPressed: null)),
+            //                       SizedBox(
+            //                         width: 80.0,
+            //                         child:
+            //                         FlatButton(onPressed: (){
+            //                           setState(() {
+            //                             viewType = 1;
+            //                             this.idx = 6;
+            //                           });
+            //                         }, child: Text('더보기')),
+            //                       )
+            //                     ],
+            //                   ),),
+            //               ],
+            //             ),
+            //           ],
+            //         ),
+            //       ),
+            //     ),
+            //     MainStoreList(
+            //       categoryCode: "07",
+            //       lat: this.lat,
+            //       lon: this.lon,
+            //     ),
+            //   ],
+            // )
+                : Container()
 
-                 /*   Column(
-                      children: [
-                        Text('displaySize : ${MediaQuery.of(context).size}'),
-                        Text('displayHeight : ${MediaQuery.of(context).size.height}'),
-                        Text('displayWidth : ${MediaQuery.of(context).size.width}'),
-                        Text('devicePixelRatio : ${MediaQuery.of(context).devicePixelRatio}'),
-                        Text('statusBarHeight : ${MediaQuery.of(context).padding.top}'),
-                        Text('window.physicalSize : ${window.physicalSize}'),
-                        Text('앱 너비 픽셀 >> ' + (MediaQuery.of(context).size * 4).toString())
-                      ],
-                    )*/
-
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: ssp.store.map((e) {
-
-                        return storeItem(e, context);
-
-                      }).toList(),
-                    ),
-                  )
-
-                );
-
-              },
-            ),
+            //
+            //
+            // P.Consumer<StoreServiceProvider>(
+            //   builder: (context, ssp, _){
+            //     return ssp.isLoading ?
+            //     Container(
+            //         width: MediaQuery.of(context).size.width,
+            //         height: 212,
+            //         child:
+            //         Center(
+            //             child: CircularProgressIndicator(
+            //                 valueColor: new AlwaysStoppedAnimation<Color>(mainColor)
+            //             )
+            //         )
+            //     )
+            //         :
+            //
+            //   },
+            // ),
 
 
             // Container(
@@ -974,7 +1041,7 @@ class _Home extends State<Home> {
                                           color: primary
                                         )
                                     ),
-                                    Text("개 매장",
+                                    Text("개 성공스토어",
                                         style: Subtitle2
                                     ),
                                     whiteSpaceW(8.0),

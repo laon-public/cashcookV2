@@ -10,9 +10,9 @@ import 'package:provider/provider.dart';
 class StoreService {
   http.Client client = http.Client();
 
-  Future<String> getStore(String start, String end) async {
+  Future<String> getStore(String start, String end, String type, String category) async {
     Response response =
-        await Dio().get(cookURL + "/franchises?start=$start&end=$end",
+        await Dio().get(cookURL + "/franchises?start=$start&end=$end&type=$type&category=$category",
             options: Options(
               headers: {"Authorization": "BEARER ${dataStorage.token}"},
             ));

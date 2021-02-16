@@ -32,8 +32,8 @@ class UserProvider with ChangeNotifier {
   List<Map<int, String>> recoList= [{0: "추천인 없음"}];
   List<dynamic> disList = [];
   List<dynamic> ageList = [];
-  String disSelected = '총판';
-  String ageSelected = '총판을 선택해주세요.';
+  String disSelected = '성공마스터';
+  String ageSelected = '성공마스터를 선택해주세요.';
   int nowPoint = 0;
 
   // Charge ADP Variable
@@ -279,7 +279,7 @@ class UserProvider with ChangeNotifier {
       if (franchise != null) {
         print("프랜차이즈 넣기");
         if(franchise['status'] == 'DENY') {
-          Fluttertoast.showToast(msg: "매장 권한이 상실되었습니다. ADP를 충전해주세요.");
+          Fluttertoast.showToast(msg: "성공스토어 권한이 상실되었습니다. ADP를 충전해주세요.");
         }
         await setStoreModel(StoreModel.fromJson(franchise));
       } else {
@@ -438,7 +438,7 @@ class UserProvider with ChangeNotifier {
     startLoading();
 
     disList.clear();
-    disList.add('총판');
+    disList.add('성공마스터');
     final response = await service.selectDis();
 
     Map<String, dynamic> json = jsonDecode(response);
@@ -454,8 +454,8 @@ class UserProvider with ChangeNotifier {
       startLoading();
 
     disList.clear();
-    disSelected = "총판";
-    disList.add('총판');
+    disSelected = "성공마스터";
+    disList.add('성공마스터');
     var response = await service.selectDis();
 
     Map<String, dynamic> json = jsonDecode(response);
@@ -465,34 +465,34 @@ class UserProvider with ChangeNotifier {
     disList.addAll(json['data']['list']);
 
     ageList.clear();
-    ageSelected = "총판을 선택해주세요.";
-    ageList.add('총판을 선택해주세요.');
+    ageSelected = "성공마스터를 선택해주세요.";
+    ageList.add('성공마스터를 선택해주세요.');
 
     stopLoading();
   }
 
   void selectAge(value) async {
-    showToast("해당 총판의 대리점 목록을 불러오는 중 입니다.");
+    showToast("해당 성공마스터의 성공메이커 목록을 불러오는 중 입니다.");
 
-    ageSelected = "대리점";
+    ageSelected = "성공메이커";
     var response = await service.selectAge(value);
     Map<String, dynamic> json = jsonDecode(response);
     print("json 실행");
     print(json);
 
     ageList.clear();
-    ageList.add("대리점");
+    ageList.add("성공메이커");
     ageList.addAll(json['data']['list']);
 
     setDisSelected(value);
   }
 
   void clearAge(value) async {
-    disSelected = "총판";
+    disSelected = "성공마스터";
 
     ageList.clear();
-    ageSelected = "총판을 선택해주세요.";
-    ageList.add('총판을 선택해주세요.');
+    ageSelected = "성공마스터를 선택해주세요.";
+    ageList.add('성공마스터를 선택해주세요.');
 
     notifyListeners();
   }

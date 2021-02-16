@@ -72,7 +72,7 @@ class _ReviewWrite extends State<ReviewWrite> {
                           ]
                       ),
                       whiteSpaceH(4),
-                      Text("매장을 평가해주세요.",
+                      Text("성공스토어를 평가해주세요.",
                           style: Body2
                       ),
                       whiteSpaceH(12.0),

@@ -64,17 +64,16 @@ class _BargainGame2 extends State<BargainGame2> {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       if(isQuit) {
+        print("나가기 들어옴");
         await Provider.of<StoreServiceProvider>(context, listen: false).confirmGame(
             orderId: widget.orderId,
             gameQuantity: dl
         );
 
-        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
-            isHome: true,
-            afterGame : true,
-          )), (route) => false);
-        });
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ServiceList(
+          isHome: true,
+          afterGame : true,
+        )), (route) => false);
 
         return;
       }
@@ -185,6 +184,7 @@ class _BargainGame2 extends State<BargainGame2> {
 
   void onUnityUnloaded(controller){
     this._unityWidgetController = null;
+    print("들어옴");
   }
 
   void setSendMessage() async {
@@ -286,7 +286,7 @@ class _BargainGame2 extends State<BargainGame2> {
   void onUnityMessage(controller, message) async {
     if(message.toString() == "quit"){ //나가기
       print("나가기");
-      if(mounted) {
+      if(this.mounted) {
         setState(() {
           isReplay = false;
           isQuit = true;
@@ -297,7 +297,7 @@ class _BargainGame2 extends State<BargainGame2> {
     } else if(message.toString() == "LoadingComplete"){
       _timer = Timer.periodic(Duration(milliseconds: 1000), (timer) {
         if(timer.tick >= 1) {
-          if(mounted){
+          if(this.mounted){
             setState(() {
               _isLoading = false;
               _timer.cancel();

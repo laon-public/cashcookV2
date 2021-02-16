@@ -43,7 +43,7 @@ class _FranBizSelect extends State<FranBizSelect> {
           },
         ),
         title: Text(
-          "총판 입력",
+          "성공마스터 입력",
           style: appBarDefaultText,
         ),
         automaticallyImplyLeading: false,
@@ -76,7 +76,7 @@ class _FranBizSelect extends State<FranBizSelect> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            "현재 매장의\n상위총판을 선택해주세요.",
+                            "현재 성공스토어의\n상위성공마스터를 선택해주세요.",
                             textAlign: TextAlign.start,
                             style: Subtitle2.apply(
                               fontWeightDelta: -1
@@ -114,7 +114,7 @@ class _FranBizSelect extends State<FranBizSelect> {
                             }
                         ).toList(),
                         onChanged: (value){
-                          if(value != "총판"){
+                          if(value != "성공마스터"){
                             Provider.of<UserProvider>(context, listen: false).selectAge(value);
                           } else {
                             Provider.of<UserProvider>(context, listen: false).clearAge(value);
@@ -153,7 +153,7 @@ class _FranBizSelect extends State<FranBizSelect> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            '상위 총판 / 대리점을 선택해주세요.',
+                            '상위 성공마스터 / 성공메이커을 선택해주세요.',
                             textAlign: TextAlign.start,
                             style: Body2
                           ),
@@ -167,13 +167,13 @@ class _FranBizSelect extends State<FranBizSelect> {
                       height: 40,
                       child: RaisedButton(
                         onPressed: () async {
-                          if(user.disSelected == "총판"){
-                            showToast("총판을 선택해주세요.");
+                          if(user.disSelected == "성공마스터"){
+                            showToast("성공마스터를 선택해주세요.");
                             return;
                           }
 
-                          if(user.ageSelected == "대리점"){
-                            showToast("대리점을 선택해주세요.");
+                          if(user.ageSelected == "성공메이커"){
+                            showToast("성공메이커을 선택해주세요.");
                             return;
                           }
 
@@ -182,7 +182,7 @@ class _FranBizSelect extends State<FranBizSelect> {
                           // Navigator.of(context).pushAndRemoveUntil(
                           //     MaterialPageRoute(builder: (context) => StoreApplyState()), (route) => false);
 
-                          showToast("총판/대리점 등록이 완료됐습니다.");
+                          showToast("성공마스터/성공메이커 등록이 완료됐습니다.");
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
                         },

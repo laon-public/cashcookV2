@@ -341,7 +341,7 @@ class _ServiceDetail extends State<ServiceDetail> {
                                                 showToast("환불 처리된 주문 입니다.");
                                               } else {
                                                 showToast("접수된 주문은 환불이 불가합니다\n"
-                                                    "매장에 문의 해주세요.");
+                                                    "성공스토어에 문의 해주세요.");
                                               }
                                             }
                                           },
@@ -421,14 +421,14 @@ class _ServiceDetail extends State<ServiceDetail> {
                                               child: Text(
                                                 "구매확정",
                                                 style: Body1.apply(
-                                                  color: secondary,
+                                                  color: (up.selLog.status == "BEFORE_CONFIRM" || up.selLog.status == "DELIVERY_REQUEST") ? secondary : white,
                                                 ),
                                               ),
                                             ),
                                             decoration: BoxDecoration(
-                                                color: (up.selLog.status == "BEFORE_CONFIRM" || up.selLog.status == "DELIVERY_REQUEST") ? deActivatedGrey : white,
+                                                color: (up.selLog.status == "BEFORE_CONFIRM" || up.selLog.status == "DELIVERY_REQUEST") ? deActivatedGrey : primary,
                                                 border: Border.all(
-                                                    color: Color(0xFFDDDDDD),
+                                                    color: (up.selLog.status == "BEFORE_CONFIRM" || up.selLog.status == "DELIVERY_REQUEST") ? Color(0xFFDDDDDD) : white,
                                                     width: 1
                                                 )
                                             ),

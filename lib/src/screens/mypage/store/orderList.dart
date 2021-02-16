@@ -59,7 +59,7 @@ class OrderListState extends State<OrderList> {
             elevation: 0.5,
             centerTitle: true,
             title: Text(
-              "매출내역",
+              "주문접수내용",
               style: appBarDefaultText,
             ),
             leading: IconButton(

@@ -653,23 +653,26 @@ class StoreServiceProvider with ChangeNotifier {
     stopLoading();
   }
 
-  void getStore(String start, String end) async {
+  Future<List<StoreModel>> getStore(String start, String end, String type, String category) async {
     store.clear();
-    startLoading();
-
+    // startLoading();
     int cnt = 0;
-    String response = await service_2.getStore(start, end);
+    String response = await service_2.getStore(start, end, type, category);
     Map<String, dynamic> mapJson = jsonDecode(response);
+    List<StoreModel> rtnStoreList = [];
     if(isResponse(mapJson)){
       for(var storeList in mapJson['data']["list"]){
         StoreModel tmp = StoreModel.fromJson(storeList);
         if((store.where((s) => (s.id == tmp.id)).toList().length == 0)){
-          store.add(tmp);
+          // store.add(tmp);
+          rtnStoreList.add(tmp);
         }
       }
     }
 
-    stopLoading();
+    // stopLoading();
+
+    return rtnStoreList;
   }
 
   void patchDelivery(int storeId, String deliveryTime, String deliveryAmount, bool deliveryStatus, String minOrderAmount) async {

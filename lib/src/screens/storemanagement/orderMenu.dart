@@ -257,9 +257,9 @@ class _OrderMenu extends State<OrderMenu> {
                                       whiteSpaceW(5),
                                       Text(
                                           store.store.limitDL == null ?
-                                          "* 결제한도가 없는 매장 입니다."
+                                          "* 결제한도가 없는 성공스토어 입니다."
                                               :
-                                          "* 해당매장의 결제한도는 ${(store.store.limitType == "PERCENTAGE") ? "${store.store.limitDL}%" : "${numberFormat.format(int.parse(store.store.limitDL))}"} DL 입니다.",
+                                          "* 해당 성공스토어의 결제한도는 ${(store.store.limitType == "PERCENTAGE") ? "${store.store.limitDL}%" : "${numberFormat.format(int.parse(store.store.limitDL))}"} DL 입니다.",
                                           style: TabsTagsStyle.apply(
                                               color: primary,
                                               fontWeightDelta: 1
@@ -611,7 +611,7 @@ class _OrderMenu extends State<OrderMenu> {
                                   onPressed: (!ss.orderLoading) ? () async {
                                     if(store.store.minOrderAmount != null){
                                       if(int.parse(store.store.minOrderAmount) > ss.orderPay) {
-                                          showToast("해당 매장의 최소주문 금액은\n"
+                                          showToast("해당 성공스토어의 최소주문 금액은\n"
                                               "${store.store.minOrderAmount}원 입니다.");
 
                                           return;
@@ -696,7 +696,7 @@ class _OrderMenu extends State<OrderMenu> {
                           textAlign: TextAlign.center,
                         ),
                         whiteSpaceH(22),
-                        Text("실시간 흥정 게임으로 이동하시겠습니까?",
+                        Text("실시간 흥정할인으로 이동하시겠습니까?",
                             style: Body2
                         ),
                         whiteSpaceH(22),
@@ -1343,12 +1343,12 @@ class _OrderMenu extends State<OrderMenu> {
                                                 if((ssp.orderPay / 100) * (int.parse(store.store.limitDL) /100)
                                                     <
                                                     int.parse(ssp.dlCtrl.text)) {
-                                                  showToast("해당 매장의 결제한도보다 많습니다.");
+                                                  showToast("해당 성공스토어의 결제한도보다 많습니다.");
                                                   return;
                                                 }
                                               } else {
                                                 if(int.parse(widget.store.store.limitDL) < int.parse(ssp.dlCtrl.text)) {
-                                                  showToast("해당 매장의 결제한도보다 많습니다.");
+                                                  showToast("해당 성공스토어의 결제한도보다 많습니다.");
                                                   return;
                                                 }
                                               }

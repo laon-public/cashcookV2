@@ -63,7 +63,7 @@ class _StoreManagement extends State<StoreManagement> {
         backgroundColor: white,
         centerTitle: true,
         title: Text(
-          "나의 매장관리",
+          "나의 성공스토어 관리",
           style: appBarDefaultText,
         ),
       ),
@@ -350,7 +350,7 @@ class _StoreManagement extends State<StoreManagement> {
                   child: Row(
                     children: [
                       Text(
-                        "총판, 대리점 신청 및 조회",
+                        "성공마스터, 성공메이커 신청 및 조회",
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
                             color: black,

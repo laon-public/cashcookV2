@@ -46,7 +46,7 @@ class QRProvider with ChangeNotifier {
       showToast("DL 금액이 결제금액보다 많습니다.");
     } else if(store.store.limitDL != null &&
         (paymentModel.price * int.parse(store.store.limitDL) / 100).round() < (int.parse(paymentEditModel.dlCtrl.text) * 100)) {
-      showToast("DL 금액이 해당 매장의 결제한도보다 많습니다.");
+      showToast("DL 금액이 해당 성공스토어의 결제한도보다 많습니다.");
     } else if(paymentEditModel.dlCtrl.text != "" && int.parse(paymentEditModel.dlCtrl.text) >= 0
         && (int.parse(paymentEditModel.dlCtrl.text) * 100) <= paymentModel.price ){
       int minusValue = (paymentModel.price -

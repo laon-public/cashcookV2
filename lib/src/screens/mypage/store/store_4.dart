@@ -15,7 +15,7 @@ class _StoreApplyLastStepState extends State<StoreApplyLastStep> {
   TextEditingController commentController = TextEditingController();
 
   AppBar appBarWidget = AppBar(
-    title: Text("매장 정보 3/3", style:
+    title: Text("성공스토어 정보 3/3", style:
     appBarDefaultText
     ),
     centerTitle: true,

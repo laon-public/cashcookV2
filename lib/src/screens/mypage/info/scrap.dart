@@ -26,7 +26,7 @@ class _Scrap extends State<Scrap> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("찜 매장",
+        title: Text("찜 성공스토어",
             style: appBarDefaultText),
         leading: IconButton(
           onPressed: () {

@@ -46,7 +46,7 @@ class _FranBizInfo extends State<FranBizInfo> {
           },
         ),
         title: Text(
-          "총판 정보",
+          "성공마스터 정보",
           style: appBarDefaultText,
         ),
         automaticallyImplyLeading: false,
@@ -78,7 +78,7 @@ class _FranBizInfo extends State<FranBizInfo> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          "나의 총판 / 대리점 정보",
+                          "나의 성공마스터 / 성공메이커 정보",
                           textAlign: TextAlign.start,
                           style: Subtitle2,
                         ),
@@ -98,7 +98,7 @@ class _FranBizInfo extends State<FranBizInfo> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(top: 18.0, bottom: 6),
-                        child: Align(child: Text("총판", style: Body2),
+                        child: Align(child: Text("성공마스터", style: Body2),
                           alignment: Alignment.centerLeft,),
                       ),
                       (Provider.of<UserProvider>(context, listen: false).loginUser.userGrade == "AGENCY") ?
@@ -145,7 +145,7 @@ class _FranBizInfo extends State<FranBizInfo> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(top: 18.0, bottom: 6),
-                        child: Align(child: Text("대리점", style: Body2),
+                        child: Align(child: Text("성공메이커", style: Body2),
                           alignment: Alignment.centerLeft,),
                       ),
                       Container(

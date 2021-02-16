@@ -310,7 +310,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                 ),
                                 Container(
                                   padding: EdgeInsets.symmetric(horizontal: 16),
-                                  transform: Matrix4.translationValues(0.0, -30.0, 0.0),
+                                  // transform: Matrix4.translationValues(0.0, -30.0, 0.0),
                                   child: Container(
                                     padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 18.0, bottom: 15.0),
                                     width: MediaQuery.of(context).size.width,
@@ -432,7 +432,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                 Consumer<StoreServiceProvider>(
                                   builder: (context, ss, _){
                                     return Container(
-                                      transform: Matrix4.translationValues(0.0, -14.0, 0.0),
+                                      // transform: Matrix4.translationValues(0.0, -14.0, 0.0),
                                       padding: EdgeInsets.symmetric(horizontal: 16.0),
                                       child: Column(
                                         children: [
@@ -531,9 +531,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                 flex:3,
                                                 child:Text(
                                                   "${
-                                                      widget.store.store.tel.substring(0,3) + "-" +
-                                                          widget.store.store.tel.substring(3,7) + "-" +
-                                                          widget.store.store.tel.substring(7,widget.store.store.tel.length)
+                                                      widget.store.store.tel
                                                   }",
                                                   style: Body1.apply(color: secondary),
                                                 ),

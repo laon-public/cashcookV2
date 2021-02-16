@@ -15,7 +15,7 @@ Widget textFields(ctrl, TextInputType textType) {
           textAlign: TextAlign.center,
           cursorColor: Color(0xff000000),
           controller: ctrl,
-          maxLength: 3, // 문자길이 제한
+          maxLength: 4, // 문자길이 제한
           keyboardType: textType,
           decoration: InputDecoration(
             floatingLabelBehavior: FloatingLabelBehavior.always,

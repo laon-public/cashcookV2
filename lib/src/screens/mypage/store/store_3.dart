@@ -23,7 +23,7 @@ class _StoreApplyThirdStepState extends State<StoreApplyThirdStep> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("매장 정보 2/3", style:
+        title: Text("성공스토어 정보 2/3", style:
         appBarDefaultText),
         centerTitle: true,
         elevation: 0.5,

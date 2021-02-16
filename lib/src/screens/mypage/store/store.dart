@@ -47,7 +47,7 @@ class _StoreApplyFirstStep extends State<StoreApplyFirstStep> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("제휴매장 신청",
+        title: Text("성공스토어 신청",
           style: appBarDefaultText),
         leading: IconButton(
           onPressed: () {
@@ -283,8 +283,6 @@ class _StoreApplyFirstStep extends State<StoreApplyFirstStep> {
                 telCtrl2.text == '' || telCtrl2.text == null ||
                 telCtrl3.text == '' || telCtrl3.text == null) {
               Fluttertoast.showToast(msg: "연락처를 입력해 주세요");
-            } else if(telCtrl1.text.length < 3 || telCtrl2.text.length < 4 || telCtrl3.text.length < 4){
-              Fluttertoast.showToast(msg: "전화 번호의 자릿수가 부족 합니다.");
             } else if (emailCtrl.text == '' || emailCtrl.text == null) {
               Fluttertoast.showToast(msg: "이메일주소를 입력해 주세요");
             } else if (bank == null) {

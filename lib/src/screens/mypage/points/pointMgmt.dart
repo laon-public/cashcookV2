@@ -127,9 +127,7 @@ class _pointMgmtState extends State<pointMgmt> {
                                           fontWeightDelta: 2
                                         )
                                     ),
-                                    Text("${Provider.of<UserProvider>(context, listen:false).storeModel.store.tel.substring(0,3)}-"
-                                        "${Provider.of<UserProvider>(context, listen:false).storeModel.store.tel.substring(3,7)}-"
-                                        "${Provider.of<UserProvider>(context, listen:false).storeModel.store.tel.substring(7,11)}",
+                                    Text("${Provider.of<UserProvider>(context, listen:false).storeModel.store.tel}",
                                         style: Subtitle2.apply(
                                           fontWeightDelta: -1
                                         )

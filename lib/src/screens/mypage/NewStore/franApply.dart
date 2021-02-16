@@ -19,7 +19,7 @@ class _FranApply extends State<FranApply> {
   Widget build(BuildContext context) {
     AppBar appBar = AppBar(
       elevation: 0.5,
-      title: Text("제휴매장 신청",
+      title: Text("성공스토어 신청",
           style: appBarDefaultText
       ),
       centerTitle: true,

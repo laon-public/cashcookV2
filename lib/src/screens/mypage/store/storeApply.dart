@@ -28,7 +28,7 @@ class _StoreApplyState extends State<StoreApplyState>{
           elevation: 0.5,
           backgroundColor: white,
           title: Text(
-            "매장신청 결과",
+            "성공스토어 신청 결과",
             style: appBarDefaultText,
           ),
           centerTitle: true,
@@ -72,14 +72,14 @@ class _StoreApplyState extends State<StoreApplyState>{
                             fit: BoxFit.fill,
                           ),
                           Text("축하합니다.\n"
-                              "매장신청이 완료되었습니다.",
+                              "성공스토어 신청이 완료되었습니다.",
                             style: Subtitle1.apply(
                               fontWeightDelta: 1,
                             ),
                             textAlign: TextAlign.center,
                           ),
                           whiteSpaceH(12),
-                          Text("매장적용은 사업자 정보 확인 후 완료되며,\n"
+                          Text("성공스토어 적용은 사업자 정보 확인 후 완료되며,\n"
                               "완료까지 약 일주일 정도 소요됩니다.",
                             style: Body2.apply(
                               color: secondary,
@@ -152,7 +152,7 @@ class _StoreApplyState extends State<StoreApplyState>{
                           height: 80,
                           fit: BoxFit.fill,
                         ),
-                        Text("매장 등록을 진행 중 입니다.",
+                        Text("성공스토어 등록을 진행 중 입니다.",
                             style: Subtitle1.apply(
                                 color: primary,
                                 fontWeightDelta: -1
@@ -236,7 +236,7 @@ class _StoreApplyState extends State<StoreApplyState>{
                           fit: BoxFit.fill,
                         ),
                         whiteSpaceH(10.0),
-                        Text("축하합니다.\n매장신청이 완료되었습니다.",
+                        Text("축하합니다.\n성공스토어 신청이 완료되었습니다.",
                             textAlign: TextAlign.center,
                             style: Subtitle1.apply(
                                 color: black,
@@ -244,7 +244,7 @@ class _StoreApplyState extends State<StoreApplyState>{
                             )
                         ),
                         whiteSpaceH(10),
-                        Text("매장적용은 사업자 정보 확인 후 완료되며,\n완료까지 약 일주일 정도 소요됩니다.",
+                        Text("성공스토어 적용은 사업자 정보 확인 후 완료되며,\n완료까지 약 일주일 정도 소요됩니다.",
                             style: Body1
                         ),
                         whiteSpaceH(10),

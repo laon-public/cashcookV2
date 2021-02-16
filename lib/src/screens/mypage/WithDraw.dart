@@ -77,7 +77,7 @@ class _Withdraw extends State<Withdraw>{
                       style: Subtitle1,
                     ),
                     whiteSpaceH(23),
-                    Text("회원탈퇴 시 보유하고 계신 매장, 회원, 포인트, DL 등의 모든 내역이 삭제 됩니다.",
+                    Text("회원탈퇴 시 보유하고 계신 성공스토어, 회원, 포인트, DL 등의 모든 내역이 삭제 됩니다.",
                         style: Body1.apply(
                             color: black
                         )

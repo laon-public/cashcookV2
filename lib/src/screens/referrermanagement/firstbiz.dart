@@ -133,7 +133,7 @@ class _FirstBiz extends State<FirstBiz> {
                           ),
                           whiteSpaceW(12),
                           Text(
-                            "제휴매장 가입",
+                            "성공스토어 가입",
                             style: Subtitle2.apply(
                                 color: black,
                                 fontWeightDelta: 1

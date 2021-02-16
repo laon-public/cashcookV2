@@ -16,7 +16,7 @@ class FirstBizSelect extends StatefulWidget {
 }
 
 class _FirstBizSelect extends State<FirstBizSelect> {
-  String _selectedValue = "총판";
+  String _selectedValue = "성공마스터";
 
   bool userCheck = false;
 
@@ -36,7 +36,7 @@ class _FirstBizSelect extends State<FirstBizSelect> {
           elevation: 0.5,
           centerTitle: true,
           title: Text(
-            "총판 입력",
+            "성공마스터 입력",
             style: appBarDefaultText,
           ),
           automaticallyImplyLeading: false,
@@ -72,7 +72,7 @@ class _FirstBizSelect extends State<FirstBizSelect> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                "현재 매장의\n상위총판을 선택해주세요.",
+                                "현재 성공스토어의\n상위 성공마스터를 선택해주세요.",
                                 textAlign: TextAlign.start,
                                 style: Subtitle2.apply(
                                   fontWeightDelta: -1
@@ -120,7 +120,7 @@ class _FirstBizSelect extends State<FirstBizSelect> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                '상위 총판을 선택해주세요.',
+                                '상위 성공마스터를 선택해주세요.',
                                 textAlign: TextAlign.start,
                                 style: Body2
                               ),
@@ -135,8 +135,8 @@ class _FirstBizSelect extends State<FirstBizSelect> {
                           height: 40,
                           child: RaisedButton(
                             onPressed: () async {
-                              if(user.disSelected == "총판") {
-                                showToast("총판을 선택해주세요.");
+                              if(user.disSelected == "성공마스터") {
+                                showToast("성공마스터를 선택해주세요.");
                                 return;
                               } else {
                                 await Provider.of<UserProvider>(
