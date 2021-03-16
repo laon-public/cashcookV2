@@ -306,6 +306,22 @@ class OrderDetailState extends State<OrderDetail> {
                     padding:EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
                       children: [
+                        // Container(
+                        //   margin: EdgeInsets.only(top: 19),
+                        //   width: MediaQuery.of(context).size.width,
+                        //   child: Text(
+                        //     "주문자 정보",
+                        //     style: Subtitle2.apply(
+                        //         fontWeightDelta: 1
+                        //     ),
+                        //   ),
+                        // ),
+                        // Text("${sp.selLog.deliveryAddress.address}",
+                        //   style: Body1.apply(
+                        //       fontWeightDelta: -1,
+                        //       color: secondary
+                        //   ),
+                        // ), 서버 처리 구간
                         Container(
                           margin: EdgeInsets.only(top: 19),
                           width: MediaQuery.of(context).size.width,

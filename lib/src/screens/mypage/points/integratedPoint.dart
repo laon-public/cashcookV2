@@ -130,26 +130,26 @@ class _IntegratedPoint extends State<IntegratedPoint> {
                                 ),
                               ),
                             ),
-                            Expanded(
-                              flex: 1,
-                              child:
-                              Padding(
-                                padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
-                                child:Column(
-                                  children: [
-                                    Text("RP",
-                                        style: Body2),
-                                    whiteSpaceH(5),
-                                    Text("${numberFormat.format(pm.rp)} RP",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: subYellow,
-                                            fontWeight: FontWeight.w600
-                                        )),
-                                  ],
-                                ),
-                              ),
-                            ),
+                            // Expanded(
+                            //   flex: 1,
+                            //   child:
+                            //   Padding(
+                            //     padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
+                            //     child:Column(
+                            //       children: [
+                            //         Text("RP",
+                            //             style: Body2),
+                            //         whiteSpaceH(5),
+                            //         Text("${numberFormat.format(pm.rp)} RP",
+                            //             style: TextStyle(
+                            //                 fontSize: 12,
+                            //                 color: subYellow,
+                            //                 fontWeight: FontWeight.w600
+                            //             )),
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
                             Expanded(
                               flex: 1,
                               child:
@@ -177,7 +177,7 @@ class _IntegratedPoint extends State<IntegratedPoint> {
                                 padding: const EdgeInsets.only(top: 5.0, left: 10.0, right: 10.0, bottom: 5.0),
                                 child:Column(
                                   children: [
-                                    Text("가맹점 수",
+                                    Text("제휴점 수",
                                         style: Body2),
                                     whiteSpaceH(5),
                                     Text("${numberFormat.format(pm.franAmount)} 개",

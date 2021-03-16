@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cashcook/src/screens/mypage/mypage.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
@@ -26,7 +27,7 @@ class _QrCheck extends State<QrCheck> {
   firstView() async {
     await Provider.of<StoreProvider>(context, listen: false).clearMap();
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
+        MaterialPageRoute(builder: (context) => MyPage(isHome: true,)), (route) => false);
   }
 
   qrDialog() {

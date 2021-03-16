@@ -413,7 +413,7 @@ class _StoreDetail3 extends State<StoreDetail3> {
                                                       color: primary
                                                     ),
                                                     whiteSpaceW(4.0),
-                                                    Text("QR 스켄",
+                                                    Text("QR 스캔",
                                                       style: Body1.apply(color: secondary),
                                                       textAlign: TextAlign.center,
                                                     )

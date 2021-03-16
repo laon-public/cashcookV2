@@ -18,6 +18,6 @@ const OrderStatusByProvider = {
   "DELIVERY_START" : "배달 출발",
   "DELIVERY_END" : "배달 완료",
   "REFUND_CONFIRM" : "결제 취소",
-  "REFUND_REQUEST" : "취소 요청 중",
+  "REFUND_REQUEST" : "주문 취소",
   "CONFIRM" : "구매 확정",
 };

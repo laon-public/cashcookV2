@@ -412,7 +412,7 @@ class UserProvider with ChangeNotifier {
     Map<String, dynamic> json = jsonDecode(response);
     print(json);
     if(isResponse(json)){
-      Fluttertoast.showToast(msg: "환전하였습니다.");
+      Fluttertoast.showToast(msg: "구매완료하였습니다.");
 
     }
     return;

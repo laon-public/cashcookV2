@@ -2,6 +2,7 @@ import 'package:cashcook/src/model/account.dart';
 import 'package:cashcook/src/provider/StoreProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
+import 'package:cashcook/src/screens/mypage/mypage.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
 import 'package:cashcook/src/utils/colors.dart';
 import 'package:cashcook/src/widgets/numberFormat.dart';
@@ -232,7 +233,10 @@ class _RPExchangeState extends State<RPExchange> {
                     await Provider.of<UserProvider>(context, listen:false).getAccountsHistory("CP", 0);
                     await Provider.of<StoreProvider>(context, listen: false).clearMap();
                     await Provider.of<UserProvider>(context, listen: false).fetchAccounts();
-                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainMap()), (route) => false);
+                    // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MyPage(isHome: true), (route) => false);
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context)=> MyPage(isHome: true,)),
+                    );
                   },
                 ),
               )

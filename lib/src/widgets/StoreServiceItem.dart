@@ -106,12 +106,12 @@ Widget MenuItem(int bigIdx,int idx,MenuModel mm, BuildContext context) {
         ),
         padding: EdgeInsets.symmetric(horizontal: 16.0),
         width: MediaQuery.of(context).size.width,
-        height: 80,
+        height: 110,
         child: Row(
             children: [
               Container(
-                width: 48,
-                height: 48,
+                width: 68,
+                height: 68,
                 child: Stack(
                   children: [
 
@@ -188,8 +188,8 @@ Widget MenuItem(int bigIdx,int idx,MenuModel mm, BuildContext context) {
               Expanded(
                       child:
                           Container(
-                            margin: EdgeInsets.only(top: 15),
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Align(
                                   alignment: Alignment.centerLeft,

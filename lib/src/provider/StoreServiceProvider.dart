@@ -6,7 +6,8 @@ import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/model/store/menu.dart';
 import 'package:cashcook/src/model/store/review.dart';
 import 'package:cashcook/src/services/Store.dart' as s;
-import 'package:cashcook/src/services/StoreService.dart ';
+// import 'package:cashcook/src/services/StoreService.dart ';
+import 'package:cashcook/src/services/StoreService.dart';
 import 'package:cashcook/src/utils/responseCheck.dart';
 import 'package:cashcook/src/widgets/showToast.dart';
 import 'package:flutter/cupertino.dart';
@@ -71,16 +72,13 @@ class StoreServiceProvider with ChangeNotifier {
   }
 
   void setBankInfo(String cardName, String cardNumber) {
-      bankInfo = BankInfo(
-        cardName: cardName,
-        cardNumber: cardNumber
-      );
+    bankInfo = BankInfo(cardName: cardName, cardNumber: cardNumber);
 
-      notifyListeners();
+    notifyListeners();
   }
 
   void setServiceBar(bool value) {
-    if(this.lookServiceBar.toString() != value.toString()) {
+    if (this.lookServiceBar.toString() != value.toString()) {
       this.lookServiceBar = value;
 
       notifyListeners();
@@ -116,14 +114,16 @@ class StoreServiceProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String> setOrderMap(String store_id, String logType, String imp_uid, String email, String comment,bool isDelivery) async {
+  Future<String> setOrderMap(String store_id, String logType, String imp_uid,
+      String email, String comment, bool isDelivery) async {
     orderLoading = true;
     notifyListeners();
 
     Map<String, dynamic> orderMap = {};
 
     orderMap['storeId'] = store_id;
-    orderMap['content'] = initAmount == 1 ? orderList[0].menuList[0].name
+    orderMap['content'] = initAmount == 1
+        ? orderList[0].menuList[0].name
         : "${orderList[0].menuList[0].name} 외 ${initAmount - 1}건";
     orderMap['pay'] = orderPay;
     orderMap['dl'] = int.parse(dlCtrl.text == "" ? "0" : dlCtrl.text);
@@ -133,18 +133,18 @@ class StoreServiceProvider with ChangeNotifier {
     orderMap['email'] = email;
     orderMap['comment'] = comment;
 
-    if(bankInfo != null){
+    if (bankInfo != null) {
       orderMap['bankInfo'] = {
-        "cardName" : bankInfo.cardName,
-        "cardNumber" : bankInfo.cardNumber,
+        "cardName": bankInfo.cardName,
+        "cardNumber": bankInfo.cardNumber,
       };
     }
 
-    if(isDelivery) {
+    if (isDelivery) {
       orderMap['status'] = "DELIVERY_REQUEST";
       orderMap['deliveryAddress'] = {
-        "address" : address.split("대한민국 ")[1].split("/")[0],
-        "detail" : address.split("/")[1]
+        "address": address.split("대한민국 ")[1].split("/")[0],
+        "detail": address.split("/")[1]
       };
     }
 
@@ -153,27 +153,23 @@ class StoreServiceProvider with ChangeNotifier {
       // SubCat Mapping
       List<Map<String, dynamic>> subCatList = [];
       mainCat.menuList.forEach((subCat) {
-        subCatList.add(
-            {
-              'menuName': subCat.name,
-              'amount': subCat.count,
-              'price': subCat.price
-            }
-        );
+        subCatList.add({
+          'menuName': subCat.name,
+          'amount': subCat.count,
+          'price': subCat.price
+        });
       });
-      orderMap['mainCatList'].add(
-          {
-            'menuName' : mainCat.name,
-            'subCatList' : subCatList,
-          }
-      );
+      orderMap['mainCatList'].add({
+        'menuName': mainCat.name,
+        'subCatList': subCatList,
+      });
     });
 
     final response = await service.orderPayment(orderMap);
 
     Map<String, dynamic> json = jsonDecode(response);
     print(response);
-    if(isResponse(json)){
+    if (isResponse(json)) {
       String fcmToken = json['data']['fcmToken'];
       return Future.value(fcmToken);
     }
@@ -190,14 +186,14 @@ class StoreServiceProvider with ChangeNotifier {
     final response = await service.gameConfirm(confirmGame);
 
     Map<String, dynamic> json = jsonDecode(response);
-    if(!isResponse(json)){
+    if (!isResponse(json)) {
       return Future.value(false);
     }
     return Future.value(true);
   }
 
   Future<bool> replayGame({int orderId = 0}) async {
-    Map<String, dynamic>replayGame = {};
+    Map<String, dynamic> replayGame = {};
 
     // OrderLog Mapping
     replayGame['orderId'] = orderId;
@@ -205,7 +201,7 @@ class StoreServiceProvider with ChangeNotifier {
     final response = await service.gameReplay(replayGame);
 
     Map<String, dynamic> json = jsonDecode(response);
-    if(!isResponse(json)){
+    if (!isResponse(json)) {
       showToast("RP가 부족합니다. 이전 결과로 출력됩니다.");
 
       return Future.value(false);
@@ -251,13 +247,10 @@ class StoreServiceProvider with ChangeNotifier {
 
     final response = await service.fetchMenu(store_id);
 
-
     dynamic _bigMenuList = json.decode(response)['data']['list'];
 
-    for(var _bigMenu in _bigMenuList){
-      menuList.add(BigMenuModel.fromJson(
-          _bigMenu
-      ));
+    for (var _bigMenu in _bigMenuList) {
+      menuList.add(BigMenuModel.fromJson(_bigMenu));
     }
 
     notifyListeners();
@@ -269,30 +262,27 @@ class StoreServiceProvider with ChangeNotifier {
 
     reviewAvg = 0.0;
     reviewList.clear();
-    if(num == 0){
+    if (num == 0) {
       startMenuLoading();
       final response = await service.fetchMenu(store_id);
 
       dynamic _bigMenuList = json.decode(response)['data']['list'];
 
-      for(var _bigMenu in _bigMenuList){
-        menuList.add(BigMenuModel.fromJson(
-            _bigMenu
-        ));
+      for (var _bigMenu in _bigMenuList) {
+        menuList.add(BigMenuModel.fromJson(_bigMenu));
       }
       stopMenuLoading();
-
-    } else if(num == 1) {
+    } else if (num == 1) {
       notifyListeners();
-    } else if(num == 2){
+    } else if (num == 2) {
       startLoading();
       final response = await service.fetchReview(store_id);
 
       dynamic _reviewList = json.decode(response)['data']['list'];
       reviewAvg = json.decode(response)['data']['avg'];
 
-      if(_reviewList != null){
-        for(var _review in _reviewList) {
+      if (_reviewList != null) {
+        for (var _review in _reviewList) {
           reviewList.add(ReviewModel.fromJson(_review));
         }
       }
@@ -300,12 +290,12 @@ class StoreServiceProvider with ChangeNotifier {
     }
   }
 
-  void reviewListSelect() async{
+  void reviewListSelect() async {
     final response = await service.fetchReviewList();
 
     dynamic _reviewList = json.decode(response)['data']['avg'];
-    if(_reviewList != null){
-      for(var _review in _reviewList) {
+    if (_reviewList != null) {
+      for (var _review in _reviewList) {
         reviewList.add(ReviewModel.fromJsonScope(_review));
       }
     }
@@ -313,11 +303,10 @@ class StoreServiceProvider with ChangeNotifier {
     stopLoading();
   }
 
-  void setCheck(bigIdx, idx, value){
-
-    print("bigIdx 출력 >> " + bigIdx.toString()  );
-    print("idx 출력 >> " +  idx.toString() );
-    print("value 출력 >> " +  value.toString() );
+  void setCheck(bigIdx, idx, value) {
+    print("bigIdx 출력 >> " + bigIdx.toString());
+    print("idx 출력 >> " + idx.toString());
+    print("value 출력 >> " + value.toString());
 
     menuList[bigIdx].menuList[idx].isCheck = value;
 
@@ -334,7 +323,7 @@ class StoreServiceProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void decreaseCount(bigIdx,idx) {
+  void decreaseCount(bigIdx, idx) {
     orderList[bigIdx].menuList[idx].count--;
     orderPay -= orderList[bigIdx].menuList[idx].price;
     orderAmount -= 1;
@@ -354,8 +343,10 @@ class StoreServiceProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<int> insertReview(int store_id, int scope, String contents, int order_id) async {
-    final response = await service.insertReview(store_id, scope, contents, order_id);
+  Future<int> insertReview(
+      int store_id, int scope, String contents, int order_id) async {
+    final response =
+        await service.insertReview(store_id, scope, contents, order_id);
     if (isResponse(jsonDecode(response))) {
       int review_id = json.decode(response)['data']['review_id'];
       return review_id;
@@ -363,26 +354,25 @@ class StoreServiceProvider with ChangeNotifier {
     return 0;
   }
 
-  Future<bool> patchReview(int idx,int review_id,String type, String subtype) async {
+  Future<bool> patchReview(
+      int idx, int review_id, String type, String subtype) async {
     final response = await service.patchReview(review_id, type, subtype);
     if (isResponse(jsonDecode(response))) {
       showToast(json.decode(response)['data']['msg']);
 
-      if(type == "like"){
-        if(subtype == "inc") {
+      if (type == "like") {
+        if (subtype == "inc") {
           reviewList[idx].isLike = 1;
           reviewList[idx].like += 1;
-        }
-        else {
+        } else {
           reviewList[idx].isLike = 0;
           reviewList[idx].like -= 1;
         }
       } else {
-        if(subtype == "inc") {
+        if (subtype == "inc") {
           reviewList[idx].isHate = 1;
           reviewList[idx].hate += 1;
-        }
-        else {
+        } else {
           reviewList[idx].isHate = 0;
           reviewList[idx].hate -= 1;
         }
@@ -395,18 +385,21 @@ class StoreServiceProvider with ChangeNotifier {
     return false;
   }
 
-  void selSearchCategory(String code, String code_name, String start, String end) async {
+  void selSearchCategory(
+      String code, String code_name, String start, String end) async {
     searchStore.clear();
 
-    List<SubCatModel> selSubCat = subCatList.where((e) => e.code_name == code_name).toList();
+    List<SubCatModel> selSubCat =
+        subCatList.where((e) => e.code_name == code_name).toList();
 
     selectSubCat = selSubCat[0].code_name;
     selectSubCat_code = selSubCat[0].code;
 
-    var response = await service.fetchStoreList(code, selectSubCat_code,start ,end);
+    var response =
+        await service.fetchStoreList(code, selectSubCat_code, start, end);
 
     dynamic _storeMiniList = json.decode(response)['data']['list'];
-    for(var _storeMini in _storeMiniList) {
+    for (var _storeMini in _storeMiniList) {
       searchStore.add(StoreModel.fromJson(_storeMini));
     }
     count = searchStore.length;
@@ -414,7 +407,7 @@ class StoreServiceProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void fetchSubCategory(String code,String start, String end) async {
+  void fetchSubCategory(String code, String start, String end) async {
     subCatList.clear();
     searchStore.clear();
     startLoading();
@@ -422,18 +415,15 @@ class StoreServiceProvider with ChangeNotifier {
     var response = await service.fetchSubCategory(code);
 
     dynamic _subCatList = json.decode(response)['data']['list'];
-    subCatList.add(SubCatModel(
-        code: "000",
-        code_name: "전체"
-    ));
-    for(var _subCat in _subCatList) {
+    subCatList.add(SubCatModel(code: "000", code_name: "전체"));
+    for (var _subCat in _subCatList) {
       subCatList.add(SubCatModel.fromJson(_subCat));
     }
 
     response = await service.fetchStoreList(code, "000", start, end);
 
     dynamic _storeMiniList = json.decode(response)['data']['list'];
-    for(var _storeMini in _storeMiniList) {
+    for (var _storeMini in _storeMiniList) {
       searchStore.add(StoreModel.fromJson(_storeMini));
     }
     count = searchStore.length;
@@ -447,12 +437,13 @@ class StoreServiceProvider with ChangeNotifier {
   void fetchNewCategory(String code_name) async {
     subCatList.clear();
 
-    List<CatModel> selCat = catList.where((e) => e.code_name == code_name).toList();
+    List<CatModel> selCat =
+        catList.where((e) => e.code_name == code_name).toList();
 
     var response = await service.fetchSubCategory(selCat[0].code);
 
     dynamic _subCatList = json.decode(response)['data']['list'];
-    for(var _subCat in _subCatList) {
+    for (var _subCat in _subCatList) {
       subCatList.add(SubCatModel.fromJson(_subCat));
     }
 
@@ -469,7 +460,8 @@ class StoreServiceProvider with ChangeNotifier {
   }
 
   void setSubCat(String code_name) {
-    List<SubCatModel> selSubCat = subCatList.where((e) => e.code_name == code_name).toList();
+    List<SubCatModel> selSubCat =
+        subCatList.where((e) => e.code_name == code_name).toList();
 
     selectSubCat = selSubCat[0].code_name;
     selectSubCat_code = selSubCat[0].code;
@@ -485,7 +477,7 @@ class StoreServiceProvider with ChangeNotifier {
 
     dynamic _catList = json.decode(response)['data']['list'];
 
-    for(var _cat in _catList) {
+    for (var _cat in _catList) {
       catList.add(CatModel.fromJson(_cat));
     }
 
@@ -494,7 +486,7 @@ class StoreServiceProvider with ChangeNotifier {
     response = await service.fetchSubCategory(code);
 
     dynamic _subCatList = json.decode(response)['data']['list'];
-    for(var _subCat in _subCatList) {
+    for (var _subCat in _subCatList) {
       subCatList.add(SubCatModel.fromJson(_subCat));
     }
 
@@ -519,7 +511,6 @@ class StoreServiceProvider with ChangeNotifier {
         catList.add(CatModel.fromJson(_cat));
       }
 
-
       selectCat =
           (catList.where((cat) => cat.code == code).toList())[0].code_name;
       response = await service.fetchSubCategory(code);
@@ -532,8 +523,8 @@ class StoreServiceProvider with ChangeNotifier {
       selectSubCat =
           (subCatList.where((sCat) => sCat.code == subCode).toList())[0]
               .code_name;
-    } catch(e) {
-     showToast("정보를 불러오는데 실패했습니다.");
+    } catch (e) {
+      showToast("정보를 불러오는데 실패했습니다.");
     } finally {
       isCategoryFetching = false;
       notifyListeners();
@@ -549,25 +540,25 @@ class StoreServiceProvider with ChangeNotifier {
 
     showToast(json.decode(response)['data']['msg']);
 
-    if(store.length != 0){
+    if (store.length != 0) {
       store.forEach((element) {
-        if(element.id == int.parse(store_id)) {
+        if (element.id == int.parse(store_id)) {
           element.scrap.scrap = "1";
         }
       });
     }
 
-    if(storeMiniList.length != 0){
+    if (storeMiniList.length != 0) {
       storeMiniList.forEach((element) {
-        if(element.id == int.parse(store_id)) {
+        if (element.id == int.parse(store_id)) {
           element.scrap = "1";
         }
       });
     }
 
-    if(searchStore.length != 0){
+    if (searchStore.length != 0) {
       searchStore.forEach((element) {
-        if(element.id == int.parse(store_id)) {
+        if (element.id == int.parse(store_id)) {
           element.scrap.scrap = "1";
         }
       });
@@ -585,8 +576,7 @@ class StoreServiceProvider with ChangeNotifier {
 
     dynamic _scrapList = json.decode(response)['data']['list'];
 
-    for(var scrap in _scrapList)
-      scrapList.add(StoreModel.fromJson(scrap));
+    for (var scrap in _scrapList) scrapList.add(StoreModel.fromJson(scrap));
 
     stopLoading();
   }
@@ -594,31 +584,31 @@ class StoreServiceProvider with ChangeNotifier {
   void cancleScrap(int store_id) async {
     var response = await service.cancleScrap(store_id);
 
-    if(json.decode(response)['data']['result'] == 0){
+    if (json.decode(response)['data']['result'] == 0) {
       showToast(json.decode(response)['data']['resultMsg']);
     } else {
       scrapList = scrapList.where((scrap) => scrap.id != store_id).toList();
 
       showToast("취소되었습니다.");
-      if(store.length != 0){
+      if (store.length != 0) {
         store.forEach((element) {
-          if(element.id == store_id) {
+          if (element.id == store_id) {
             element.scrap.scrap = "0";
           }
         });
       }
 
-      if(storeMiniList.length != 0){
+      if (storeMiniList.length != 0) {
         storeMiniList.forEach((element) {
-          if(element.id == store_id) {
+          if (element.id == store_id) {
             element.scrap = "0";
           }
         });
       }
 
-      if(searchStore.length != 0){
+      if (searchStore.length != 0) {
         searchStore.forEach((element) {
-          if(element.id == store_id) {
+          if (element.id == store_id) {
             element.scrap.scrap = "0";
           }
         });
@@ -640,12 +630,16 @@ class StoreServiceProvider with ChangeNotifier {
     startLoading();
 
     final response = await service.getStoreSearch(query, start, end);
-    Map<String,dynamic> storeJson = jsonDecode(response);
+    Map<String, dynamic> storeJson = jsonDecode(response);
 
     print(response);
     for (var store in storeJson['data']['list']) {
       StoreModel tmp = StoreModel.fromJson(store);
-      if(searchStore.where((element) => element.id == tmp.id).toList().length == 0) {
+      if (searchStore
+              .where((element) => element.id == tmp.id)
+              .toList()
+              .length ==
+          0) {
         searchStore.add(tmp);
       }
     }
@@ -653,17 +647,18 @@ class StoreServiceProvider with ChangeNotifier {
     stopLoading();
   }
 
-  Future<List<StoreModel>> getStore(String start, String end, String type, String category) async {
+  Future<List<StoreModel>> getStore(
+      String start, String end, String type, String category) async {
     store.clear();
     // startLoading();
     int cnt = 0;
     String response = await service_2.getStore(start, end, type, category);
     Map<String, dynamic> mapJson = jsonDecode(response);
     List<StoreModel> rtnStoreList = [];
-    if(isResponse(mapJson)){
-      for(var storeList in mapJson['data']["list"]){
+    if (isResponse(mapJson)) {
+      for (var storeList in mapJson['data']["list"]) {
         StoreModel tmp = StoreModel.fromJson(storeList);
-        if((store.where((s) => (s.id == tmp.id)).toList().length == 0)){
+        if ((store.where((s) => (s.id == tmp.id)).toList().length == 0)) {
           // store.add(tmp);
           rtnStoreList.add(tmp);
         }
@@ -675,29 +670,29 @@ class StoreServiceProvider with ChangeNotifier {
     return rtnStoreList;
   }
 
-  void patchDelivery(int storeId, String deliveryTime, String deliveryAmount, bool deliveryStatus, String minOrderAmount) async {
+  void patchDelivery(int storeId, String deliveryTime, String deliveryAmount,
+      bool deliveryStatus, String minOrderAmount) async {
     isDeliveryLoading = true;
     notifyListeners();
-    
+
     Map<String, dynamic> data = {
-      "deliveryTime" : deliveryTime,
+      "deliveryTime": deliveryTime,
       "deliveryAmount": deliveryAmount,
       "deliveryStatus": deliveryStatus,
       "minOrderAmount": minOrderAmount
     };
-    
+
     try {
       final response = await service.patchDelivery(storeId, data);
 
       print(response);
 
       showToast("배달 설정을 완료했습니다.");
-    } catch(e) {
+    } catch (e) {
       showToast("배달 설정에 실패했습니다.");
     } finally {
       isDeliveryLoading = false;
       notifyListeners();
     }
   }
-
 }

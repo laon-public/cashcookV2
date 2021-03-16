@@ -272,6 +272,21 @@ class _ServiceDetail extends State<ServiceDetail> {
                                       Expanded(
                                         child: InkWell(
                                           onTap: () async {
+                                            if(up.selLog.bankInfo.cardName == ""){
+                                              Provider.of<StoreProvider>(context,listen: false).patchOrder(up.selLog.id,"REFUND_CONFIRM").then((value) {
+                                                if (value != "") {
+                                                  sendMessage("주문취소", "고객이 주문을 취소했습니다.", value, "CONSUMER","REFUND_CONFIRM", up.selLog.id);
+                                                  showToast("주문을 취소했습니다.");
+
+                                                  Provider.of<UserProvider>(context, listen: false).setSellogStatus("REFUND_CONFIRM");
+                                                }
+                                              }).catchError(() {
+                                                // 여기까지 왔으면 IMPORT 환불은 성공한거.
+                                                showToast("환불에 실패했습니다.");
+                                              });
+
+                                              return;
+                                            }
                                             if(up.selLog.status == "BEFORE_CONFIRM" || up.selLog.status == "DELIVERY_REQUEST") {
                                               up.startRefunding();
                                               IMPortService importService = IMPortService();
@@ -395,9 +410,9 @@ class _ServiceDetail extends State<ServiceDetail> {
                                       ),
                                     ],
                                   ),
-                                  !(up.selLog.status == "BEFORE_CONFIRM" || up.selLog.status == "DELIVERY_REQUEST" || up.selLog.status == "CONFIRM") ?
+                                  !(up.selLog.status == "BEFORE_CONFIRM" || up.selLog.status == "DELIVERY_REQUEST" || up.selLog.status == "CONFIRM" || up.selLog.status == "REFUND_CONFIRM") ?
                                   whiteSpaceH(12) : Container(),
-                                  !(up.selLog.status == "BEFORE_CONFIRM" || up.selLog.status == "DELIVERY_REQUEST" || up.selLog.status == "CONFIRM") ?
+                                  !(up.selLog.status == "BEFORE_CONFIRM" || up.selLog.status == "DELIVERY_REQUEST" || up.selLog.status == "CONFIRM" || up.selLog.status == "REFUND_CONFIRM") ?
                                   Row(
                                     children: [
                                       Expanded(

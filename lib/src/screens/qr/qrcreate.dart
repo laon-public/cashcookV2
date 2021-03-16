@@ -68,7 +68,7 @@ class _QrCreate extends State<QrCreate> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      "고객이 결제한\n금액을 입력해주세요.",
+                      "고객이 결제할\n금액을 입력해주세요.",
                       textAlign: TextAlign.start,
                       style: Subtitle1
                     ),

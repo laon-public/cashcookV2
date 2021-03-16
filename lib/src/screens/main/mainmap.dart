@@ -920,7 +920,7 @@ class _MainMap extends State<MainMap> {
                       "," +
                       value.southwest.longitude.toString();
 
-                  await sp.getStore(start, end, my.id);
+                  await sp.getStore(start, end, Provider.of<UserProvider>(context, listen: false).loginUser.id);
                 });
               },
               onMapCreated: (GoogleMapController controller) {

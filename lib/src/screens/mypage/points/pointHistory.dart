@@ -338,7 +338,7 @@ class History extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 3,
-                    child: Text("${e['price']} ${point == "DL" ? "DL" : point == "CARAT" ? "CR" : "CP"}",
+                    child: Text("${e['price']} ${point == "DL" ? "DL" : point == "CARAT" ? "CARAT" : point == "RP" ? "CP" : point}",
                       style: Body1.apply(
                           color: e['type'] == "충전" ?
                           mainColor

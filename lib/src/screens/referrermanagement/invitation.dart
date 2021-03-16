@@ -52,7 +52,7 @@ class _Invitation extends State {
               ],
             ),
             whiteSpaceH(20),
-            Text("휴대폰에 저장된 연락처를 선택해주세요.\n자동으로 나의 직접추천회원으로 등록이됩니다.",
+            Text("휴대폰에 저장된 연락처를 선택해주세요.\n자동으로 나의 가입대기회원으로 등록이 됩니다.",
                 style: Body2
             ),
           Spacer(),

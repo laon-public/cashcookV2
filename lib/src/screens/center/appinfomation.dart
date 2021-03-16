@@ -278,8 +278,8 @@ class AppInfomation extends StatelessWidget {
                           ),
                           Expanded(
                             flex: 3,
-                            child: Text("서울 금천구 가산디지털1로 149\n"
-                              "1104호(가산동, 신한이노플렉스)",
+                            child: Text("서울 금천구 가산디지털1로 145,\n"
+                              "207호",
                               style: Body1.apply(
                                   color: Color(0xFF555555)
                               ),

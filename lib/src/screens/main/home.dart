@@ -1,7 +1,9 @@
+import 'package:cashcook/src/model/store.dart';
 import 'package:cashcook/src/provider/CarouselProvider.dart';
 import 'package:cashcook/src/provider/CenterProvider.dart';
 import 'package:cashcook/src/provider/UserProvider.dart';
 import 'package:cashcook/src/screens/main/mainmap.dart';
+import 'package:cashcook/src/screens/qr/qr.dart';
 import 'package:cashcook/src/utils/CustomBottomNavBar.dart';
 import 'package:cashcook/src/utils/MainStoreDivision.dart';
 import 'package:cashcook/src/utils/TextStyles.dart';
@@ -25,7 +27,7 @@ import 'package:cashcook/src/utils/MenuSlidePop.dart' as slideDialog;
 
 
 class Home extends StatefulWidget {
-
+  StoreModel store;
   @override
   _Home createState() => _Home();
 }
@@ -155,6 +157,24 @@ class _Home extends State<Home> {
                 ),
               ),
               actions: [
+                // IconButton(
+                //   icon: Icon(
+                //     Icons.qr_code_scanner,
+                //     color: Colors.black,
+                //   ),
+                //   onPressed: () {정
+                //     Navigator.of(context).push(
+                //       MaterialPageRoute(
+                //           builder: (context) => Qr(),
+                //           settings: RouteSettings(
+                //               arguments: {
+                //                 "store_id": widget.store.id,
+                //                 "store_name" : widget.store.store.name
+                //               }
+                //           )
+                //       ),);
+                //   },
+                // ), 메인페이지 qr코드 기능 곧 추가 예
                 InkWell(
                   onTap: () async {
                     Map<String, dynamic> args = {
@@ -804,21 +824,21 @@ class _Home extends State<Home> {
       if(this.lat == null && this.lon == null){
         var currentLocation =  await location.getLocation();
 
-        String start = (currentLocation.latitude + 0.04).toString() +
+        String start = (currentLocation.latitude + 4).toString() +
             "," +
-            (currentLocation.longitude + 0.04).toString();
-        String end = (currentLocation.latitude - 0.04).toString() +
+            (currentLocation.longitude + 4).toString();
+        String end = (currentLocation.latitude - 4).toString() +
             "," +
-            (currentLocation.longitude - 0.04).toString();
+            (currentLocation.longitude - 4).toString();
 
         await P.Provider.of<StoreServiceProvider>(context, listen:false).fetchSubCategory(serviceName[idx]['code'],start ,end);
       } else {
-        String start = (this.lat + 0.04).toString() +
+        String start = (this.lat + 4).toString() +
             "," +
-            (this.lon + 0.04).toString();
-        String end = (this.lat - 0.04).toString() +
+            (this.lon + 4).toString();
+        String end = (this.lat - 4).toString() +
             "," +
-            (this.lon - 0.04).toString();
+            (this.lon - 4).toString();
 
         await P.Provider.of<StoreServiceProvider>(context, listen:false).fetchSubCategory(serviceName[idx]['code'], start, end);
       }

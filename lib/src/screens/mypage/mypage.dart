@@ -461,7 +461,7 @@ class _MyPageState extends State<MyPage> {
                               padding: EdgeInsets.symmetric(vertical: 12),
                               child:Column(
                                 children: [
-                                  Text("ADP 충전 리워드",
+                                  Text("제휴점 ADP 충전",
                                       style: Body2.apply(
                                         color: secondary
                                       )
@@ -1224,7 +1224,7 @@ class _MyPageState extends State<MyPage> {
             children: [
               Image.asset("assets/icon/market.png", width: 24,height: 24, fit: BoxFit.fill,),
               SizedBox(width: 12,),
-              Text("리워드 내역",style: Subtitle2),
+              Text("매출 내역",style: Subtitle2),
               Spacer(),
               Icon(Icons.arrow_forward_ios, color: Color(0xff444444), size: 16,),
             ],
@@ -1414,13 +1414,13 @@ class _MyPageState extends State<MyPage> {
                       ),
                       children: <TextSpan>[
                         TextSpan(
-                            text: "캐시쿡 그룹 ",
+                            text: "캐시쿡 스쿨 ",
                             style: TextStyle(
                                 fontWeight: FontWeight.w300
                             )
                         ),
                         TextSpan(
-                            text: "사업 설명회",
+                            text: "교육안내",
                             style: TextStyle(
                                 fontWeight: FontWeight.w700
                             )
